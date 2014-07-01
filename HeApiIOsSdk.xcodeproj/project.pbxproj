@@ -1,0 +1,420 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		49E74BB91962F9D50080EB14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB81962F9D50080EB14 /* Foundation.framework */; };
+		49E74BBE1962F9D50080EB14 /* HeApiIOsSdk.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49E74BBD1962F9D50080EB14 /* HeApiIOsSdk.h */; };
+		49E74BC01962F9D50080EB14 /* HeApiIOsSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E74BBF1962F9D50080EB14 /* HeApiIOsSdk.m */; };
+		49E74BC71962F9D60080EB14 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BC61962F9D60080EB14 /* XCTest.framework */; };
+		49E74BC81962F9D60080EB14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB81962F9D50080EB14 /* Foundation.framework */; };
+		49E74BCA1962F9D60080EB14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BC91962F9D60080EB14 /* UIKit.framework */; };
+		49E74BCD1962F9D60080EB14 /* libHeApiIOsSdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB51962F9D50080EB14 /* libHeApiIOsSdk.a */; };
+		49E74BD31962F9D60080EB14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E74BD11962F9D60080EB14 /* InfoPlist.strings */; };
+		49E74BD51962F9D60080EB14 /* HeApiIOsSdkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E74BD41962F9D60080EB14 /* HeApiIOsSdkTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		49E74BCB1962F9D60080EB14 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49E74BAD1962F9D50080EB14 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49E74BB41962F9D50080EB14;
+			remoteInfo = HeApiIOsSdk;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		49E74BB31962F9D50080EB14 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				49E74BBE1962F9D50080EB14 /* HeApiIOsSdk.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		49E74BB51962F9D50080EB14 /* libHeApiIOsSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHeApiIOsSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E74BB81962F9D50080EB14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		49E74BBC1962F9D50080EB14 /* HeApiIOsSdk-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HeApiIOsSdk-Prefix.pch"; sourceTree = "<group>"; };
+		49E74BBD1962F9D50080EB14 /* HeApiIOsSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeApiIOsSdk.h; sourceTree = "<group>"; };
+		49E74BBF1962F9D50080EB14 /* HeApiIOsSdk.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeApiIOsSdk.m; sourceTree = "<group>"; };
+		49E74BC51962F9D60080EB14 /* HeApiIOsSdkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeApiIOsSdkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E74BC61962F9D60080EB14 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		49E74BC91962F9D60080EB14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		49E74BD01962F9D60080EB14 /* HeApiIOsSdkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HeApiIOsSdkTests-Info.plist"; sourceTree = "<group>"; };
+		49E74BD21962F9D60080EB14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49E74BD41962F9D60080EB14 /* HeApiIOsSdkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeApiIOsSdkTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		49E74BB21962F9D50080EB14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BB91962F9D50080EB14 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49E74BC21962F9D60080EB14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BC71962F9D60080EB14 /* XCTest.framework in Frameworks */,
+				49E74BCA1962F9D60080EB14 /* UIKit.framework in Frameworks */,
+				49E74BCD1962F9D60080EB14 /* libHeApiIOsSdk.a in Frameworks */,
+				49E74BC81962F9D60080EB14 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		49E74BAC1962F9D50080EB14 = {
+			isa = PBXGroup;
+			children = (
+				49E74BBA1962F9D50080EB14 /* HeApiIOsSdk */,
+				49E74BCE1962F9D60080EB14 /* HeApiIOsSdkTests */,
+				49E74BB71962F9D50080EB14 /* Frameworks */,
+				49E74BB61962F9D50080EB14 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		49E74BB61962F9D50080EB14 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BB51962F9D50080EB14 /* libHeApiIOsSdk.a */,
+				49E74BC51962F9D60080EB14 /* HeApiIOsSdkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		49E74BB71962F9D50080EB14 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BB81962F9D50080EB14 /* Foundation.framework */,
+				49E74BC61962F9D60080EB14 /* XCTest.framework */,
+				49E74BC91962F9D60080EB14 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		49E74BBA1962F9D50080EB14 /* HeApiIOsSdk */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BBD1962F9D50080EB14 /* HeApiIOsSdk.h */,
+				49E74BBF1962F9D50080EB14 /* HeApiIOsSdk.m */,
+				49E74BBB1962F9D50080EB14 /* Supporting Files */,
+			);
+			path = HeApiIOsSdk;
+			sourceTree = "<group>";
+		};
+		49E74BBB1962F9D50080EB14 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BBC1962F9D50080EB14 /* HeApiIOsSdk-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		49E74BCE1962F9D60080EB14 /* HeApiIOsSdkTests */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BD41962F9D60080EB14 /* HeApiIOsSdkTests.m */,
+				49E74BCF1962F9D60080EB14 /* Supporting Files */,
+			);
+			path = HeApiIOsSdkTests;
+			sourceTree = "<group>";
+		};
+		49E74BCF1962F9D60080EB14 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BD01962F9D60080EB14 /* HeApiIOsSdkTests-Info.plist */,
+				49E74BD11962F9D60080EB14 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		49E74BB41962F9D50080EB14 /* HeApiIOsSdk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49E74BD81962F9D60080EB14 /* Build configuration list for PBXNativeTarget "HeApiIOsSdk" */;
+			buildPhases = (
+				49E74BB11962F9D50080EB14 /* Sources */,
+				49E74BB21962F9D50080EB14 /* Frameworks */,
+				49E74BB31962F9D50080EB14 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeApiIOsSdk;
+			productName = HeApiIOsSdk;
+			productReference = 49E74BB51962F9D50080EB14 /* libHeApiIOsSdk.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		49E74BC41962F9D60080EB14 /* HeApiIOsSdkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49E74BDB1962F9D60080EB14 /* Build configuration list for PBXNativeTarget "HeApiIOsSdkTests" */;
+			buildPhases = (
+				49E74BC11962F9D60080EB14 /* Sources */,
+				49E74BC21962F9D60080EB14 /* Frameworks */,
+				49E74BC31962F9D60080EB14 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49E74BCC1962F9D60080EB14 /* PBXTargetDependency */,
+			);
+			name = HeApiIOsSdkTests;
+			productName = HeApiIOsSdkTests;
+			productReference = 49E74BC51962F9D60080EB14 /* HeApiIOsSdkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		49E74BAD1962F9D50080EB14 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = VOD;
+			};
+			buildConfigurationList = 49E74BB01962F9D50080EB14 /* Build configuration list for PBXProject "HeApiIOsSdk" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 49E74BAC1962F9D50080EB14;
+			productRefGroup = 49E74BB61962F9D50080EB14 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				49E74BB41962F9D50080EB14 /* HeApiIOsSdk */,
+				49E74BC41962F9D60080EB14 /* HeApiIOsSdkTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		49E74BC31962F9D60080EB14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BD31962F9D60080EB14 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49E74BB11962F9D50080EB14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BC01962F9D50080EB14 /* HeApiIOsSdk.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49E74BC11962F9D60080EB14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BD51962F9D60080EB14 /* HeApiIOsSdkTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		49E74BCC1962F9D60080EB14 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49E74BB41962F9D50080EB14 /* HeApiIOsSdk */;
+			targetProxy = 49E74BCB1962F9D60080EB14 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		49E74BD11962F9D60080EB14 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49E74BD21962F9D60080EB14 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		49E74BD61962F9D60080EB14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		49E74BD71962F9D60080EB14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		49E74BD91962F9D60080EB14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/HeApiIOsSdk.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HeApiIOsSdk/HeApiIOsSdk-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		49E74BDA1962F9D60080EB14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/HeApiIOsSdk.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HeApiIOsSdk/HeApiIOsSdk-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		49E74BDC1962F9D60080EB14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HeApiIOsSdk/HeApiIOsSdk-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "HeApiIOsSdkTests/HeApiIOsSdkTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		49E74BDD1962F9D60080EB14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HeApiIOsSdk/HeApiIOsSdk-Prefix.pch";
+				INFOPLIST_FILE = "HeApiIOsSdkTests/HeApiIOsSdkTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		49E74BB01962F9D50080EB14 /* Build configuration list for PBXProject "HeApiIOsSdk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E74BD61962F9D60080EB14 /* Debug */,
+				49E74BD71962F9D60080EB14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49E74BD81962F9D60080EB14 /* Build configuration list for PBXNativeTarget "HeApiIOsSdk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E74BD91962F9D60080EB14 /* Debug */,
+				49E74BDA1962F9D60080EB14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		49E74BDB1962F9D60080EB14 /* Build configuration list for PBXNativeTarget "HeApiIOsSdkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E74BDC1962F9D60080EB14 /* Debug */,
+				49E74BDD1962F9D60080EB14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 49E74BAD1962F9D50080EB14 /* Project object */;
+}

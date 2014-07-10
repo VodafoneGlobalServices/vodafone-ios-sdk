@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>0B6BFD58-36C3-4F41-AAED-0C579BF3DA9C</string>
+	<string>44F1B8D8-2DDE-4B9E-A9F3-CC8F114AB463</string>
 	<key>IDESourceControlProjectName</key>
 	<string>HeApiIOsSdk</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>15A3713C-6159-44EC-A226-32A2340FC4BE</key>
+		<key>A7B6DA4F-3D3C-48CF-B1A8-E952CC80498E</key>
 		<string>ssh://git.incubation/HeApiIOsSdk</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>HeApiIOsSdk.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>15A3713C-6159-44EC-A226-32A2340FC4BE</key>
+		<key>A7B6DA4F-3D3C-48CF-B1A8-E952CC80498E</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>15A3713C-6159-44EC-A226-32A2340FC4BE</string>
+	<string>A7B6DA4F-3D3C-48CF-B1A8-E952CC80498E</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>15A3713C-6159-44EC-A226-32A2340FC4BE</string>
+			<string>A7B6DA4F-3D3C-48CF-B1A8-E952CC80498E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>HeApiIOsSdk</string>
 		</dict>

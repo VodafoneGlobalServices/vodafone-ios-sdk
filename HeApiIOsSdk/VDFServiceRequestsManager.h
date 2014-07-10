@@ -7,7 +7,14 @@
 //
 
 #import "VDFBaseManager.h"
+#import "VDFRequest.h"
 
-@interface VDFServiceRequestsManager : VDFBaseManager
+@class VDFBaseConfiguration;
+
+@interface VDFServiceRequestsManager : VDFBaseManager <VDFHttpRequestDelegate>
+
+- (id)initWithConfiguration(VDFBaseConfiguration*)configuration;
+
+- (void)performRequest:(id<VDFRequest>)request;
 
 @end

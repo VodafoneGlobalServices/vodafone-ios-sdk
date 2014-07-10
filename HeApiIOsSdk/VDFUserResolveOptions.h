@@ -16,16 +16,18 @@
  */
 @interface VDFUserResolveOptions : NSObject
 
-- (instancetype)initWithToken:(NSString*)token;
-
-- (instancetype)initWithToken:(NSString*)token validateWithSms:(BOOL)validateWithSms;
-
-/*! @abstract 
-        Token of pending resolve process. If it is nil the new process will be started 
-        rather then checking status of current request. */
+/*! @abstract
+ Token of pending resolve process. If it is nil the new process will be started
+ rather then checking status of current request. */
 @property (nonatomic, copy) NSString* token;
 
 /*! @abstract If set to YES, the server will send an SMS with code. */
 @property (nonatomic, assign) BOOL validateWithSms;
+
+- (instancetype)initWithToken:(NSString*)token;
+
+- (instancetype)initWithToken:(NSString*)token validateWithSms:(BOOL)validateWithSms;
+
+- (BOOL)isEqualToOptions:(VDFUserResolveOptions*)options;
 
 @end

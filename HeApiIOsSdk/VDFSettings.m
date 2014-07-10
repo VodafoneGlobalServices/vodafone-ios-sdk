@@ -7,13 +7,16 @@
 //
 
 #import "VDFSettings.h"
+#import "VDFSettings+Internal.h"
 #import <CoreGraphics/CoreGraphics.h>
 #import "VodafoneSDK.h"
+#import "VDFServiceRequestsManager.h"
+#import "VDFCacheManager.h"
+#import "VDFBaseConfiguration.h"
 
 
-
-static NSString* g_applicationId = nil;
-static CGFloat g_httpTimeout = 30; // default 30 seconds timeout
+static NSString * const g_endpointBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
+static VDFBaseConfiguration* g_configuration = [[VDFBaseConfiguration alloc] init];
 
 
 @implementation VDFSettings
@@ -21,17 +24,18 @@ static CGFloat g_httpTimeout = 30; // default 30 seconds timeout
 + (void)initialize {
     if(self == [VDFSettings class]) {
         // load application id from plist
-        g_applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
-        
+        g_configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
+        g_configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
+        g_configuration.endpointBaseUrl = g_endpointBaseURL;
     }
 }
 
 + (void)initializeWithParams:(NSDictionary *)settingsDictionary {
     if(settingsDictionary) {
         // chceck provided settings:
-        id _applicationId = [settingsDictionary objectForKey:VDFApplicationIdSettingKey];
-        if(_applicationId && [_applicationId isKindOfClass:[NSString class]]) {
-            g_applicationId = _applicationId;
+        id applicationId = [settingsDictionary objectForKey:VDFApplicationIdSettingKey];
+        if(applicationId && [applicationId isKindOfClass:[NSString class]]) {
+            g_configuration.applicationId = applicationId;
         }
     }
 }
@@ -39,6 +43,35 @@ static CGFloat g_httpTimeout = 30; // default 30 seconds timeout
 
 + (NSString *)sdkVersion {
     return VDF_IOS_SDK_VERSION_STRING;
+}
+
+#pragma mark -
+#pragma mark internal implementation
+
++ (VDFServiceRequestsManager*)sharedRequestsManager {
+    static id sharedRequestManagerInstance = nil;
+    
+    static dispatch_once_t onceTokenRequestManager;
+    dispatch_once(&onceTokenRequestManager, ^{
+        sharedRequestManagerInstance = [[VDFServiceRequestsManager alloc] init];
+    });
+    
+    return sharedRequestManagerInstance;
+}
+
++ (VDFCacheManager*)sharedCacheManager {
+    static id sharedCacheManagerInstance = nil;
+    
+    static dispatch_once_t onceTokenCacheManager;
+    dispatch_once(&onceTokenCacheManager, ^{
+        sharedCacheManagerInstance = [[VDFCacheManager alloc] init];
+    });
+    
+    return sharedCacheManagerInstance;
+}
+
++ (VDFBaseConfiguration*)configuration {
+    return g_configuration;
 }
 
 

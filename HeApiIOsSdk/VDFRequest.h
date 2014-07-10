@@ -8,6 +8,27 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VDFRequest : NSObject
+@protocol VDFRequest <NSObject>
+
+- (NSString*)urlEndpointMethod;
+
+- (NSTimeInterval)defaultCacheTime;
+
+- (void)onDataResponse:(NSData*)data;
+
+- (BOOL)isEqualToRequest:(VDFRequest*)request;
+
+- (BOOL)isSatisfied;
+
+@optional
+
+// POST or GET
+// default GET
+- (NSString*)httpMethod;
+
+- (NSDictionary*)postParameters;
+
+// default NO
+- (BOOL)isSimultenaous;
 
 @end

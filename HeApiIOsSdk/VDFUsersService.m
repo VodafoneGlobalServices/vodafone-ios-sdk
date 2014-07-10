@@ -9,6 +9,10 @@
 #import "VDFUsersService.h"
 #import "VDFUserTokenDetails.h"
 #import "VDFUserResolveOptions.h"
+#import "VDFUserResolveRequest.h"
+#import "VDFSettings+Internal.h"
+#import "VDFBaseConfiguration.h"
+#import "VDFServiceRequestsManager.h"
 
 @implementation VDFUsersService
 
@@ -23,14 +27,17 @@
     return sharedInstance;
 }
 
-- (void)retrieveUserDetails:(VDFUserResolveOptions *)options delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     
     // create request object
-    // over some factory
+    NSString * applicationId = [VDFSettings configuration].applicationId;
+    VDFUserResolveRequest *request = [[VDFUserResolveRequest alloc] initWithApplicationId:applicationId withOptions:options delegate:delegate];
     
     // get http request manager
-    // perform request call
+    VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
     
+    // perform request call
+    [requestsManager performRequest:request];
 }
 
 - (VDFUserTokenDetails*)getUserDetails:(VDFUserResolveOptions*)options {

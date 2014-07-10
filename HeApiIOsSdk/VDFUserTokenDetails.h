@@ -10,17 +10,9 @@
 
 @interface VDFUserTokenDetails : NSObject
 
-- (instancetype)initWithResolved:(BOOL)resolved
-                    stillRunning:(BOOL)stillRunning
-                          source:(NSString*)source
-                           token:(NSString*)token
-                         expires:(NSString*)expires
-               tetheringConflict:(BOOL)tetheringConflict
-                          secure:(BOOL)secure
-                        validate:(BOOL)validate;
+- (id)initWithJsonObject:(NSDictionary*)jsonObject;
 
-
-/*! @abstract 
+/*! @abstract
     True if the backend was able to determine at least one MSISDN from the incoming request */
 @property (nonatomic, readonly) BOOL resolved;
 
@@ -47,11 +39,6 @@
     True in case that the ICCID was read from a SIM but the header contains a different value for 
     the MSISDN rather than the one associated with the ICCID*/
 @property (nonatomic, readonly) BOOL tetheringConflict;
-
-/*! @abstract 
-    True if a message was sent via the OTA Gateway to the Applet on the SIM and a response was 
-    received back*/
-@property (nonatomic, readonly) BOOL secure;
 
 /*! @abstract
     True if the SMS validation was successfully performed. */

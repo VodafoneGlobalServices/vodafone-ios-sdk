@@ -8,4 +8,3 @@
 
 #import "VDFError.h"
 
-static NSString * const VodafoneErrorDomain = @"com.vodafone.sdk";

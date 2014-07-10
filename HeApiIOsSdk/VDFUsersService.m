@@ -44,6 +44,7 @@
     
     // get cache manager
     // check cache and return value
+    return nil;
 }
 
 - (void)validateSMSToken:(NSString*)smsCode delegate:(id<VDFUsersServiceDelegate>)delegate {

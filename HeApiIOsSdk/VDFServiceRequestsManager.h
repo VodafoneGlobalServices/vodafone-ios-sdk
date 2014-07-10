@@ -8,12 +8,13 @@
 
 #import "VDFBaseManager.h"
 #import "VDFRequest.h"
+#import "VDFHttpRequestDelegate.h"
 
 @class VDFBaseConfiguration;
 
 @interface VDFServiceRequestsManager : VDFBaseManager <VDFHttpRequestDelegate>
 
-- (id)initWithConfiguration(VDFBaseConfiguration*)configuration;
+- (id)initWithConfiguration:(VDFBaseConfiguration*)configuration;
 
 - (void)performRequest:(id<VDFRequest>)request;
 

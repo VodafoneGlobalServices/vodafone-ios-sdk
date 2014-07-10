@@ -16,7 +16,7 @@
 
 - (void)onDataResponse:(NSData*)data;
 
-- (BOOL)isEqualToRequest:(VDFRequest*)request;
+- (BOOL)isEqualToRequest:(id<VDFRequest>)request;
 
 - (BOOL)isSatisfied;
 

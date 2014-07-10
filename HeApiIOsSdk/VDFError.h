@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
+static NSString * const VodafoneErrorDomain = @"com.vodafone.sdk";
+
 /*!
  @typedef NS_ENUM (NSUInteger, VDFErrorCode)
  @abstract Error codes returned by the Vodafone SDK in NSError.

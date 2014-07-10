@@ -103,7 +103,7 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
     return self.satisfied;
 }
 
-- (BOOL)isEqualToRequest:(VDFRequest*)request {
+- (BOOL)isEqualToRequest:(id<VDFRequest>)request {
     if(request == nil) {
         return NO;
     }

@@ -16,7 +16,7 @@
 
 
 static NSString * const g_endpointBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
-static VDFBaseConfiguration* g_configuration = [[VDFBaseConfiguration alloc] init];
+static VDFBaseConfiguration * g_configuration = nil;
 
 
 @implementation VDFSettings
@@ -24,6 +24,7 @@ static VDFBaseConfiguration* g_configuration = [[VDFBaseConfiguration alloc] ini
 + (void)initialize {
     if(self == [VDFSettings class]) {
         // load application id from plist
+        g_configuration = [[VDFBaseConfiguration alloc] init];
         g_configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
         g_configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
         g_configuration.endpointBaseUrl = g_endpointBaseURL;

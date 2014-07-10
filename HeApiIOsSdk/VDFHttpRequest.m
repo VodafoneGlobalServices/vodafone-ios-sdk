@@ -84,7 +84,7 @@
     
     if(conn) {
         self.url = url;
-        receivedData = [NSMutableData data];
+        self.receivedData = [NSMutableData data];
     }
     else {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
@@ -96,23 +96,23 @@
 #pragma mark NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
-    [receivedData setLength:0];
+    [self.receivedData setLength:0];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data {
-    [receivedData appendData:data];
+    [self.receivedData appendData:data];
 }
 
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
-    NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-    [self.delegate httpRequest:self errorOccurred:error];
+    NSError *errorInVDFDomain = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
+    [self.delegate httpRequest:self errorOccurred:errorInVDFDomain];
 }
 
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection {
-    [self.delegate httpRequest:self onResponse:receivedData];
+    [self.delegate httpRequest:self onResponse:self.receivedData];
 }
 
 

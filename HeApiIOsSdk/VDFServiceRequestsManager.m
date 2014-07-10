@@ -22,7 +22,7 @@
 
 @implementation VDFServiceRequestsManager
 
-- (id)initWithConfiguration(VDFBaseConfiguration*)configuration {
+- (id)initWithConfiguration:(VDFBaseConfiguration*)configuration {
     self = [super init];
     if(self) {
         self.configuration = configuration;

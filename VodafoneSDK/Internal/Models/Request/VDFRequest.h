@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VDFRequest <NSObject>
+@protocol VDFRequest <NSCopying>
 
 - (NSString*)urlEndpointMethod;
 

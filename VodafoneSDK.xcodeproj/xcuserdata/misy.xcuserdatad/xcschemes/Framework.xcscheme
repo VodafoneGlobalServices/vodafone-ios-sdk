@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49E74BB41962F9D50080EB14"
-               BuildableName = "libHeApiIOsSdk.a"
-               BlueprintName = "HeApiIOsSdk"
-               ReferencedContainer = "container:HeApiIOsSdk.xcodeproj">
+               BlueprintIdentifier = "49C244AA1976A2CE00B34512"
+               BuildableName = "Framework"
+               BlueprintName = "Framework"
+               ReferencedContainer = "container:VodafoneSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49E74BC41962F9D60080EB14"
-               BuildableName = "HeApiIOsSdkTests.xctest"
-               BlueprintName = "HeApiIOsSdkTests"
-               ReferencedContainer = "container:HeApiIOsSdk.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

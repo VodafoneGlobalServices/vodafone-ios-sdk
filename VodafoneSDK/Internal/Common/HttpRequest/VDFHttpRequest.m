@@ -59,7 +59,7 @@
     // parameters formatting:
     NSMutableString *paramsString = [NSMutableString string];
     if(params && params.count > 0) {
-        int n = params.allKeys.count;
+        int n = (int)params.allKeys.count;
         for (int i=0; i<n; i++) {
             if(i != 0) {
                 [paramsString appendString: @"&"];
@@ -76,7 +76,7 @@
     NSData *data = [paramsString dataUsingEncoding:NSUTF8StringEncoding];
     //[request addValue:@"8bit" forHTTPHeaderField:@"Content-Transfer-Encoding"];
     [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:[NSString stringWithFormat:@"%i", [data length]] forHTTPHeaderField:@"Content-Length"];
+    [request addValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:data];
     
     // sending request:

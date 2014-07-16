@@ -36,7 +36,13 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
 }
 
 #pragma mark -
-#pragma mark - private methods implementation
+#pragma mark NSCopying implementation
+- (id)copyWithZone:(NSZone *)zone {
+    return nil; // TODO
+}
+
+#pragma mark -
+#pragma mark private methods implementation
 
 - (void)updateSatisfiedFlagWith:(VDFUserTokenDetails*)details {
     if(!self.satisfied) {
@@ -108,9 +114,6 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
         return NO;
     }
     
-    if(![request isKindOfClass:[VDFUserResolveRequest class]]) {
-        return NO;
-    }
     VDFUserResolveRequest * userResolveRequest = (VDFUserResolveRequest*)request;
     
     if(![self.applicationId isEqualToString:userResolveRequest.applicationId]) {

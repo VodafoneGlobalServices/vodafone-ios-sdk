@@ -1,0 +1,808 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		49C244AA1976A2CE00B34512 /* Framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 49C244AB1976A2CE00B34512 /* Build configuration list for PBXAggregateTarget "Framework" */;
+			buildPhases = (
+				49C244B01976A39600B34512 /* MultiPlatform Script */,
+			);
+			dependencies = (
+				49C244B21976AFDD00B34512 /* PBXTargetDependency */,
+			);
+			name = Framework;
+			productName = Framework;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		496559F1196A92DC002A30C6 /* VDFSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 496559EF196A92DC002A30C6 /* VDFSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		496559F2196A92DC002A30C6 /* VDFSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 496559F0196A92DC002A30C6 /* VDFSettings.m */; };
+		496559F6196AA838002A30C6 /* VDFUsersService.h in Headers */ = {isa = PBXBuildFile; fileRef = 496559F4196AA838002A30C6 /* VDFUsersService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		496559F7196AA838002A30C6 /* VDFUsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 496559F5196AA838002A30C6 /* VDFUsersService.m */; };
+		4989A7BE19755418009A6BC5 /* VDFSettings+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34223196D6BB30079FDF5 /* VDFSettings+Internal.h */; };
+		4989A7BF19755418009A6BC5 /* VDFHttpRequestDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1588C196C3BD600642677 /* VDFHttpRequestDelegate.h */; };
+		4989A7C019755418009A6BC5 /* VDFUsersServiceDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1585E196BFF3700642677 /* VDFUsersServiceDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4989A7C119755418009A6BC5 /* VodafoneSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 496559F3196A9441002A30C6 /* VodafoneSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49A1585B196BFEA400642677 /* VDFUserResolveOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15859196BFEA400642677 /* VDFUserResolveOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49A1585C196BFEA400642677 /* VDFUserResolveOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1585A196BFEA400642677 /* VDFUserResolveOptions.m */; };
+		49A15861196C0BE000642677 /* VDFUserTokenDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1585F196C0BE000642677 /* VDFUserTokenDetails.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49A15862196C0BE000642677 /* VDFUserTokenDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A15860196C0BE000642677 /* VDFUserTokenDetails.m */; };
+		49A15869196C246400642677 /* VDFError.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15867196C246400642677 /* VDFError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49A1586A196C246400642677 /* VDFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A15868196C246400642677 /* VDFError.m */; };
+		49A1586F196C333800642677 /* VDFBaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1586D196C333800642677 /* VDFBaseManager.h */; };
+		49A15870196C333800642677 /* VDFBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1586E196C333800642677 /* VDFBaseManager.m */; };
+		49A15875196C336500642677 /* VDFServiceRequestsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15873196C336500642677 /* VDFServiceRequestsManager.h */; };
+		49A15876196C336500642677 /* VDFServiceRequestsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A15874196C336500642677 /* VDFServiceRequestsManager.m */; };
+		49A15879196C339A00642677 /* VDFCacheManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15877196C339A00642677 /* VDFCacheManager.h */; };
+		49A1587A196C339A00642677 /* VDFCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A15878196C339A00642677 /* VDFCacheManager.m */; };
+		49A1587D196C33D000642677 /* VDFHttpRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1587B196C33D000642677 /* VDFHttpRequest.h */; };
+		49A1587E196C33D000642677 /* VDFHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1587C196C33D000642677 /* VDFHttpRequest.m */; };
+		49A15882196C345700642677 /* VDFBaseService.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15880196C345700642677 /* VDFBaseService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49A15883196C345700642677 /* VDFBaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A15881196C345700642677 /* VDFBaseService.m */; };
+		49A15886196C34FB00642677 /* VDFRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15884196C34FB00642677 /* VDFRequest.h */; };
+		49A15890196C3E9700642677 /* VDFStringHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1588E196C3E9700642677 /* VDFStringHelper.h */; };
+		49A15891196C3E9700642677 /* VDFStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1588F196C3E9700642677 /* VDFStringHelper.m */; };
+		49C34215196D40F30079FDF5 /* VDFUserResolveRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34213196D40F30079FDF5 /* VDFUserResolveRequest.h */; };
+		49C34216196D40F30079FDF5 /* VDFUserResolveRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C34214196D40F30079FDF5 /* VDFUserResolveRequest.m */; };
+		49C3421C196D561D0079FDF5 /* VDFErrorUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */; };
+		49C3421D196D561D0079FDF5 /* VDFErrorUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C3421B196D561D0079FDF5 /* VDFErrorUtility.m */; };
+		49C34226196D71D00079FDF5 /* VDFBaseConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */; };
+		49C34227196D71D00079FDF5 /* VDFBaseConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C34225196D71D00079FDF5 /* VDFBaseConfiguration.m */; };
+		49E74BB91962F9D50080EB14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB81962F9D50080EB14 /* Foundation.framework */; };
+		49E74BC71962F9D60080EB14 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BC61962F9D60080EB14 /* XCTest.framework */; };
+		49E74BC81962F9D60080EB14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB81962F9D50080EB14 /* Foundation.framework */; };
+		49E74BCA1962F9D60080EB14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BC91962F9D60080EB14 /* UIKit.framework */; };
+		49E74BCD1962F9D60080EB14 /* libVodafoneSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB51962F9D50080EB14 /* libVodafoneSDK.a */; };
+		49E74BD31962F9D60080EB14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E74BD11962F9D60080EB14 /* InfoPlist.strings */; };
+		49E74BD51962F9D60080EB14 /* VodafoneSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E74BD41962F9D60080EB14 /* VodafoneSDKTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		49C244B11976AFDD00B34512 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49E74BAD1962F9D50080EB14 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49E74BB41962F9D50080EB14;
+			remoteInfo = VodafoneSDK;
+		};
+		49E74BCB1962F9D60080EB14 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49E74BAD1962F9D50080EB14 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49E74BB41962F9D50080EB14;
+			remoteInfo = HeApiIOsSdk;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		49E74BB31962F9D50080EB14 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		496559EF196A92DC002A30C6 /* VDFSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFSettings.h; path = Public/VDFSettings.h; sourceTree = "<group>"; };
+		496559F0196A92DC002A30C6 /* VDFSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSettings.m; path = Public/VDFSettings.m; sourceTree = "<group>"; };
+		496559F3196A9441002A30C6 /* VodafoneSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VodafoneSDK.h; path = Public/VodafoneSDK.h; sourceTree = "<group>"; };
+		496559F4196AA838002A30C6 /* VDFUsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUsersService.h; path = Public/Services/Users/VDFUsersService.h; sourceTree = "<group>"; };
+		496559F5196AA838002A30C6 /* VDFUsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUsersService.m; path = Public/Services/Users/VDFUsersService.m; sourceTree = "<group>"; };
+		49A15859196BFEA400642677 /* VDFUserResolveOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserResolveOptions.h; path = Public/Models/VDFUserResolveOptions.h; sourceTree = "<group>"; };
+		49A1585A196BFEA400642677 /* VDFUserResolveOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveOptions.m; path = Public/Models/VDFUserResolveOptions.m; sourceTree = "<group>"; };
+		49A1585E196BFF3700642677 /* VDFUsersServiceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VDFUsersServiceDelegate.h; path = Public/Services/Users/VDFUsersServiceDelegate.h; sourceTree = "<group>"; };
+		49A1585F196C0BE000642677 /* VDFUserTokenDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserTokenDetails.h; path = Public/Models/VDFUserTokenDetails.h; sourceTree = "<group>"; };
+		49A15860196C0BE000642677 /* VDFUserTokenDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserTokenDetails.m; path = Public/Models/VDFUserTokenDetails.m; sourceTree = "<group>"; };
+		49A15867196C246400642677 /* VDFError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFError.h; path = Public/Common/Errors/VDFError.h; sourceTree = "<group>"; };
+		49A15868196C246400642677 /* VDFError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFError.m; path = Public/Common/Errors/VDFError.m; sourceTree = "<group>"; };
+		49A1586D196C333800642677 /* VDFBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFBaseManager.h; path = Internal/Managers/VDFBaseManager.h; sourceTree = "<group>"; };
+		49A1586E196C333800642677 /* VDFBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFBaseManager.m; path = Internal/Managers/VDFBaseManager.m; sourceTree = "<group>"; };
+		49A15873196C336500642677 /* VDFServiceRequestsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFServiceRequestsManager.h; path = Internal/Managers/Requests/VDFServiceRequestsManager.h; sourceTree = "<group>"; };
+		49A15874196C336500642677 /* VDFServiceRequestsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFServiceRequestsManager.m; path = Internal/Managers/Requests/VDFServiceRequestsManager.m; sourceTree = "<group>"; };
+		49A15877196C339A00642677 /* VDFCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFCacheManager.h; path = Internal/Managers/Cache/VDFCacheManager.h; sourceTree = "<group>"; };
+		49A15878196C339A00642677 /* VDFCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFCacheManager.m; path = Internal/Managers/Cache/VDFCacheManager.m; sourceTree = "<group>"; };
+		49A1587B196C33D000642677 /* VDFHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFHttpRequest.h; path = Internal/Common/HttpRequest/VDFHttpRequest.h; sourceTree = "<group>"; };
+		49A1587C196C33D000642677 /* VDFHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFHttpRequest.m; path = Internal/Common/HttpRequest/VDFHttpRequest.m; sourceTree = "<group>"; };
+		49A15880196C345700642677 /* VDFBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFBaseService.h; path = Public/Services/VDFBaseService.h; sourceTree = "<group>"; };
+		49A15881196C345700642677 /* VDFBaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFBaseService.m; path = Public/Services/VDFBaseService.m; sourceTree = "<group>"; };
+		49A15884196C34FB00642677 /* VDFRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFRequest.h; path = Internal/Models/Request/VDFRequest.h; sourceTree = "<group>"; };
+		49A1588C196C3BD600642677 /* VDFHttpRequestDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VDFHttpRequestDelegate.h; path = Internal/Common/HttpRequest/VDFHttpRequestDelegate.h; sourceTree = "<group>"; };
+		49A1588E196C3E9700642677 /* VDFStringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFStringHelper.h; path = Internal/Common/Helpers/VDFStringHelper.h; sourceTree = "<group>"; };
+		49A1588F196C3E9700642677 /* VDFStringHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFStringHelper.m; path = Internal/Common/Helpers/VDFStringHelper.m; sourceTree = "<group>"; };
+		49C34213196D40F30079FDF5 /* VDFUserResolveRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserResolveRequest.h; path = Internal/Models/Request/VDFUserResolveRequest.h; sourceTree = "<group>"; };
+		49C34214196D40F30079FDF5 /* VDFUserResolveRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequest.m; path = Internal/Models/Request/VDFUserResolveRequest.m; sourceTree = "<group>"; };
+		49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFErrorUtility.h; path = Internal/Common/Helpers/VDFErrorUtility.h; sourceTree = "<group>"; };
+		49C3421B196D561D0079FDF5 /* VDFErrorUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFErrorUtility.m; path = Internal/Common/Helpers/VDFErrorUtility.m; sourceTree = "<group>"; };
+		49C34223196D6BB30079FDF5 /* VDFSettings+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VDFSettings+Internal.h"; path = "Internal/VDFSettings+Internal.h"; sourceTree = "<group>"; };
+		49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFBaseConfiguration.h; path = Internal/Models/VDFBaseConfiguration.h; sourceTree = "<group>"; };
+		49C34225196D71D00079FDF5 /* VDFBaseConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFBaseConfiguration.m; path = Internal/Models/VDFBaseConfiguration.m; sourceTree = "<group>"; };
+		49E74BB51962F9D50080EB14 /* libVodafoneSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVodafoneSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E74BB81962F9D50080EB14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		49E74BBC1962F9D50080EB14 /* VodafoneSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VodafoneSDK-Prefix.pch"; sourceTree = "<group>"; };
+		49E74BC51962F9D60080EB14 /* VodafoneSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VodafoneSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E74BC61962F9D60080EB14 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		49E74BC91962F9D60080EB14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		49E74BD01962F9D60080EB14 /* VodafoneSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VodafoneSDKTests-Info.plist"; sourceTree = "<group>"; };
+		49E74BD21962F9D60080EB14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49E74BD41962F9D60080EB14 /* VodafoneSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VodafoneSDKTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		49E74BB21962F9D50080EB14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BB91962F9D50080EB14 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49E74BC21962F9D60080EB14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BC71962F9D60080EB14 /* XCTest.framework in Frameworks */,
+				49E74BCA1962F9D60080EB14 /* UIKit.framework in Frameworks */,
+				49E74BCD1962F9D60080EB14 /* libVodafoneSDK.a in Frameworks */,
+				49E74BC81962F9D60080EB14 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		49A15854196BFD9C00642677 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				49A1587F196C343500642677 /* Users */,
+				49A15880196C345700642677 /* VDFBaseService.h */,
+				49A15881196C345700642677 /* VDFBaseService.m */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		49A15858196BFE8A00642677 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */,
+				49C34225196D71D00079FDF5 /* VDFBaseConfiguration.m */,
+				49C34212196D3FF80079FDF5 /* Request */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		49A15863196C0C1200642677 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				49A1588D196C3E8400642677 /* Helpers */,
+				49A1588B196C3BB100642677 /* HttpRequest */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		49A1586B196C32E800642677 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				49A15867196C246400642677 /* VDFError.h */,
+				49A15868196C246400642677 /* VDFError.m */,
+			);
+			name = Errors;
+			sourceTree = "<group>";
+		};
+		49A1586C196C330700642677 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				49A15872196C334A00642677 /* Cache */,
+				49A15871196C334100642677 /* Requests */,
+				49A1586D196C333800642677 /* VDFBaseManager.h */,
+				49A1586E196C333800642677 /* VDFBaseManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		49A15871196C334100642677 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				49A15873196C336500642677 /* VDFServiceRequestsManager.h */,
+				49A15874196C336500642677 /* VDFServiceRequestsManager.m */,
+			);
+			name = Requests;
+			sourceTree = "<group>";
+		};
+		49A15872196C334A00642677 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				49A15877196C339A00642677 /* VDFCacheManager.h */,
+				49A15878196C339A00642677 /* VDFCacheManager.m */,
+			);
+			name = Cache;
+			sourceTree = "<group>";
+		};
+		49A1587F196C343500642677 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				49A1585E196BFF3700642677 /* VDFUsersServiceDelegate.h */,
+				496559F4196AA838002A30C6 /* VDFUsersService.h */,
+				496559F5196AA838002A30C6 /* VDFUsersService.m */,
+			);
+			name = Users;
+			sourceTree = "<group>";
+		};
+		49A1588B196C3BB100642677 /* HttpRequest */ = {
+			isa = PBXGroup;
+			children = (
+				49A1588C196C3BD600642677 /* VDFHttpRequestDelegate.h */,
+				49A1587B196C33D000642677 /* VDFHttpRequest.h */,
+				49A1587C196C33D000642677 /* VDFHttpRequest.m */,
+			);
+			name = HttpRequest;
+			sourceTree = "<group>";
+		};
+		49A1588D196C3E8400642677 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				49A1588E196C3E9700642677 /* VDFStringHelper.h */,
+				49A1588F196C3E9700642677 /* VDFStringHelper.m */,
+				49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */,
+				49C3421B196D561D0079FDF5 /* VDFErrorUtility.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		49B78F5A196ED22C00A781DD /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				49A15854196BFD9C00642677 /* Services */,
+				49B78F5D196ED27E00A781DD /* Models */,
+				49B78F5C196ED25900A781DD /* Common */,
+				496559EF196A92DC002A30C6 /* VDFSettings.h */,
+				496559F0196A92DC002A30C6 /* VDFSettings.m */,
+				496559F3196A9441002A30C6 /* VodafoneSDK.h */,
+			);
+			name = Public;
+			sourceTree = "<group>";
+		};
+		49B78F5B196ED23500A781DD /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				49C34223196D6BB30079FDF5 /* VDFSettings+Internal.h */,
+				49A15858196BFE8A00642677 /* Models */,
+				49A15863196C0C1200642677 /* Common */,
+				49A1586C196C330700642677 /* Managers */,
+			);
+			name = Internal;
+			sourceTree = "<group>";
+		};
+		49B78F5C196ED25900A781DD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				49A1586B196C32E800642677 /* Errors */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		49B78F5D196ED27E00A781DD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				49A15859196BFEA400642677 /* VDFUserResolveOptions.h */,
+				49A1585A196BFEA400642677 /* VDFUserResolveOptions.m */,
+				49A1585F196C0BE000642677 /* VDFUserTokenDetails.h */,
+				49A15860196C0BE000642677 /* VDFUserTokenDetails.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		49C34212196D3FF80079FDF5 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				49A15884196C34FB00642677 /* VDFRequest.h */,
+				49C34213196D40F30079FDF5 /* VDFUserResolveRequest.h */,
+				49C34214196D40F30079FDF5 /* VDFUserResolveRequest.m */,
+			);
+			name = Request;
+			sourceTree = "<group>";
+		};
+		49E74BAC1962F9D50080EB14 = {
+			isa = PBXGroup;
+			children = (
+				49E74BBA1962F9D50080EB14 /* VodafoneSDK */,
+				49E74BCE1962F9D60080EB14 /* VodafoneSDKTests */,
+				49E74BB71962F9D50080EB14 /* Frameworks */,
+				49E74BB61962F9D50080EB14 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		49E74BB61962F9D50080EB14 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BB51962F9D50080EB14 /* libVodafoneSDK.a */,
+				49E74BC51962F9D60080EB14 /* VodafoneSDKTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		49E74BB71962F9D50080EB14 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BB81962F9D50080EB14 /* Foundation.framework */,
+				49E74BC61962F9D60080EB14 /* XCTest.framework */,
+				49E74BC91962F9D60080EB14 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		49E74BBA1962F9D50080EB14 /* VodafoneSDK */ = {
+			isa = PBXGroup;
+			children = (
+				49B78F5B196ED23500A781DD /* Internal */,
+				49B78F5A196ED22C00A781DD /* Public */,
+				49E74BBB1962F9D50080EB14 /* Supporting Files */,
+			);
+			path = VodafoneSDK;
+			sourceTree = "<group>";
+		};
+		49E74BBB1962F9D50080EB14 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BBC1962F9D50080EB14 /* VodafoneSDK-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		49E74BCE1962F9D60080EB14 /* VodafoneSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BD41962F9D60080EB14 /* VodafoneSDKTests.m */,
+				49E74BCF1962F9D60080EB14 /* Supporting Files */,
+			);
+			path = VodafoneSDKTests;
+			sourceTree = "<group>";
+		};
+		49E74BCF1962F9D60080EB14 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49E74BD01962F9D60080EB14 /* VodafoneSDKTests-Info.plist */,
+				49E74BD11962F9D60080EB14 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		49F1B5141963F45800D9F6AB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				496559F1196A92DC002A30C6 /* VDFSettings.h in Headers */,
+				49A15882196C345700642677 /* VDFBaseService.h in Headers */,
+				49A1585B196BFEA400642677 /* VDFUserResolveOptions.h in Headers */,
+				4989A7C019755418009A6BC5 /* VDFUsersServiceDelegate.h in Headers */,
+				4989A7C119755418009A6BC5 /* VodafoneSDK.h in Headers */,
+				49A15861196C0BE000642677 /* VDFUserTokenDetails.h in Headers */,
+				496559F6196AA838002A30C6 /* VDFUsersService.h in Headers */,
+				49A15869196C246400642677 /* VDFError.h in Headers */,
+				49C34215196D40F30079FDF5 /* VDFUserResolveRequest.h in Headers */,
+				49A15886196C34FB00642677 /* VDFRequest.h in Headers */,
+				4989A7BE19755418009A6BC5 /* VDFSettings+Internal.h in Headers */,
+				49A15875196C336500642677 /* VDFServiceRequestsManager.h in Headers */,
+				4989A7BF19755418009A6BC5 /* VDFHttpRequestDelegate.h in Headers */,
+				49A1587D196C33D000642677 /* VDFHttpRequest.h in Headers */,
+				49C34226196D71D00079FDF5 /* VDFBaseConfiguration.h in Headers */,
+				49A1586F196C333800642677 /* VDFBaseManager.h in Headers */,
+				49A15879196C339A00642677 /* VDFCacheManager.h in Headers */,
+				49C3421C196D561D0079FDF5 /* VDFErrorUtility.h in Headers */,
+				49A15890196C3E9700642677 /* VDFStringHelper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		49E74BB41962F9D50080EB14 /* VodafoneSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49E74BD81962F9D60080EB14 /* Build configuration list for PBXNativeTarget "VodafoneSDK" */;
+			buildPhases = (
+				49E74BB11962F9D50080EB14 /* Sources */,
+				49E74BB21962F9D50080EB14 /* Frameworks */,
+				49E74BB31962F9D50080EB14 /* CopyFiles */,
+				49F1B5141963F45800D9F6AB /* Headers */,
+				49139DEE1965F3C9004EE1D6 /* Build Framework */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VodafoneSDK;
+			productName = VodafoneSDK;
+			productReference = 49E74BB51962F9D50080EB14 /* libVodafoneSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		49E74BC41962F9D60080EB14 /* VodafoneSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49E74BDB1962F9D60080EB14 /* Build configuration list for PBXNativeTarget "VodafoneSDKTests" */;
+			buildPhases = (
+				49E74BC11962F9D60080EB14 /* Sources */,
+				49E74BC21962F9D60080EB14 /* Frameworks */,
+				49E74BC31962F9D60080EB14 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49E74BCC1962F9D60080EB14 /* PBXTargetDependency */,
+			);
+			name = VodafoneSDKTests;
+			productName = VodafoneSDKTests;
+			productReference = 49E74BC51962F9D60080EB14 /* VodafoneSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		49E74BAD1962F9D50080EB14 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = VOD;
+			};
+			buildConfigurationList = 49E74BB01962F9D50080EB14 /* Build configuration list for PBXProject "VodafoneSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 49E74BAC1962F9D50080EB14;
+			productRefGroup = 49E74BB61962F9D50080EB14 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				49E74BB41962F9D50080EB14 /* VodafoneSDK */,
+				49E74BC41962F9D60080EB14 /* VodafoneSDKTests */,
+				49C244AA1976A2CE00B34512 /* Framework */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		49E74BC31962F9D60080EB14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BD31962F9D60080EB14 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		49139DEE1965F3C9004EE1D6 /* Build Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Remove copied framework file if exists\n# /bin/rm -rf \"${SRCROOT}/${PRODUCT_NAME}.framework\"\n\n# Copy created framework file to project directory\n# /bin/cp -a \"${FRAMEWORK_LOCN}\" \"${SRCROOT}/\"\n\n";
+		};
+		49C244B01976A39600B34512 /* MultiPlatform Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "MultiPlatform Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$VOD_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport VOD_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nVOD_FRAMEWORK_NAME=${PROJECT_NAME}\nVOD_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nVOD_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${VOD_FRAMEWORK_NAME}.framework\"\n\nfunction build_static_library {\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nVOD_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nVOD_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$VOD_SDK_PLATFORM\" == \"iphoneos\" ]; then\nVOD_OTHER_PLATFORM=iphonesimulator\nelse\nVOD_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$VOD_SDK_PLATFORM$ ]]; then\nVOD_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${VOD_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${VOD_OTHER_PLATFORM}${VOD_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$VOD_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${VOD_INPUT_STATIC_LIB}\" \\\n\"${VOD_OTHER_BUILT_PRODUCTS_DIR}/${VOD_INPUT_STATIC_LIB}\" \\\n\"${VOD_FRAMEWORK_LOCATION}/Versions/A/${VOD_FRAMEWORK_NAME}\"\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${VOD_FRAMEWORK_LOCATION}/Versions/A/${VOD_FRAMEWORK_NAME}\" \\\n\"${VOD_OTHER_BUILT_PRODUCTS_DIR}/${VOD_FRAMEWORK_NAME}.framework/Versions/A/${VOD_FRAMEWORK_NAME}\"\n\n# Copy the framework to the user's desktop\nditto \"${VOD_FRAMEWORK_LOCATION}\" \"${HOME}/Desktop/${VOD_FRAMEWORK_NAME}.framework\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49E74BB11962F9D50080EB14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49A15870196C333800642677 /* VDFBaseManager.m in Sources */,
+				49C34216196D40F30079FDF5 /* VDFUserResolveRequest.m in Sources */,
+				49A1587E196C33D000642677 /* VDFHttpRequest.m in Sources */,
+				496559F2196A92DC002A30C6 /* VDFSettings.m in Sources */,
+				49A1585C196BFEA400642677 /* VDFUserResolveOptions.m in Sources */,
+				49A1587A196C339A00642677 /* VDFCacheManager.m in Sources */,
+				49A15862196C0BE000642677 /* VDFUserTokenDetails.m in Sources */,
+				49A15891196C3E9700642677 /* VDFStringHelper.m in Sources */,
+				49C34227196D71D00079FDF5 /* VDFBaseConfiguration.m in Sources */,
+				49A15876196C336500642677 /* VDFServiceRequestsManager.m in Sources */,
+				49A15883196C345700642677 /* VDFBaseService.m in Sources */,
+				496559F7196AA838002A30C6 /* VDFUsersService.m in Sources */,
+				49A1586A196C246400642677 /* VDFError.m in Sources */,
+				49C3421D196D561D0079FDF5 /* VDFErrorUtility.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49E74BC11962F9D60080EB14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49E74BD51962F9D60080EB14 /* VodafoneSDKTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		49C244B21976AFDD00B34512 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49E74BB41962F9D50080EB14 /* VodafoneSDK */;
+			targetProxy = 49C244B11976AFDD00B34512 /* PBXContainerItemProxy */;
+		};
+		49E74BCC1962F9D60080EB14 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49E74BB41962F9D50080EB14 /* VodafoneSDK */;
+			targetProxy = 49E74BCB1962F9D60080EB14 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		49E74BD11962F9D60080EB14 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49E74BD21962F9D60080EB14 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		49C244AC1976A2CE00B34512 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s arm64 i386 x86_64";
+			};
+			name = Debug;
+		};
+		49C244AD1976A2CE00B34512 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s arm64 i386 x86_64";
+			};
+			name = Release;
+		};
+		49E74BD61962F9D60080EB14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos6.1;
+				VALID_ARCHS = "armv7 armv7s arm64 i386 x86_64";
+			};
+			name = Debug;
+		};
+		49E74BD71962F9D60080EB14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos6.1;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s arm64 i386 x86_64";
+			};
+			name = Release;
+		};
+		49E74BD91962F9D60080EB14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				DSTROOT = /tmp/VodafoneSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VodafoneSDK/VodafoneSDK-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
+				SDKROOT = iphoneos6.1;
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+				VALID_ARCHS = "armv7 armv7s i386 x86_64 arm64";
+			};
+			name = Debug;
+		};
+		49E74BDA1962F9D60080EB14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				DSTROOT = /tmp/VodafoneSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VodafoneSDK/VodafoneSDK-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
+				SDKROOT = iphoneos6.1;
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+				VALID_ARCHS = "armv7 armv7s i386 x86_64 arm64";
+			};
+			name = Release;
+		};
+		49E74BDC1962F9D60080EB14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VodafoneSDK/VodafoneSDK-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "VodafoneSDKTests/VodafoneSDKTests-Info.plist";
+				PRODUCT_NAME = VodafoneSDKTests;
+				SDKROOT = iphoneos6.1;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		49E74BDD1962F9D60080EB14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VodafoneSDK/VodafoneSDK-Prefix.pch";
+				INFOPLIST_FILE = "VodafoneSDKTests/VodafoneSDKTests-Info.plist";
+				PRODUCT_NAME = VodafoneSDKTests;
+				SDKROOT = iphoneos6.1;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		49C244AB1976A2CE00B34512 /* Build configuration list for PBXAggregateTarget "Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49C244AC1976A2CE00B34512 /* Debug */,
+				49C244AD1976A2CE00B34512 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49E74BB01962F9D50080EB14 /* Build configuration list for PBXProject "VodafoneSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E74BD61962F9D60080EB14 /* Debug */,
+				49E74BD71962F9D60080EB14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49E74BD81962F9D60080EB14 /* Build configuration list for PBXNativeTarget "VodafoneSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E74BD91962F9D60080EB14 /* Debug */,
+				49E74BDA1962F9D60080EB14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49E74BDB1962F9D60080EB14 /* Build configuration list for PBXNativeTarget "VodafoneSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49E74BDC1962F9D60080EB14 /* Debug */,
+				49E74BDD1962F9D60080EB14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 49E74BAD1962F9D50080EB14 /* Project object */;
+}

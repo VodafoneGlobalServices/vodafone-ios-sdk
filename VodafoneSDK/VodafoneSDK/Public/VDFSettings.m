@@ -13,6 +13,7 @@
 #import "VDFServiceRequestsManager.h"
 #import "VDFCacheManager.h"
 #import "VDFBaseConfiguration.h"
+#import "VDFErrorUtility.h"
 
 
 static NSString * const g_endpointBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
@@ -27,6 +28,16 @@ static VDFBaseConfiguration * g_configuration = nil;
         g_configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
         g_configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
         g_configuration.endpointBaseUrl = g_endpointBaseURL;
+        
+        // setting cache directory:
+        NSError *error = nil;
+        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        g_configuration.cacheDirectoryPath = [documentsDirectory stringByAppendingPathComponent:@"cache"];
+        [[NSFileManager defaultManager] createDirectoryAtPath:g_configuration.cacheDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
+        [VDFErrorUtility handleInternalError:error];
+        
+        g_configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
+        g_configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second
     }
 }
 

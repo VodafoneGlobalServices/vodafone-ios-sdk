@@ -12,6 +12,7 @@
 
 + (BOOL)handleInternalError:(NSError*)error {
     if(error) {
+        NSLog(@"%@", error);
         return YES;
     }
     return NO;

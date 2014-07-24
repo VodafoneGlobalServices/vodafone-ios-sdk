@@ -15,6 +15,7 @@
 #import "VDFServiceRequestsManager.h"
 #import "VDFCacheManager.h"
 #import "VDFErrorUtility.h"
+#import "VDFSmsValidationRequest.h"
 
 @implementation VDFUsersService
 
@@ -33,6 +34,13 @@
     
     // create request object
     NSString * applicationId = [VDFSettings configuration].applicationId;
+    if(applicationId == nil) {
+        applicationId = [NSString string];
+    }
+    if(options == nil) {
+        options = [[VDFUserResolveOptions alloc] init];
+    }
+    
     VDFUserResolveRequest *request = [[VDFUserResolveRequest alloc] initWithApplicationId:applicationId withOptions:options delegate:delegate];
     
     // get http request manager
@@ -46,35 +54,52 @@
     
     // create request object
     NSString * applicationId = [VDFSettings configuration].applicationId;
+    if(applicationId == nil) {
+        applicationId = [NSString string];
+    }
+    if(options == nil) {
+        options = [[VDFUserResolveOptions alloc] init];
+    }
+    
     VDFUserResolveRequest *request = [[VDFUserResolveRequest alloc] initWithApplicationId:applicationId withOptions:options delegate:nil];
     VDFUserTokenDetails *userDetails = nil;
     
     if([[VDFSettings sharedCacheManager] isResponseCachedForRequest:request]) {
-        NSError *error = nil;
-        NSData *cachedData = [[VDFSettings sharedCacheManager] responseForRequest:request];
-        userDetails = [request parseJsonData:cachedData error:&error];
-        if([VDFErrorUtility handleInternalError:error]) {
-            // TODO
-            // handle Error
+        userDetails = (VDFUserTokenDetails*)[[VDFSettings sharedCacheManager] responseForRequest:request];
+        if(![userDetails isKindOfClass:[VDFUserTokenDetails class]]) {
             userDetails = nil;
         }
     }
     return userDetails;
 }
 
-- (void)validateSMSToken:(NSString*)smsCode delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)validateSMSToken:(NSString*)smsCode withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
     
     // create request object
-    // over some factory
+    NSString * applicationId = [VDFSettings configuration].applicationId;
+    if(applicationId == nil) {
+        applicationId = [NSString string];
+    }
+    
+    VDFSmsValidationRequest *request = [[VDFSmsValidationRequest alloc] initWithApplicationId:applicationId
+                                                                                 sessionToken:sessionToken
+                                                                                      smsCode:smsCode
+                                                                                     delegate:delegate];
     
     // get http request manager
+    VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
+    
     // perform request call
+    [requestsManager performRequest:request];
 }
 
 - (void)removeDelegate:(id<VDFUsersServiceDelegate>)delegate {
     
     // get http request manager
+    VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
+    
     // inform about request remove
+    [requestsManager clearRequestDelegate:delegate];
 }
 
 @end

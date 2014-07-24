@@ -35,6 +35,10 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      Provided validation SMS token is invalid
      */
     VDFErrorInvalidSMSToken,
+    /*!
+     Problems in communication with server.
+     */
+    VDFErrorServerCommunication,
 };
 
 

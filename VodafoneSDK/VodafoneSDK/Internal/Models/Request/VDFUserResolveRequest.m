@@ -11,125 +11,134 @@
 #import "VDFErrorUtility.h"
 #import "VDFUserTokenDetails.h"
 #import "VDFStringHelper.h"
+#import "VDFError.h"
 
 static NSString * const URLEndpointQuery = @"/users/resolve";
 
 @interface VDFUserResolveRequest ()
 @property (nonatomic, assign) id<VDFUsersServiceDelegate> delegate;
-@property (nonatomic, strong) VDFUserResolveOptions* requestOptions;
-@property (nonatomic, strong) NSString* applicationId;
-@property (nonatomic, assign) BOOL satisfied;
+@property (nonatomic, strong) VDFUserResolveOptions *requestOptions;
+@property (nonatomic, strong) NSString *applicationId;
 
-- (void)updateSatisfiedFlagWith:(VDFUserTokenDetails*)details;
+- (void)updateRequestState:(VDFUserTokenDetails*)details;
 @end
 
 @implementation VDFUserResolveRequest
 
-- (id)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     self = [super init];
     if(self) {
         self.delegate = delegate;
-        self.requestOptions = options;
+        self.requestOptions = [options copy]; // we need to copy this options because if the session token will change we need to update it
         self.applicationId = applicationId;
         self.satisfied = NO;
     }
     return self;
 }
 
-- (VDFUserTokenDetails*)parseJsonData:(NSData*)jsonData error:(NSError**)error {
-    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:error];
-    BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
-    VDFUserTokenDetails* userDetails = nil;
-    
-    if([VDFErrorUtility handleInternalError:*error] || !isResponseValid) {
-        // handle error here
-        // TODO
-    }
-    else {
-        error = nil;
-        // object parsed correctlly
-        userDetails = [[VDFUserTokenDetails alloc] initWithJsonObject:jsonObject];
-        [self updateSatisfiedFlagWith:userDetails];
-        // TODO check is delegate in the same thread:
-    }
-    return userDetails;
-}
-
-#pragma mark -
-#pragma mark - Base Methods Override
-- (NSUInteger)hash {
-    NSUInteger prime = 31;
-    NSUInteger result = 1;
-    
-    result = prime * result + [self.applicationId hash];
-    result = prime * result + [self.requestOptions hash];
-    
-    return result;
-}
-
-- (BOOL)isEqual:(id)anObject {
-    if (![anObject isKindOfClass:[VDFUserResolveRequest class]]) {
-        return NO;
-    }
-    
-    return [self isEqualToRequest:(VDFUserResolveRequest *)anObject];
-}
-
-#pragma mark -
-#pragma mark NSCopying implementation
-- (id)copyWithZone:(NSZone *)zone {
-    VDFUserResolveRequest *newRequest = [[VDFUserResolveRequest allocWithZone:zone] init];
-    newRequest.delegate = self.delegate;
-    newRequest.requestOptions = [self.requestOptions copyWithZone:zone];
-    newRequest.applicationId = [self.applicationId copyWithZone:zone];
-    newRequest.satisfied = self.satisfied;
-    newRequest.sessionToken = [self.sessionToken copyWithZone:zone];
-    return newRequest;
-}
-
 #pragma mark -
 #pragma mark private methods implementation
 
-- (void)updateSatisfiedFlagWith:(VDFUserTokenDetails*)details {
+- (void)updateRequestState:(VDFUserTokenDetails*)details {
     if(!self.satisfied) {
         self.satisfied = !details.stillRunning;
+    }
+    self.expiresIn = details.expires;
+    if(details.token != nil) {
+        self.requestOptions.token = details.token;
     }
 }
 
 #pragma mark -
 #pragma mark VDFRequest Implementation
 
+- (id<NSCoding>)parseAndUpdateOnDataResponse:(NSData*)data {
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+    BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
+    VDFUserTokenDetails* userTokenDetails = nil;
+    
+    if([VDFErrorUtility handleInternalError:error] || !isResponseValid) {
+        // handle error here
+        // TODO
+    }
+    else {
+        // object parsed correctlly
+        userTokenDetails = [[VDFUserTokenDetails alloc] initWithJsonObject:jsonObject];
+        // need to update request state:
+        [self updateRequestState:userTokenDetails];
+    }
+    return userTokenDetails;
+}
+
+- (void)onObjectResponse:(id<NSCoding>)parsedObject withError:(NSError*)error {
+    if(parsedObject == nil && error == nil) {
+        // parse error occured:
+        error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorServerCommunication userInfo:nil];
+    }
+    VDFUserTokenDetails * userTokenDetails = (VDFUserTokenDetails*)parsedObject;
+    
+    // need to update request state:
+    if(userTokenDetails != nil) {
+        [self updateRequestState:userTokenDetails];
+    }
+    
+    if(self.delegate != nil) {
+        // invoke delegate with response on the main thread:
+        if([NSThread isMainThread]) {
+            [self.delegate didReceivedUserDetails:userTokenDetails withError:error];
+        }
+        else {
+            // we are on some different thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate didReceivedUserDetails:userTokenDetails withError:error];
+            });
+        }
+    }
+
+}
+
 - (NSString*)urlEndpointMethod {
     return URLEndpointQuery;
 }
 
-- (void)onDataResponse:(NSData*)data {
-    NSError *error = nil;
-    VDFUserTokenDetails *userDetails = [self parseJsonData:data error:&error];
-    // sending response to delegate:
-    [self.delegate didReceivedUserDetails:userDetails withError:error];
+- (NSDate*)expirationDate {
+    if(self.expiresIn == nil) {
+        self.expiresIn = [NSDate dateWithTimeIntervalSinceNow:3600*24]; // default one day - TODO move to the configuration
+    }
+    return self.expiresIn;
 }
 
-- (NSTimeInterval)defaultCacheTime {
-    return 3600*24; // one day
+- (void)clearDelegateIfEquals:(id)delegate {
+    if(delegate == self.delegate) {
+        self.delegate = nil;
+    } // TODO think, how to move to base object
 }
 
-- (NSString*)httpMethod {
-    return @"POST";
+- (BOOL)isDelegateAvailable {
+    return self.delegate != nil;
+}
+
+- (HTTPMethodType)httpMethod {
+    return HTTPMethodPOST;
+}
+
+- (BOOL)isCachable {
+    return YES;
 }
 
 - (NSData*)postBody {
     NSMutableDictionary *jsonDictionary = [[NSMutableDictionary alloc] init];
     [jsonDictionary setObject:[VDFStringHelper urlEncode:self.applicationId] forKey:@"applicationId"];
-    if(self.sessionToken) {
-        [jsonDictionary setObject:[VDFStringHelper urlEncode:self.sessionToken] forKey:@"sessionToken"];
+    if(self.requestOptions.token) {
+        [jsonDictionary setObject:[VDFStringHelper urlEncode:self.requestOptions.token] forKey:@"sessionToken"];
     }
     if(self.requestOptions.validateWithSms) {
         [jsonDictionary setObject:@"true" forKey:@"smsValidation"];
     }
     
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary options: NSJSONWritingPrettyPrinted error:&error];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary options:NSJSONWritingPrettyPrinted error:&error];
     
     if([VDFErrorUtility handleInternalError:error]) {
         // handle error here
@@ -139,21 +148,12 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
     return jsonData;
 }
 
-- (BOOL)isSimultenaous {
-    return YES;
-}
-
-- (BOOL)isSatisfied {
-    return self.satisfied;
-}
-
 - (BOOL)isEqualToRequest:(id<VDFRequest>)request {
     if(request == nil) {
         return NO;
     }
     
     VDFUserResolveRequest * userResolveRequest = (VDFUserResolveRequest*)request;
-    
     if(![self.applicationId isEqualToString:userResolveRequest.applicationId]) {
         return NO;
     }

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		491101FE1973FC14006325C5 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491101FD1973FC14006325C5 /* MainView.xib */; };
 		491102021973FC56006325C5 /* VDFMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491102011973FC56006325C5 /* VDFMainViewController.m */; };
-		491C2C0C19790D4F00C7FB54 /* libVodafoneSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 491C2C0719790D1C00C7FB54 /* libVodafoneSDK.a */; };
+		49809CDD197E55CB003F5C66 /* libVodafoneSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 491C2C0719790D1C00C7FB54 /* libVodafoneSDK.a */; };
 		49A157FF196BFC7800642677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A157FE196BFC7800642677 /* Foundation.framework */; };
 		49A15801196BFC7800642677 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15800196BFC7800642677 /* CoreGraphics.framework */; };
 		49A15803196BFC7800642677 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15802196BFC7800642677 /* UIKit.framework */; };
@@ -39,7 +39,7 @@
 			remoteGlobalIDString = 49E74BC51962F9D60080EB14;
 			remoteInfo = VodafoneSDKTests;
 		};
-		491C2C0A19790D4800C7FB54 /* PBXContainerItemProxy */ = {
+		49809CDE197E55D6003F5C66 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 491C2C0019790D1C00C7FB54 /* VodafoneSDK.xcodeproj */;
 			proxyType = 1;
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				491C2C0C19790D4F00C7FB54 /* libVodafoneSDK.a in Frameworks */,
+				49809CDD197E55CB003F5C66 /* libVodafoneSDK.a in Frameworks */,
 				49A15801196BFC7800642677 /* CoreGraphics.framework in Frameworks */,
 				49A15803196BFC7800642677 /* UIKit.framework in Frameworks */,
 				49A157FF196BFC7800642677 /* Foundation.framework in Frameworks */,
@@ -240,7 +240,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				491C2C0B19790D4800C7FB54 /* PBXTargetDependency */,
+				49809CDF197E55D6003F5C66 /* PBXTargetDependency */,
 			);
 			name = HESampleApp;
 			productName = HESampleApp;
@@ -367,10 +367,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		491C2C0B19790D4800C7FB54 /* PBXTargetDependency */ = {
+		49809CDF197E55D6003F5C66 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = VodafoneSDK;
-			targetProxy = 491C2C0A19790D4800C7FB54 /* PBXContainerItemProxy */;
+			targetProxy = 49809CDE197E55D6003F5C66 /* PBXContainerItemProxy */;
 		};
 		49A1581C196BFC7800642677 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -439,7 +439,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos6.0;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
@@ -477,7 +477,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				SDKROOT = iphoneos6.1;
+				SDKROOT = iphoneos6.0;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -500,6 +500,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -522,6 +523,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -544,6 +546,7 @@
 				);
 				INFOPLIST_FILE = "HESampleAppTests/HESampleAppTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -562,6 +565,7 @@
 				GCC_PREFIX_HEADER = "HESampleApp/HESampleApp-Prefix.pch";
 				INFOPLIST_FILE = "HESampleAppTests/HESampleAppTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

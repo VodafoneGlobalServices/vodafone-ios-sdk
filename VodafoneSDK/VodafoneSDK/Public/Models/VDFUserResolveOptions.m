@@ -45,24 +45,4 @@
     return newOptions;
 }
 
-#pragma mark -
-#pragma mark - Base Methods Override
-- (NSUInteger)hash {
-    NSUInteger prime = 31;
-    NSUInteger result = 1;
-    
-    result = prime * result + [self.token hash];
-    result = prime * result + (self.validateWithSms)?1231:1237;
-    
-    return result;
-}
-
-- (BOOL)isEqual:(id)anObject {
-    if (![anObject isKindOfClass:[VDFUserResolveOptions class]]) {
-        return NO;
-    }
-    
-    return [self isEqualToOptions:(VDFUserResolveOptions *)anObject];
-}
-
 @end

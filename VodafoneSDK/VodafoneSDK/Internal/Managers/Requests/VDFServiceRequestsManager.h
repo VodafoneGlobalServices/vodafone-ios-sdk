@@ -8,14 +8,17 @@
 
 #import "VDFBaseManager.h"
 #import "VDFRequest.h"
-#import "VDFHttpRequestDelegate.h"
+#import "VDFHttpConnectorDelegate.h"
+#import "VDFUsersServiceDelegate.h"
 
 @class VDFBaseConfiguration;
 
-@interface VDFServiceRequestsManager : VDFBaseManager <VDFHttpRequestDelegate>
+@interface VDFServiceRequestsManager : VDFBaseManager <VDFHttpConnectorDelegate>
 
-- (id)initWithConfiguration:(VDFBaseConfiguration*)configuration;
+- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration;
 
 - (void)performRequest:(id<VDFRequest>)request;
+
+- (void)clearRequestDelegate:(id<VDFUsersServiceDelegate>)requestDelegate;
 
 @end

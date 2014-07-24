@@ -79,13 +79,16 @@
  @param smsCode
     The code that was received via SMS.
  
+ @param sessionToken
+    Token describing current session.
+ 
  @param delegate
  	The objects that acts as the delegate of the receiving VDFUsersService. 
     The delegate must adopt the VDFUsersServiceDelegate protocol 
     and implement didValidateSMSToken: withError:. The delegate is not retained. 
     This parameter is optional.
  */
-- (void)validateSMSToken:(NSString*)smsCode delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)validateSMSToken:(NSString*)smsCode withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 /*!
  @abstract

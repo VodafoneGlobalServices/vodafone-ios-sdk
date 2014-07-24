@@ -10,10 +10,18 @@
 
 @interface VDFBaseConfiguration : NSObject
 
-@property (nonatomic, copy) NSString* applicationId;
+@property (nonatomic, copy) NSString *applicationId;
 
-@property (nonatomic, copy) NSString* sdkVersion;
+@property (nonatomic, copy) NSString *sdkVersion;
 
-@property (nonatomic, copy) NSString* endpointBaseUrl;
+@property (nonatomic, copy) NSString *endpointBaseUrl;
+
+@property (nonatomic, copy) NSString *cacheDirectoryPath;
+
+@property (nonatomic, assign) NSTimeInterval defaultHttpConnectionTimeout;
+
+/*! @abstract
+ Time in miliseconds beatween retry requests */
+@property (nonatomic, assign) NSTimeInterval httpRequestRetryTimeSpan;
 
 @end

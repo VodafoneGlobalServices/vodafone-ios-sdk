@@ -18,13 +18,13 @@ static NSString * const ValidateKey = @"validate";
 
 @interface VDFUserTokenDetails ()
 
-- (void)setExpiresWithString:(NSString*)expiresDateString;
+- (void)setExpiresFromString:(NSString*)expiresDateString;
 
 @end
 
 @implementation VDFUserTokenDetails
 
-- (id)initWithJsonObject:(NSDictionary*)jsonObject {
+- (instancetype)initWithJsonObject:(NSDictionary*)jsonObject {
     self = [super init];
     if(self) {
         BOOL resolved = [[jsonObject objectForKey:ResolvedKey] boolValue];
@@ -39,7 +39,7 @@ static NSString * const ValidateKey = @"validate";
         _stillRunning = stillRunning;
         _source = source;
         _token = token;
-        [self setExpiresWithString:expires];
+        [self setExpiresFromString:expires];
         _tetheringConflict = tetheringConflict;
         _validate = validate;
     }
@@ -49,9 +49,44 @@ static NSString * const ValidateKey = @"validate";
 #pragma mark -
 #pragma mark private implementation
 
-- (void)setExpiresWithString:(NSString*)expiresDateString {
-    // TODO
+- (void)setExpiresFromString:(NSString*)expiresDateString {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+//    [dateFormatter setLocale:enUSPOSIXLocale];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+    
+    _expires = [dateFormatter dateFromString:expiresDateString];
 }
+
+
+#pragma mark -
+#pragma mark - NSCoding implementation
+
+- (id)initWithCoder:(NSCoder*)decoder {
+    self = [super init];
+    if(self) {
+        _resolved = [decoder decodeBoolForKey:ResolvedKey];
+        _stillRunning = [decoder decodeBoolForKey:StillRunningKey];
+        _source = [decoder decodeObjectForKey:SourceKey];
+        _token = [decoder decodeObjectForKey:TokenKey];
+        _expires = [decoder decodeObjectForKey:ExpiresKey];
+        _tetheringConflict = [decoder decodeBoolForKey:TetheringConflictKey];
+        _validate = [decoder decodeBoolForKey:ValidateKey];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder*)encoder {
+    [encoder encodeBool:_resolved forKey:ResolvedKey];
+    [encoder encodeBool:_stillRunning forKey:StillRunningKey];
+    [encoder encodeObject:_source forKey:SourceKey];
+    [encoder encodeObject:_token forKey:TokenKey];
+    [encoder encodeObject:_expires forKey:ExpiresKey];
+    [encoder encodeBool:_tetheringConflict forKey:TetheringConflictKey];
+    [encoder encodeBool:_validate forKey:ValidateKey];
+}
+
 
 
 @end

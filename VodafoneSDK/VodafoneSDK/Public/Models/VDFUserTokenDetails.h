@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VDFUserTokenDetails : NSObject
+@interface VDFUserTokenDetails : NSObject <NSCoding>
 
-- (id)initWithJsonObject:(NSDictionary*)jsonObject;
+- (instancetype)initWithJsonObject:(NSDictionary*)jsonObject;
 
 /*! @abstract
     True if the backend was able to determine at least one MSISDN from the incoming request */
@@ -25,15 +25,15 @@
 /*! @abstract 
     Source used to determine the MSISDN of the user.
     Possible values: header, iccid */
-@property (nonatomic, readonly) NSString* source;
+@property (nonatomic, readonly) NSString *source;
 
 /*! @abstract The session token used to identify this client session */
-@property (nonatomic, readonly) NSString* token;
+@property (nonatomic, readonly) NSString *token;
 
 /*! @abstract
     This parameter gives the date/time until the token is considered valid on the server side.
     The format of this parameter is in ISO_8601 format. For example: 2014-07-06T04:00:33+00:00 */
-@property (nonatomic, readonly) NSDate* expires;
+@property (nonatomic, readonly) NSDate *expires;
 
 /*! @abstract
     True in case that the ICCID was read from a SIM but the header contains a different value for 

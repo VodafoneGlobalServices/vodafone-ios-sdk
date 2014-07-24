@@ -44,10 +44,11 @@
                             <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <action selector="textFieldDidBeginEditing:" destination="-1" eventType="editingDidBegin" id="Uvn-iu-79z"/>
+                                <action selector="textFieldDidEndEditing:" destination="-1" eventType="editingDidEnd" id="SBr-26-Z61"/>
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sKR-TW-OfI" userLabel="appid set button">
-                            <rect key="frame" x="252" y="36" width="48" height="30"/>
+                            <rect key="frame" x="252" y="29" width="48" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Set">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -57,7 +58,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Rxd-oZ-O4I" userLabel="sms code send button">
-                            <rect key="frame" x="20" y="323" width="67" height="30"/>
+                            <rect key="frame" x="20" y="316" width="67" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Send">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -67,7 +68,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CYu-7w-zSK" userLabel="Retrieve button">
-                            <rect key="frame" x="20" y="184" width="138" height="30"/>
+                            <rect key="frame" x="20" y="184" width="138" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Retrieve">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -77,7 +78,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BBS-jj-u9Q" userLabel="Get button">
-                            <rect key="frame" x="182" y="184" width="118" height="30"/>
+                            <rect key="frame" x="182" y="184" width="118" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Get">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -102,12 +103,20 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="textFieldDidBeginEditing:" destination="-1" eventType="editingDidBegin" id="4bI-9C-zN8"/>
+                                <action selector="textFieldDidEndEditing:" destination="-1" eventType="editingDidEnd" id="7tr-rL-PDD"/>
+                            </connections>
                         </textField>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Session Token" minimumFontSize="17" id="L8J-0J-vlv" userLabel="sms code session token text">
                             <rect key="frame" x="20" y="285" width="280" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="textFieldDidBeginEditing:" destination="-1" eventType="editingDidBegin" id="c61-hI-FGj"/>
+                                <action selector="textFieldDidEndEditing:" destination="-1" eventType="editingDidEnd" id="57I-bJ-OeQ"/>
+                            </connections>
                         </textField>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="irN-FG-1q8" userLabel="output textview">
                             <rect key="frame" x="20" y="361" width="280" height="198"/>
@@ -116,6 +125,16 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xEC-5l-GZR">
+                            <rect key="frame" x="198" y="316" width="102" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Clear output">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="onClearOutputButtonClick:" destination="-1" eventType="touchUpInside" id="JvZ-q2-lAX"/>
+                            </connections>
+                        </button>
                     </subviews>
                 </scrollView>
             </subviews>

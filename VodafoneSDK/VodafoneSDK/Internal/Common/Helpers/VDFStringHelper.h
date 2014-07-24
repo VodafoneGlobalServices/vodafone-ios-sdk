@@ -10,6 +10,28 @@
 
 @interface VDFStringHelper : NSObject
 
+/*!
+ @abstract
+ Encode string to url encoded format
+ 
+ @return - Encoded string
+ */
 + (NSString*)urlEncode:(NSString*)str;
+
+/*!
+ @abstract
+ Generate md5 hash from string
+ 
+ @return - Encoded string
+ */
++ (NSString*)md5FromString:(NSString*)string;
+
+/*!
+ @abstract
+ Generate md5 hash from contents of NSData object
+ 
+ @return - Encoded string
+ */
++ (NSString*)md5FromData:(NSData*)data;
 
 @end

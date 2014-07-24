@@ -26,11 +26,13 @@
 - (IBAction)onGetUserDetailsButtonClick:(id)sender;
 - (IBAction)textFieldDidBeginEditing:(UITextField*)textField;
 - (IBAction)textFieldDidEndEditing:(UITextField*)textField;
+- (IBAction)onClearOutputButtonClick:(id)sender;
 
 - (void)keyboardWasShown:(NSNotification*)aNotification;
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification;
 - (void)scrollTap:(UIGestureRecognizer*)gestureRecognizer;
-- (void)recalculateScrollViewContent;
+//- (void)recalculateScrollViewContent;
+- (void)hideKeyboard;
 
 @end
 
@@ -61,19 +63,27 @@
 
 
 - (IBAction)onAppIdSetButtonClick:(id)sender {
+    [self hideKeyboard];
+    
     [VDFSettings initializeWithParams:@{ VDFApplicationIdSettingKey: self.appIdTextField.text }];
 }
 
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {
-    [[VDFUsersService sharedInstance] validateSMSToken:self.smsCodeTextField.text delegate:self];
+    [self hideKeyboard];
+    
+    [[VDFUsersService sharedInstance] validateSMSToken:self.smsCodeTextField.text withSessionToken:self.smsCodeSessionTokenTextField.text delegate:self];
 }
 
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender {
+    [self hideKeyboard];
+    
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithToken:self.userResolveSessionTokenTextField.text validateWithSms:self.smsValidationSwitch.isOn];
     [[VDFUsersService sharedInstance] retrieveUserDetails:options delegate:self];
 }
 
 - (IBAction)onGetUserDetailsButtonClick:(id)sender {
+    [self hideKeyboard];
+    
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithToken:self.userResolveSessionTokenTextField.text validateWithSms:self.smsValidationSwitch.isOn];
     VDFUserTokenDetails *userDetails = [[VDFUsersService sharedInstance] getUserDetails:options];
     
@@ -90,6 +100,14 @@
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, source=%@, token=%@, expires=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.expires, userDetails.tetheringConflict, userDetails.validate];
+        
+        // autofill boxes:
+        if([self.userResolveSessionTokenTextField.text isEqualToString:@""]) {
+            self.userResolveSessionTokenTextField.text = userDetails.token;
+        }
+        if([self.smsCodeSessionTokenTextField.text isEqualToString:@""]) {
+            self.smsCodeSessionTokenTextField.text = userDetails.token;
+        }
     } else {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: errorCode=%i", [error code]];
     }
@@ -102,10 +120,14 @@
 #pragma mark -
 #pragma mark - Keyboard handling
 
-- (void)scrollTap:(UIGestureRecognizer*)gestureRecognizer {
+- (void)hideKeyboard {
     if(self.activeField) {
         [self.activeField resignFirstResponder];
     }
+}
+
+- (void)scrollTap:(UIGestureRecognizer*)gestureRecognizer {
+    [self hideKeyboard];
 }
 
 - (IBAction)textFieldDidBeginEditing:(UITextField*)textField {
@@ -114,6 +136,10 @@
 
 - (IBAction)textFieldDidEndEditing:(UITextField*)textField {
     self.activeField = nil;
+}
+
+- (IBAction)onClearOutputButtonClick:(id)sender {
+    self.outputTextView.text = @"";
 }
 
 // Called when the UIKeyboardDidShowNotification is sent.

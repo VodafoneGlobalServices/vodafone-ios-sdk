@@ -16,6 +16,7 @@
     Callback method intended to inform the delegate object about current status of 
     user resolving process (when error is nil). If any error occurs the error parameter 
     will be provided.
+    This callback method is invoked on main thread.
  
  @param userDetails
     Received user details.
@@ -32,6 +33,7 @@
     If this method is invoked in response of successfully provided sms code the method 
     didReceivedUserDetails: withError: will also be invoked because the state of user resolve 
     process has changed.
+    This callback method is invoked on main thread.
  
  @param userDetails
     A token which was validated.

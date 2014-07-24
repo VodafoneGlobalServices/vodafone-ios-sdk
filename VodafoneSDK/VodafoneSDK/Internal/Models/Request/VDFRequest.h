@@ -7,28 +7,62 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VDFEnums.h"
 
-@protocol VDFRequest <NSCopying, NSObject>
+@protocol VDFRequest <NSObject>
 
 - (NSString*)urlEndpointMethod;
 
-- (NSTimeInterval)defaultCacheTime;
+- (NSDate*)expirationDate;
 
-- (void)onDataResponse:(NSData*)data;
+/*!
+ @abstract
+    Parsing NSData object representing JSON string. It not invoking delegate methods. Updates state of the request. Can change the session token of the request.
+ 
+ @param data - NSData object repesenting JSON string to parse.
+ 
+ @return Parsed object or nil (when parsing error occured). It need to be passed to onObjectResponse: method to inform delegate object.
+ */
+- (id<NSCoding>)parseAndUpdateOnDataResponse:(NSData*)data;
+
+/*!
+ @abstract
+    Inform delegate about received response object. It invoke delegate methods. Updates state of the request. Can change the session token of the request.
+ 
+ @param parsedObject - Parsed response object.
+ @param error - Error object if is any.
+ */
+- (void)onObjectResponse:(id<NSCoding>)parsedObject withError:(NSError*)error;
 
 - (BOOL)isEqualToRequest:(id<VDFRequest>)request;
 
-- (BOOL)isSatisfied;
+- (void)clearDelegateIfEquals:(id)delegate;
+
+- (BOOL)isDelegateAvailable;
 
 @optional
 
+/*!
+ @abstract
+    Invoked only when request needs connection to the server. Provide information about response code of http connection.
+    Is called before parseAndUpdateOnDataResponse and onObjectResponse methods.
+ 
+ @param responseCode - HTTP response code
+ */
+- (void)onHttpResponseCode:(NSInteger)responseCode;
+
 // POST or GET
 // default GET
-- (NSString*)httpMethod;
+- (HTTPMethodType)httpMethod;
 
 - (NSData*)postBody;
 
-// default NO
-- (BOOL)isSimultenaous;
+// default YES
+- (BOOL)isSatisfied;
 
+// defualt NO
+- (BOOL)isCachable;
+
+#pragma mark - implemented in VDFBaseRequest
+- (NSString*)md5Hash;
 @end

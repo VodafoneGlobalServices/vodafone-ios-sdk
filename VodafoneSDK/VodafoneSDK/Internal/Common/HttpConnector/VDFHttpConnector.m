@@ -6,22 +6,26 @@
 //  Copyright (c) 2014 VOD. All rights reserved.
 //
 
-#import "VDFHttpRequest.h"
+#import "VDFHttpConnector.h"
 #import "VDFError.h"
 
-@interface VDFHttpRequest ()
+@interface VDFHttpConnector ()
 
-@property (nonatomic, assign) id<VDFHttpRequestDelegate> delegate;
-@property (nonatomic, strong) NSMutableData* receivedData;
+@property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
+@property (nonatomic, strong) NSMutableData *receivedData;
 
 @end
 
-@implementation VDFHttpRequest
+@implementation VDFHttpConnector
 
-- (instancetype)initWithDelegate:(id<VDFHttpRequestDelegate>)delegate {
+@synthesize lastResponseCode = _lastResponseCode;
+
+- (instancetype)initWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     self = [super init];
     if(self) {
         self.delegate = delegate;
+        self.connectionTimeout = 60.0; // default if is not set from outside
+        _lastResponseCode = 0;
     }
     return self;
 }
@@ -30,9 +34,9 @@
     NSURLRequest *request =
     [NSURLRequest requestWithURL:[NSURL URLWithString:url]
                      cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                 timeoutInterval:60.0];
+                 timeoutInterval:self.connectionTimeout];
     
-    // wysłanie żądania:
+    // sending request:
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request
                                                             delegate:self];
     if(conn) {
@@ -41,7 +45,7 @@
     }
     else {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-        [self.delegate httpRequest:self errorOccurred:error];
+        [self.delegate httpRequest:self onResponse:nil withError:error];
     }
     
 }
@@ -49,9 +53,9 @@
 - (void)post:(NSString*)url withBody:(NSData*)body
 {
     NSMutableURLRequest *request =
-    [NSMutableURLRequest requestWithURL: [NSURL URLWithString: url]
-                            cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-                        timeoutInterval: 60.0];
+    [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
+                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                        timeoutInterval:self.connectionTimeout];
     
     request.HTTPMethod = @"POST";
     
@@ -69,7 +73,7 @@
     }
     else {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-        [self.delegate httpRequest:self errorOccurred:error];
+        [self.delegate httpRequest:self onResponse:nil withError:error];
     }
 }
 
@@ -78,6 +82,7 @@
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
     [self.receivedData setLength:0];
+    _lastResponseCode = [(NSHTTPURLResponse*)response statusCode];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data {
@@ -87,13 +92,13 @@
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
     NSError *errorInVDFDomain = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-    [self.delegate httpRequest:self errorOccurred:errorInVDFDomain];
+    [self.delegate httpRequest:self onResponse:nil withError:errorInVDFDomain];
 }
 
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection {
-    [self.delegate httpRequest:self onResponse:self.receivedData];
+    [self.delegate httpRequest:self onResponse:self.receivedData withError:nil];
 }
 
 

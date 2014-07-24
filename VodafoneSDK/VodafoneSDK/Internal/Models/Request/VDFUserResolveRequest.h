@@ -8,15 +8,12 @@
 
 #import "VDFUsersServiceDelegate.h"
 #import "VDFRequest.h"
+#import "VDFBaseRequest.h"
 
 @class VDFUserResolveOptions, VDFUserTokenDetails;
 
-@interface VDFUserResolveRequest : NSObject <VDFRequest>
+@interface VDFUserResolveRequest : VDFBaseRequest
 
-@property (nonatomic, strong) NSString* sessionToken;
-
-- (id)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate;
-
-- (VDFUserTokenDetails*)parseJsonData:(NSData*)jsonData error:(NSError**)error;
+- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 @end

@@ -24,4 +24,8 @@
  Time in miliseconds beatween retry requests */
 @property (nonatomic, assign) NSTimeInterval httpRequestRetryTimeSpan;
 
+/*! @abstract
+ Number of maximum requests retries */
+@property (nonatomic, assign) NSInteger maxHttpRequestRetriesCount;
+
 @end

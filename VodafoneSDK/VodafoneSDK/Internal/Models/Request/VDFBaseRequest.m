@@ -63,6 +63,10 @@
     return NO;
 }
 
+- (BOOL)isGSMConnectionRequired {
+    return NO;
+}
+
 - (BOOL)isEqualToRequest:(id<VDFRequest>)request {
     [self doesNotRecognizeSelector:_cmd];
     __builtin_unreachable();

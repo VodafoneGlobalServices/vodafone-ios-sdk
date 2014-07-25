@@ -12,6 +12,8 @@
 #import "VDFSettings+Internal.h"
 #import "VDFCacheManager.h"
 #import "VDFEnums.h"
+#import "VDFNetworkReachability.h"
+#import "VDFError.h"
 
 #pragma mark VDFPendingRequestHolder class
 
@@ -23,6 +25,8 @@
 @property (nonatomic, strong) VDFHttpConnector *httpRequest;
 // list of all requests waiting for the response
 @property (nonatomic, strong) NSMutableArray *waitingRequests;
+// number of all http requests made for this holder
+@property (nonatomic, assign) NSInteger numberOfRetries;
 
 @end
 
@@ -32,6 +36,7 @@
     self = [super init];
     if(self) {
         self.waitingRequests = [[NSMutableArray alloc] init];
+        self.numberOfRetries = 0;
     }
     return self;
 }
@@ -47,6 +52,7 @@
 
 - (void)retryRequest:(VDFPendingRequestHolder*)requestHolder;
 - (void)startHttpRequest:(VDFPendingRequestHolder*)requestHolder;
+- (void)stopRequest:(VDFPendingRequestHolder*)requestHolder withDomainErrorCode:(VDFErrorCode)errorCode;
 
 @end
 
@@ -63,6 +69,7 @@
 
 - (void)performRequest:(id<VDFRequest>)request {
     id<NSCoding> responseObject = nil;
+    VDFPendingRequestHolder *requestHolder = nil;
     
     @synchronized(self.pendingRequests) {
         // check cache:
@@ -89,16 +96,19 @@
                 httpRequest.connectionTimeout = self.configuration.defaultHttpConnectionTimeout;
                 
                 // and adding this to queue
-                VDFPendingRequestHolder *requestHolder = [[VDFPendingRequestHolder alloc] init];
+                requestHolder = [[VDFPendingRequestHolder alloc] init];
                 requestHolder.initialRequest = request;
                 requestHolder.httpRequest = httpRequest;
                 [requestHolder.waitingRequests addObject:request];
                 
                 [self.pendingRequests addObject:requestHolder];
-                
-                [self startHttpRequest:requestHolder];
             }
         }
+    }
+    
+    if(requestHolder != nil) {
+        // then we need to perform http action
+        [self startHttpRequest:requestHolder];
     }
     
     // if we readed response from cache so we invoking this after synchronization
@@ -124,35 +134,68 @@
 
 - (void)retryRequest:(VDFPendingRequestHolder*)requestHolder {
     
-    // dispatch next request after some time:
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.configuration.httpRequestRetryTimeSpan * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
-        
-        // check is ther still waiting delegates
-        BOOL delegatesStillWaiting = NO;
-        for (id<VDFRequest> waitingRequest in requestHolder.waitingRequests) {
-            if([waitingRequest isDelegateAvailable]) {
-                delegatesStillWaiting = YES;
-                break;
+    if(requestHolder.numberOfRetries > self.configuration.maxHttpRequestRetriesCount) {
+        // we run out of the limit, so need to return an error and remove this request:
+        [self stopRequest:requestHolder withDomainErrorCode:VDFErrorConnectionTimeout];
+    }
+    else {
+        // we still stay in the limit, so wait and make the request
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.configuration.httpRequestRetryTimeSpan * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+            
+            // check is ther still waiting delegates
+            BOOL delegatesStillWaiting = NO;
+            for (id<VDFRequest> waitingRequest in requestHolder.waitingRequests) {
+                if([waitingRequest isDelegateAvailable]) {
+                    delegatesStillWaiting = YES;
+                    break;
+                }
             }
-        }
-        if(delegatesStillWaiting) {
-            [self startHttpRequest:requestHolder];
-        }
-        else {
-            // if nobody is waiting, so we can remove this request:
-            [self.pendingRequests removeObject:requestHolder];
-        }
-    });
+            if(delegatesStillWaiting) {
+                [self startHttpRequest:requestHolder];
+            }
+            else {
+                // if nobody is waiting, so we can remove this request:
+                [self.pendingRequests removeObject:requestHolder];
+            }
+        });
+    }
 }
 
 - (void)startHttpRequest:(VDFPendingRequestHolder*)requestHolder {
-    // starting the request
-    NSString * requestUrl = [self.configuration.endpointBaseUrl stringByAppendingString:[requestHolder.initialRequest urlEndpointMethod]];
-    if([requestHolder.initialRequest httpMethod] == HTTPMethodPOST) {
-        [requestHolder.httpRequest post:requestUrl withBody:[requestHolder.initialRequest postBody]];
+    
+    VDFNetworkReachability *reachability = [VDFNetworkReachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    
+    if(status == NotReachable) {
+        [self stopRequest:requestHolder withDomainErrorCode:VDFErrorNoConnection];
+    }
+    else if (status != ReachableViaWWAN && [requestHolder.initialRequest isGSMConnectionRequired]) {
+        // not connected over 3G and request require 3G:
+        [self stopRequest:requestHolder withDomainErrorCode:VDFErrorNoConnection];
     }
     else {
-        [requestHolder.httpRequest get:requestUrl];
+        
+        // starting the request
+        requestHolder.numberOfRetries++;
+        NSString * requestUrl = [self.configuration.endpointBaseUrl stringByAppendingString:[requestHolder.initialRequest urlEndpointMethod]];
+        if([requestHolder.initialRequest httpMethod] == HTTPMethodPOST) {
+            [requestHolder.httpRequest post:requestUrl withBody:[requestHolder.initialRequest postBody]];
+        }
+        else {
+            [requestHolder.httpRequest get:requestUrl];
+        }
+    }
+}
+
+- (void)stopRequest:(VDFPendingRequestHolder*)requestHolder withDomainErrorCode:(VDFErrorCode)errorCode {
+    NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
+    for (id<VDFRequest> waitingRequest in requestHolder.waitingRequests) {
+        [waitingRequest onObjectResponse:nil withError:error];
+    }
+    @synchronized(self.pendingRequests) {
+        [self.pendingRequests removeObject:requestHolder];
     }
 }
 

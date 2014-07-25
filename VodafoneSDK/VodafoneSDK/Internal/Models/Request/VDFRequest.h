@@ -60,8 +60,11 @@
 // default YES
 - (BOOL)isSatisfied;
 
-// defualt NO
+// default NO
 - (BOOL)isCachable;
+
+// default NO
+- (BOOL)isGSMConnectionRequired;
 
 #pragma mark - implemented in VDFBaseRequest
 - (NSString*)md5Hash;

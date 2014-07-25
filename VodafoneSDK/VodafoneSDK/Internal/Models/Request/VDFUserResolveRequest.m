@@ -127,6 +127,10 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
     return YES;
 }
 
+- (BOOL)isGSMConnectionRequired {
+    return YES;
+}
+
 - (NSData*)postBody {
     NSMutableDictionary *jsonDictionary = [[NSMutableDictionary alloc] init];
     [jsonDictionary setObject:[VDFStringHelper urlEncode:self.applicationId] forKey:@"applicationId"];

@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/*!
+ Helper class for NSString objects
+ */
 @interface VDFStringHelper : NSObject
 
 /*!

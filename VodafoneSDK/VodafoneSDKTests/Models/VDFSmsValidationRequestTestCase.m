@@ -1,18 +1,18 @@
 //
-//  HeApiIOsSdkTests.m
-//  HeApiIOsSdkTests
+//  VDFSmsValidationRequestTestCase.m
+//  VodafoneSDK
 //
-//  Created by Michał Szymańczyk on 01/07/14.
+//  Created by Michał Szymańczyk on 25/07/14.
 //  Copyright (c) 2014 VOD. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface HeApiIOsSdkTests : XCTestCase
+@interface VDFSmsValidationRequestTestCase : XCTestCase
 
 @end
 
-@implementation HeApiIOsSdkTests
+@implementation VDFSmsValidationRequestTestCase
 
 - (void)setUp
 {

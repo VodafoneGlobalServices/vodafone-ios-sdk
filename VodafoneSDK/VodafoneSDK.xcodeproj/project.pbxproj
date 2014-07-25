@@ -37,6 +37,17 @@
 		4989A7BF19755418009A6BC5 /* VDFHttpConnectorDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1588C196C3BD600642677 /* VDFHttpConnectorDelegate.h */; };
 		4989A7C019755418009A6BC5 /* VDFUsersServiceDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1585E196BFF3700642677 /* VDFUsersServiceDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4989A7C119755418009A6BC5 /* VodafoneSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 496559F3196A9441002A30C6 /* VodafoneSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		498EA2E719823AD500122F05 /* VDFSmsValidationRequestTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2E619823AD500122F05 /* VDFSmsValidationRequestTestCase.m */; };
+		498EA2EA19823B1500122F05 /* VDFStringHelperTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2E919823B1500122F05 /* VDFStringHelperTestCase.m */; };
+		498EA2EC19823B2F00122F05 /* VDFErrorUtilityTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2EB19823B2F00122F05 /* VDFErrorUtilityTestCase.m */; };
+		498EA2EE19823B4C00122F05 /* VDFHttpConnectorTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2ED19823B4C00122F05 /* VDFHttpConnectorTestCase.m */; };
+		498EA2F119823B9800122F05 /* VDFCacheManagerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2F019823B9800122F05 /* VDFCacheManagerTestCase.m */; };
+		498EA2F619823BF600122F05 /* VDFUsersServiceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2F519823BF600122F05 /* VDFUsersServiceTestCase.m */; };
+		498EA2F819823C4200122F05 /* VDFSettingsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2F719823C4200122F05 /* VDFSettingsTestCase.m */; };
+		498EA2FA19823C7600122F05 /* VDFServiceRequestsManagerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA2F919823C7600122F05 /* VDFServiceRequestsManagerTestCase.m */; };
+		498EA3021982735D00122F05 /* VDFNetworkReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 498EA3001982735D00122F05 /* VDFNetworkReachability.h */; };
+		498EA3031982735D00122F05 /* VDFNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA3011982735D00122F05 /* VDFNetworkReachability.m */; };
+		498EA3051982745D00122F05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA3041982745D00122F05 /* SystemConfiguration.framework */; };
 		49A1585B196BFEA400642677 /* VDFUserResolveOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15859196BFEA400642677 /* VDFUserResolveOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49A1585C196BFEA400642677 /* VDFUserResolveOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1585A196BFEA400642677 /* VDFUserResolveOptions.m */; };
 		49A15861196C0BE000642677 /* VDFUserTokenDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1585F196C0BE000642677 /* VDFUserTokenDetails.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -56,6 +67,7 @@
 		49A15886196C34FB00642677 /* VDFRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15884196C34FB00642677 /* VDFRequest.h */; };
 		49A15890196C3E9700642677 /* VDFStringHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1588E196C3E9700642677 /* VDFStringHelper.h */; };
 		49A15891196C3E9700642677 /* VDFStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1588F196C3E9700642677 /* VDFStringHelper.m */; };
+		49C2332419814A500006E302 /* VDFUserResolveRequestTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C2332319814A500006E302 /* VDFUserResolveRequestTestCase.m */; };
 		49C34215196D40F30079FDF5 /* VDFUserResolveRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34213196D40F30079FDF5 /* VDFUserResolveRequest.h */; };
 		49C34216196D40F30079FDF5 /* VDFUserResolveRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C34214196D40F30079FDF5 /* VDFUserResolveRequest.m */; };
 		49C3421C196D561D0079FDF5 /* VDFErrorUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */; };
@@ -68,7 +80,6 @@
 		49E74BCA1962F9D60080EB14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BC91962F9D60080EB14 /* UIKit.framework */; };
 		49E74BCD1962F9D60080EB14 /* libVodafoneSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB51962F9D50080EB14 /* libVodafoneSDK.a */; };
 		49E74BD31962F9D60080EB14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49E74BD11962F9D60080EB14 /* InfoPlist.strings */; };
-		49E74BD51962F9D60080EB14 /* VodafoneSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E74BD41962F9D60080EB14 /* VodafoneSDKTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +124,18 @@
 		49702FAC1979419C00425827 /* VDFBaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFBaseRequest.h; path = Internal/Models/Request/VDFBaseRequest.h; sourceTree = "<group>"; };
 		49702FAD1979419C00425827 /* VDFBaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFBaseRequest.m; path = Internal/Models/Request/VDFBaseRequest.m; sourceTree = "<group>"; };
 		49702FB019794BE400425827 /* VDFEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFEnums.h; path = Internal/Common/VDFEnums.h; sourceTree = "<group>"; };
+		498EA2E619823AD500122F05 /* VDFSmsValidationRequestTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsValidationRequestTestCase.m; path = Models/VDFSmsValidationRequestTestCase.m; sourceTree = "<group>"; };
+		498EA2E919823B1500122F05 /* VDFStringHelperTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFStringHelperTestCase.m; path = Common/VDFStringHelperTestCase.m; sourceTree = "<group>"; };
+		498EA2EB19823B2F00122F05 /* VDFErrorUtilityTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFErrorUtilityTestCase.m; path = Common/VDFErrorUtilityTestCase.m; sourceTree = "<group>"; };
+		498EA2ED19823B4C00122F05 /* VDFHttpConnectorTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFHttpConnectorTestCase.m; path = Common/VDFHttpConnectorTestCase.m; sourceTree = "<group>"; };
+		498EA2F019823B9800122F05 /* VDFCacheManagerTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFCacheManagerTestCase.m; path = Managers/VDFCacheManagerTestCase.m; sourceTree = "<group>"; };
+		498EA2F519823BF600122F05 /* VDFUsersServiceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUsersServiceTestCase.m; path = Services/VDFUsersServiceTestCase.m; sourceTree = "<group>"; };
+		498EA2F719823C4200122F05 /* VDFSettingsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDFSettingsTestCase.m; sourceTree = "<group>"; };
+		498EA2F919823C7600122F05 /* VDFServiceRequestsManagerTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFServiceRequestsManagerTestCase.m; path = Managers/VDFServiceRequestsManagerTestCase.m; sourceTree = "<group>"; };
+		498EA2FB198271DB00122F05 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		498EA3001982735D00122F05 /* VDFNetworkReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFNetworkReachability.h; path = Internal/Common/NetworkReachability/VDFNetworkReachability.h; sourceTree = "<group>"; };
+		498EA3011982735D00122F05 /* VDFNetworkReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFNetworkReachability.m; path = Internal/Common/NetworkReachability/VDFNetworkReachability.m; sourceTree = "<group>"; };
+		498EA3041982745D00122F05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		49A15859196BFEA400642677 /* VDFUserResolveOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserResolveOptions.h; path = Public/Models/VDFUserResolveOptions.h; sourceTree = "<group>"; };
 		49A1585A196BFEA400642677 /* VDFUserResolveOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveOptions.m; path = Public/Models/VDFUserResolveOptions.m; sourceTree = "<group>"; };
 		49A1585E196BFF3700642677 /* VDFUsersServiceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VDFUsersServiceDelegate.h; path = Public/Services/Users/VDFUsersServiceDelegate.h; sourceTree = "<group>"; };
@@ -134,6 +157,7 @@
 		49A1588C196C3BD600642677 /* VDFHttpConnectorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VDFHttpConnectorDelegate.h; path = Internal/Common/HttpConnector/VDFHttpConnectorDelegate.h; sourceTree = "<group>"; };
 		49A1588E196C3E9700642677 /* VDFStringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFStringHelper.h; path = Internal/Common/Helpers/VDFStringHelper.h; sourceTree = "<group>"; };
 		49A1588F196C3E9700642677 /* VDFStringHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFStringHelper.m; path = Internal/Common/Helpers/VDFStringHelper.m; sourceTree = "<group>"; };
+		49C2332319814A500006E302 /* VDFUserResolveRequestTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequestTestCase.m; path = Models/VDFUserResolveRequestTestCase.m; sourceTree = "<group>"; };
 		49C34213196D40F30079FDF5 /* VDFUserResolveRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserResolveRequest.h; path = Internal/Models/Request/VDFUserResolveRequest.h; sourceTree = "<group>"; };
 		49C34214196D40F30079FDF5 /* VDFUserResolveRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequest.m; path = Internal/Models/Request/VDFUserResolveRequest.m; sourceTree = "<group>"; };
 		49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFErrorUtility.h; path = Internal/Common/Helpers/VDFErrorUtility.h; sourceTree = "<group>"; };
@@ -149,7 +173,6 @@
 		49E74BC91962F9D60080EB14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		49E74BD01962F9D60080EB14 /* VodafoneSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VodafoneSDKTests-Info.plist"; sourceTree = "<group>"; };
 		49E74BD21962F9D60080EB14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		49E74BD41962F9D60080EB14 /* VodafoneSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VodafoneSDKTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				498EA3051982745D00122F05 /* SystemConfiguration.framework in Frameworks */,
 				49E74BB91962F9D50080EB14 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,6 +199,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		498EA2E819823AEB00122F05 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				498EA2E919823B1500122F05 /* VDFStringHelperTestCase.m */,
+				498EA2EB19823B2F00122F05 /* VDFErrorUtilityTestCase.m */,
+				498EA2ED19823B4C00122F05 /* VDFHttpConnectorTestCase.m */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		498EA2EF19823B6200122F05 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				498EA2F019823B9800122F05 /* VDFCacheManagerTestCase.m */,
+				498EA2F919823C7600122F05 /* VDFServiceRequestsManagerTestCase.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		498EA2F419823BCE00122F05 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				498EA2F519823BF600122F05 /* VDFUsersServiceTestCase.m */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		498EA2FF1982733900122F05 /* NetworkReachability */ = {
+			isa = PBXGroup;
+			children = (
+				498EA3001982735D00122F05 /* VDFNetworkReachability.h */,
+				498EA3011982735D00122F05 /* VDFNetworkReachability.m */,
+			);
+			name = NetworkReachability;
+			sourceTree = "<group>";
+		};
 		49A15854196BFD9C00642677 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +260,7 @@
 		49A15863196C0C1200642677 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				498EA2FF1982733900122F05 /* NetworkReachability */,
 				49A1588D196C3E8400642677 /* Helpers */,
 				49A1588B196C3BB100642677 /* HttpConnector */,
 				49702FB019794BE400425827 /* VDFEnums.h */,
@@ -319,6 +380,15 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		49C233221981487B0006E302 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				49C2332319814A500006E302 /* VDFUserResolveRequestTestCase.m */,
+				498EA2E619823AD500122F05 /* VDFSmsValidationRequestTestCase.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		49C34212196D3FF80079FDF5 /* Request */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,6 +425,8 @@
 		49E74BB71962F9D50080EB14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				498EA3041982745D00122F05 /* SystemConfiguration.framework */,
+				498EA2FB198271DB00122F05 /* CFNetwork.framework */,
 				49E74BB81962F9D50080EB14 /* Foundation.framework */,
 				49E74BC61962F9D60080EB14 /* XCTest.framework */,
 				49E74BC91962F9D60080EB14 /* UIKit.framework */,
@@ -383,8 +455,12 @@
 		49E74BCE1962F9D60080EB14 /* VodafoneSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				49E74BD41962F9D60080EB14 /* VodafoneSDKTests.m */,
+				498EA2F419823BCE00122F05 /* Services */,
+				498EA2EF19823B6200122F05 /* Managers */,
+				498EA2E819823AEB00122F05 /* Common */,
+				49C233221981487B0006E302 /* Models */,
 				49E74BCF1962F9D60080EB14 /* Supporting Files */,
+				498EA2F719823C4200122F05 /* VDFSettingsTestCase.m */,
 			);
 			path = VodafoneSDKTests;
 			sourceTree = "<group>";
@@ -420,6 +496,7 @@
 				4989A7BE19755418009A6BC5 /* VDFSettings+Internal.h in Headers */,
 				49A15875196C336500642677 /* VDFServiceRequestsManager.h in Headers */,
 				4989A7BF19755418009A6BC5 /* VDFHttpConnectorDelegate.h in Headers */,
+				498EA3021982735D00122F05 /* VDFNetworkReachability.h in Headers */,
 				49A1587D196C33D000642677 /* VDFHttpConnector.h in Headers */,
 				49702FAE1979419C00425827 /* VDFBaseRequest.h in Headers */,
 				49C34226196D71D00079FDF5 /* VDFBaseConfiguration.h in Headers */,
@@ -547,6 +624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49A15870196C333800642677 /* VDFBaseManager.m in Sources */,
+				498EA3031982735D00122F05 /* VDFNetworkReachability.m in Sources */,
 				49C34216196D40F30079FDF5 /* VDFUserResolveRequest.m in Sources */,
 				49A1587E196C33D000642677 /* VDFHttpConnector.m in Sources */,
 				496559F2196A92DC002A30C6 /* VDFSettings.m in Sources */,
@@ -570,7 +648,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49E74BD51962F9D60080EB14 /* VodafoneSDKTests.m in Sources */,
+				498EA2E719823AD500122F05 /* VDFSmsValidationRequestTestCase.m in Sources */,
+				498EA2F119823B9800122F05 /* VDFCacheManagerTestCase.m in Sources */,
+				498EA2F819823C4200122F05 /* VDFSettingsTestCase.m in Sources */,
+				498EA2EC19823B2F00122F05 /* VDFErrorUtilityTestCase.m in Sources */,
+				498EA2EE19823B4C00122F05 /* VDFHttpConnectorTestCase.m in Sources */,
+				498EA2F619823BF600122F05 /* VDFUsersServiceTestCase.m in Sources */,
+				49C2332419814A500006E302 /* VDFUserResolveRequestTestCase.m in Sources */,
+				498EA2FA19823C7600122F05 /* VDFServiceRequestsManagerTestCase.m in Sources */,
+				498EA2EA19823B1500122F05 /* VDFStringHelperTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,7 +857,7 @@
 				);
 				INFOPLIST_FILE = "VodafoneSDKTests/VodafoneSDKTests-Info.plist";
 				PRODUCT_NAME = VodafoneSDKTests;
-				SDKROOT = iphoneos6.0;
+				SDKROOT = iphoneos7.0;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -788,7 +874,7 @@
 				GCC_PREFIX_HEADER = "VodafoneSDK/VodafoneSDK-Prefix.pch";
 				INFOPLIST_FILE = "VodafoneSDKTests/VodafoneSDKTests-Info.plist";
 				PRODUCT_NAME = VodafoneSDKTests;
-				SDKROOT = iphoneos6.0;
+				SDKROOT = iphoneos7.0;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

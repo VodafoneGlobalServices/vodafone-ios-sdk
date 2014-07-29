@@ -511,11 +511,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../VodafoneSDK/**",
+					"\"../VodafoneSDK\"/**",
 				);
 				INFOPLIST_FILE = "HESampleApp/HESampleApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = "../VodafoneSDK/**";
+				LIBRARY_SEARCH_PATHS = "\"../VodafoneSDK\"/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos6.0;
@@ -538,11 +538,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../VodafoneSDK/**",
+					"\"../VodafoneSDK\"/**",
 				);
 				INFOPLIST_FILE = "HESampleApp/HESampleApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = "../VodafoneSDK/**";
+				LIBRARY_SEARCH_PATHS = "\"../VodafoneSDK\"/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos6.0;
@@ -566,7 +566,13 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"../VodafoneSDK\"/**",
+				);
 				INFOPLIST_FILE = "HESampleAppTests/HESampleAppTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = "\"../VodafoneSDK\"/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos6.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -585,7 +591,13 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HESampleApp/HESampleApp-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"../VodafoneSDK\"/**",
+				);
 				INFOPLIST_FILE = "HESampleAppTests/HESampleAppTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = "\"../VodafoneSDK\"/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos6.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";

@@ -495,7 +495,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/misy/workspace/vod/HeApiIOsSdk,
+					"$(PROJECT_DIR)/../VodafoneSDK/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HESampleApp/HESampleApp-Prefix.pch";
@@ -519,7 +519,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/misy/workspace/vod/HeApiIOsSdk,
+					"$(PROJECT_DIR)/../VodafoneSDK/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HESampleApp/HESampleApp-Prefix.pch";

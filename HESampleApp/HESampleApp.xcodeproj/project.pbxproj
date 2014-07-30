@@ -237,6 +237,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49A15827196BFC7800642677 /* Build configuration list for PBXNativeTarget "HESampleApp" */;
 			buildPhases = (
+				49B4B9EF1988D8B900AB8747 /* ShellScript */,
 				49A157F7196BFC7800642677 /* Sources */,
 				49A157F8196BFC7800642677 /* Frameworks */,
 				49A157F9196BFC7800642677 /* Resources */,
@@ -348,6 +349,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		49B4B9EF1988D8B900AB8747 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"../VodafoneSDK/build\" ]; then\n    cp -rf ../VodafoneSDK/build ./VodafoneSDKBuild\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		49A157F7196BFC7800642677 /* Sources */ = {

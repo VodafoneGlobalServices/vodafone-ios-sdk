@@ -362,7 +362,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"../VodafoneSDK/build\" ]; then\n    cp -rf ../VodafoneSDK/build ./VodafoneSDKBuild 2>/dev/null\nfi\n";
+			shellScript = "if [ -d \"../VodafoneSDK/build\" ]; then\n    cp -rfv ../VodafoneSDK/build ./VodafoneSDKBuild\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

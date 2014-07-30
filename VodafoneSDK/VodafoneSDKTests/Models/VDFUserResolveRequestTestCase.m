@@ -8,8 +8,9 @@
 
 #import <XCTest/XCTest.h>
 #import "VDFUserResolveRequest.h"
-#import "OCMock.h"
-#import "OCMockObject.h"
+//#import <OCMock/OCMock.h>
+//#import "OCMock.h"
+//#import "OCMockObject.h"
 
 /*
  
@@ -105,9 +106,9 @@
 
 - (void)testExample
 {
-    VDFUserResolveRequest *toTest = [[VDFUserResolveRequest alloc] initWithApplicationId:@"" withOptions:nil delegate:nil];
+//    VDFUserResolveRequest *toTest = [[VDFUserResolveRequest alloc] initWithApplicationId:@"" withOptions:nil delegate:nil];
     
-    id mockRequestToTest = [OCMockObject partialMockForObject:toTest];
+//    id mockRequestToTest = [OCMockObject partialMockForObject:toTest];
     
     
 }

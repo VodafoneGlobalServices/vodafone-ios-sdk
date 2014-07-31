@@ -9,6 +9,8 @@
 #import "VDFBaseRequest.h"
 #import "VDFStringHelper.h"
 
+static NSString * const DESCRIPTION_FORMAT = @"VDFRequest:\n\t urlEndpointMethod:%@ \n\t expirationDate:%@ \n\t isSatisfied:%i \n\t isCachable:%i \n\t isGSMConnextionRequired:%i \n\t httpMethod:%@ \n\t postBody:%@ \n\t md5Hash:%@ ";
+
 @implementation VDFBaseRequest
 
 - (instancetype)init {
@@ -17,6 +19,11 @@
         self.satisfied = YES;
     }
     return self;
+}
+
+- (NSString*)description {
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointMethod], [self expirationDate],
+            [self isSatisfied], [self isCachable], [self isGSMConnectionRequired], [self httpMethod] ? @"GET":@"POST", [self postBody], [self md5Hash]];
 }
 
 #pragma mark -

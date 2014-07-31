@@ -7,12 +7,13 @@
 //
 
 #import "VDFErrorUtility.h"
+#import "VDFLogUtility.h"
 
 @implementation VDFErrorUtility
 
 + (BOOL)handleInternalError:(NSError*)error {
     if(error) {
-        NSLog(@"%@", error);
+        VDFLogD(@"Error occured: %@", error);
         return YES;
     }
     return NO;

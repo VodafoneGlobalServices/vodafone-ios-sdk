@@ -12,6 +12,7 @@
 #import "VDFUserTokenDetails.h"
 #import "VDFStringHelper.h"
 #import "VDFError.h"
+#import "VDFLogUtility.h"
 
 static NSString * const URLEndpointQuery = @"/users/resolve";
 
@@ -53,6 +54,7 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
 #pragma mark VDFRequest Implementation
 
 - (id<NSCoding>)parseAndUpdateOnDataResponse:(NSData*)data {
+    VDFLogD(@"Parsing response: %@", data);
     NSError *error = nil;
     id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
     BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
@@ -68,10 +70,14 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
         // need to update request state:
         [self updateRequestState:userTokenDetails];
     }
+    VDFLogD(@"Parsed object: \n%@", userTokenDetails);
+    
     return userTokenDetails;
 }
 
 - (void)onObjectResponse:(id<NSCoding>)parsedObject withError:(NSError*)error {
+    VDFLogD(@"On response of object: \n%@", parsedObject);
+    
     if(parsedObject == nil && error == nil) {
         // parse error occured:
         error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorServerCommunication userInfo:nil];
@@ -84,6 +90,7 @@ static NSString * const URLEndpointQuery = @"/users/resolve";
     }
     
     if(self.delegate != nil) {
+        VDFLogD(@"Invoking service delegate with response.");
         // invoke delegate with response on the main thread:
         if([NSThread isMainThread]) {
             [self.delegate didReceivedUserDetails:userTokenDetails withError:error];

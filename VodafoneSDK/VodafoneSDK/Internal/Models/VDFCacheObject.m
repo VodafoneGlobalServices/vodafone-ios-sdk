@@ -7,6 +7,7 @@
 //
 
 #import "VDFCacheObject.h"
+#import "VDFLogUtility.h"
 
 static NSString * const CACHE_FILE_NAME_FORMAT = @"%@.dat";
 
@@ -43,12 +44,14 @@ static NSString *g_cacheDirectory = nil;
 }
 
 - (void)removeCacheFile {
+    VDFLogD(@"Removing cache file of object: %@", self.cacheKey);
     [[NSFileManager defaultManager] removeItemAtPath:[self cachePath] error:nil];
 }
 
 - (void)saveCacheFile {
     // save value cache file:
     if(_cacheValue != nil) {
+        VDFLogD(@"Saving cache file of object: %@", self.cacheKey);
         [NSKeyedArchiver archiveRootObject:_cacheValue toFile:[self cachePath]];
     }
 }
@@ -85,6 +88,7 @@ static NSString *g_cacheDirectory = nil;
         // need to load from cache
         NSString *path = [self cachePath];
         if(path) {
+            VDFLogD(@"Loading cache file of object: %@ at path: %@", self.cacheKey, path);
             self.cacheValue = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
         }
     }

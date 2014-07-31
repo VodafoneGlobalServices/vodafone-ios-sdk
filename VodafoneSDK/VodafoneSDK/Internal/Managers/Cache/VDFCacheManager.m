@@ -10,6 +10,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFErrorUtility.h"
 #import "VDFCacheObject.h"
+#import "VDFLogUtility.h"
 
 static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
 
@@ -35,6 +36,8 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
 - (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration {
     self = [super init];
     if(self) {
+        VDFLogD(@"Initializing VDFCacheManager instance.");
+        VDFLogD(@"Cache dir path: %@", configuration.cacheDirectoryPath);
         self.configuration = configuration;
         
         // initialize CacheObject:
@@ -58,6 +61,7 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
 }
 
 - (id<NSCoding>)responseForRequest:(id<VDFRequest>)request {
+    VDFLogD(@"Reading response from cache.");
     VDFCacheObject *cacheObject = [self findCacheObjectForRequest:request];
     return cacheObject.cacheValue;
 }
@@ -65,6 +69,7 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
 - (void)cacheResponseObject:(id<NSCoding>)responseObject forRequest:(id<VDFRequest>)request {
     VDFCacheObject *cacheObject = [self findCacheObjectForRequest:request];
     if(cacheObject == nil) {
+        VDFLogD(@"Creating new cache object.");
         // create new cache object:
         cacheObject = [[VDFCacheObject alloc] initWithValue:responseObject forKey:[request md5Hash] withExpirationDate:[request expirationDate]];
         [self.cacheObjects addObject:cacheObject];
@@ -81,6 +86,7 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
 
 - (void)clearExpiredCache {
     // TODO think is this needed
+    // currently is not used
     NSMutableArray *objectsToRemove = [[NSMutableArray alloc] init];
     for (VDFCacheObject *cacheObject in self.cacheObjects) {
         
@@ -101,6 +107,7 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
 #pragma mark - private methods implementation
 
 - (VDFCacheObject*)findCacheObjectForRequest:(id<VDFRequest>)request {
+    VDFLogD(@"Searching memory cache for response.");
     NSString *requestHash = [request md5Hash];
     
     VDFCacheObject *foundObject = nil;
@@ -122,9 +129,12 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
     
     // remove objects marked to delete
     for (VDFCacheObject *cacheObject in objectsToRemove) {
+        VDFLogD(@"Removing cache object because it is out of date.");
         [cacheObject removeCacheFile];
         [self.cacheObjects removeObject:cacheObject];
     }
+    
+    VDFLogD(@"Object was found? : %@", (foundObject != nil ? @"YES":@"NO"));
     
     return foundObject;
 }

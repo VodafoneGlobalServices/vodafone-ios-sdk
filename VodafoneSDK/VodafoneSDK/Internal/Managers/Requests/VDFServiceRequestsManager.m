@@ -14,6 +14,7 @@
 #import "VDFEnums.h"
 #import "VDFNetworkReachability.h"
 #import "VDFError.h"
+#import "VDFLogUtility.h"
 
 #pragma mark VDFPendingRequestHolder class
 
@@ -61,6 +62,7 @@
 - (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration {
     self = [super init];
     if(self) {
+        VDFLogD(@"Initializing Service Request Manager");
         self.configuration = configuration;
         self.pendingRequests = [[NSMutableArray alloc] init];
     }
@@ -72,12 +74,15 @@
     VDFPendingRequestHolder *requestHolder = nil;
     
     @synchronized(self.pendingRequests) {
+        
         // check cache:
         if([request isCachable] && [[VDFSettings sharedCacheManager] isResponseCachedForRequest:request]) {
             // our object is cached so we read cache:
+            VDFLogD(@"Response Object is cached, so we read this from cache.");
             responseObject = [[VDFSettings sharedCacheManager] responseForRequest:request];
         }
         else {
+            VDFLogD(@"Response Object is not cached, so we need to perform http request.");
             BOOL subscribedForResponse = NO;
             
             // check is there any the same request waiting for response
@@ -86,6 +91,7 @@
                     subscribedForResponse = YES;
                     // subscribe for response
                     [pendingRequestHolder.waitingRequests addObject:request];
+                    VDFLogD(@"Http communication is started for this request, registering this request as observer.");
                     break;
                 }
             }
@@ -108,11 +114,13 @@
     
     if(requestHolder != nil) {
         // then we need to perform http action
+        VDFLogD(@"Starting new http request.");
         [self startHttpRequest:requestHolder];
     }
     
     // if we readed response from cache so we invoking this after synchronization
     if(responseObject != nil) {
+        VDFLogD(@"Invoking response delegate with response readed from cache.");
         [request onObjectResponse:responseObject withError:nil];
     }
 }
@@ -134,11 +142,16 @@
 
 - (void)retryRequest:(VDFPendingRequestHolder*)requestHolder {
     
+    VDFLogD(@"Retrying request.");
     if(requestHolder.numberOfRetries > self.configuration.maxHttpRequestRetriesCount) {
+        
+        VDFLogD(@"We run out of the limit, so need to cancel request:\n%@", requestHolder.initialRequest);
         // we run out of the limit, so need to return an error and remove this request:
         [self stopRequest:requestHolder withDomainErrorCode:VDFErrorConnectionTimeout];
     }
     else {
+        
+        VDFLogD(@"Dispatching retry request (after %ui ms):\n%@", self.configuration.httpRequestRetryTimeSpan, requestHolder.initialRequest);
         // we still stay in the limit, so wait and make the request
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.configuration.httpRequestRetryTimeSpan * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
             
@@ -154,6 +167,7 @@
                 [self startHttpRequest:requestHolder];
             }
             else {
+                VDFLogD(@"Nobody is waiting, removing request:%@", requestHolder.initialRequest);
                 // if nobody is waiting, so we can remove this request:
                 [self.pendingRequests removeObject:requestHolder];
             }
@@ -163,15 +177,18 @@
 
 - (void)startHttpRequest:(VDFPendingRequestHolder*)requestHolder {
     
+    VDFLogD(@"Starting http request:%@", requestHolder.initialRequest);
     VDFNetworkReachability *reachability = [VDFNetworkReachability reachabilityForInternetConnection];
     [reachability startNotifier];
     
     NetworkStatus status = [reachability currentReachabilityStatus];
     
     if(status == NotReachable) {
+        VDFLogD(@"Internet is not avaialble.");
         [self stopRequest:requestHolder withDomainErrorCode:VDFErrorNoConnection];
     }
     else if (status != ReachableViaWWAN && [requestHolder.initialRequest isGSMConnectionRequired]) {
+        VDFLogD(@"Request need 3G connection - there is not available any.");
         // not connected over 3G and request require 3G:
         [self stopRequest:requestHolder withDomainErrorCode:VDFErrorNoConnection];
     }
@@ -186,10 +203,13 @@
         else {
             [requestHolder.httpRequest get:requestUrl];
         }
+        VDFLogD(@"Request started.");
     }
 }
 
 - (void)stopRequest:(VDFPendingRequestHolder*)requestHolder withDomainErrorCode:(VDFErrorCode)errorCode {
+    
+    VDFLogD(@"Stopping request.");
     NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     for (id<VDFRequest> waitingRequest in requestHolder.waitingRequests) {
         [waitingRequest onObjectResponse:nil withError:error];
@@ -203,6 +223,8 @@
 #pragma mark VDFHttpRequestDelegate implementation
 - (void)httpRequest:(VDFHttpConnector*)request onResponse:(NSData*)data withError:(NSError *)error {
     
+    VDFLogD(@"On http response");
+    
     id<NSCoding> parsedObject = nil;
     VDFPendingRequestHolder *pendingRequestHolder = nil;
     
@@ -215,6 +237,10 @@
                 break;
             }
         }
+        
+        VDFLogD(@"For request: \n%@", pendingRequestHolder.initialRequest);
+        VDFLogD(@"Http response code: \n%@", request.lastResponseCode);
+        VDFLogD(@"Http response data: \n%@", data);
         
         if(pendingRequestHolder != nil && [pendingRequestHolder.initialRequest respondsToSelector:@selector(onHttpResponseCode:)]) {
             [pendingRequestHolder.initialRequest onHttpResponseCode:request.lastResponseCode];
@@ -231,6 +257,7 @@
     
     if(pendingRequestHolder != nil) {
         // responding to all delegates:
+        VDFLogD(@"Responding to request delegates started.");
         for (id<VDFRequest> waitingRequest in pendingRequestHolder.waitingRequests) {
             
             // send http response to all requests except the initial one:
@@ -240,9 +267,11 @@
             
             [waitingRequest onObjectResponse:parsedObject withError:error];
         }
+        VDFLogD(@"Responding to request delegates finished.");
         
         // is it finished ?
         if([pendingRequestHolder.initialRequest isSatisfied]) {
+            VDFLogD(@"Request is finished, closing it.");
             // remove this request from queue
             [self.pendingRequests removeObject:pendingRequestHolder];
         }

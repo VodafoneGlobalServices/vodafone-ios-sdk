@@ -8,24 +8,44 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Base configuration class
+ */
 @interface VDFBaseConfiguration : NSObject
 
+/**
+ *  Id of the application registered as Vodafone 3rd party app.
+ */
 @property (nonatomic, copy) NSString *applicationId;
 
+/**
+ *  Current version of SDK.
+ */
 @property (nonatomic, copy) NSString *sdkVersion;
 
+/**
+ *  Http host of server.
+ */
 @property (nonatomic, copy) NSString *endpointBaseUrl;
 
+/**
+ *  Directory of cache stored on device.
+ */
 @property (nonatomic, copy) NSString *cacheDirectoryPath;
 
+/**
+ *  Http connection time out.
+ */
 @property (nonatomic, assign) NSTimeInterval defaultHttpConnectionTimeout;
 
-/*! @abstract
- Time in miliseconds beatween retry requests */
+/**
+ *  Time in miliseconds beatween retry requests.
+ */
 @property (nonatomic, assign) NSTimeInterval httpRequestRetryTimeSpan;
 
-/*! @abstract
- Number of maximum requests retries */
+/**
+ *  Number of maximum requests retries.
+ */
 @property (nonatomic, assign) NSInteger maxHttpRequestRetriesCount;
 
 @end

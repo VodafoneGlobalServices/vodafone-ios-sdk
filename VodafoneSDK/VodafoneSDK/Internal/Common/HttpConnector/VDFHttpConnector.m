@@ -8,6 +8,7 @@
 
 #import "VDFHttpConnector.h"
 #import "VDFError.h"
+#import "VDFLogUtility.h"
 
 @interface VDFHttpConnector ()
 
@@ -37,8 +38,10 @@
                  timeoutInterval:self.connectionTimeout];
     
     // sending request:
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request
-                                                            delegate:self];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+    VDFLogD(@"GET %@", url);
+    
     if(conn) {
         self.url = url;
         self.receivedData = [NSMutableData data];
@@ -63,6 +66,8 @@
     [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request addValue:[NSString stringWithFormat:@"%lu", (unsigned long)[body length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:body];
+    
+    VDFLogD(@"POST %@\n------\n%@\n------", url, [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
     
     // sending request:
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];

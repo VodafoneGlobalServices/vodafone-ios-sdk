@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Base class of all managers
+ */
 @interface VDFBaseManager : NSObject
 
 @end

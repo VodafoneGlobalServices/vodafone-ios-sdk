@@ -9,12 +9,14 @@
 #import "VDFHttpConnector.h"
 #import "VDFError.h"
 #import "VDFLogUtility.h"
+#import "VDFNetworkReachability.h"
 
 @interface VDFHttpConnector ()
-
 @property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
 @property (nonatomic, strong) NSMutableData *receivedData;
 
+- (void)get:(NSString*)url;
+- (void)post:(NSString*)url withBody:(NSData*)body;
 @end
 
 @implementation VDFHttpConnector
@@ -29,6 +31,37 @@
         _lastResponseCode = 0;
     }
     return self;
+}
+
+- (NSInteger)startCommunication {
+    
+    VDFNetworkReachability *reachability = [VDFNetworkReachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    
+    if(status == NotReachable) {
+        VDFLogD(@"Internet is not avaialble.");
+        return 1;
+    }
+    else if (status != ReachableViaWWAN && self.isGSMConnectionRequired) {
+        VDFLogD(@"Request need 3G connection - there is not available any.");
+        // not connected over 3G and request require 3G:
+        return 2; // TODO need to make some error codes for this
+    }
+    else {
+        
+        // starting the request
+        if(self.methodType == HTTPMethodPOST) {
+            [self post:self.url withBody:self.postBody];
+        }
+        else {
+            [self get:self.url];
+        }
+        VDFLogD(@"Request started.");
+    }
+
+    return 0;
 }
 
 - (void)get:(NSString*)url {

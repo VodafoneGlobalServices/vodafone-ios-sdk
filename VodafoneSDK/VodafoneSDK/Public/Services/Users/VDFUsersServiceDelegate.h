@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VDFUserTokenDetails;
+@class VDFUserTokenDetails, VDFSmsValidationResponse;
 @protocol VDFUsersServiceDelegate <NSObject>
 
 /*!
@@ -35,13 +35,11 @@
     process has changed.
     This callback method is invoked on main thread.
  
- @param userDetails
-    A token which was validated.
- @param isSuccess
-    Flag describing operation result.
+ @param response
+    Results of operation.
  @param error
     An error object which occurred. Error code is from Vodafone SDK domain.
  */
-- (void)didValidatedSMSToken:(NSString*)smsToken success:(BOOL)isSuccess withError:(NSError*)errorCode;
+- (void)didValidatedSMSToken:(VDFSmsValidationResponse*)response withError:(NSError*)errorCode;
 
 @end

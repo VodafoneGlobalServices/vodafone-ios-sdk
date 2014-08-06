@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *outputTextView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) UITextField *activeField;
+@property (weak, nonatomic) IBOutlet UISwitch *displayLogSwitch;
 
 - (IBAction)onAppIdSetButtonClick:(id)sender;
 - (IBAction)onSmsCodeSendButtonClick:(id)sender;
@@ -52,6 +53,22 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
     
     UITapGestureRecognizer *yourTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollTap:)];
+    
+//    [self.scrollView setBorderType:NSNoBorder];
+//    [self.scrollView setHasVerticalScroller:YES];
+//    [self.scrollView setHasHorizontalScroller:NO];
+//    [self.scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+//    
+//    [self.outputTextView setMinSize:NSMakeSize(0.0, contentSize.height)];
+//    [self.outputTextView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
+//    [self.outputTextView setVerticallyResizable:YES];
+//    [self.outputTextView setHorizontallyResizable:NO];
+//    [self.outputTextView setAutoresizingMask:NSViewWidthSizable];
+//    
+//    [[self.outputTextView textContainer]
+//     setContainerSize:NSMakeSize(contentSize.width, FLT_MAX)];
+//    [[self.outputTextView textContainer] setWidthTracksTextView:YES];
+    
     [self.scrollView addGestureRecognizer:yourTap];
     [self.view addSubview:self.scrollView];
 }
@@ -88,7 +105,7 @@
     VDFUserTokenDetails *userDetails = [[VDFUsersService sharedInstance] getUserDetails:options];
     
     if(userDetails != nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n onGetUserDetailsButtonClick: resolved=%i, stillRunning=%i, source=%@, token=%@, expires=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.expires, userDetails.tetheringConflict, userDetails.validate];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n onGetUserDetailsButtonClick: resolved=%i, stillRunning=%i, source=%@, token=%@, expires=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.expires, userDetails.tetheringConflict, userDetails.validated];
     } else {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingString:@"\n onGetUserDetailsButtonClick: nil"];
     }
@@ -99,7 +116,7 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, source=%@, token=%@, expires=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.expires, userDetails.tetheringConflict, userDetails.validate];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, source=%@, token=%@, expires=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.expires, userDetails.tetheringConflict, userDetails.validated];
         
         // autofill boxes:
         if([self.userResolveSessionTokenTextField.text isEqualToString:@""]) {
@@ -113,8 +130,18 @@
     }
 }
 
-- (void)didValidatedSMSToken:(NSString*)smsToken success:(BOOL)isSuccess withError:(NSError*)errorCode {
-    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: success=%i, errorCode=%i", isSuccess, [errorCode code]];
+- (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)errorCode {
+    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorCode=%i", response.smsCode, response.isSucceded, [errorCode code]];
+}
+
+#pragma mark -
+#pragma mark VDFMessageLogger Implementation
+
+- (void)logMessage:(NSString*)message {
+    if([self.displayLogSwitch isOn]) {
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n Log: %@", message];
+    }
+    NSLog(@"%@",message);
 }
 
 #pragma mark -

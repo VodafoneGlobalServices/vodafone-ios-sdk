@@ -9,8 +9,15 @@
 #import "VDFLogUtility.h"
 
 static VODLogInfoVerboseLevel g_verboseLevel = VODLogInfoVerboseLevelBasic;
+static NSMutableArray * g_debugLoggers = nil;
 
 @implementation VDFLogUtility
+
++ (void)initialize {
+    if (self == [VDFLogUtility self]) {
+        g_debugLoggers = [[NSMutableArray alloc] init];
+    }
+}
 
 + (void)setVerboseLevel:(VODLogInfoVerboseLevel)level {
     g_verboseLevel = level;
@@ -21,40 +28,14 @@ static VODLogInfoVerboseLevel g_verboseLevel = VODLogInfoVerboseLevelBasic;
     va_list arguments;
     va_start(arguments, format);
     
-    NSString *sourceString = [[NSThread callStackSymbols] objectAtIndex:1];
-    // 1   UIKit                               0x0253c32a -[UIApplication _callInitializationDelegatesForURL:payload:suspended:] + 167
-    NSCharacterSet *separatorSet = [NSCharacterSet characterSetWithCharactersInString:@" []?.,"];
-    NSMutableArray *array = [NSMutableArray arrayWithArray:[sourceString componentsSeparatedByCharactersInSet:separatorSet]];
-    [array removeObject:@""];
-    
     // composing log message:
     NSMutableString *logMessage = [[NSMutableString alloc] init];
     
-    // caller memory address:
-    if(g_verboseLevel & VODLogInfoVerboseLevelCallerMemoryAddress) {
-        [logMessage appendFormat:@"%@ ", [array objectAtIndex:2]];
-    }
-    
-    // caller class and method name:
-    if(g_verboseLevel & (VODLogInfoVerboseLevelCallerClassName|VODLogInfoVerboseLevelCallerMethodName)) {
-        // appending also method access modifier:
-        [logMessage appendFormat:@"%@[", [array objectAtIndex:3]];
-        
-        // class name:
-        if(g_verboseLevel & VODLogInfoVerboseLevelCallerClassName) {
-            [logMessage appendFormat:@"%@", [array objectAtIndex:4]];
+    if(g_verboseLevel & VODLogInfoVerboseLevelLastCallStackEntry) {
+        NSArray *callstack = [NSThread callStackSymbols];
+        if([callstack count] > 1) {
+            [logMessage appendFormat:@"%@ ", [callstack objectAtIndex:1]];
         }
-        // method name:
-        if(g_verboseLevel & VODLogInfoVerboseLevelCallerMethodName) {
-            [logMessage appendFormat:@" %@", [array objectAtIndex:5]];
-        }
-        
-        [logMessage appendString:@"] "];
-    }
-    
-    // caller line number:
-    if(g_verboseLevel & VODLogInfoVerboseLevelCallerLineNumber) {
-        [logMessage appendFormat:@"+ %@ ", [array objectAtIndex:7]];
     }
     
     if(g_verboseLevel != VODLogInfoVerboseLevelBasic) {
@@ -62,7 +43,18 @@ static VODLogInfoVerboseLevel g_verboseLevel = VODLogInfoVerboseLevelBasic;
     }
     
     [logMessage appendString:[[NSString alloc] initWithFormat:format arguments:arguments]];
-    NSLog(@"%@", logMessage);
+    
+    for (id<VDFMessageLogger> logger in g_debugLoggers) {
+        [logger logMessage:logMessage];
+    }
+}
+
++ (void)subscribeDebugLogger:(id<VDFMessageLogger>)logger {
+    [g_debugLoggers addObject:logger];
+}
+
++ (void)unsubscribeDebugLogger:(id<VDFMessageLogger>)logger {
+    [g_debugLoggers removeObject:logger];
 }
 
 @end

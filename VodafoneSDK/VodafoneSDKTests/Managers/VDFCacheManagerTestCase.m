@@ -7,12 +7,29 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "VDFCacheManager.h"
+#import "VDFBaseConfiguration.h"
+#import "VDFMockedRequest.h"
+
 
 @interface VDFCacheManagerTestCase : XCTestCase
 
 @end
 
 @implementation VDFCacheManagerTestCase
+
+/*
+- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration;
+
+- (BOOL)isResponseCachedForRequest:(id<VDFRequest>)request;
+
+- (id<NSCoding>)responseForRequest:(id<VDFRequest>)request;
+
+- (void)cacheResponseObject:(id<NSCoding>)responseObject forRequest:(id<VDFRequest>)request;
+
+- (void)clearExpiredCache;
+*/
+
 
 - (void)setUp
 {
@@ -26,9 +43,14 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testSimpleCachingFlow
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
+    configuration.cacheDirectoryPath = @"";
+    configuration.applicationId = @"some test app id";
+    
+//    VDFCacheManager *managerToTest = [[VDFCacheManager alloc] initWithConfiguration:configuration];
+//    managerToTest
 }
 
 @end

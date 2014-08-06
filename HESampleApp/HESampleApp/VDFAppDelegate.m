@@ -13,7 +13,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    UIViewController *viewController = [[VDFMainViewController alloc] initWithNibName:@"MainView" bundle:nil];
+//    VDFMainViewController *vc = 
+    
+    VDFMainViewController *viewController = [[VDFMainViewController alloc] initWithNibName:@"MainView" bundle:nil];
+    [VDFSettings subscribeDebugLogger:viewController];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = viewController;

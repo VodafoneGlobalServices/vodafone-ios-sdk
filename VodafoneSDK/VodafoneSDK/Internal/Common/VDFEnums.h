@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+// TODO move to the httpconnector
+
 /*!
  @typedef NS_ENUM (NSUInteger, HTTPMethodType)
  @abstract HTTP Method - GET/POST/...

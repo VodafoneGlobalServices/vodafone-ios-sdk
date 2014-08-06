@@ -9,13 +9,15 @@
 #import "VDFUsersService.h"
 #import "VDFUserTokenDetails.h"
 #import "VDFUserResolveOptions.h"
-#import "VDFUserResolveRequest.h"
 #import "VDFSettings+Internal.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFServiceRequestsManager.h"
 #import "VDFCacheManager.h"
 #import "VDFErrorUtility.h"
-#import "VDFSmsValidationRequest.h"
+#import "VDFUserResolveRequestBuilder.h"
+#import "VDFRequestFactory.h"
+#import "VDFCacheObject.h"
+#import "VDFSmsValidationRequestBuilder.h"
 
 @implementation VDFUsersService
 
@@ -41,13 +43,13 @@
         options = [[VDFUserResolveOptions alloc] init];
     }
     
-    VDFUserResolveRequest *request = [[VDFUserResolveRequest alloc] initWithApplicationId:applicationId withOptions:options delegate:delegate];
+    VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options withConfiguration:[VDFSettings configuration] delegate:delegate];
     
     // get http request manager
     VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
     
     // perform request call
-    [requestsManager performRequest:request];
+    [requestsManager performRequestWithBuilder:builder];
 }
 
 - (VDFUserTokenDetails*)getUserDetails:(VDFUserResolveOptions*)options {
@@ -61,11 +63,13 @@
         options = [[VDFUserResolveOptions alloc] init];
     }
     
-    VDFUserResolveRequest *request = [[VDFUserResolveRequest alloc] initWithApplicationId:applicationId withOptions:options delegate:nil];
-    VDFUserTokenDetails *userDetails = nil;
+    VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options withConfiguration:[VDFSettings configuration] delegate:nil];
     
-    if([[VDFSettings sharedCacheManager] isResponseCachedForRequest:request]) {
-        userDetails = (VDFUserTokenDetails*)[[VDFSettings sharedCacheManager] responseForRequest:request];
+    VDFUserTokenDetails *userDetails = nil;
+    VDFCacheObject *cacheObject = [[builder factory] createCacheObject];
+    
+    if([[VDFSettings sharedCacheManager] isObjectCached:cacheObject]) {
+        userDetails = (VDFUserTokenDetails*)[[[VDFSettings sharedCacheManager] readCacheObject:cacheObject] cacheValue];
         if(![userDetails isKindOfClass:[VDFUserTokenDetails class]]) {
             userDetails = nil;
         }
@@ -81,16 +85,13 @@
         applicationId = [NSString string];
     }
     
-    VDFSmsValidationRequest *request = [[VDFSmsValidationRequest alloc] initWithApplicationId:applicationId
-                                                                                 sessionToken:sessionToken
-                                                                                      smsCode:smsCode
-                                                                                     delegate:delegate];
+    VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsCode withConfiguration:[VDFSettings configuration] delegate:delegate];
     
     // get http request manager
     VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
     
     // perform request call
-    [requestsManager performRequest:request];
+    [requestsManager performRequestWithBuilder:builder];
 }
 
 - (void)removeDelegate:(id<VDFUsersServiceDelegate>)delegate {

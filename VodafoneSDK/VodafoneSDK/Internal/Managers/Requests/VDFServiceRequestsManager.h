@@ -10,6 +10,7 @@
 #import "VDFRequest.h"
 #import "VDFHttpConnectorDelegate.h"
 #import "VDFUsersServiceDelegate.h"
+#import "VDFRequestBuilder.h"
 
 @class VDFBaseConfiguration;
 
@@ -36,7 +37,7 @@
  *
  *  @param request Object with implemented VDFRequest protocol describing the request.
  */
-- (void)performRequest:(id<VDFRequest>)request;
+- (void)performRequestWithBuilder:(id<VDFRequestBuilder>)request;
 
 /**
  *  Remove delegate of started VDFRequest. If corresponding request is not found there nothing happens.

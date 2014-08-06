@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <VodafoneSDK/VodafoneSDK.h>
 
-@interface VDFMainViewController : UIViewController <VDFUsersServiceDelegate>
+@interface VDFMainViewController : UIViewController <VDFUsersServiceDelegate, VDFMessageLogger>
 
 @end

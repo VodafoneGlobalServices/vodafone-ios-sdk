@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 VOD. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "VDFCacheObject.h"
 #import "VDFLogUtility.h"
 
@@ -89,7 +90,13 @@ static NSString *g_cacheDirectory = nil;
         NSString *path = [self cachePath];
         if(path) {
             VDFLogD(@"Loading cache file of object: %@ at path: %@", self.cacheKey, path);
-            self.cacheValue = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+            @try {
+                self.cacheValue = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+            }
+            @catch (NSException *exception) {
+                VDFLogD(@"Reading %@ from file raises an error of invalid archive format, so the cached file cannot be readed.", path);
+                self.cacheValue = nil;
+            }
         }
     }
     return _cacheValue;

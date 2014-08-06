@@ -14,7 +14,7 @@ static NSString * const SourceKey = @"source";
 static NSString * const TokenKey = @"token";
 static NSString * const ExpiresKey = @"expires";
 static NSString * const TetheringConflictKey = @"tetheringConflict";
-static NSString * const ValidateKey = @"validate";
+static NSString * const ValidatedKey = @"validated";
 
 @interface VDFUserTokenDetails ()
 
@@ -33,7 +33,7 @@ static NSString * const ValidateKey = @"validate";
         NSString *token = [jsonObject objectForKey:TokenKey];
         NSString *expires = [jsonObject objectForKey:ExpiresKey];
         BOOL tetheringConflict = [[jsonObject objectForKey:TetheringConflictKey] boolValue];
-        BOOL validate = [[jsonObject objectForKey:ValidateKey] boolValue];
+        BOOL validated = [[jsonObject objectForKey:ValidatedKey] boolValue];
         
         _resolved = resolved;
         _stillRunning = stillRunning;
@@ -41,7 +41,7 @@ static NSString * const ValidateKey = @"validate";
         _token = token;
         [self setExpiresFromString:expires];
         _tetheringConflict = tetheringConflict;
-        _validate = validate;
+        _validated = validated;
     }
     return self;
 }
@@ -71,7 +71,7 @@ static NSString * const ValidateKey = @"validate";
         _token = [decoder decodeObjectForKey:TokenKey];
         _expires = [decoder decodeObjectForKey:ExpiresKey];
         _tetheringConflict = [decoder decodeBoolForKey:TetheringConflictKey];
-        _validate = [decoder decodeBoolForKey:ValidateKey];
+        _validated = [decoder decodeBoolForKey:ValidatedKey];
     }
     
     return self;
@@ -84,7 +84,7 @@ static NSString * const ValidateKey = @"validate";
     [encoder encodeObject:_token forKey:TokenKey];
     [encoder encodeObject:_expires forKey:ExpiresKey];
     [encoder encodeBool:_tetheringConflict forKey:TetheringConflictKey];
-    [encoder encodeBool:_validate forKey:ValidateKey];
+    [encoder encodeBool:_validated forKey:ValidatedKey];
 }
 
 

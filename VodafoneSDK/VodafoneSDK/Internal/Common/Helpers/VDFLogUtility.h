@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VDFMessageLogger.h"
 
 /**
  *  Log debug function
@@ -27,25 +28,9 @@ typedef NS_OPTIONS(NSUInteger, VODLogInfoVerboseLevel) {
      */
     VODLogInfoVerboseLevelBasic                 = 1 << 0,
     /**
-     *  Adds caller class name to the message.
+     *  Adds top callstack entry.
      */
-    VODLogInfoVerboseLevelCallerClassName       = 1 << 1,
-    /**
-     *  Adds caller method name to the message.
-     */
-    VODLogInfoVerboseLevelCallerMethodName      = 1 << 2,
-    /**
-     *  Adds caller code line number to the message.
-     */
-    VODLogInfoVerboseLevelCallerLineNumber      = 1 << 3,
-    /**
-     *  Adds caller memory address to the message.
-     */
-    VODLogInfoVerboseLevelCallerMemoryAddress   = 1 << 4,
-    /**
-     *  Adds all available debug information to the message
-     */
-    VODLogInfoVerboseLevelFull                  = (1<<1) | (1<<2) | (1<<3) | (1<<4)
+    VODLogInfoVerboseLevelLastCallStackEntry    = 1 << 1
 };
 
 /**
@@ -66,5 +51,9 @@ typedef NS_OPTIONS(NSUInteger, VODLogInfoVerboseLevel) {
  *  @param text String to log
  */
 + (void)dLog:(NSString*)text, ...;
+
++ (void)subscribeDebugLogger:(id<VDFMessageLogger>)logger;
+
++ (void)unsubscribeDebugLogger:(id<VDFMessageLogger>)logger;
 
 @end

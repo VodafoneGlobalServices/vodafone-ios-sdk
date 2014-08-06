@@ -42,6 +42,6 @@
 
 /*! @abstract
     True if the SMS validation was successfully performed. */
-@property (nonatomic, readonly) BOOL validate;
+@property (nonatomic, readonly) BOOL validated;
 
 @end

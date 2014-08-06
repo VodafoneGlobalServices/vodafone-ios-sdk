@@ -7,9 +7,8 @@
 //
 
 #import "VDFBaseManager.h"
-#import "VDFRequest.h"
 
-@class VDFBaseConfiguration;
+@class VDFBaseConfiguration, VDFCacheObject;
 
 /**
  *  Cache manager class. Is responsible of maintaining cache object.
@@ -25,31 +24,12 @@
  */
 - (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration;
 
-/**
- *  Check is cached and valid response for particular request.
- *
- *  @param request Request object which is the cache key.
- *
- *  @return YES - response is cached and still valid, NO - response is not cached.
- */
-- (BOOL)isResponseCachedForRequest:(id<VDFRequest>)request;
+// TODO documentation
+- (BOOL)isObjectCached:(VDFCacheObject*)cacheObject;
 
-/**
- *  Read from cache response of particular request.
- *
- *  @param request Request object which is the cahce key.
- *
- *  @return Parsed object of response or nil if there is not cached data.
- */
-- (id<NSCoding>)responseForRequest:(id<VDFRequest>)request;
+- (VDFCacheObject*)readCacheObject:(VDFCacheObject*)cacheObject;
 
-/**
- *  Write to cache response data with association of specified request object.
- *
- *  @param responseObject Object to store in cache.
- *  @param request        Request object which is the cache key
- */
-- (void)cacheResponseObject:(id<NSCoding>)responseObject forRequest:(id<VDFRequest>)request;
+- (void)cacheObject:(VDFCacheObject*)cacheObject;
 
 /**
  *  Invoked automatically on dealloc of last object, clears the expired data.

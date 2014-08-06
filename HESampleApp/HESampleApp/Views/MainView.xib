@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VDFMainViewController">
             <connections>
                 <outlet property="appIdTextField" destination="LJf-q1-qoF" id="Bfu-ZV-hA1"/>
+                <outlet property="displayLogSwitch" destination="Cx7-A9-CFO" id="b2D-z2-beT"/>
                 <outlet property="outputTextView" destination="irN-FG-1q8" id="bPD-06-JJc"/>
                 <outlet property="scrollView" destination="7o7-ql-AEK" id="jSE-VB-HYW"/>
                 <outlet property="smsCodeSessionTokenTextField" destination="L8J-0J-vlv" id="ElA-2M-TSk"/>
@@ -119,15 +120,15 @@
                             </connections>
                         </textField>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="irN-FG-1q8" userLabel="output textview">
-                            <rect key="frame" x="20" y="361" width="280" height="198"/>
+                            <rect key="frame" x="20" y="402" width="280" height="157"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xEC-5l-GZR">
-                            <rect key="frame" x="198" y="316" width="102" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <rect key="frame" x="197" y="316" width="103" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Clear output">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -135,6 +136,17 @@
                                 <action selector="onClearOutputButtonClick:" destination="-1" eventType="touchUpInside" id="JvZ-q2-lAX"/>
                             </connections>
                         </button>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="Cx7-A9-CFO" userLabel="display logs switch">
+                            <rect key="frame" x="223" y="367" width="79" height="27"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        </switch>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display logs" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gcv-dh-opq">
+                            <rect key="frame" x="20" y="370" width="94" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                 </scrollView>
             </subviews>

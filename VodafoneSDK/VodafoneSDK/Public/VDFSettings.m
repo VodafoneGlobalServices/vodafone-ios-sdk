@@ -24,7 +24,7 @@ static VDFBaseConfiguration * g_configuration = nil;
 
 + (void)initialize {
     if(self == [VDFSettings class]) {
-        [VDFLogUtility setVerboseLevel:VODLogInfoVerboseLevelFull];
+        [VDFLogUtility setVerboseLevel:VODLogInfoVerboseLevelLastCallStackEntry];
         
         VDFLogD(@"Loading configuration");
         // load application id from plist
@@ -49,6 +49,7 @@ static VDFBaseConfiguration * g_configuration = nil;
         
         g_configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
         g_configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second
+        g_configuration.maxHttpRequestRetriesCount = 10;
     }
 }
 
@@ -64,9 +65,16 @@ static VDFBaseConfiguration * g_configuration = nil;
     }
 }
 
-
 + (NSString *)sdkVersion {
     return VDF_IOS_SDK_VERSION_STRING;
+}
+
++ (void)subscribeDebugLogger:(id<VDFMessageLogger>)logger {
+    [VDFLogUtility subscribeDebugLogger:logger];
+}
+
++ (void)unsubscribeDebugLogger:(id<VDFMessageLogger>)logger {
+    [VDFLogUtility unsubscribeDebugLogger:logger];
 }
 
 #pragma mark -

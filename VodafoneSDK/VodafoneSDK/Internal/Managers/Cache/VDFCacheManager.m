@@ -26,7 +26,7 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
  
  @return - Cache object with value
  */
-- (VDFCacheObject*)findCacheObjectForRequest:(id<VDFRequest>)request;
+- (VDFCacheObject*)findCorrespondingCacheObject:(VDFCacheObject*)cacheObject;
 @end
 
 
@@ -46,7 +46,13 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
         // load main cache files list:
         self.cacheArrayPath = [self.configuration.cacheDirectoryPath stringByAppendingPathComponent:CACHE_ARRAY_FILE_NAME];
         if([[NSFileManager defaultManager] isReadableFileAtPath:self.cacheArrayPath]) {
-            self.cacheObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:self.cacheArrayPath];
+            @try {
+                self.cacheObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:self.cacheArrayPath];
+            }
+            @catch (NSException *exception) {
+                VDFLogD(@"Reading cache array %@ from file raises an error of invalid archive format, so the cache array cannot be readed.", self.cacheArrayPath);
+                self.cacheObjects = [[NSMutableArray alloc] init];
+            }
         }
         else {
             self.cacheObjects = [[NSMutableArray alloc] init];
@@ -55,33 +61,31 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
     return self;
 }
 
-- (BOOL)isResponseCachedForRequest:(id<VDFRequest>)request {
-    VDFCacheObject *cacheObject = [self findCacheObjectForRequest:request];
-    return cacheObject != nil;
+- (BOOL)isObjectCached:(VDFCacheObject*)cacheObject {
+    VDFCacheObject *interlCacheObject = [self findCorrespondingCacheObject:cacheObject];
+    return interlCacheObject != nil;
 }
 
-- (id<NSCoding>)responseForRequest:(id<VDFRequest>)request {
+- (VDFCacheObject*)readCacheObject:(VDFCacheObject*)cacheObject {
     VDFLogD(@"Reading response from cache.");
-    VDFCacheObject *cacheObject = [self findCacheObjectForRequest:request];
-    return cacheObject.cacheValue;
+    VDFCacheObject *interlCacheObject = [self findCorrespondingCacheObject:cacheObject];
+    return interlCacheObject;
 }
 
-- (void)cacheResponseObject:(id<NSCoding>)responseObject forRequest:(id<VDFRequest>)request {
-    VDFCacheObject *cacheObject = [self findCacheObjectForRequest:request];
-    if(cacheObject == nil) {
-        VDFLogD(@"Creating new cache object.");
+- (void)cacheObject:(VDFCacheObject*)cacheObject {
+    VDFCacheObject *interlCacheObject = [self findCorrespondingCacheObject:cacheObject];
+    if(interlCacheObject == nil) {
+        VDFLogD(@"Adding new cache object.");
         // create new cache object:
-        cacheObject = [[VDFCacheObject alloc] initWithValue:responseObject forKey:[request md5Hash] withExpirationDate:[request expirationDate]];
         [self.cacheObjects addObject:cacheObject];
         // save cache array:
         [NSKeyedArchiver archiveRootObject:self.cacheObjects toFile:self.cacheArrayPath];
+        [cacheObject saveCacheFile];
     }
     else {
-        cacheObject.cacheValue = responseObject;
+        interlCacheObject.cacheValue = cacheObject.cacheValue;
+        [interlCacheObject saveCacheFile];
     }
-    
-    // save cache object:
-    [cacheObject saveCacheFile];
 }
 
 - (void)clearExpiredCache {
@@ -106,14 +110,13 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
 #pragma mark -
 #pragma mark - private methods implementation
 
-- (VDFCacheObject*)findCacheObjectForRequest:(id<VDFRequest>)request {
+- (VDFCacheObject*)findCorrespondingCacheObject:(VDFCacheObject*)cacheObject {
     VDFLogD(@"Searching memory cache for response.");
-    NSString *requestHash = [request md5Hash];
     
     VDFCacheObject *foundObject = nil;
     NSMutableArray *objectsToRemove = [[NSMutableArray alloc] init];
-    for (VDFCacheObject *cacheObject in self.cacheObjects) {
-        if([cacheObject.cacheKey isEqualToString:requestHash]) {
+    for (VDFCacheObject *interlCacheObject in self.cacheObjects) {
+        if([interlCacheObject.cacheKey isEqualToString:cacheObject.cacheKey]) {
             
             // need to check is this expired or not ?
             if([cacheObject isExpired]) {

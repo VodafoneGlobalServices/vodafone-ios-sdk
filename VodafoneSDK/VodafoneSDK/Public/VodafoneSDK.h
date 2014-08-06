@@ -12,6 +12,8 @@
 #import "VDFUserResolveOptions.h"
 #import "VDFUserTokenDetails.h"
 #import "VDFError.h"
+#import "VDFMessageLogger.h"
+#import "VDFSmsValidationResponse.h"
 
 
 #define VDF_IOS_SDK_VERSION_STRING @"0.0.1"

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VDFHttpConnectorDelegate.h"
+#import "VDFEnums.h"
 
 /**
  *  Describes single communication unit over the network.
@@ -18,6 +19,18 @@
  *  Url of web resource.
  */
 @property (nonatomic, strong) NSString *url;
+/**
+ *  Body of the POST request.
+ */
+@property (nonatomic, strong) NSData *postBody;
+/**
+ *  Type of request.
+ */
+@property (nonatomic, assign) HTTPMethodType methodType;
+/**
+ *  Is GSM connection is required to performing request.
+ */
+@property (nonatomic, assign) BOOL isGSMConnectionRequired;
 /**
  *  Timeout of http/https communication.
  */
@@ -37,18 +50,10 @@
 - (instancetype)initWithDelegate:(id<VDFHttpConnectorDelegate>)delegate;
 
 /**
- *  Start http GET call to the address specified in parameter.
+ *  Start http request depending on properties.
  *
- *  @param url String containing web address for communication.
+ *  @return Error code (>0) if occures or 0 indicating success.
  */
-- (void)get:(NSString*)url;
-
-/**
- *  Start http POST call to the address specified in parameter.
- *
- *  @param url  String containing web address for communication.
- *  @param body Body of POST message.
- */
-- (void)post:(NSString*)url withBody:(NSData*)body;
+- (NSInteger)startCommunication;
 
 @end

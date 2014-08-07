@@ -108,7 +108,7 @@
  *  Indicates is response of this request need to be cached
  *  Default NO.
  *
- *  @return YES - when response schould be cached, NO - when response schould not be cached.
+ *  @return YES - when response should be cached, NO - when response should not be cached.
  */
 - (BOOL)isCachable;
 

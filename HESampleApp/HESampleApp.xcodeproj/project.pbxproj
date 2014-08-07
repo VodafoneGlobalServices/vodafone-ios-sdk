@@ -11,6 +11,7 @@
 		491102021973FC56006325C5 /* VDFMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491102011973FC56006325C5 /* VDFMainViewController.m */; };
 		49809CDD197E55CB003F5C66 /* libVodafoneSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 491C2C0719790D1C00C7FB54 /* libVodafoneSDK.a */; };
 		498EA30719829A8600122F05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA30619829A8600122F05 /* SystemConfiguration.framework */; };
+		4990BFB919923C83005EED39 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA30619829A8600122F05 /* SystemConfiguration.framework */; };
 		49A157FF196BFC7800642677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A157FE196BFC7800642677 /* Foundation.framework */; };
 		49A15801196BFC7800642677 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15800196BFC7800642677 /* CoreGraphics.framework */; };
 		49A15803196BFC7800642677 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15802196BFC7800642677 /* UIKit.framework */; };
@@ -18,7 +19,6 @@
 		49A1580B196BFC7800642677 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1580A196BFC7800642677 /* main.m */; };
 		49A1580F196BFC7800642677 /* VDFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1580E196BFC7800642677 /* VDFAppDelegate.m */; };
 		49A15811196BFC7800642677 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49A15810196BFC7800642677 /* Images.xcassets */; };
-		49A15818196BFC7800642677 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15817196BFC7800642677 /* XCTest.framework */; };
 		49A15819196BFC7800642677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A157FE196BFC7800642677 /* Foundation.framework */; };
 		49A1581A196BFC7800642677 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15802196BFC7800642677 /* UIKit.framework */; };
 		49A15822196BFC7800642677 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49A15820196BFC7800642677 /* InfoPlist.strings */; };
@@ -97,7 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49A15818196BFC7800642677 /* XCTest.framework in Frameworks */,
+				4990BFB919923C83005EED39 /* SystemConfiguration.framework in Frameworks */,
 				49A1581A196BFC7800642677 /* UIKit.framework in Frameworks */,
 				49A15819196BFC7800642677 /* Foundation.framework in Frameworks */,
 			);

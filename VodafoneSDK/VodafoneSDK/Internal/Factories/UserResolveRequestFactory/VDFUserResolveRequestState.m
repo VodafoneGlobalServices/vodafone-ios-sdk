@@ -35,7 +35,10 @@
 }
 
 - (void)updateWithParsedResponse:(id)parsedResponse {
-    VDFUserTokenDetails * userTokenDetails = (VDFUserTokenDetails*)parsedResponse;
+    VDFUserTokenDetails * userTokenDetails = nil;
+    if([parsedResponse isKindOfClass:[VDFUserTokenDetails class]]) {
+        userTokenDetails = (VDFUserTokenDetails*)parsedResponse;
+    }
     
     if(userTokenDetails != nil) {
         if(!self.satisfied) {

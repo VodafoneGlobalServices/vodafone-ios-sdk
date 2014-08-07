@@ -27,21 +27,28 @@ static NSString * const ValidatedKey = @"validated";
 - (instancetype)initWithJsonObject:(NSDictionary*)jsonObject {
     self = [super init];
     if(self) {
-        BOOL resolved = [[jsonObject objectForKey:ResolvedKey] boolValue];
-        BOOL stillRunning = [[jsonObject objectForKey:StillRunningKey] boolValue];
-        NSString *source = [jsonObject objectForKey:SourceKey];
-        NSString *token = [jsonObject objectForKey:TokenKey];
-        NSString *expires = [jsonObject objectForKey:ExpiresKey];
-        BOOL tetheringConflict = [[jsonObject objectForKey:TetheringConflictKey] boolValue];
-        BOOL validated = [[jsonObject objectForKey:ValidatedKey] boolValue];
         
-        _resolved = resolved;
-        _stillRunning = stillRunning;
-        _source = source;
-        _token = token;
-        [self setExpiresFromString:expires];
-        _tetheringConflict = tetheringConflict;
-        _validated = validated;
+        id resolved = [jsonObject objectForKey:ResolvedKey];
+        id stillRunning = [jsonObject objectForKey:StillRunningKey];
+        id source = [jsonObject objectForKey:SourceKey];
+        id token = [jsonObject objectForKey:TokenKey];
+        id expires = [jsonObject objectForKey:ExpiresKey];
+        id tetheringConflict = [jsonObject objectForKey:TetheringConflictKey];
+        id validated = [jsonObject objectForKey:ValidatedKey];
+        
+        if(resolved != nil && stillRunning != nil && source != nil &&
+           token != nil && expires != nil && tetheringConflict != nil &&
+           validated != nil) {
+            _resolved = [resolved boolValue];
+            _stillRunning = [stillRunning boolValue];
+            _source = source;
+            _token = token;
+            [self setExpiresFromString:expires];
+            _tetheringConflict = [tetheringConflict boolValue];
+            _validated = [validated boolValue];
+        } else {
+            self = nil;
+        }
     }
     return self;
 }

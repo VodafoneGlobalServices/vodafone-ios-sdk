@@ -10,6 +10,13 @@
 
 @interface VDFUserTokenDetails : NSObject <NSCoding>
 
+/**
+ *  Initializes model class with json object.
+ *
+ *  @param jsonObject Readed json object to the dictionary.
+ *
+ *  @return An initialized object, or nil if any json property is not provided and object could not be created for some reason that would not result in an exception.
+ */
 - (instancetype)initWithJsonObject:(NSDictionary*)jsonObject;
 
 /*! @abstract

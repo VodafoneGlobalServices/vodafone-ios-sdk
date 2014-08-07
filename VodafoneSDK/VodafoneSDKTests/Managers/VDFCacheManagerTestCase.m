@@ -9,7 +9,6 @@
 #import <XCTest/XCTest.h>
 #import "VDFCacheManager.h"
 #import "VDFBaseConfiguration.h"
-#import "VDFMockedRequest.h"
 
 
 @interface VDFCacheManagerTestCase : XCTestCase

@@ -10,6 +10,8 @@
 #import "VDFCacheManager.h"
 #import "VDFBaseConfiguration.h"
 
+extern void __gcov_flush();
+
 
 @interface VDFCacheManagerTestCase : XCTestCase
 
@@ -38,6 +40,7 @@
 
 - (void)tearDown
 {
+    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }

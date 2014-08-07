@@ -9,6 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "VDFStringHelper.h"
 
+extern void __gcov_flush();
+
 @interface VDFStringHelperTestCase : XCTestCase {
 @private
     NSArray *md5HashesTestCases;
@@ -34,6 +36,7 @@
 
 - (void)tearDown
 {
+    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }

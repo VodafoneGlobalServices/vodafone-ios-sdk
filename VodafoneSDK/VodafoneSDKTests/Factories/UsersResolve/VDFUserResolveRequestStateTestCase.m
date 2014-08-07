@@ -11,6 +11,8 @@
 #import "VDFUserResolveOptions.h"
 #import "VDFUserTokenDetails.h"
 
+extern void __gcov_flush();
+
 @interface VDFUserResolveRequestStateTestCase : XCTestCase
 
 @property (nonatomic, strong) NSString *initialSessionToken;
@@ -46,6 +48,7 @@
 
 - (void)tearDown
 {
+    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }

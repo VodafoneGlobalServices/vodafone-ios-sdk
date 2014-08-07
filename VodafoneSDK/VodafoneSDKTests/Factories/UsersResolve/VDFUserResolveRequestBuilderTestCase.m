@@ -9,6 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "VDFUserResolveRequestBuilder.h"
 
+extern void __gcov_flush();
+
 @interface VDFUserResolveRequestBuilderTestCase : XCTestCase
 
 @end
@@ -23,6 +25,7 @@
 
 - (void)tearDown
 {
+    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }

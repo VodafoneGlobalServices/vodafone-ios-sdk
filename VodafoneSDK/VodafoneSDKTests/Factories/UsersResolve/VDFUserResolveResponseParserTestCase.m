@@ -10,6 +10,8 @@
 #import "VDFUserResolveResponseParser.h"
 #import "VDFUserTokenDetails.h"
 
+extern void __gcov_flush();
+
 @interface VDFUserResolveResponseParserTestCase : XCTestCase
 
 - (void)assertTokenDetails:(VDFUserTokenDetails*)details withResolved:(BOOL)resolved stillRunning:(BOOL)stillRunning
@@ -28,6 +30,7 @@
 
 - (void)tearDown
 {
+    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }

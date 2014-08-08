@@ -7,6 +7,14 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
+#import "VDFServiceRequestsManager.h"
+#import "VDFBaseConfiguration.h"
+#import "VDFRequestBuilder.h"
+#import "VDFUsersServiceDelegate.h"
+#import "VDFUsersServiceDelegateMock.h"
+#import "VDFHttpConnector.h"
+#import "VDFCacheManager.h"
 
 extern void __gcov_flush();
 
@@ -15,6 +23,17 @@ extern void __gcov_flush();
 @end
 
 @implementation VDFServiceRequestsManagerTestCase
+
+/*
+@interface VDFServiceRequestsManager : VDFBaseManager <VDFHttpConnectorDelegate>
+
+- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration;
+
+- (void)performRequestWithBuilder:(id<VDFRequestBuilder>)request;
+
+- (void)clearRequestDelegate:(id<VDFUsersServiceDelegate>)requestDelegate;
+*/
+
 
 - (void)setUp
 {
@@ -29,10 +48,30 @@ extern void __gcov_flush();
     [super tearDown];
 }
 
-- (void)testExample
-{
-    // TODO
-//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+- (void)testMultipleSameRequests {
+    // test performing multiple requests on manager with the same parameters
+    
+    id connectorMock = OCMClassMock([VDFHttpConnector class]);
+    id configurationMock = OCMClassMock([VDFBaseConfiguration class]);
+    id cacheManagerMock = OCMClassMock([VDFCacheManager class]);
+    
+    VDFServiceRequestsManager *managerToTest = [[VDFServiceRequestsManager alloc] initWithConfiguration:configurationMock cacheManager:cacheManagerMock];
+    [managerToTest performRequestWithBuilder:nil];
+    // Verify that expected methods were called
+
+//    cacheManagerMock 
+//    OCMVerify([connectorMock startCommunication]);
 }
+
+- (void)testPerformingCachedResponse {
+    // test requests on manager where response is cached
+}
+
+- (void)testPerformOfRequest {
+}
+
+- (void)testRetryRequests {
+}
+
 
 @end

@@ -85,7 +85,7 @@ static VDFBaseConfiguration * g_configuration = nil;
     
     static dispatch_once_t onceTokenRequestManager;
     dispatch_once(&onceTokenRequestManager, ^{
-        sharedRequestManagerInstance = [[VDFServiceRequestsManager alloc] initWithConfiguration:g_configuration];
+        sharedRequestManagerInstance = [[VDFServiceRequestsManager alloc] initWithConfiguration:g_configuration cacheManager:[VDFSettings sharedCacheManager]];
     });
     
     return sharedRequestManagerInstance;

@@ -29,7 +29,9 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
         self.requestOptions = [options copy]; // we need to copy this options because if the session token will change we need to update it
         self.delegate = delegate;
         
-        [[self observersContainer] registerObserver:self.delegate];
+        if(self.delegate != nil) {
+            [[self observersContainer] registerObserver:self.delegate];
+        }
     }
     return self;
 }

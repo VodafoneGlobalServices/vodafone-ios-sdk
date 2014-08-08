@@ -52,6 +52,7 @@
 #pragma mark - VDFServiceRequestsManager class
 
 @interface VDFServiceRequestsManager ()
+@property (nonatomic, strong) VDFCacheManager *cacheManager;
 @property (nonatomic, strong) VDFBaseConfiguration *configuration;
 // array of VDFPendingRequestHolder objects
 @property (nonatomic) NSMutableArray *pendingRequests;
@@ -64,10 +65,11 @@
 
 @implementation VDFServiceRequestsManager
 
-- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration {
+- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration cacheManager:(VDFCacheManager *)cacheManager {
     self = [super init];
     if(self) {
         VDFLogD(@"Initializing Service Request Manager");
+        self.cacheManager = cacheManager;
         self.configuration = configuration;
         self.pendingRequests = [[NSMutableArray alloc] init];
     }
@@ -96,10 +98,10 @@
         if(!handled) {
             // check cache:
             VDFCacheObject *cacheObject = [[builder factory] createCacheObject];
-            if(cacheObject != nil && [[VDFSettings sharedCacheManager] isObjectCached:cacheObject]) {
+            if(cacheObject != nil && [self.cacheManager isObjectCached:cacheObject]) {
                 // our object is cached so we read cache:
                 VDFLogD(@"Response Object is cached, so we read this from cache.");
-                cacheObject = [[VDFSettings sharedCacheManager] readCacheObject:cacheObject];
+                cacheObject = [self.cacheManager readCacheObject:cacheObject];
                 responseCachedObject = cacheObject.cacheValue;
                 handled = YES;
             }
@@ -234,7 +236,7 @@
             VDFCacheObject *cacheObject = [pendingRequestHolder.builder.factory createCacheObject];
             if(cacheObject != nil) {
                 cacheObject.cacheValue = parsedObject;
-                [[VDFSettings sharedCacheManager] cacheObject:cacheObject];
+                [self.cacheManager cacheObject:cacheObject];
             }
         }
     }

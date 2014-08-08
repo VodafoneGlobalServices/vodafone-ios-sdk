@@ -12,7 +12,7 @@
 #import "VDFUsersServiceDelegate.h"
 #import "VDFRequestBuilder.h"
 
-@class VDFBaseConfiguration;
+@class VDFBaseConfiguration, VDFCacheManager;
 
 /**
  *  Manager of SDK requests performed from services.
@@ -23,10 +23,11 @@
  *  Initialization of request manager instance.
  *
  *  @param configuration Configuration object containing initial defaults.
+ *  @param cacheManager Cache manager instance.
  *
  *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
  */
-- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration;
+- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration cacheManager:(VDFCacheManager*)cacheManager;
 
 /**
  *  Method reponsible of checking cache and if needed performing new request to http/https server.

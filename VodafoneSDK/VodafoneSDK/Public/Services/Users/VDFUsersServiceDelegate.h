@@ -37,9 +37,9 @@
  
  @param response
     Results of operation.
- @param errorCode
+ @param error
     An error object which occurred. Error code is from Vodafone SDK domain.
  */
-- (void)didValidatedSMSToken:(VDFSmsValidationResponse*)response withError:(NSError*)errorCode;
+- (void)didValidatedSMSToken:(VDFSmsValidationResponse*)response withError:(NSError*)error;
 
 @end

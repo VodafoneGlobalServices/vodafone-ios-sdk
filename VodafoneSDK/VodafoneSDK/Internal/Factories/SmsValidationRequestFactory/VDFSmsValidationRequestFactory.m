@@ -43,7 +43,7 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"code\" : \"%@\" }";
 
 - (VDFHttpConnector*)createHttpConnectorRequestWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
-    NSString * requestUrl = [self.builder.configuration.endpointBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
+    NSString * requestUrl = [self.builder.configuration.backEndBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;

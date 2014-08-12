@@ -17,7 +17,8 @@
 #import "VDFLogUtility.h"
 
 
-static NSString * const g_endpointBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
+static NSString * const g_backEndBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
+static NSString * const g_apixBaseUrl = @"https ://api.developer.vodafone.com";
 static VDFBaseConfiguration * g_configuration = nil;
 
 @implementation VDFSettings
@@ -31,21 +32,15 @@ static VDFBaseConfiguration * g_configuration = nil;
         g_configuration = [[VDFBaseConfiguration alloc] init];
         g_configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
         g_configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
-        g_configuration.endpointBaseUrl = g_endpointBaseURL;
+        g_configuration.backEndBaseUrl = g_backEndBaseURL;
+        g_configuration.apixBaseUrl = g_apixBaseUrl;
+        
         
         VDFLogD(@"-- applicationId:%@", g_configuration.applicationId);
         VDFLogD(@"-- sdkVersion:%@", g_configuration.sdkVersion);
-        VDFLogD(@"-- endpointBaseUrl:%@", g_configuration.endpointBaseUrl);
+        VDFLogD(@"-- backEndBaseUrl:%@", g_configuration.backEndBaseUrl);
+        VDFLogD(@"-- apixBaseUrl:%@", g_configuration.apixBaseUrl);
         
-        // setting cache directory:
-        VDFLogD(@"Configuring cache directory");
-        NSError *error = nil;
-        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        g_configuration.cacheDirectoryPath = [documentsDirectory stringByAppendingPathComponent:@"cache"];
-        [[NSFileManager defaultManager] createDirectoryAtPath:g_configuration.cacheDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
-        [VDFErrorUtility handleInternalError:error];
-        
-        VDFLogD(@"-- cacheDirectoryPath:%@", g_configuration.cacheDirectoryPath);
         
         g_configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
         g_configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second

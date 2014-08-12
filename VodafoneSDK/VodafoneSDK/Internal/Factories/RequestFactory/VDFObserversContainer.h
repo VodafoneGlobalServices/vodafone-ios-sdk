@@ -14,6 +14,13 @@
 @protocol VDFObserversContainer <NSObject>
 
 /**
+ *  List of all registered Observers
+ *
+ *  @return List of observers.
+ */
+- (NSArray*)registeredObservers;
+
+/**
  *  Sets selector which need to be called on each observer.
  *  If specified observer do not contains specified method it won't be called on this observer.
  *

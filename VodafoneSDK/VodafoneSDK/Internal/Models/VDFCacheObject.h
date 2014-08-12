@@ -39,24 +39,6 @@
 
 /*!
  @abstract
-    Sets directory where all cache files will be stored.
- */
-+ (void)setCacheDirectory:(NSString*)cacheDirectory;
-
-/*!
- @abstract
-    Remove stored cache file. Need to be invoked when is removed from cache.
- */
-- (void)removeCacheFile;
-
-/*!
- @abstract
-    Store cache value to file.
- */
-- (void)saveCacheFile;
-
-/*!
- @abstract
     Checks this cache object is still valid.
  */
 - (BOOL)isExpired;

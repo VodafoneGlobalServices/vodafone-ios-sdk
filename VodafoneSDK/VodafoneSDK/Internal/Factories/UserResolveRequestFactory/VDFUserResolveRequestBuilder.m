@@ -14,10 +14,6 @@
 static NSString * const URLEndpointQuery = @"/users/resolve";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
 
-@interface VDFUserResolveRequestBuilder ()
-@property (nonatomic, assign) id<VDFUsersServiceDelegate> delegate;
-@end
-
 @implementation VDFUserResolveRequestBuilder
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate {
@@ -27,10 +23,9 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
         _httpRequestMethodType = HTTPMethodPOST;
         
         self.requestOptions = [options copy]; // we need to copy this options because if the session token will change we need to update it
-        self.delegate = delegate;
         
-        if(self.delegate != nil) {
-            [[self observersContainer] registerObserver:self.delegate];
+        if(delegate != nil) {
+            [[self observersContainer] registerObserver:delegate];
         }
     }
     return self;
@@ -42,10 +37,6 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 #pragma mark -
 #pragma mark VDFRequestFactoryBuilder Implementation
-
-- (id)observer {
-    return self.delegate;
-}
 
 - (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder {
     if(builder == nil || ![builder isKindOfClass:[VDFUserResolveRequestBuilder class]]) {

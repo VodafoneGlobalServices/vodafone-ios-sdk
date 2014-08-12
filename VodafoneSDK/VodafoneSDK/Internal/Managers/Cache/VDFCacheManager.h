@@ -27,7 +27,7 @@
 // TODO documentation
 - (BOOL)isObjectCached:(VDFCacheObject*)cacheObject;
 
-- (VDFCacheObject*)readCacheObject:(VDFCacheObject*)cacheObject;
+- (id)readCacheObject:(VDFCacheObject*)cacheObject;
 
 - (void)cacheObject:(VDFCacheObject*)cacheObject;
 

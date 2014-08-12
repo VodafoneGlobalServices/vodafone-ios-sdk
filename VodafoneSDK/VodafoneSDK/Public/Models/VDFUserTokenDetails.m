@@ -62,7 +62,7 @@ static NSString * const ValidatedKey = @"validated";
 //    [dateFormatter setLocale:enUSPOSIXLocale];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     
-    _expires = [dateFormatter dateFromString:expiresDateString];
+//    _expires = [dateFormatter dateFromString:expiresDateString];
 }
 
 
@@ -76,7 +76,7 @@ static NSString * const ValidatedKey = @"validated";
         _stillRunning = [decoder decodeBoolForKey:StillRunningKey];
         _source = [decoder decodeObjectForKey:SourceKey];
         _token = [decoder decodeObjectForKey:TokenKey];
-        _expires = [decoder decodeObjectForKey:ExpiresKey];
+//        _expires = [decoder decodeObjectForKey:ExpiresKey];
         _tetheringConflict = [decoder decodeBoolForKey:TetheringConflictKey];
         _validated = [decoder decodeBoolForKey:ValidatedKey];
     }
@@ -89,7 +89,7 @@ static NSString * const ValidatedKey = @"validated";
     [encoder encodeBool:_stillRunning forKey:StillRunningKey];
     [encoder encodeObject:_source forKey:SourceKey];
     [encoder encodeObject:_token forKey:TokenKey];
-    [encoder encodeObject:_expires forKey:ExpiresKey];
+//    [encoder encodeObject:_expires forKey:ExpiresKey];
     [encoder encodeBool:_tetheringConflict forKey:TetheringConflictKey];
     [encoder encodeBool:_validated forKey:ValidatedKey];
 }

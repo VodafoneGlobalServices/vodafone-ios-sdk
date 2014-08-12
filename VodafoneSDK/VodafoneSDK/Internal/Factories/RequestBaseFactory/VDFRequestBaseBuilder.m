@@ -36,11 +36,6 @@
     return self.internalFactory;
 }
 
-- (id)observer {
-    [self doesNotRecognizeSelector:_cmd];
-    __builtin_unreachable();
-}
-
 - (id<VDFResponseParser>)responseParser {
     if(self.internalResponseParser == nil) {
         self.internalResponseParser = [self.internalFactory createResponseParser];

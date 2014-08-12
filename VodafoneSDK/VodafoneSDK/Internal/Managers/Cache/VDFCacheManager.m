@@ -12,12 +12,9 @@
 #import "VDFCacheObject.h"
 #import "VDFLogUtility.h"
 
-static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
-
 @interface VDFCacheManager ()
 @property (nonatomic, strong) VDFBaseConfiguration *configuration;
 @property (nonatomic, strong) NSMutableArray *cacheObjects;
-@property (nonatomic, strong) NSString *cacheArrayPath;
 
 /*!
  Check object at specified path is not expired. If expired delete it and create new path for the file
@@ -37,26 +34,10 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
     self = [super init];
     if(self) {
         VDFLogD(@"Initializing VDFCacheManager instance.");
-        VDFLogD(@"Cache dir path: %@", configuration.cacheDirectoryPath);
         self.configuration = configuration;
         
-        // initialize CacheObject:
-        [VDFCacheObject setCacheDirectory:configuration.cacheDirectoryPath];
-        
         // load main cache files list:
-        self.cacheArrayPath = [self.configuration.cacheDirectoryPath stringByAppendingPathComponent:CACHE_ARRAY_FILE_NAME];
-        if([[NSFileManager defaultManager] isReadableFileAtPath:self.cacheArrayPath]) {
-            @try {
-                self.cacheObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:self.cacheArrayPath];
-            }
-            @catch (NSException *exception) {
-                VDFLogD(@"Reading cache array %@ from file raises an error of invalid archive format, so the cache array cannot be readed.", self.cacheArrayPath);
-                self.cacheObjects = [[NSMutableArray alloc] init];
-            }
-        }
-        else {
-            self.cacheObjects = [[NSMutableArray alloc] init];
-        }
+        self.cacheObjects = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -66,7 +47,7 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
     return interlCacheObject != nil;
 }
 
-- (VDFCacheObject*)readCacheObject:(VDFCacheObject*)cacheObject {
+- (id)readCacheObject:(VDFCacheObject*)cacheObject {
     VDFLogD(@"Reading response from cache.");
     VDFCacheObject *interlCacheObject = [self findCorrespondingCacheObject:cacheObject];
     return interlCacheObject;
@@ -78,13 +59,9 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
         VDFLogD(@"Adding new cache object.");
         // create new cache object:
         [self.cacheObjects addObject:cacheObject];
-        // save cache array:
-        [NSKeyedArchiver archiveRootObject:self.cacheObjects toFile:self.cacheArrayPath];
-        [cacheObject saveCacheFile];
     }
     else {
         interlCacheObject.cacheValue = cacheObject.cacheValue;
-        [interlCacheObject saveCacheFile];
     }
 }
 
@@ -102,7 +79,6 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
     
     // remove objects marked to delete
     for (VDFCacheObject *cacheObject in objectsToRemove) {
-        [cacheObject removeCacheFile];
         [self.cacheObjects removeObject:cacheObject];
     }
 }
@@ -133,7 +109,6 @@ static NSString * const CACHE_ARRAY_FILE_NAME = @"cache.dat";
     // remove objects marked to delete
     for (VDFCacheObject *cacheObject in objectsToRemove) {
         VDFLogD(@"Removing cache object because it is out of date.");
-        [cacheObject removeCacheFile];
         [self.cacheObjects removeObject:cacheObject];
     }
     

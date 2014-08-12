@@ -67,7 +67,6 @@ extern void __gcov_flush();
     
     VDFUserResolveRequestBuilder *requestBuilder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:self.appId withOptions:self.options withConfiguration:self.config delegate:self.delegateMock];
     
-    XCTAssertTrue([requestBuilder observer] == self.delegateMock, @"Observer is not set properly");
     XCTAssertTrue([requestBuilder.requestOptions isEqualToOptions:self.options], @"Request options is not set properly");
     XCTAssertEqual(requestBuilder.httpRequestMethodType, HTTPMethodPOST, @"HttpMethod should be POST");
     XCTAssertNotNil(requestBuilder.urlEndpointQuery, @"Endpoint query cannot be nil");

@@ -69,7 +69,7 @@
     VDFCacheObject *cacheObject = [[builder factory] createCacheObject];
     
     if([[VDFSettings sharedCacheManager] isObjectCached:cacheObject]) {
-        userDetails = (VDFUserTokenDetails*)[[[VDFSettings sharedCacheManager] readCacheObject:cacheObject] cacheValue];
+        userDetails = (VDFUserTokenDetails*)[[VDFSettings sharedCacheManager] readCacheObject:cacheObject];
         if(![userDetails isKindOfClass:[VDFUserTokenDetails class]]) {
             userDetails = nil;
         }
@@ -100,7 +100,7 @@
     VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
     
     // inform about request remove
-    [requestsManager clearRequestDelegate:delegate];
+    [requestsManager removeRequestObserver:delegate];
 }
 
 @end

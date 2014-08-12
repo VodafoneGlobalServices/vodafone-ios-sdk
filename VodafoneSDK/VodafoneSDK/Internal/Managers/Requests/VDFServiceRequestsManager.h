@@ -7,8 +7,6 @@
 //
 
 #import "VDFBaseManager.h"
-#import "VDFRequest.h"
-#import "VDFHttpConnectorDelegate.h"
 #import "VDFUsersServiceDelegate.h"
 #import "VDFRequestBuilder.h"
 
@@ -17,7 +15,7 @@
 /**
  *  Manager of SDK requests performed from services.
  */
-@interface VDFServiceRequestsManager : VDFBaseManager <VDFHttpConnectorDelegate>
+@interface VDFServiceRequestsManager : VDFBaseManager
 
 /**
  *  Initialization of request manager instance.
@@ -46,6 +44,6 @@
  *
  *  @param requestDelegate Delegate object which need to be unsubscribed.
  */
-- (void)clearRequestDelegate:(id<VDFUsersServiceDelegate>)requestDelegate;
+- (void)removeRequestObserver:(id)requestDelegate;
 
 @end

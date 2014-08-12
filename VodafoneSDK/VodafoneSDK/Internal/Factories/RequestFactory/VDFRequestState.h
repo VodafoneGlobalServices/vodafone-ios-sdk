@@ -30,9 +30,9 @@
 /**
  *  Indicates is this request has finished or need to retry the http request.
  *
- *  @return YES - when not need to retry the http request, NO - when need to retry.
+ *  @return YES - when need to retry, NO - when not need to retry the http request.
  */
-- (BOOL)isSatisfied;
+- (BOOL)isRetryNeeded;
 
 /**
  *  Indicates date when last response has to be expired.

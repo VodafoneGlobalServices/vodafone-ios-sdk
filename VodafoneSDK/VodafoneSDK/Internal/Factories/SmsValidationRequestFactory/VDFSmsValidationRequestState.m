@@ -20,8 +20,8 @@
 - (void)updateWithParsedResponse:(id)parsedResponse {
 }
 
-- (BOOL)isSatisfied {
-    return YES; // it's always satisfied because this request is not waiting for server side changes
+- (BOOL)isRetryNeeded {
+    return NO; // it never need to retry because this request is not waiting for server side changes
 }
 
 - (NSDate*)lastResponseExpirationDate {

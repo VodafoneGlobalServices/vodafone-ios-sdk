@@ -105,7 +105,7 @@
     VDFUserTokenDetails *userDetails = [[VDFUsersService sharedInstance] getUserDetails:options];
     
     if(userDetails != nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n onGetUserDetailsButtonClick: resolved=%i, stillRunning=%i, source=%@, token=%@, expires=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.expires, userDetails.tetheringConflict, userDetails.validated];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n onGetUserDetailsButtonClick: resolved=%i, stillRunning=%i, source=%@, token=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.tetheringConflict, userDetails.validated];
     } else {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingString:@"\n onGetUserDetailsButtonClick: nil"];
     }
@@ -116,7 +116,7 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, source=%@, token=%@, expires=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.expires, userDetails.tetheringConflict, userDetails.validated];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, source=%@, token=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.tetheringConflict, userDetails.validated];
         
         // autofill boxes:
         if([self.userResolveSessionTokenTextField.text isEqualToString:@""]) {

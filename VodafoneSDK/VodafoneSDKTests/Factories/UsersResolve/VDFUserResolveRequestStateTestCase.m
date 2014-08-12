@@ -74,8 +74,8 @@ extern void __gcov_flush();
     [self.requestState updateWithParsedResponse:tokenDetials];
     
     // Assertions:
-    XCTAssertFalse([self.requestState isSatisfied], @"After updating with parsed response with stillRuningFlag seted to true the satisfaction of state should be false.");
-    XCTAssertEqualObjects([self.requestState lastResponseExpirationDate], [NSDate dateWithTimeIntervalSince1970:1407495452], @"After updating with parsed response the last response expiration date should change.");
+    XCTAssertTrue([self.requestState isRetryNeeded], @"After updating with parsed response with stillRuningFlag seted to true the isRetryNeeded property of state should be true.");
+    XCTAssertEqualObjects([self.requestState lastResponseExpirationDate], [NSDate dateWithTimeIntervalSince1970:0], @"After updating with parsed response the last response expiration date should not change and points to date from past.");
     
     // check is initialized options corresponds to new session token:
     XCTAssertEqualObjects(self.options.token, tokenDetials.token, @"After updating with new sesion token the token from initialization object should change.");
@@ -85,7 +85,7 @@ extern void __gcov_flush();
     [self.requestState updateWithParsedResponse:[[VDFUserTokenDetails alloc] initWithJsonObject:self.validTokenDetailsJson]];
     
     // Assertions:
-    XCTAssertTrue([self.requestState isSatisfied], @"After updating with parsed response with stillRuningFlag seted to false the satisfaction of state should be true.");
+    XCTAssertFalse([self.requestState isRetryNeeded], @"After updating with parsed response with stillRuningFlag seted to false the isRetryNeeded property of state should be false.");
 }
 
 - (void)testStateWithInvalidResponseUpdate {
@@ -100,7 +100,7 @@ extern void __gcov_flush();
 
 - (void)checkIsCurrentlyInitialStateWithMessagePrefix:(NSString*)messagePrefix {
     
-    XCTAssertFalse([self.requestState isSatisfied], @"%@ should not change initial isSatisfied=false flag.", messagePrefix);
+    XCTAssertTrue([self.requestState isRetryNeeded], @"%@ should not change initial isRetryNeeded=true flag.", messagePrefix);
     XCTAssertNotEqualObjects([self.requestState lastResponseExpirationDate], [NSDate dateWithTimeIntervalSinceNow:3600*24], @"%@ should not change the default value of one day.", messagePrefix); // TODO after moving this value to the configutation please update this test case
     
     // check is initialized options session token do not changed:

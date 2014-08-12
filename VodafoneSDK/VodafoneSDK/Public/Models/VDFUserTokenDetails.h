@@ -40,7 +40,7 @@
 /*! @abstract
     This parameter gives the date/time until the token is considered valid on the server side.
     The format of this parameter is in ISO_8601 format. For example: 2014-07-06T04:00:33+00:00 */
-@property (nonatomic, readonly) NSDate *expires;
+//@property (nonatomic, readonly) NSDate *expires;
 
 /*! @abstract
     True in case that the ICCID was read from a SIM but the header contains a different value for 

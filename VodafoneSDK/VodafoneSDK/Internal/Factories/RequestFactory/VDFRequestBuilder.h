@@ -14,8 +14,6 @@
 
 - (id<VDFRequestFactory>)factory;
 
-- (id)observer;
-
 /**
  *  Creates response parser object.
  *  Each call to this method return only one object per each builder instance.

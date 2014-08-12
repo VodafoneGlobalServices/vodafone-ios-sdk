@@ -12,7 +12,7 @@
 #import "VDFUserResolveOptions.h"
 
 @interface VDFUserResolveRequestState ()
-@property BOOL satisfied;
+@property BOOL needRetry;
 @property NSDate *expiresIn;
 @property (nonatomic, strong) VDFUserResolveOptions *requestOptions;
 @end
@@ -23,6 +23,7 @@
     self = [super init];
     if(self) {
         self.requestOptions = options;
+        self.needRetry = YES; // as default this request is waiting on server changes
     }
     return self;
 }
@@ -41,25 +42,23 @@
     }
     
     if(userTokenDetails != nil) {
-        if(!self.satisfied) {
-            self.satisfied = !userTokenDetails.stillRunning;
+        if(self.needRetry) {
+            self.needRetry = userTokenDetails.stillRunning;
         }
-        self.expiresIn = userTokenDetails.expires;
+//        self.expiresIn = userTokenDetails.expires;
         if(userTokenDetails.token != nil) {
             self.requestOptions.token = userTokenDetails.token;
         }
     }
 }
 
-- (BOOL)isSatisfied {
-    return self.satisfied;
+- (BOOL)isRetryNeeded {
+    return self.needRetry;
 }
 
 - (NSDate*)lastResponseExpirationDate {
-    if(self.expiresIn == nil) {
-        self.expiresIn = [NSDate dateWithTimeIntervalSinceNow:3600*24]; // default one day - TODO move to the configuration
-    }
-    return self.expiresIn;
+    // The user resolve response is never cached, every call schould perform server http request
+    return [NSDate dateWithTimeIntervalSince1970:0];
 }
 
 @end

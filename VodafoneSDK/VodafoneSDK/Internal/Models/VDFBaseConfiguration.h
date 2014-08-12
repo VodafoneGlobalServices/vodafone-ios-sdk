@@ -24,14 +24,14 @@
 @property (nonatomic, copy) NSString *sdkVersion;
 
 /**
- *  Http host of server.
+ *  Http BE host.
  */
-@property (nonatomic, copy) NSString *endpointBaseUrl;
+@property (nonatomic, copy) NSString *backEndBaseUrl;
 
 /**
- *  Directory of cache stored on device.
+ *  Http APIX host.
  */
-@property (nonatomic, copy) NSString *cacheDirectoryPath;
+@property (nonatomic, copy) NSString *apixBaseUrl;
 
 /**
  *  Http connection time out.

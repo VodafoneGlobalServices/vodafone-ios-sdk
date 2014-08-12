@@ -48,7 +48,6 @@ extern void __gcov_flush();
 - (void)testSimpleCachingFlow
 {
     VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
-    configuration.cacheDirectoryPath = @"";
     configuration.applicationId = @"some test app id";
     
 //    VDFCacheManager *managerToTest = [[VDFCacheManager alloc] initWithConfiguration:configuration];

@@ -26,6 +26,10 @@
 #pragma mark -
 #pragma mark VDFObserversContainer Protocol Implementation
 
+- (NSArray*)registeredObservers {
+    return self.observers;
+}
+
 - (void)setObserversNotifySelector:(SEL)selector {
     self.notifySelector = selector;
 }

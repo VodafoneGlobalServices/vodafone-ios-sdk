@@ -61,6 +61,7 @@
     VDFLogD(@"For request: \n%@", self.builder);
     VDFLogD(@"Http response code: \n%i", request.lastResponseCode);
     VDFLogD(@"Http response data: \n%@", data);
+    VDFLogD(@"Http response data string: \n%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     
     id<NSCoding> parsedObject = nil;
     

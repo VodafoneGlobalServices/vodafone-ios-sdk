@@ -7,33 +7,35 @@
 //
 
 #import "VDFOAuthTokenResponseParser.h"
+#import "VDFOAuthTokenResponse.h"
+#import "VDFErrorUtility.h"
+#import "VDFLogUtility.h"
 
 @implementation VDFOAuthTokenResponseParser
 
 - (id<NSCoding>)parseData:(NSData*)data withHttpResponseCode:(NSInteger)responseCode {
     
-//    VDFUserTokenDetails* userTokenDetails = nil;
-//    if(data != nil) {
-//        
-//        VDFLogD(@"Parsing response: %@", data);
-//        NSError *error = nil;
-//        id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-//        BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
-//        
-//        if([VDFErrorUtility handleInternalError:error] || !isResponseValid) {
-//            // handle error here
-//            // TODO
-//        }
-//        else {
-//            // object parsed correctlly
-//            userTokenDetails = [[VDFUserTokenDetails alloc] initWithJsonObject:jsonObject];
-//        }
-//        VDFLogD(@"Parsed object: \n%@", userTokenDetails);
-//    }
-//    
-//    return userTokenDetails;
+    VDFOAuthTokenResponse *oAuthToken = nil;
+    if(data != nil && responseCode == 200) {
+        VDFLogD(@"Parsing response VDFOAuthTokenResponse");
+        
+        NSError *error = nil;
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
+        
+        if([VDFErrorUtility handleInternalError:error] || !isResponseValid) {
+            // handle error here
+            // TODO
+        }
+        else {
+            // object parsed correctlly
+            oAuthToken = [[VDFOAuthTokenResponse alloc] initWithJsonObject:jsonObject];
+        }
+        VDFLogD(@"Parsed object: \n%@", oAuthToken);
+
+    }
     
-    return nil; // TODO
+    return oAuthToken;
 }
 
 @end

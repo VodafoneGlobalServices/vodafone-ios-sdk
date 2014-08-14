@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDFOAuthTokenRequestOptions;
+
 /**
  *  Base configuration class
  */
@@ -26,7 +28,7 @@
 /**
  *  Http BE host.
  */
-@property (nonatomic, copy) NSString *backEndBaseUrl;
+@property (nonatomic, copy) NSString *hapBaseUrl;
 
 /**
  *  Http APIX host.
@@ -47,5 +49,20 @@
  *  Number of maximum requests retries.
  */
 @property (nonatomic, assign) NSInteger maxHttpRequestRetriesCount;
+
+/**
+ *  Client id for oAuthToken retrieval.
+ */
+@property (nonatomic, strong) NSString *oAuthTokenClientId;
+
+/**
+ *  Client secret for oAuthToken retrieval.
+ */
+@property (nonatomic, strong) NSString *oAuthTokenClientSecret;
+
+/**
+ *  Scope for oAuthToken retrieval.
+ */
+@property (nonatomic, strong) NSString *oAuthTokenScope;
 
 @end

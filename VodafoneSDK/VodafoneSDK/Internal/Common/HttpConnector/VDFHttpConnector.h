@@ -39,6 +39,10 @@
  *  HTTP code of the latest response. 0 - if there are not available any responses.
  */
 @property (nonatomic, readonly) NSInteger lastResponseCode;
+/**
+ * Additional headers which can be added or override standard headers in the request.
+ */
+@property (nonatomic, strong) NSDictionary *requestHeaders;
 
 /**
  *  Init method.

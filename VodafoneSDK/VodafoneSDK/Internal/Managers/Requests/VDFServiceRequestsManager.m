@@ -33,7 +33,6 @@
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 @property (nonatomic, strong) VDFBaseConfiguration *configuration;
 @property (nonatomic, strong) VDFHttpConnectionsQueue *connectionsQueue;
-@property (nonatomic, strong) NSObject *synchronizationUnit;
 @end
 
 @implementation VDFServiceRequestsManager
@@ -50,40 +49,60 @@
 }
 
 - (void)performRequestWithBuilder:(id<VDFRequestBuilder>)builder {
-    id<NSCoding> responseCachedObject = nil;
     
-    @synchronized(self.connectionsQueue) {
-        // check cache:
-        VDFCacheObject *cacheObject = [[builder factory] createCacheObject];
-        if(cacheObject != nil && [self.cacheManager isObjectCached:cacheObject]) {
-            // our object is cached so we read cache:
-            VDFLogD(@"Response Object is cached, so we read this from cache.");
-            responseCachedObject = [self.cacheManager readCacheObject:cacheObject];
-        }
-        else {
-            // add this to queue:
-            [self.connectionsQueue enqueueRequestBuilder:builder];
-        }
+    if(builder == nil) {
+        return;
     }
     
-    // if we readed response from cache so we invoking this after synchronization
-    if(responseCachedObject != nil) {
-        VDFLogD(@"Invoking response delegate with response readed from cache.");
-        [[builder observersContainer] notifyAllObserversWith:responseCachedObject error:nil];
+    // check dependant request if it is needed:
+    BOOL isDependantImplemented = [builder respondsToSelector:@selector(dependentRequestBuilder)] && [builder respondsToSelector:@selector(setResumeTarget:selector:)];
+    id<VDFRequestBuilder> dependsOn = isDependantImplemented ? [builder dependentRequestBuilder] : nil;
+    if(dependsOn != nil) {
+        [builder setResumeTarget:self selector:@selector(performRequestWithBuilder:)];
+        [self performRequestWithBuilder:dependsOn];
+        
+    }
+    else {
+        id<NSCoding> responseCachedObject = nil;
+        @synchronized(self.connectionsQueue) {
+            // check cache:
+            VDFCacheObject *cacheObject = [[builder factory] createCacheObject];
+            if(cacheObject != nil && [self.cacheManager isObjectCached:cacheObject]) {
+                // our object is cached so we read cache:
+                VDFLogD(@"Response Object is cached, so we read this from cache.");
+                responseCachedObject = [self.cacheManager readCacheObject:cacheObject];
+            }
+            else {
+                // add this to queue:
+                [self.connectionsQueue enqueueRequestBuilder:builder];
+            }
+        }
+        
+        // if we readed response from cache so we invoking this after synchronization
+        if(responseCachedObject != nil) {
+            VDFLogD(@"Invoking response delegate with response readed from cache.");
+            [[builder observersContainer] notifyAllObserversWith:responseCachedObject error:nil];
+        }
     }
 }
 
-- (void)removeRequestObserver:(id<VDFUsersServiceDelegate>)requestDelegate {
+- (void)removeRequestObserver:(id)requestDelegate {
+    
+    if(requestDelegate == nil) {
+        return;
+    }
+    
     // find all requests with this response delegate object
     @synchronized(self.connectionsQueue) {
         NSMutableArray *itemsToRemove = [NSMutableArray array];
         
         // clear all corresponding requests with this registered delegate:
         for (VDFPendingRequestItem *item in [self.connectionsQueue allPendingRequests]) {
-            [[item.builder observersContainer] unregisterObserver:requestDelegate];
+            id<VDFObserversContainer> observersContainer = [item.builder observersContainer];
+            [observersContainer unregisterObserver:requestDelegate];
             
             // if there is no waiting observers we need to stop request:
-            if([[item.builder observersContainer] count] == 0) {
+            if([observersContainer count] == 0) {
                 [itemsToRemove addObject:item];
             }
         }

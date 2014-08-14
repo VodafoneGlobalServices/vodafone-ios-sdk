@@ -15,6 +15,8 @@
 @property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
 @property (nonatomic, strong) NSMutableData *receivedData;
 
+- (void)addHeadersToRequest:(NSMutableURLRequest*)request;
+
 - (void)get:(NSString*)url;
 - (void)post:(NSString*)url withBody:(NSData*)body;
 @end
@@ -64,11 +66,26 @@
     return 0;
 }
 
+#pragma mark -
+#pragma mark Private implementation
+
+- (void)addHeadersToRequest:(NSMutableURLRequest*)request {
+    
+    if(self.requestHeaders != nil) {
+        for (NSString *headerKey in [self.requestHeaders allKeys]) {
+            [request setValue:[self.requestHeaders valueForKey:headerKey] forHTTPHeaderField:headerKey];
+        }
+    }
+    
+}
+
 - (void)get:(NSString*)url {
-    NSURLRequest *request =
-    [NSURLRequest requestWithURL:[NSURL URLWithString:url]
+    NSMutableURLRequest *request =
+    [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                      cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                  timeoutInterval:self.connectionTimeout];
+    
+    [self addHeadersToRequest:request];
     
     // sending request:
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -98,6 +115,9 @@
     //[request addValue:@"8bit" forHTTPHeaderField:@"Content-Transfer-Encoding"];
     [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request addValue:[NSString stringWithFormat:@"%lu", (unsigned long)[body length]] forHTTPHeaderField:@"Content-Length"];
+    
+    [self addHeadersToRequest:request];
+    
     [request setHTTPBody:body];
     
     VDFLogD(@"POST %@\n------\n%@\n------", url, [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
@@ -117,6 +137,19 @@
 
 #pragma mark -
 #pragma mark NSURLConnectionDelegate
+
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
+    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        // accepting all ssl certificates
+        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
+    }
+    
+    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+}
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
     [self.receivedData setLength:0];

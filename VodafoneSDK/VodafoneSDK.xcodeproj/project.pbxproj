@@ -291,6 +291,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49135060199B9E5D004C1AE8 /* ConfigurationUpdate */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ConfigurationUpdate;
+			sourceTree = "<group>";
+		};
 		492DDFE9198F831100DA8171 /* Factories */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,6 +474,7 @@
 		49A1586C196C330700642677 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				49135060199B9E5D004C1AE8 /* ConfigurationUpdate */,
 				49A15872196C334A00642677 /* Cache */,
 				49A15871196C334100642677 /* Requests */,
 				49A1586D196C333800642677 /* VDFBaseManager.h */,

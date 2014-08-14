@@ -11,15 +11,17 @@
 #import "VDFEnums.h"
 #import "VDFUsersServiceDelegate.h"
 #import "VDFRequestBaseBuilder.h"
+#import "VDFOAuthTokenRequestDelegate.h"
 
-@class VDFBaseConfiguration, VDFUserResolveOptions;
+@class VDFBaseConfiguration, VDFUserResolveOptions, VDFOAuthTokenResponse;
 
-@interface VDFUserResolveRequestBuilder : VDFRequestBaseBuilder
+@interface VDFUserResolveRequestBuilder : VDFRequestBaseBuilder <VDFOAuthTokenRequestDelegate>
 
 // TODO documentation
 @property (nonatomic, strong) VDFUserResolveOptions *requestOptions;
 @property (nonatomic, readonly) NSString *urlEndpointQuery;
 @property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
+@property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate;
 

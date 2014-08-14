@@ -17,6 +17,6 @@
 @property (nonatomic, strong) VDFBaseConfiguration *configuration;
 @property (nonatomic, strong) NSString *applicationId;
 
-- (instancetype)initWithFactory:(id<VDFRequestFactory>)factory applicationId:(NSString*)applicationId configuration:(VDFBaseConfiguration*)configuration;
+- (instancetype)initWithApplicationId:(NSString*)applicationId configuration:(VDFBaseConfiguration*)configuration;
 
 @end

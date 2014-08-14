@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class VDFOAuthToken;
+@class VDFOAuthTokenResponse;
 
 // TODO documentation
 @protocol VDFOAuthTokenRequestDelegate <NSObject>
 
--(void)didReceivedOAuthToken:(VDFOAuthToken*)oAuthToken withError:(NSError*)error;
+-(void)didReceivedOAuthToken:(VDFOAuthTokenResponse*)oAuthToken withError:(NSError*)error;
 
 @end

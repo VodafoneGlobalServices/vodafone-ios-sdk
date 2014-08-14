@@ -16,9 +16,11 @@
 #import "VDFErrorUtility.h"
 #import "VDFLogUtility.h"
 
-
-static NSString * const g_backEndBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
-static NSString * const g_apixBaseUrl = @"https ://api.developer.vodafone.com";
+static NSString * const g_oAuthClientKey = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
+static NSString * const g_oAuthClientSecret = @"k4l1RXZGqMnw2cD8";
+static NSString * const g_oAuthTokenScope = @"SSO_OAUTH2_INPUT";
+static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
+static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
 static VDFBaseConfiguration * g_configuration = nil;
 
 @implementation VDFSettings
@@ -32,19 +34,24 @@ static VDFBaseConfiguration * g_configuration = nil;
         g_configuration = [[VDFBaseConfiguration alloc] init];
         g_configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
         g_configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
-        g_configuration.backEndBaseUrl = g_backEndBaseURL;
+        g_configuration.hapBaseUrl = g_hapBaseURL;
         g_configuration.apixBaseUrl = g_apixBaseUrl;
         
         
         VDFLogD(@"-- applicationId:%@", g_configuration.applicationId);
         VDFLogD(@"-- sdkVersion:%@", g_configuration.sdkVersion);
-        VDFLogD(@"-- backEndBaseUrl:%@", g_configuration.backEndBaseUrl);
+        VDFLogD(@"-- hapBaseUrl:%@", g_configuration.hapBaseUrl);
         VDFLogD(@"-- apixBaseUrl:%@", g_configuration.apixBaseUrl);
         
         
         g_configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
         g_configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second
         g_configuration.maxHttpRequestRetriesCount = 10;
+        
+        // oAuth token retrieval configuration:
+        g_configuration.oAuthTokenClientId = g_oAuthClientKey;
+        g_configuration.oAuthTokenClientSecret = g_oAuthClientSecret;
+        g_configuration.oAuthTokenScope = g_oAuthTokenScope;
     }
 }
 

@@ -14,16 +14,21 @@
 static NSString * const URLEndpointQuery = @"/2/oauth/access-token";
 static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
 
+@interface VDFOAuthTokenRequestBuilder ()
+@property (nonatomic, strong) VDFOAuthTokenRequestFactory *internalFactory;
+@end
+
 @implementation VDFOAuthTokenRequestBuilder
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId
                           withOptions:(VDFOAuthTokenRequestOptions*)options
                     withConfiguration:(VDFBaseConfiguration*)configuration
                              delegate:(id<VDFOAuthTokenRequestDelegate>)delegate {
-    self = [super initWithFactory:[[VDFOAuthTokenRequestFactory alloc] initWithBuilder:self]
-                    applicationId:applicationId
+    self = [super initWithApplicationId:applicationId
                     configuration:configuration];
     if(self) {
+        self.internalFactory = [[VDFOAuthTokenRequestFactory alloc] initWithBuilder:self];
+        
         _urlEndpointQuery = URLEndpointQuery;
         _httpRequestMethodType = HTTPMethodPOST;
         
@@ -42,6 +47,10 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
 
 #pragma mark -
 #pragma mark VDFRequestFactoryBuilder Implementation
+
+- (id<VDFRequestFactory>)factory {
+    return self.internalFactory;
+}
 
 - (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder {
     if(builder == nil || ![builder isKindOfClass:[VDFOAuthTokenRequestBuilder class]]) {

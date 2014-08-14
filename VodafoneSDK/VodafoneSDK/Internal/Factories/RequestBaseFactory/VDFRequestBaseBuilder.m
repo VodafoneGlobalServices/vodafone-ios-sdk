@@ -13,7 +13,6 @@
 #import "VDFObserversContainer.h"
 
 @interface VDFRequestBaseBuilder ()
-@property id<VDFRequestFactory> internalFactory;
 @property id<VDFResponseParser> internalResponseParser;
 @property id<VDFRequestState> internalRequestState;
 @property id<VDFObserversContainer> internalObserversContainer;
@@ -22,37 +21,37 @@
 
 @implementation VDFRequestBaseBuilder
 
-- (instancetype)initWithFactory:(id<VDFRequestFactory>)factory applicationId:(NSString*)applicationId configuration:(VDFBaseConfiguration*)configuration {
+- (instancetype)initWithApplicationId:(NSString*)applicationId configuration:(VDFBaseConfiguration*)configuration {
     self = [super init];
     if(self) {
         self.applicationId = applicationId;
         self.configuration = configuration;
-        self.internalFactory = factory;
     }
     return self;
 }
 
 - (id<VDFRequestFactory>)factory {
-    return self.internalFactory;
+    [self doesNotRecognizeSelector:_cmd];
+    __builtin_unreachable();
 }
 
 - (id<VDFResponseParser>)responseParser {
     if(self.internalResponseParser == nil) {
-        self.internalResponseParser = [self.internalFactory createResponseParser];
+        self.internalResponseParser = [[self factory] createResponseParser];
     }
     return self.internalResponseParser;
 }
 
 - (id<VDFRequestState>)requestState {
     if(self.internalRequestState == nil) {
-        self.internalRequestState = [self.internalFactory createRequestState];
+        self.internalRequestState = [[self factory] createRequestState];
     }
     return self.internalRequestState;
 }
 
 - (id<VDFObserversContainer>)observersContainer {
     if(self.internalObserversContainer == nil) {
-        self.internalObserversContainer = [self.internalFactory createObserversContainer];
+        self.internalObserversContainer = [[self factory] createObserversContainer];
     }
     return self.internalObserversContainer;
 }

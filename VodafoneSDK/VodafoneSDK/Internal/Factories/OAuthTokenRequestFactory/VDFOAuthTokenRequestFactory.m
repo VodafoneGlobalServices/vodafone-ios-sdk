@@ -65,6 +65,8 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
     httpRequest.methodType = self.builder.httpRequestMethodType;
     httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;
+    httpRequest.requestHeaders = @{ @"Accept" : @"application/json",
+                                    @"Content-Type" : @"application/x-www-form-urlencoded" };
     
     return httpRequest;
 }

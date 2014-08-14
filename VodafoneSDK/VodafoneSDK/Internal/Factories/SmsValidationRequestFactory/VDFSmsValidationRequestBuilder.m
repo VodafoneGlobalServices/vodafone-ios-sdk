@@ -12,11 +12,17 @@
 static NSString * const URLEndpointQuery = @"/users/tokens/validate/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
 
+@interface VDFSmsValidationRequestBuilder ()
+@property (nonatomic, strong) VDFSmsValidationRequestFactory *internalFactory;
+@end
+
 @implementation VDFSmsValidationRequestBuilder
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken smsCode:(NSString*)smsCode withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate {
-    self = [super initWithFactory:[[VDFSmsValidationRequestFactory alloc] initWithBuilder:self] applicationId:applicationId configuration:configuration];
+    self = [super initWithApplicationId:applicationId configuration:configuration];
     if(self) {
+        self.internalFactory = [[VDFSmsValidationRequestFactory alloc] initWithBuilder:self];
+        
         _urlEndpointQuery = [URLEndpointQuery stringByAppendingString:sessionToken];
         _httpRequestMethodType = HTTPMethodPOST;
         self.sessionToken = sessionToken;
@@ -35,6 +41,10 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 #pragma mark -
 #pragma mark VDFRequestFactoryBuilder Implementation
+
+- (id<VDFRequestFactory>)factory {
+    return self.internalFactory;
+}
 
 - (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder {
     if(builder == nil || ![builder isKindOfClass:[VDFSmsValidationRequestBuilder class]]) {

@@ -18,6 +18,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFUserResolveRequestBuilder.h"
 #import "VDFUsersServiceDelegate.h"
+#import "VDFOAuthTokenResponse.h"
 
 @interface VDFUserResolveRequestFactory ()
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *builder;
@@ -61,13 +62,16 @@
 
 - (VDFHttpConnector*)createHttpConnectorRequestWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
-    NSString * requestUrl = [self.builder.configuration.backEndBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
+    NSString * requestUrl = [self.builder.configuration.hapBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = self.builder.httpRequestMethodType;
     httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;
+    NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
+    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader};
+    
 //    httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
     
     return httpRequest;

@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "VDFRequestFactory.h"
 
-// TODO documentation
+/**
+ *  Builder point of Request
+ */
 @protocol VDFRequestBuilder <NSObject>
 
 - (id<VDFRequestFactory>)factory;
@@ -37,6 +39,30 @@
  */
 - (id<VDFObserversContainer>)observersContainer;
 
+/**
+ *  Checks are two request builder for the same request
+ *
+ *  @param builder Builder object to compare.
+ *
+ *  @return YES - if they corresponds to the same request, NO - if not
+ */
 - (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder;
+
+@optional
+
+/**
+ *  Request which is needed to be performed before this request, response of dependent request is need to perform current request.
+ *
+ *  @return Request Builder object when additional call is needed or nil if is is not needed.
+ */
+- (id<VDFRequestBuilder>)dependentRequestBuilder;
+
+/**
+ *  Sets object and method to be called when the dependent request has finished and current request can be resumed
+ *
+ *  @param target   Target object.
+ *  @param selector Selector of target which need to be called to perform resume of request.
+ */
+- (void)setResumeTarget:(id)target selector:(SEL)selector;
 
 @end

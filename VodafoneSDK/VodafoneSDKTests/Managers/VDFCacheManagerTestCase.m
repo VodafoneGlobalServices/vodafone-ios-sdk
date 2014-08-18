@@ -19,18 +19,6 @@ extern void __gcov_flush();
 
 @implementation VDFCacheManagerTestCase
 
-/*
-- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration;
-
-- (BOOL)isResponseCachedForRequest:(id<VDFRequest>)request;
-
-- (id<NSCoding>)responseForRequest:(id<VDFRequest>)request;
-
-- (void)cacheResponseObject:(id<NSCoding>)responseObject forRequest:(id<VDFRequest>)request;
-
-- (void)clearExpiredCache;
-*/
-
 
 - (void)setUp
 {

@@ -23,6 +23,7 @@
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 
 - (VDFPendingRequestItem*)findRequestItemByBuilder:(id<VDFRequestBuilder>)builder;
+- (VDFPendingRequestItem*)createNewItemWithBuilder:(id<VDFRequestBuilder>)builder;
 
 @end
 
@@ -40,6 +41,10 @@
 
 - (VDFPendingRequestItem*)enqueueRequestBuilder:(id<VDFRequestBuilder>)builder {
     
+    if(builder == nil) {
+        return nil;
+    }
+    
     // check is there any the same request waiting for response:
     VDFPendingRequestItem *requestItem = [self findRequestItemByBuilder:builder];
     if(requestItem != nil) {
@@ -54,10 +59,7 @@
         VDFLogD(@"Starting new http request.");
         
         // creating new request and adding this to queue
-        requestItem = [[VDFPendingRequestItem alloc] initWithBuilder:builder
-                                                         parentQueue:self
-                                                        cacheManager:self.cacheManager
-                                                       configuration:self.configuration];
+        requestItem = [self createNewItemWithBuilder:builder];
         
         [self.pendingRequests addObject:requestItem];
         
@@ -83,6 +85,10 @@
 #pragma mark - Private implementation
 
 - (VDFPendingRequestItem*)findRequestItemByBuilder:(id<VDFRequestBuilder>)builder {
+    if(builder == nil) {
+        return nil;
+    }
+    
     for (VDFPendingRequestItem *pendingRequestItem in self.pendingRequests) {
         if([pendingRequestItem.builder isEqualToFactoryBuilder:builder]) {
             return pendingRequestItem;
@@ -91,5 +97,8 @@
     return nil;
 }
 
+- (VDFPendingRequestItem*)createNewItemWithBuilder:(id<VDFRequestBuilder>)builder {
+    return [[VDFPendingRequestItem alloc] initWithBuilder:builder parentQueue:self cacheManager:self.cacheManager configuration:self.configuration];
+}
 
 @end

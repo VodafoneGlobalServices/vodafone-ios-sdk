@@ -24,6 +24,10 @@
 @property (nonatomic, assign) BOOL isRunning;
 
 - (void)retryRequest;
+- (void)startHttpRequest;
+- (void)onInternalConnectionError:(VDFErrorCode)errorCode;
+- (void)safeDequeueRequest;
+- (void)parseAndNotifyWithData:(NSData*)data responseCode:(NSInteger)responseCode error:(NSError*)error;
 @end
 
 @implementation VDFPendingRequestItem
@@ -49,8 +53,12 @@
 }
 
 - (void)cancelRequest {
-// TODO stop running request
-//    self.isRunning = NO;
+    if(self.isRunning) {
+        self.isRunning = NO;
+        if([self.httpRequest isRunning]) {
+            [self.httpRequest cancelCommunication];
+        }
+    }
 }
 
 #pragma mark -
@@ -63,40 +71,16 @@
     VDFLogD(@"Http response data: \n%@", data);
     VDFLogD(@"Http response data string: \n%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     
-    id<NSCoding> parsedObject = nil;
-    
-    @synchronized(self.parentQueue) {
-        [[self.builder requestState] updateWithHttpResponseCode:request.lastResponseCode];
-        
-        // parse retrieved data and update builder:
-        if(error == nil) {
-            parsedObject = [[self.builder responseParser] parseData:data withHttpResponseCode:request.lastResponseCode];
-            [[self.builder requestState] updateWithParsedResponse:parsedObject];
-            
-            // store response in cache:
-            VDFCacheObject *cacheObject = [self.builder.factory createCacheObject];
-            if(cacheObject != nil) {
-                cacheObject.cacheValue = parsedObject;
-                [self.cacheManager cacheObject:cacheObject];
-            }
-        }
-    }
+    [self parseAndNotifyWithData:data responseCode:request.lastResponseCode error:error];
     
     // is it finished ?
-    BOOL isRetryNeeded = [[self.builder requestState] isRetryNeeded];
-    if(!isRetryNeeded) {
+    if([[self.builder requestState] isRetryNeeded]) {
+        [self retryRequest];
+    }
+    else {
         VDFLogD(@"Request is finished, closing it.");
         // remove this request from queue
         [self safeDequeueRequest];
-    }
-    
-    // responding to all delegates:
-    VDFLogD(@"Responding to request delegates started.");
-    [[self.builder observersContainer] notifyAllObserversWith:parsedObject error:error];
-    VDFLogD(@"Responding to request delegates finished.");
-    
-    if(isRetryNeeded) {
-        [self retryRequest];
     }
 }
 
@@ -110,16 +94,17 @@
     NSInteger errorCode = [self.httpRequest startCommunication];
     
     if(errorCode > 0) {
-        [self stopRequestWithDomainErrorCode:VDFErrorNoConnection];
+        [self onInternalConnectionError:VDFErrorNoConnection];
     }
     
     VDFLogD(@"Request started.");
 }
 
 
-- (void)stopRequestWithDomainErrorCode:(VDFErrorCode)errorCode {
+- (void)onInternalConnectionError:(VDFErrorCode)errorCode {
     
     VDFLogD(@"Stopping request.");
+    self.isRunning = NO;
     
     // because of error we need to dequeue this connection:
     [self safeDequeueRequest];
@@ -137,7 +122,7 @@
     if(self.numberOfRetries > self.configuration.maxHttpRequestRetriesCount) {
         VDFLogD(@"We run out of the limit, so need to cancel request:\n%@", self.builder);
         // we run out of the limit, so need to return an error and remove this request:
-        [self stopRequestWithDomainErrorCode:VDFErrorConnectionTimeout];
+        [self onInternalConnectionError:VDFErrorConnectionTimeout];
     }
     else {
         
@@ -151,6 +136,7 @@
             }
             else {
                 VDFLogD(@"Nobody is waiting, removing request:%@", self.builder);
+                self.isRunning = NO;
                 // if nobody is waiting, so we can remove this request:
                 [self safeDequeueRequest];
             }
@@ -163,6 +149,33 @@
     @synchronized(self.parentQueue) {
         [self.parentQueue dequeueRequestItem:self];
     }
+}
+
+- (void)parseAndNotifyWithData:(NSData*)data responseCode:(NSInteger)responseCode error:(NSError*)error {
+    
+    id<NSCoding> parsedObject = nil;
+    
+    @synchronized(self.parentQueue) {
+        [[self.builder requestState] updateWithHttpResponseCode:responseCode];
+        
+        // parse retrieved data and update builder:
+        if(error == nil) {
+            parsedObject = [[self.builder responseParser] parseData:data withHttpResponseCode:responseCode];
+            [[self.builder requestState] updateWithParsedResponse:parsedObject];
+            
+            // store response in cache:
+            VDFCacheObject *cacheObject = [self.builder.factory createCacheObject];
+            if(cacheObject != nil) {
+                cacheObject.cacheValue = parsedObject;
+                [self.cacheManager cacheObject:cacheObject];
+            }
+        }
+    }
+    
+    // responding to all delegates:
+    VDFLogD(@"Responding to request delegates started.");
+    [[self.builder observersContainer] notifyAllObserversWith:parsedObject error:error];
+    VDFLogD(@"Responding to request delegates finished.");
 }
 
 @end

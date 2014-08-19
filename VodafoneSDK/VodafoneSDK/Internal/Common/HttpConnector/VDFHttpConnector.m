@@ -14,6 +14,7 @@
 @interface VDFHttpConnector ()
 @property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
 @property (nonatomic, strong) NSMutableData *receivedData;
+@property (nonatomic, assign) BOOL isConnectionOpen;
 
 - (void)addHeadersToRequest:(NSMutableURLRequest*)request;
 
@@ -31,6 +32,7 @@
         self.delegate = delegate;
         self.connectionTimeout = 60.0; // default if is not set from outside
         _lastResponseCode = 0;
+        self.isConnectionOpen = NO;
     }
     return self;
 }
@@ -66,6 +68,14 @@
     return 0;
 }
 
+- (void)cancelCommunication {
+    // TODO
+}
+
+- (BOOL)isRunning {
+    return self.isConnectionOpen;
+}
+
 #pragma mark -
 #pragma mark Private implementation
 
@@ -93,6 +103,7 @@
     VDFLogD(@"GET %@", url);
     
     if(conn) {
+        self.isConnectionOpen = YES;
         self.url = url;
         self.receivedData = [NSMutableData data];
     }
@@ -126,6 +137,7 @@
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
     if(conn) {
+        self.isConnectionOpen = YES;
         self.url = url;
         self.receivedData = [NSMutableData data];
     }
@@ -162,6 +174,7 @@
 
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
+    self.isConnectionOpen = NO;
     NSError *errorInVDFDomain = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
     [self.delegate httpRequest:self onResponse:nil withError:errorInVDFDomain];
 }
@@ -169,6 +182,7 @@
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection {
+    self.isConnectionOpen = NO;
     [self.delegate httpRequest:self onResponse:self.receivedData withError:nil];
 }
 

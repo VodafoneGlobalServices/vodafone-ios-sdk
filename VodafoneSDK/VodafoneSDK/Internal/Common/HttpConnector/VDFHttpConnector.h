@@ -60,4 +60,16 @@
  */
 - (NSInteger)startCommunication;
 
+/**
+ *  Cacnel pending http request, if request has ended or not started this method have no impact on connection.
+ */
+- (void)cancelCommunication;
+
+/**
+ *  Checks current state of pending http communication
+ *
+ *  @return YES - if connection is still open, NO - when connection is closed
+ */
+- (BOOL)isRunning;
+
 @end

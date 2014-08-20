@@ -10,6 +10,17 @@
 #import "VDFError.h"
 #import "VDFLogUtility.h"
 #import "VDFNetworkReachability.h"
+#import "VDFStringHelper.h"
+#import "VDFDeviceUtility.h"
+#import "VDFSettings.h"
+#import "VDFSettings+Internal.h"
+#import "VDFBaseConfiguration.h"
+
+static NSString * const XVF_SUBJECT_ID_HEADER = @"x-vf-trace-subject-id";
+static NSString * const XVF_SUBJECT_REGION_HEADER = @"x-vf-trace-subject-region";
+static NSString * const XVF_SOURCE_HEADER = @"x-vf-trace-source";
+static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id";
+
 
 @interface VDFHttpConnector ()
 @property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
@@ -87,6 +98,14 @@
         }
     }
     
+    // always we adding this standard headers
+    [request setValue:[VDFDeviceUtility deviceUniqueIdentifier] forHTTPHeaderField:XVF_SUBJECT_ID_HEADER];
+    NSString *mcc = [VDFDeviceUtility simMCC];
+    if(mcc != nil) {
+        [request setValue:mcc forHTTPHeaderField:XVF_SUBJECT_REGION_HEADER];
+    }
+    [request setValue:[NSString stringWithFormat:@"%@-%@", [VDFSettings sdkVersion], [[VDFSettings configuration] applicationId]] forHTTPHeaderField:XVF_SOURCE_HEADER];
+    [request setValue:[VDFStringHelper randomString] forHTTPHeaderField:XVF_TRANSACTION_ID_HEADER];
 }
 
 - (void)get:(NSString*)url {

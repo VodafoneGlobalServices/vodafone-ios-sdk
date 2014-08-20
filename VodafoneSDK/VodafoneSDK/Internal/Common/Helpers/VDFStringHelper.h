@@ -37,4 +37,11 @@
  */
 + (NSString*)md5FromData:(NSData*)data;
 
+/**
+ *  Generates random string.
+ *
+ *  @return NSString generated randomly.
+ */
++ (NSString*)randomString;
+
 @end

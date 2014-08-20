@@ -44,4 +44,8 @@
             ];  
 }
 
++ (NSString*)randomString {
+    return [VDFStringHelper md5FromString:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]]];
+}
+
 @end

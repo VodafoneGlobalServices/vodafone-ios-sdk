@@ -56,6 +56,10 @@
     return self.internalObserversContainer;
 }
 
+- (VDFHttpConnector*)createCurrentHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
+    return [[self factory] createHttpConnectorRequestWithDelegate:delegate];
+}
+
 - (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder {
     [self doesNotRecognizeSelector:_cmd];
     __builtin_unreachable();

@@ -18,7 +18,7 @@
 #pragma mark -
 #pragma mark - VDFRequestState Impelemnetation
 
-- (void)updateWithHttpResponseCode:(NSInteger)responseCode {
+- (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
     // if response code is another than 200 then there is an error
 }
 

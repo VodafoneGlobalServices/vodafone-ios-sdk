@@ -14,7 +14,6 @@
                 <outlet property="smsCodeSessionTokenTextField" destination="L8J-0J-vlv" id="ElA-2M-TSk"/>
                 <outlet property="smsCodeTextField" destination="vtn-L8-mTa" id="IwV-DJ-7OU"/>
                 <outlet property="smsValidationSwitch" destination="ITi-dk-HTO" id="OPm-6F-BLZ"/>
-                <outlet property="userResolveSessionTokenTextField" destination="HMG-gk-W3e" id="XNk-Lk-F9y"/>
                 <outlet property="view" destination="iN0-l3-epB" id="6Ee-Gm-oyS"/>
             </connections>
         </placeholder>
@@ -38,16 +37,6 @@
                                 <action selector="textFieldDidEndEditing:" destination="-1" eventType="editingDidEnd" id="fR7-vi-PML"/>
                             </connections>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="SessionToken" minimumFontSize="17" id="HMG-gk-W3e" userLabel="get/retrieve session token">
-                            <rect key="frame" x="20" y="102" width="280" height="30"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <action selector="textFieldDidBeginEditing:" destination="-1" eventType="editingDidBegin" id="Uvn-iu-79z"/>
-                                <action selector="textFieldDidEndEditing:" destination="-1" eventType="editingDidEnd" id="SBr-26-Z61"/>
-                            </connections>
-                        </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sKR-TW-OfI" userLabel="appid set button">
                             <rect key="frame" x="252" y="29" width="48" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -59,7 +48,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Rxd-oZ-O4I" userLabel="sms code send button">
-                            <rect key="frame" x="20" y="316" width="67" height="44"/>
+                            <rect key="frame" x="20" y="242" width="67" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Send">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -69,7 +58,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CYu-7w-zSK" userLabel="Retrieve button">
-                            <rect key="frame" x="20" y="184" width="138" height="44"/>
+                            <rect key="frame" x="20" y="115" width="138" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Retrieve">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -78,29 +67,19 @@
                                 <action selector="onRetrieveUserDetailsButtonClick:" destination="-1" eventType="touchUpInside" id="CpS-TQ-o0j"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BBS-jj-u9Q" userLabel="Get button">
-                            <rect key="frame" x="182" y="184" width="118" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Get">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="onGetUserDetailsButtonClick:" destination="-1" eventType="touchUpInside" id="Uq2-6w-Jfi"/>
-                            </connections>
-                        </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="ITi-dk-HTO" userLabel="sms validation switch">
-                            <rect key="frame" x="223" y="147" width="79" height="27"/>
+                            <rect key="frame" x="223" y="80" width="79" height="27"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         </switch>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SMS Validation" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g8E-DA-6fk">
-                            <rect key="frame" x="20" y="150" width="178" height="21"/>
+                            <rect key="frame" x="20" y="83" width="178" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="SMS code" minimumFontSize="17" id="vtn-L8-mTa" userLabel="sms code text">
-                            <rect key="frame" x="20" y="247" width="280" height="30"/>
+                            <rect key="frame" x="20" y="166" width="280" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
@@ -110,7 +89,7 @@
                             </connections>
                         </textField>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Session Token" minimumFontSize="17" id="L8J-0J-vlv" userLabel="sms code session token text">
-                            <rect key="frame" x="20" y="285" width="280" height="30"/>
+                            <rect key="frame" x="20" y="204" width="280" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
@@ -120,14 +99,14 @@
                             </connections>
                         </textField>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="irN-FG-1q8" userLabel="output textview">
-                            <rect key="frame" x="20" y="402" width="280" height="157"/>
+                            <rect key="frame" x="20" y="328" width="280" height="231"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xEC-5l-GZR">
-                            <rect key="frame" x="197" y="316" width="103" height="44"/>
+                            <rect key="frame" x="197" y="242" width="103" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Clear output">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -137,16 +116,26 @@
                             </connections>
                         </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="Cx7-A9-CFO" userLabel="display logs switch">
-                            <rect key="frame" x="223" y="367" width="79" height="27"/>
+                            <rect key="frame" x="223" y="293" width="79" height="27"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         </switch>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display logs" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gcv-dh-opq">
-                            <rect key="frame" x="20" y="370" width="94" height="21"/>
+                            <rect key="frame" x="20" y="296" width="94" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="EFN-4Q-SHz" userLabel="sms code send button">
+                            <rect key="frame" x="172" y="115" width="128" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Send SMS PIN">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="onSendSMSPinButtonClick:" destination="-1" eventType="touchUpInside" id="b5N-pY-tgr"/>
+                            </connections>
+                        </button>
                     </subviews>
                 </scrollView>
             </subviews>

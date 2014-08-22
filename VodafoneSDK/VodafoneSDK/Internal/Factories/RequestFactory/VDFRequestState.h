@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDFHttpConnectorResponse;
+
 /**
  *  Protocol for storing state of SDK request.
  */
@@ -16,9 +18,9 @@
 /**
  *  Updates request state when http response code changes.
  *
- *  @param responseCode Current repsonse code of last http connection.
+ *  @param response Current repsonse object of http connection.
  */
-- (void)updateWithHttpResponseCode:(NSInteger)responseCode;
+- (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response;
 
 /**
  *  Updates request state when response is received and parsed.

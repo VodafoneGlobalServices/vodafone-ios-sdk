@@ -14,12 +14,13 @@
 #import "VDFCacheManager.h"
 #import "VDFError.h"
 #import "VDFBaseConfiguration.h"
+#import "VDFHttpConnectorResponse.h"
 
 @interface VDFPendingRequestItem ()
 @property (nonatomic, strong) VDFHttpConnectionsQueue *parentQueue;
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 // pending http request to the server
-@property (nonatomic, strong) VDFHttpConnector *httpRequest;
+@property (nonatomic, strong) VDFHttpConnector *currentHttpRequest;
 @property (nonatomic, strong) VDFBaseConfiguration *configuration;
 @property (nonatomic, assign) BOOL isRunning;
 
@@ -27,7 +28,7 @@
 - (void)startHttpRequest;
 - (void)onInternalConnectionError:(VDFErrorCode)errorCode;
 - (void)safeDequeueRequest;
-- (void)parseAndNotifyWithData:(NSData*)data responseCode:(NSInteger)responseCode error:(NSError*)error;
+- (void)parseAndNotifyWithResponse:(VDFHttpConnectorResponse*)response;
 @end
 
 @implementation VDFPendingRequestItem
@@ -40,7 +41,6 @@
         self.parentQueue = parentQueue;
         self.numberOfRetries = 0;
         self.cacheManager = cacheManager;
-        self.httpRequest = [[builder factory] createHttpConnectorRequestWithDelegate:self];
     }
     return self;
 }
@@ -55,23 +55,23 @@
 - (void)cancelRequest {
     if(self.isRunning) {
         self.isRunning = NO;
-        if([self.httpRequest isRunning]) {
-            [self.httpRequest cancelCommunication];
+        if(self.currentHttpRequest != nil && [self.currentHttpRequest isRunning]) {
+            [self.currentHttpRequest cancelCommunication];
         }
     }
 }
 
 #pragma mark -
 #pragma mark VDFHttpRequestDelegate implementation
-- (void)httpRequest:(VDFHttpConnector*)request onResponse:(NSData*)data withError:(NSError*)error {
+- (void)httpRequest:(VDFHttpConnector*)request onResponse:(VDFHttpConnectorResponse*)response {
     
     VDFLogD(@"On http response");
     VDFLogD(@"For request: \n%@", self.builder);
     VDFLogD(@"Http response code: \n%i", request.lastResponseCode);
-    VDFLogD(@"Http response data: \n%@", data);
-    VDFLogD(@"Http response data string: \n%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    VDFLogD(@"Http response data: \n%@", response.data);
+    VDFLogD(@"Http response data string: \n%@", [[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding]);
     
-    [self parseAndNotifyWithData:data responseCode:request.lastResponseCode error:error];
+    [self parseAndNotifyWithResponse:response];
     
     // is it finished ?
     if([[self.builder requestState] isRetryNeeded]) {
@@ -91,7 +91,8 @@
     VDFLogD(@"Starting http request:%@", self.builder);
     
     // starting the request
-    NSInteger errorCode = [self.httpRequest startCommunication];
+    self.currentHttpRequest = [self.builder createCurrentHttpConnectorWithDelegate:self];
+    NSInteger errorCode = [self.currentHttpRequest startCommunication];
     
     if(errorCode > 0) {
         [self onInternalConnectionError:VDFErrorNoConnection];
@@ -151,18 +152,18 @@
     }
 }
 
-- (void)parseAndNotifyWithData:(NSData*)data responseCode:(NSInteger)responseCode error:(NSError*)error {
+- (void)parseAndNotifyWithResponse:(VDFHttpConnectorResponse*)response {
     
     id<NSCoding> parsedObject = nil;
     
     @synchronized(self.parentQueue) {
-        [[self.builder requestState] updateWithHttpResponseCode:responseCode];
+        [[self.builder requestState] updateWithHttpResponse:response];
         
         // parse retrieved data and update builder:
-        if(error == nil) {
-            parsedObject = [[self.builder responseParser] parseData:data withHttpResponseCode:responseCode];
-            [[self.builder requestState] updateWithParsedResponse:parsedObject];
-            
+        parsedObject = [[self.builder responseParser] parseResponse:response];
+        [[self.builder requestState] updateWithParsedResponse:parsedObject];
+        
+        if(parsedObject != nil) {
             // store response in cache:
             VDFCacheObject *cacheObject = [self.builder.factory createCacheObject];
             if(cacheObject != nil) {
@@ -173,9 +174,11 @@
     }
     
     // responding to all delegates:
-    VDFLogD(@"Responding to request delegates started.");
-    [[self.builder observersContainer] notifyAllObserversWith:parsedObject error:error];
-    VDFLogD(@"Responding to request delegates finished.");
+    if(parsedObject != nil || response.error != nil) {
+        VDFLogD(@"Responding to request delegates started.");
+        [[self.builder observersContainer] notifyAllObserversWith:parsedObject error:response.error];
+        VDFLogD(@"Responding to request delegates finished.");
+    }
 }
 
 @end

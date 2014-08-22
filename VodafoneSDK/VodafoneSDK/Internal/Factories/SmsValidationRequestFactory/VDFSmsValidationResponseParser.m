@@ -8,6 +8,7 @@
 
 #import "VDFSmsValidationResponseParser.h"
 #import "VDFSmsValidationResponse.h"
+#import "VDFHttpConnectorResponse.h"
 
 static NSInteger const SuccessfulResponseCode = 200;
 //static NSInteger const FailureResponseCode = 400;
@@ -26,9 +27,9 @@ static NSInteger const SuccessfulResponseCode = 200;
     return self;
 }
 
-- (id<NSCoding>)parseData:(NSData*)data withHttpResponseCode:(NSInteger)responseCode {
+- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
     
-    BOOL isSucceded = responseCode == SuccessfulResponseCode;
+    BOOL isSucceded = response.httpResponseCode == SuccessfulResponseCode;
 //    if(self.responseCode == SuccessfulResponseCode) {
 //        // on success we do not need to parse response
 //    }

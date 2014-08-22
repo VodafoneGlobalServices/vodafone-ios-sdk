@@ -10,14 +10,9 @@
 
 @implementation VDFUserResolveOptions
 
-- (instancetype)initWithToken:(NSString*)token {
-    return [self initWithToken:token validateWithSms:NO];
-}
-
-- (instancetype)initWithToken:(NSString*)token validateWithSms:(BOOL)validateWithSms {
+- (instancetype)initWithValidateWithSms:(BOOL)validateWithSms {
     self = [super init];
     if(self) {
-        self.token = token;
         self.validateWithSms = validateWithSms;
     }
     
@@ -28,11 +23,6 @@
     if(options == nil) {
         return NO;
     }
-    
-    if(![self.token isEqualToString:options.token]) {
-        return NO;
-    }
-    
     return self.validateWithSms == options.validateWithSms;
 }
 
@@ -40,7 +30,6 @@
 #pragma mark - NSCopying Implementation
 - (id)copyWithZone:(NSZone *)zone {
     VDFUserResolveOptions *newOptions = [[VDFUserResolveOptions allocWithZone:zone] init];
-    newOptions.token = [self.token copyWithZone:zone];
     newOptions.validateWithSms = self.validateWithSms;
     return newOptions;
 }

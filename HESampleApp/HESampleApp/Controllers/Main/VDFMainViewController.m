@@ -12,7 +12,6 @@
 @interface VDFMainViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *appIdTextField;
-@property (weak, nonatomic) IBOutlet UITextField *userResolveSessionTokenTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *smsValidationSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *smsCodeTextField;
 @property (weak, nonatomic) IBOutlet UITextField *smsCodeSessionTokenTextField;
@@ -24,10 +23,10 @@
 - (IBAction)onAppIdSetButtonClick:(id)sender;
 - (IBAction)onSmsCodeSendButtonClick:(id)sender;
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender;
-- (IBAction)onGetUserDetailsButtonClick:(id)sender;
 - (IBAction)textFieldDidBeginEditing:(UITextField*)textField;
 - (IBAction)textFieldDidEndEditing:(UITextField*)textField;
 - (IBAction)onClearOutputButtonClick:(id)sender;
+- (IBAction)onSendSMSPinButtonClick:(id)sender;
 
 - (void)keyboardWasShown:(NSNotification*)aNotification;
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification;
@@ -88,27 +87,20 @@
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [[VDFUsersService sharedInstance] validateSMSToken:self.smsCodeTextField.text withSessionToken:self.smsCodeSessionTokenTextField.text delegate:self];
+    [[VDFUsersService sharedInstance] validateSmsPin:self.smsCodeTextField.text withSessionToken:self.smsCodeSessionTokenTextField.text delegate:self];
 }
 
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender {
     [self hideKeyboard];
     
-    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithToken:self.userResolveSessionTokenTextField.text validateWithSms:self.smsValidationSwitch.isOn];
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithValidateWithSms:self.smsValidationSwitch.isOn];
     [[VDFUsersService sharedInstance] retrieveUserDetails:options delegate:self];
 }
 
-- (IBAction)onGetUserDetailsButtonClick:(id)sender {
+- (IBAction)onSendSMSPinButtonClick:(id)sender {
     [self hideKeyboard];
     
-    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithToken:self.userResolveSessionTokenTextField.text validateWithSms:self.smsValidationSwitch.isOn];
-    VDFUserTokenDetails *userDetails = [[VDFUsersService sharedInstance] getUserDetails:options];
-    
-    if(userDetails != nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n onGetUserDetailsButtonClick: resolved=%i, stillRunning=%i, source=%@, token=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.tetheringConflict, userDetails.validated];
-    } else {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingString:@"\n onGetUserDetailsButtonClick: nil"];
-    }
+    [[VDFUsersService sharedInstance] sendSmsPinWithSession:self.smsCodeSessionTokenTextField.text delegate:self];
 }
 
 #pragma mark -
@@ -116,12 +108,9 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, source=%@, token=%@, tetheringConflict=%i, validate=%i", userDetails.resolved, userDetails.stillRunning, userDetails.source, userDetails.token, userDetails.tetheringConflict, userDetails.validated];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, token=%@, validationRequired=%i", userDetails.resolved, userDetails.stillRunning, userDetails.token, userDetails.validationRequired];
         
-        // autofill boxes:
-        if([self.userResolveSessionTokenTextField.text isEqualToString:@""]) {
-            self.userResolveSessionTokenTextField.text = userDetails.token;
-        }
+        // autofill box:
         if([self.smsCodeSessionTokenTextField.text isEqualToString:@""]) {
             self.smsCodeSessionTokenTextField.text = userDetails.token;
         }
@@ -132,6 +121,10 @@
 
 - (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)errorCode {
     self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorCode=%i", response.smsCode, response.isSucceded, [errorCode code]];
+}
+
+- (void)didSMSPinRequested:(NSNumber *)isSuccess withError:(NSError *)error {
+    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didSMSPinRequested: success=%@, errorCode=%i", isSuccess, [error code]];
 }
 
 #pragma mark -

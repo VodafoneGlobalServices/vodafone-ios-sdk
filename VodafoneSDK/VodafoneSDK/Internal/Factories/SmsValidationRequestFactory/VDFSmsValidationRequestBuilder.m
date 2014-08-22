@@ -8,8 +8,12 @@
 
 #import "VDFSmsValidationRequestBuilder.h"
 #import "VDFSmsValidationRequestFactory.h"
+#import "VDFOAuthTokenRequestOptions.h"
+#import "VDFOAuthTokenRequestBuilder.h"
+#import "VDFBaseConfiguration.h"
+#import "VDFError.h"
 
-static NSString * const URLEndpointQuery = @"/users/tokens/validate/";
+static NSString * const URLEndpointQuery = @"/he/users/tokens/validate/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
 
 @interface VDFSmsValidationRequestBuilder ()
@@ -27,6 +31,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
         _httpRequestMethodType = HTTPMethodPOST;
         self.sessionToken = sessionToken;
         self.smsCode = smsCode;
+        self.oAuthToken = nil;
         
         if(delegate != nil) {
             [[self observersContainer] registerObserver:delegate];
@@ -60,6 +65,17 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     }
     
     return [self.smsCode isEqualToString:smsValidationBuilder.smsCode];
+}
+
+#pragma mark -
+#pragma mark VDFOAuthTokenRequestDelegate implementation
+
+-(void)didReceivedOAuthToken:(VDFOAuthTokenResponse*)oAuthToken withError:(NSError*)error {
+    if(oAuthToken != nil || error == nil) {
+        // everything looks fine:
+        self.oAuthToken = oAuthToken;
+    }
+    // error handling is done in decorator class so here we only expects to store valid token
 }
 
 @end

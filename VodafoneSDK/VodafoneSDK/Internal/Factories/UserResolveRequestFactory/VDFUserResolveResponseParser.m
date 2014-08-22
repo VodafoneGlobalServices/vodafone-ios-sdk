@@ -10,17 +10,18 @@
 #import "VDFUserTokenDetails.h"
 #import "VDFLogUtility.h"
 #import "VDFErrorUtility.h"
+#import "VDFHttpConnectorResponse.h"
 
 @implementation VDFUserResolveResponseParser
 
-- (id<NSCoding>)parseData:(NSData*)data withHttpResponseCode:(NSInteger)responseCode {
+- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
     
     VDFUserTokenDetails* userTokenDetails = nil;
-    if(data != nil) {
+    if(response != nil && response.data != nil && response.httpResponseCode == 200) {
         
-        VDFLogD(@"Parsing response: %@", data);
+        VDFLogD(@"Parsing response: %@", response.data);
         NSError *error = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:response.data options:kNilOptions error:&error];
         BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
         
         if([VDFErrorUtility handleInternalError:error] || !isResponseValid) {

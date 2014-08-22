@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "VDFRequestFactory.h"
 
+@class VDFHttpConnector;
+
 /**
  *  Builder point of Request
  */
@@ -38,6 +40,9 @@
  *  @return Object container ready to register observers.
  */
 - (id<VDFObserversContainer>)observersContainer;
+
+// TODO documentation
+- (VDFHttpConnector*)createCurrentHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate;
 
 /**
  *  Checks are two request builder for the same request

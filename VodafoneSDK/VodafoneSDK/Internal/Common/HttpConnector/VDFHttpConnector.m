@@ -15,6 +15,7 @@
 #import "VDFSettings.h"
 #import "VDFSettings+Internal.h"
 #import "VDFBaseConfiguration.h"
+#import "VDFHttpConnectorResponse.h"
 
 static NSString * const XVF_SUBJECT_ID_HEADER = @"x-vf-trace-subject-id";
 static NSString * const XVF_SUBJECT_REGION_HEADER = @"x-vf-trace-subject-region";
@@ -25,10 +26,10 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 @interface VDFHttpConnector ()
 @property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
 @property (nonatomic, strong) NSMutableData *receivedData;
+@property (nonatomic, strong) NSDictionary *responseHeaders;
 @property (nonatomic, assign) BOOL isConnectionOpen;
 
 - (void)addHeadersToRequest:(NSMutableURLRequest*)request;
-
 - (void)get:(NSString*)url;
 - (void)post:(NSString*)url withBody:(NSData*)body;
 @end
@@ -128,7 +129,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     }
     else {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-        [self.delegate httpRequest:self onResponse:nil withError:error];
+        [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:error]];
     }
     
 }
@@ -159,10 +160,11 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         self.isConnectionOpen = YES;
         self.url = url;
         self.receivedData = [NSMutableData data];
+        self.responseHeaders = [NSArray array];
     }
     else {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-        [self.delegate httpRequest:self onResponse:nil withError:error];
+        [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:error]];
     }
 }
 
@@ -185,6 +187,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
     [self.receivedData setLength:0];
     _lastResponseCode = [(NSHTTPURLResponse*)response statusCode];
+    self.responseHeaders = [(NSHTTPURLResponse *)response allHeaderFields];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data {
@@ -195,14 +198,14 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
     self.isConnectionOpen = NO;
     NSError *errorInVDFDomain = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-    [self.delegate httpRequest:self onResponse:nil withError:errorInVDFDomain];
+    [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:errorInVDFDomain]];
 }
 
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection {
     self.isConnectionOpen = NO;
-    [self.delegate httpRequest:self onResponse:self.receivedData withError:nil];
+    [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithData:self.receivedData httpCode:self.lastResponseCode headers:self.responseHeaders]];
 }
 
 

@@ -9,14 +9,18 @@
 #import "VDFRequestBaseBuilder.h"
 #import "VDFUsersServiceDelegate.h"
 #import "VDFEnums.h"
+#import "VDFOAuthTokenRequestDelegate.h"
 
-@interface VDFSmsValidationRequestBuilder : VDFRequestBaseBuilder
+@class VDFOAuthTokenResponse;
+
+@interface VDFSmsValidationRequestBuilder : VDFRequestBaseBuilder <VDFOAuthTokenRequestDelegate>
 
 // TODO documentation
 @property (nonatomic, copy) NSString *sessionToken;
 @property (nonatomic, copy) NSString *smsCode;
 @property (nonatomic, readonly) NSString *urlEndpointQuery;
 @property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
+@property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken smsCode:(NSString*)smsCode withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate;
 

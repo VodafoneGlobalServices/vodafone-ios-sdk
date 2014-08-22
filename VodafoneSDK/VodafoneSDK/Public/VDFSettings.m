@@ -20,7 +20,8 @@ static NSString * const g_oAuthClientKey = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
 static NSString * const g_oAuthClientSecret = @"k4l1RXZGqMnw2cD8";
 static NSString * const g_oAuthTokenScope = @"SSO_OAUTH2_INPUT";
 static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
-static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
+//static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
+static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 static VDFBaseConfiguration * g_configuration = nil;
 
 @implementation VDFSettings
@@ -46,7 +47,7 @@ static VDFBaseConfiguration * g_configuration = nil;
         
         g_configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
         g_configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second
-        g_configuration.maxHttpRequestRetriesCount = 10;
+        g_configuration.maxHttpRequestRetriesCount = 100;
         
         // oAuth token retrieval configuration:
         g_configuration.oAuthTokenClientId = g_oAuthClientKey;

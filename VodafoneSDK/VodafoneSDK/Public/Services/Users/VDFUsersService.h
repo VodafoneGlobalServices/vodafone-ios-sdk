@@ -58,26 +58,12 @@
 
 /*!
  @abstract
-    Synchronous equivalent of retrieveUserDetails:. Looks in cache for corresponding requests,
-    when it finds, returns associated response. If particular request is not found then nil will be
-    returned as meaning of that there are not yet cached response for this.
- 
- @param options
-    A VDFUserResolveOptions instance holding parameters of request.
- 
- @return
-    A VDFUserTokenDetails object filled with data or nil if response is not found in cache.
- */
-- (VDFUserTokenDetails*)getUserDetails:(VDFUserResolveOptions*)options;
-
-/*!
- @abstract
     Method used in user resolving process to provide response to the server with code received 
     via SMS. In case of success or failure, delegate method didValidateSMSToken: withError: will be 
     invoked with either error set to nil or error object which occurred.
  
- @param smsCode
-    The code that was received via SMS.
+ @param smsPin
+    The pin that was received via SMS.
  
  @param sessionToken
     Token describing current session.
@@ -88,7 +74,24 @@
     and implement didValidateSMSToken: withError:. The delegate is not retained. 
     This parameter is optional.
  */
-- (void)validateSMSToken:(NSString*)smsCode withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)validateSmsPin:(NSString*)smsPin withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
+
+/*!
+ @abstract
+ Method used in user resolving process to perform operation of sending validation code from server
+ via SMS. In case of success or failure, delegate method didSMSPinRequested: withError: will be
+ invoked with either error set to nil or error object which occurred.
+ 
+ @param sessionToken
+ Token describing current session.
+ 
+ @param delegate
+ The objects that acts as the delegate of the receiving VDFUsersService.
+ The delegate must adopt the VDFUsersServiceDelegate protocol
+ and implement didSMSPinRequested: withError:. The delegate is not retained.
+ This parameter is optional.
+ */
+- (void)sendSmsPinWithSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 /*!
  @abstract

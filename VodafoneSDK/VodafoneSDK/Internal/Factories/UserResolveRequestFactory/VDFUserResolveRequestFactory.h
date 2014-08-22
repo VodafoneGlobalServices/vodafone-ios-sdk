@@ -18,4 +18,6 @@
 // TODO documentation
 - (instancetype)initWithBuilder:(VDFUserResolveRequestBuilder*)builder;
 
+- (VDFHttpConnector*)createRetryHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate;
+
 @end

@@ -9,21 +9,22 @@
 #import "VDFUserResolveRequestState.h"
 #import "VDFLogUtility.h"
 #import "VDFUserTokenDetails.h"
-#import "VDFUserResolveOptions.h"
+#import "VDFUserResolveRequestBuilder.h"
+#import "VDFHttpConnectorResponse.h"
 
 @interface VDFUserResolveRequestState ()
 @property BOOL needRetry;
 @property NSDate *expiresIn;
-@property (nonatomic, strong) VDFUserResolveOptions *requestOptions;
+@property (nonatomic, assign) VDFUserResolveRequestBuilder *builder;
 @end
 
 @implementation VDFUserResolveRequestState
 
-- (instancetype)initWithRequestOptionsReference:(VDFUserResolveOptions*)options {
+- (instancetype)initWithBuilder:(VDFUserResolveRequestBuilder*)builder {
     self = [super init];
     if(self) {
-        self.requestOptions = options;
         self.needRetry = YES; // as default this request is waiting on server changes
+        self.builder = builder;
     }
     return self;
 }
@@ -31,8 +32,12 @@
 #pragma mark -
 #pragma mark - VDFRequestState Impelemnetation
 
-- (void)updateWithHttpResponseCode:(NSInteger)responseCode {
-    // do not need this here
+- (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
+    // check for etag
+    // if exists update it in builder
+    if(response.responseHeaders != nil && [[response.responseHeaders allKeys] containsObject:@"Etag"]) {
+        self.builder.eTag = [response.responseHeaders objectForKey:@"Etag"];
+    }
 }
 
 - (void)updateWithParsedResponse:(id)parsedResponse {
@@ -45,9 +50,8 @@
         if(self.needRetry) {
             self.needRetry = userTokenDetails.stillRunning;
         }
-//        self.expiresIn = userTokenDetails.expires;
         if(userTokenDetails.token != nil) {
-            self.requestOptions.token = userTokenDetails.token;
+            self.builder.sessionToken = userTokenDetails.token;
         }
     }
 }

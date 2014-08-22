@@ -1,44 +1,33 @@
 //
-//  VDFSmsValidationRequestFactory.m
+//  VDFSmsSendPinRequestFactory.m
 //  VodafoneSDK
 //
-//  Created by Michał Szymańczyk on 06/08/14.
+//  Created by Michał Szymańczyk on 20/08/14.
 //  Copyright (c) 2014 VOD. All rights reserved.
 //
 
-#import "VDFSmsValidationRequestFactory.h"
-#import "VDFSmsValidationRequestBuilder.h"
-#import "VDFStringHelper.h"
+#import "VDFSmsSendPinRequestFactory.h"
+#import "VDFSmsSendPinRequestBuilder.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFHttpConnector.h"
-#import "VDFCacheObject.h"
-#import "VDFSmsValidationRequestState.h"
-#import "VDFSmsValidationResponseParser.h"
 #import "VDFOAuthTokenResponse.h"
-#import "VDFSettings.h"
 #import "VDFSettings+Internal.h"
+#import "VDFSettings.h"
+#import "VDFSmsSendPinRequestState.h"
+#import "VDFSmsSendPinResponseParser.h"
 
-static NSString * const JSONPayloadBodyFormat = @"{ \"PINCode\" : \"%@\" }";
-
-@interface VDFSmsValidationRequestFactory ()
-@property (nonatomic, strong) VDFSmsValidationRequestBuilder *builder;
-
-- (NSData*)postBody;
+@interface VDFSmsSendPinRequestFactory ()
+@property (nonatomic, strong) VDFSmsSendPinRequestBuilder *builder;
 @end
 
-@implementation VDFSmsValidationRequestFactory
+@implementation VDFSmsSendPinRequestFactory
 
-- (instancetype)initWithBuilder:(VDFSmsValidationRequestBuilder*)builder {
+- (instancetype)initWithBuilder:(VDFSmsSendPinRequestBuilder*)builder {
     self = [super init];
     if(self) {
         self.builder = builder;
     }
     return self;
-}
-
-- (NSData*)postBody {
-    // faster and sipler will be to format the string
-    return [[NSString stringWithFormat:JSONPayloadBodyFormat, [VDFStringHelper urlEncode:self.builder.smsCode]] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 #pragma mark -
@@ -51,7 +40,6 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"PINCode\" : \"%@\" }";
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = self.builder.httpRequestMethodType;
-    httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;
     httpRequest.isGSMConnectionRequired = NO;
     
@@ -66,17 +54,18 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"PINCode\" : \"%@\" }";
 }
 
 - (id<VDFResponseParser>)createResponseParser {
-    return [[VDFSmsValidationResponseParser alloc] initWithRequestSmsCode:self.builder.smsCode];
+    return [[VDFSmsSendPinResponseParser alloc] init];
 }
 
 - (id<VDFRequestState>)createRequestState {
-    return [[VDFSmsValidationRequestState alloc] init];
+    return [[VDFSmsSendPinRequestState alloc] init];
 }
 
 - (id<VDFObserversContainer>)createObserversContainer {
     id<VDFObserversContainer> observersContainer = [super createObserversContainer];
-    [observersContainer setObserversNotifySelector:@selector(didValidatedSMSToken:withError:)];
+    [observersContainer setObserversNotifySelector:@selector(didSMSPinRequested:withError:)];
     return observersContainer;
 }
+
 
 @end

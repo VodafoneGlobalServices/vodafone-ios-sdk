@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VDFHttpConnector;
+@class VDFHttpConnector, VDFHttpConnectorResponse;
 
 /**
  *  Delegate protocol of http/https requests.
@@ -18,10 +18,9 @@
 /**
  *  Calback method invoked when response from server was received or some error occured.
  *
- *  @param request Request object which received response.
- *  @param data    Received data or nil if some error occured.
- *  @param error   Error object which has occured or nil if everything is ok.
+ *  @param request  Request object which received response.
+ *  @param response Response object with data.
  */
-- (void)httpRequest:(VDFHttpConnector*)request onResponse:(NSData*)data withError:(NSError*)error;
+- (void)httpRequest:(VDFHttpConnector*)request onResponse:(VDFHttpConnectorResponse*)response;
 
 @end

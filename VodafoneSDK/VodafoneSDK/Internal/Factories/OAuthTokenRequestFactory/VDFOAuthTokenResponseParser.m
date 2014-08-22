@@ -10,17 +10,18 @@
 #import "VDFOAuthTokenResponse.h"
 #import "VDFErrorUtility.h"
 #import "VDFLogUtility.h"
+#import "VDFHttpConnectorResponse.h"
 
 @implementation VDFOAuthTokenResponseParser
 
-- (id<NSCoding>)parseData:(NSData*)data withHttpResponseCode:(NSInteger)responseCode {
+- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
     
     VDFOAuthTokenResponse *oAuthToken = nil;
-    if(data != nil && responseCode == 200) {
+    if(response !=nil && response.data != nil && response.httpResponseCode == 200) {
         VDFLogD(@"Parsing response VDFOAuthTokenResponse");
         
         NSError *error = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:response.data options:kNilOptions error:&error];
         BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
         
         if([VDFErrorUtility handleInternalError:error] || !isResponseValid) {
@@ -32,9 +33,7 @@
             oAuthToken = [[VDFOAuthTokenResponse alloc] initWithJsonObject:jsonObject];
         }
         VDFLogD(@"Parsed object: \n%@", oAuthToken);
-
     }
-    
     return oAuthToken;
 }
 

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDFHttpConnectorResponse;
+
 /**
  *  Http responses parser protocol
  */
@@ -16,11 +18,10 @@
 /**
  *  Parse received data object to the model class.
  *
- *  @param data Data received from Http connection.
- *  @param responseCode Http code of the response
+ *  @param responseConnector HTTP connector object holding
  *
  *  @return Parsed object or nil if parsing error occured.
  */
-- (id<NSCoding>)parseData:(NSData*)data withHttpResponseCode:(NSInteger)responseCode;
+- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response;
 
 @end

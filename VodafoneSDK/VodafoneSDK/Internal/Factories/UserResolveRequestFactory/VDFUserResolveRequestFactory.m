@@ -19,6 +19,9 @@
 #import "VDFUserResolveRequestBuilder.h"
 #import "VDFUsersServiceDelegate.h"
 #import "VDFOAuthTokenResponse.h"
+#import "VDFSettings.h"
+
+static NSString * const JSONPayloadBodyFormat = @"{ \"SMSValidation\" : %@ }";
 
 @interface VDFUserResolveRequestFactory ()
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *builder;
@@ -37,24 +40,30 @@
 }
 
 - (NSData*)postBody {
-    NSMutableDictionary *jsonDictionary = [[NSMutableDictionary alloc] init];
-    [jsonDictionary setObject:[VDFStringHelper urlEncode:self.builder.applicationId] forKey:@"applicationId"];
-    if(self.builder.requestOptions.token) {
-        [jsonDictionary setObject:[VDFStringHelper urlEncode:self.builder.requestOptions.token] forKey:@"sessionToken"];
-    }
+    NSString *validateWithSmsString = nil;
     if(self.builder.requestOptions.validateWithSms) {
-        [jsonDictionary setObject:@"true" forKey:@"smsValidation"];
+        validateWithSmsString = @"true";
     }
-    
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary options:NSJSONWritingPrettyPrinted error:&error];
-    
-    if([VDFErrorUtility handleInternalError:error]) {
-        // handle error here
-        // TODO
-        jsonData = nil;
+    else {
+        validateWithSmsString = @"false";
     }
-    return jsonData;
+    return [[NSString stringWithFormat:JSONPayloadBodyFormat, validateWithSmsString] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (VDFHttpConnector*)createRetryHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
+    
+    NSString * requestUrl = [self.builder.configuration.apixBaseUrl stringByAppendingString:self.builder.retryUrlEndpointQuery];
+    
+    VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
+    httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
+    httpRequest.methodType = HTTPMethodGET;
+    httpRequest.url = requestUrl;
+    
+    NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
+    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId,
+                                   @"ETag": self.builder.eTag};
+    
+    return httpRequest;
 }
 
 #pragma mark -
@@ -62,15 +71,16 @@
 
 - (VDFHttpConnector*)createHttpConnectorRequestWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
-    NSString * requestUrl = [self.builder.configuration.hapBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
+    NSString * requestUrl = [self.builder.configuration.hapBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
-    httpRequest.methodType = self.builder.httpRequestMethodType;
+    httpRequest.methodType = HTTPMethodPOST;
     httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;
+    
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
-    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader};
+    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId};
     
 //    httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
     
@@ -78,12 +88,7 @@
 }
 
 - (VDFCacheObject*)createCacheObject {
-    NSString *stringToHash = [NSString stringWithFormat:@"%@%ul%@", self.builder.urlEndpointQuery, self.builder.httpRequestMethodType, [VDFStringHelper md5FromData:[self postBody]]];
-    NSString *md5Hash = [VDFStringHelper md5FromString:stringToHash];
-    
-    id<VDFRequestState> currentState = [self.builder requestState];
-    
-    return [[VDFCacheObject alloc] initWithValue:nil forKey:md5Hash withExpirationDate:[currentState lastResponseExpirationDate]];
+    return nil; // this is not cachable
 }
 
 - (id<VDFResponseParser>)createResponseParser {
@@ -91,7 +96,7 @@
 }
 
 - (id<VDFRequestState>)createRequestState {
-    return [[VDFUserResolveRequestState alloc] initWithRequestOptionsReference:self.builder.requestOptions];
+    return [[VDFUserResolveRequestState alloc] initWithBuilder:self.builder];
 }
 
 - (id<VDFObserversContainer>)createObserversContainer {

@@ -19,9 +19,12 @@
 
 // TODO documentation
 @property (nonatomic, strong) VDFUserResolveOptions *requestOptions;
-@property (nonatomic, readonly) NSString *urlEndpointQuery;
+@property (nonatomic, readonly) NSString *initialUrlEndpointQuery;
+@property (nonatomic, readonly) NSString *retryUrlEndpointQuery;
 @property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
 @property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;
+@property (nonatomic, strong) NSString *eTag;
+@property (nonatomic, strong) NSString *sessionToken;
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate;
 

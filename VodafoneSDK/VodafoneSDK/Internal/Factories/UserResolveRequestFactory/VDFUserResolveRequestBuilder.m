@@ -14,24 +14,26 @@
 #import "VDFOAuthTokenResponse.h"
 #import "VDFOAuthTokenRequestOptions.h"
 #import "VDFError.h"
+#import "VDFHttpConnector.h"
 
-static NSString * const URLEndpointQuery = @"/users/resolve";
-static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
+static NSString * const InitialURLEndpointQuery = @"/he/users/resolve";
+static NSString * const RetryURLEndpointQuery = @"/he/users/token/%@";
+static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t initialUrlEndpointQuery:%@ \n\t retryUrlEndpointQuery:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
 
 @interface VDFUserResolveRequestBuilder ()
 @property (nonatomic, strong) VDFUserResolveRequestFactory *internalFactory;
-@property (nonatomic, assign) id restorePointObject;
-@property (nonatomic, assign) SEL restorePointSelector;
 @end
 
 @implementation VDFUserResolveRequestBuilder
+
+@synthesize sessionToken = _sessionToken;
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate {
     self = [super initWithApplicationId:applicationId configuration:configuration];
     if(self) {
         self.internalFactory = [[VDFUserResolveRequestFactory alloc] initWithBuilder:self];
         
-        _urlEndpointQuery = URLEndpointQuery;
+        _initialUrlEndpointQuery = InitialURLEndpointQuery;
         _httpRequestMethodType = HTTPMethodPOST;
         
         self.requestOptions = [options copy]; // we need to copy this options because if the session token will change we need to update it
@@ -44,12 +46,31 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     return self;
 }
 
+- (NSString*)sessionToken {
+    return _sessionToken;
+}
+
+- (void)setSessionToken:(NSString*)sessionToken {
+    _sessionToken = sessionToken;
+    _retryUrlEndpointQuery = [NSString stringWithFormat:RetryURLEndpointQuery, sessionToken];
+}
+
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.applicationId, self.requestOptions];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self initialUrlEndpointQuery], [self retryUrlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.applicationId, self.requestOptions];
 }
 
 #pragma mark -
 #pragma mark VDFRequestFactoryBuilder Implementation
+
+- (VDFHttpConnector*)createCurrentHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
+    // here we need to override first request because if we have eTag then we need to use APIX server for updates
+    if(self.eTag != nil) {
+        return [self.internalFactory createRetryHttpConnectorWithDelegate:delegate];
+    }
+    else {
+        return [super createCurrentHttpConnectorWithDelegate:delegate];
+    }
+}
 
 - (id<VDFRequestFactory>)factory {
     return self.internalFactory;
@@ -68,46 +89,15 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     return [self.requestOptions isEqualToOptions:userResolveBuilder.requestOptions];
 }
 
-
-#pragma mark Dependant methods implementation
-- (id<VDFRequestBuilder>)dependentRequestBuilder {
-    if(self.oAuthToken == nil) {
-        VDFOAuthTokenRequestOptions *oAuthOptions = [[VDFOAuthTokenRequestOptions alloc] init];
-        oAuthOptions.clientId = self.configuration.oAuthTokenClientId;
-        oAuthOptions.clientSecret = self.configuration.oAuthTokenClientSecret;
-        oAuthOptions.scopes = @[self.configuration.oAuthTokenScope];
-        
-        return [[VDFOAuthTokenRequestBuilder alloc] initWithApplicationId:self.applicationId
-                                                              withOptions:oAuthOptions
-                                                        withConfiguration:self.configuration
-                                                                 delegate:self];
-    }
-    return nil;
-}
-
-- (void)setResumeTarget:(id)object selector:(SEL)selector {
-    self.restorePointObject = object;
-    self.restorePointSelector = selector;
-}
-
 #pragma mark -
 #pragma mark VDFOAuthTokenRequestDelegate implementation
 
 -(void)didReceivedOAuthToken:(VDFOAuthTokenResponse*)oAuthToken withError:(NSError*)error {
-    if(error != nil || oAuthToken == nil) {
-        if(error == nil) {
-            error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorServerCommunication userInfo:nil];
-        }
-        // there is some error, forward this:
-        [[self observersContainer] notifyAllObserversWith:nil error:error];
-    }
-    else {
+    if(oAuthToken != nil || error == nil) {
         // everything looks fine:
         self.oAuthToken = oAuthToken;
-        
-        // lets move one with this request:
-        [self.restorePointObject performSelector:self.restorePointSelector withObject:self];
     }
+    // error handling is done in decorator class so here we only expects to store valid token
 }
 
 @end

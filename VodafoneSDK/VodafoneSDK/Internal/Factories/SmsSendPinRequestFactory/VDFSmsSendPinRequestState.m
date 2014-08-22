@@ -1,20 +1,17 @@
 //
-//  VDFSmsValidationRequestState.m
+//  VDFSmsSendPinRequestState.m
 //  VodafoneSDK
 //
-//  Created by Michał Szymańczyk on 06/08/14.
+//  Created by Michał Szymańczyk on 20/08/14.
 //  Copyright (c) 2014 VOD. All rights reserved.
 //
 
-#import "VDFSmsValidationRequestState.h"
+#import "VDFSmsSendPinRequestState.h"
 
-@implementation VDFSmsValidationRequestState
-
-#pragma mark -
-#pragma mark - VDFRequestState Impelemnetation
+@implementation VDFSmsSendPinRequestState
 
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
-    // here we do nod need to store anything
+    // TODO
 }
 
 - (void)updateWithParsedResponse:(id)parsedResponse {

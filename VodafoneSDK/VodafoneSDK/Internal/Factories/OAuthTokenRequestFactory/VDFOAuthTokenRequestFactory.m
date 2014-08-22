@@ -58,7 +58,8 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
 
 - (VDFHttpConnector*)createHttpConnectorRequestWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
-    NSString * requestUrl = [self.builder.configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
+//    NSString * requestUrl = [self.builder.configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery]; // TODO IMPORTANT need to be changed
+    NSString * requestUrl = [@"https://apisit.developer.vodafone.com" stringByAppendingString:self.builder.urlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;

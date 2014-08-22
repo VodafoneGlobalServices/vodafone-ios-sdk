@@ -18,6 +18,8 @@
 #import "VDFRequestFactory.h"
 #import "VDFCacheObject.h"
 #import "VDFSmsValidationRequestBuilder.h"
+#import "VDFSmsSendPinRequestBuilder.h"
+#import "VDFRequestBuilderWithOAuth.h"
 
 @implementation VDFUsersService
 
@@ -43,41 +45,28 @@
         options = [[VDFUserResolveOptions alloc] init];
     }
     
-    VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options withConfiguration:[VDFSettings configuration] delegate:delegate];
+    id builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options withConfiguration:[VDFSettings configuration] delegate:delegate];
     
-    // get http request manager
-    VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
+    id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
     
-    // perform request call
-    [requestsManager performRequestWithBuilder:builder];
+    [[VDFSettings sharedRequestsManager] performRequestWithBuilder:builderWithOAuth];
 }
 
-- (VDFUserTokenDetails*)getUserDetails:(VDFUserResolveOptions*)options {
-    
+- (void)sendSmsPinWithSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
     // create request object
     NSString * applicationId = [VDFSettings configuration].applicationId;
     if(applicationId == nil) {
         applicationId = [NSString string];
     }
-    if(options == nil) {
-        options = [[VDFUserResolveOptions alloc] init];
-    }
     
-    VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options withConfiguration:[VDFSettings configuration] delegate:nil];
+    id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken withConfiguration:[VDFSettings configuration] delegate:delegate];
     
-    VDFUserTokenDetails *userDetails = nil;
-    VDFCacheObject *cacheObject = [[builder factory] createCacheObject];
+    id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
     
-    if([[VDFSettings sharedCacheManager] isObjectCached:cacheObject]) {
-        userDetails = (VDFUserTokenDetails*)[[VDFSettings sharedCacheManager] readCacheObject:cacheObject];
-        if(![userDetails isKindOfClass:[VDFUserTokenDetails class]]) {
-            userDetails = nil;
-        }
-    }
-    return userDetails;
+    [[VDFSettings sharedRequestsManager] performRequestWithBuilder:builderWithOAuth];
 }
 
-- (void)validateSMSToken:(NSString*)smsCode withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)validateSmsPin:(NSString*)smsPin withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
     
     // create request object
     NSString * applicationId = [VDFSettings configuration].applicationId;
@@ -85,13 +74,11 @@
         applicationId = [NSString string];
     }
     
-    VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsCode withConfiguration:[VDFSettings configuration] delegate:delegate];
+    VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsPin withConfiguration:[VDFSettings configuration] delegate:delegate];
     
-    // get http request manager
-    VDFServiceRequestsManager * requestsManager = [VDFSettings sharedRequestsManager];
+    id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
     
-    // perform request call
-    [requestsManager performRequestWithBuilder:builder];
+    [[VDFSettings sharedRequestsManager] performRequestWithBuilder:builderWithOAuth];
 }
 
 - (void)removeDelegate:(id<VDFUsersServiceDelegate>)delegate {

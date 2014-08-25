@@ -10,9 +10,18 @@
 
 @class VDFOAuthTokenRequestBuilder;
 
-// TODO documentation
+/**
+ *  Factory of OAuthToken retrieval
+ */
 @interface VDFOAuthTokenRequestFactory : VDFRequestBaseFactory
 
+/**
+ *  Initialize Factory of OAuthToken.
+ *
+ *  @param builder Builder of OAuthToken request.
+ *
+ *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
+ */
 - (instancetype)initWithBuilder:(VDFOAuthTokenRequestBuilder*)builder;
 
 @end

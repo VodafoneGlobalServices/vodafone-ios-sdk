@@ -15,6 +15,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFError.h"
 #import "VDFCacheObject.h"
+#import "VDFHttpConnectorResponse.h"
 
 extern void __gcov_flush();
 
@@ -23,7 +24,7 @@ extern void __gcov_flush();
 @property (nonatomic, strong) VDFHttpConnectionsQueue *parentQueue;
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 // pending http request to the server
-@property (nonatomic, strong) VDFHttpConnector *httpRequest;
+@property (nonatomic, strong) VDFHttpConnector *currentHttpRequest;
 @property (nonatomic, strong) VDFBaseConfiguration *configuration;
 @property (nonatomic, assign) BOOL isRunning;
 
@@ -31,7 +32,7 @@ extern void __gcov_flush();
 - (void)startHttpRequest;
 - (void)onInternalConnectionError:(VDFErrorCode)errorCode;
 - (void)safeDequeueRequest;
-- (void)parseAndNotifyWithData:(NSData*)data responseCode:(NSInteger)responseCode error:(NSError*)error;
+- (void)parseAndNotifyWithResponse:(VDFHttpConnectorResponse*)response;
 @end
 
 
@@ -62,24 +63,26 @@ extern void __gcov_flush();
     self.mockBuilder = OCMProtocolMock(@protocol(VDFRequestBuilder));
     self.mockParentQueue = OCMClassMock([VDFHttpConnectionsQueue class]);
     self.mockCacheManager = OCMClassMock([VDFCacheManager class]);
-    self.mockHttpRequest = OCMClassMock([VDFHttpConnector class]);
     self.mockConfiguration = OCMClassMock([VDFBaseConfiguration class]);
-    
-    self.itemToTest = [[VDFPendingRequestItem alloc] initWithBuilder:self.mockBuilder parentQueue:self.mockParentQueue
-                                                                          cacheManager:self.mockCacheManager configuration:self.mockConfiguration];
-    self.itemToTest.httpRequest = self.mockHttpRequest;
-    self.itemToTestPartialMock = OCMPartialMock(self.itemToTest);
     
     // mocking builder:
     self.mockRequestState = OCMProtocolMock(@protocol(VDFRequestState));
     self.mockResponseParser = OCMProtocolMock(@protocol(VDFResponseParser));
     self.mockFactory = OCMProtocolMock(@protocol(VDFRequestFactory));
     self.mockObserversContainer = OCMProtocolMock(@protocol(VDFObserversContainer));
+    self.mockHttpRequest = OCMClassMock([VDFHttpConnector class]);
+    
+    
+    self.itemToTest = [[VDFPendingRequestItem alloc] initWithBuilder:self.mockBuilder parentQueue:self.mockParentQueue
+                                                                          cacheManager:self.mockCacheManager configuration:self.mockConfiguration];
+    self.itemToTest.currentHttpRequest = self.mockHttpRequest;
+    self.itemToTestPartialMock = OCMPartialMock(self.itemToTest);
     
     [[[self.mockBuilder stub] andReturn:self.mockRequestState] requestState];
     [[[self.mockBuilder stub] andReturn:self.mockResponseParser] responseParser];
     [[[self.mockBuilder stub] andReturn:self.mockFactory] factory];
     [[[self.mockBuilder stub] andReturn:self.mockObserversContainer] observersContainer];
+    [[[self.mockBuilder stub] andReturn:self.mockHttpRequest] createCurrentHttpConnectorWithDelegate:[OCMArg any]];
 }
 
 - (void)tearDown
@@ -377,13 +380,17 @@ extern void __gcov_flush();
     NSInteger mockedResponseCode = 200;
     id mockedError = [[NSObject alloc] init];
     id mockHttpConnector = OCMClassMock([VDFHttpConnector class]);
+    id mockHttpResponse = OCMClassMock([VDFHttpConnectorResponse class]);
     
     // stubs
     [[[self.mockRequestState stub] andReturnValue:@YES] isRetryNeeded];
     [[[mockHttpConnector stub] andReturnValue:OCMOCK_VALUE(mockedResponseCode)] lastResponseCode];
+    [[[mockHttpResponse stub] andReturn:mockedData] data];
+    [[[mockHttpResponse stub] andReturnValue:OCMOCK_VALUE(mockedResponseCode)] httpResponseCode];
+    [[[mockHttpResponse stub] andReturn:mockedError] error];
     
     // expect that the parse method will be invoked:
-    [[self.itemToTestPartialMock expect] parseAndNotifyWithData:mockedData responseCode:mockedResponseCode error:mockedError];
+    [[self.itemToTestPartialMock expect] parseAndNotifyWithResponse:mockHttpResponse];
     
     // expect that the retry method will be invoked
     [[self.itemToTestPartialMock expect] retryRequest];
@@ -393,7 +400,7 @@ extern void __gcov_flush();
     
     
     // run
-    [self.itemToTestPartialMock httpRequest:mockHttpConnector onResponse:mockedData withError:mockedError];
+    [self.itemToTestPartialMock httpRequest:mockHttpConnector onResponse:mockHttpResponse];
     
     
     // verify
@@ -407,13 +414,17 @@ extern void __gcov_flush();
     NSInteger mockedResponseCode = 200;
     id mockedError = [[NSObject alloc] init];
     id mockHttpConnector = OCMClassMock([VDFHttpConnector class]);
+    id mockHttpResponse = OCMClassMock([VDFHttpConnectorResponse class]);
     
     // stubs
     [[[self.mockRequestState stub] andReturnValue:@NO] isRetryNeeded];
     [[[mockHttpConnector stub] andReturnValue:OCMOCK_VALUE(mockedResponseCode)] lastResponseCode];
+    [[[mockHttpResponse stub] andReturn:mockedData] data];
+    [[[mockHttpResponse stub] andReturnValue:OCMOCK_VALUE(mockedResponseCode)] httpResponseCode];
+    [[[mockHttpResponse stub] andReturn:mockedError] error];
     
     // expect that the parse method will be invoked:
-    [[self.itemToTestPartialMock expect] parseAndNotifyWithData:mockedData responseCode:mockedResponseCode error:mockedError];
+    [[self.itemToTestPartialMock expect] parseAndNotifyWithResponse:mockHttpResponse];
     
     // expect that the retry method wont be invoked
     [[self.itemToTestPartialMock reject] retryRequest];
@@ -423,7 +434,7 @@ extern void __gcov_flush();
     
     
     // run
-    [self.itemToTestPartialMock httpRequest:mockHttpConnector onResponse:mockedData withError:mockedError];
+    [self.itemToTestPartialMock httpRequest:mockHttpConnector onResponse:mockHttpResponse];
     
     
     // verify
@@ -438,16 +449,21 @@ extern void __gcov_flush();
     id mockedData = [[NSData alloc] init];
     NSInteger mockedResponseCode = 200;
     id mockedError = [[NSObject alloc] init];
+    id mockHttpResponse = OCMClassMock([VDFHttpConnectorResponse class]);
     
+    // stubs
+    [[[mockHttpResponse stub] andReturn:mockedData] data];
+    [[[mockHttpResponse stub] andReturnValue:OCMOCK_VALUE(mockedResponseCode)] httpResponseCode];
+    [[[mockHttpResponse stub] andReturn:mockedError] error];
     
     // expect to update request state with response code:
-    [[self.mockRequestState expect] updateWithHttpResponseCode:mockedResponseCode];
+    [[self.mockRequestState expect] updateWithHttpResponse:mockHttpResponse];
     
-    // expect that the parser will not parse data when error occures
-    [[self.mockResponseParser reject] parseData:mockedData withHttpResponseCode:mockedResponseCode];
+    // expect that the parser will be invoked to parse whole response
+    [[self.mockResponseParser expect] parseResponse:mockHttpResponse];
     
-    // expect that the request state object wont be updated after parsing
-    [[self.mockRequestState reject] updateWithParsedResponse:[OCMArg any]];
+    // expect that the request state object will be updated after parsing even if it will be nil object
+    [[self.mockRequestState expect] updateWithParsedResponse:[OCMArg any]];
     
     // expect that the factory wont be invoked to create cache object:
     [[self.mockFactory reject] createCacheObject];
@@ -459,7 +475,7 @@ extern void __gcov_flush();
     [[self.mockObserversContainer expect] notifyAllObserversWith:[OCMArg isNil] error:mockedError];
     
     // run
-    [self.itemToTestPartialMock parseAndNotifyWithData:mockedData responseCode:mockedResponseCode error:mockedError];
+    [self.itemToTestPartialMock parseAndNotifyWithResponse:mockHttpResponse];
     
     
     // verify
@@ -477,13 +493,17 @@ extern void __gcov_flush();
     NSInteger mockedResponseCode = 200;
     id mockedParsedObject = [[NSObject alloc] init];
     id mockCacheObject = OCMClassMock([VDFCacheObject class]);
+    id mockHttpResponse = OCMClassMock([VDFHttpConnectorResponse class]);
     
+    // stubs
+    [[[mockHttpResponse stub] andReturn:mockedData] data];
+    [[[mockHttpResponse stub] andReturnValue:OCMOCK_VALUE(mockedResponseCode)] httpResponseCode];
     
     // expect to update request state with response code:
-    [[self.mockRequestState expect] updateWithHttpResponseCode:mockedResponseCode];
+    [[self.mockRequestState expect] updateWithHttpResponse:mockHttpResponse];
     
     // expect that the parser will parse data
-    [[[self.mockResponseParser expect] andReturn:mockedParsedObject] parseData:mockedData withHttpResponseCode:mockedResponseCode];
+    [[[self.mockResponseParser expect] andReturn:mockedParsedObject] parseResponse:mockHttpResponse];
     
     // expect that the request state object will be updated after parsing
     [[self.mockRequestState expect] updateWithParsedResponse:mockedParsedObject];
@@ -501,7 +521,7 @@ extern void __gcov_flush();
     [[self.mockObserversContainer expect] notifyAllObserversWith:mockedParsedObject error:[OCMArg isNil]];
     
     // run
-    [self.itemToTestPartialMock parseAndNotifyWithData:mockedData responseCode:mockedResponseCode error:nil];
+    [self.itemToTestPartialMock parseAndNotifyWithResponse:mockHttpResponse];
     
     
     // verify
@@ -519,13 +539,14 @@ extern void __gcov_flush();
     id mockedData = [[NSData alloc] init];
     NSInteger mockedResponseCode = 200;
     id mockedParsedObject = [[NSObject alloc] init];
+    id mockHttpResponse = OCMClassMock([VDFHttpConnectorResponse class]);
     
-    
-    // expect to update request state with response code:
-    [[self.mockRequestState expect] updateWithHttpResponseCode:mockedResponseCode];
+    // stubs
+    [[[mockHttpResponse stub] andReturn:mockedData] data];
+    [[[mockHttpResponse stub] andReturnValue:OCMOCK_VALUE(mockedResponseCode)] httpResponseCode];
     
     // expect that the parser will parse data
-    [[[self.mockResponseParser expect] andReturn:mockedParsedObject] parseData:mockedData withHttpResponseCode:mockedResponseCode];
+    [[[self.mockResponseParser expect] andReturn:mockedParsedObject] parseResponse:mockHttpResponse];
     
     // expect that the request state object will be updated after parsing
     [[self.mockRequestState expect] updateWithParsedResponse:mockedParsedObject];
@@ -540,7 +561,7 @@ extern void __gcov_flush();
     [[self.mockObserversContainer expect] notifyAllObserversWith:mockedParsedObject error:[OCMArg isNil]];
     
     // run
-    [self.itemToTestPartialMock parseAndNotifyWithData:mockedData responseCode:mockedResponseCode error:nil];
+    [self.itemToTestPartialMock parseAndNotifyWithResponse:mockHttpResponse];
     
     
     // verify

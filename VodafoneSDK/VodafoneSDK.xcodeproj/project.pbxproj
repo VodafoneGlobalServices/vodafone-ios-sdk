@@ -113,6 +113,7 @@
 		49A15883196C345700642677 /* VDFBaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A15881196C345700642677 /* VDFBaseService.m */; };
 		49A15890196C3E9700642677 /* VDFStringHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1588E196C3E9700642677 /* VDFStringHelper.h */; };
 		49A15891196C3E9700642677 /* VDFStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1588F196C3E9700642677 /* VDFStringHelper.m */; };
+		49B27D7919AB2E540009C9C0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B27D7819AB2E540009C9C0 /* UIKit.framework */; };
 		49BC3CBE1998B174008C2108 /* VDFOAuthTokenRequestFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 49BC3CBC1998B174008C2108 /* VDFOAuthTokenRequestFactory.h */; };
 		49BC3CBF1998B174008C2108 /* VDFOAuthTokenRequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BC3CBD1998B174008C2108 /* VDFOAuthTokenRequestFactory.m */; };
 		49BC3CC21998B1BD008C2108 /* VDFOAuthTokenRequestBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49BC3CC01998B1BD008C2108 /* VDFOAuthTokenRequestBuilder.h */; };
@@ -266,6 +267,7 @@
 		49A1588C196C3BD600642677 /* VDFHttpConnectorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VDFHttpConnectorDelegate.h; path = Internal/Common/HttpConnector/VDFHttpConnectorDelegate.h; sourceTree = "<group>"; };
 		49A1588E196C3E9700642677 /* VDFStringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFStringHelper.h; path = Internal/Common/Helpers/VDFStringHelper.h; sourceTree = "<group>"; };
 		49A1588F196C3E9700642677 /* VDFStringHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFStringHelper.m; path = Internal/Common/Helpers/VDFStringHelper.m; sourceTree = "<group>"; };
+		49B27D7819AB2E540009C9C0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		49BC3CBC1998B174008C2108 /* VDFOAuthTokenRequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFOAuthTokenRequestFactory.h; path = Internal/Factories/OAuthTokenRequestFactory/VDFOAuthTokenRequestFactory.h; sourceTree = "<group>"; };
 		49BC3CBD1998B174008C2108 /* VDFOAuthTokenRequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthTokenRequestFactory.m; path = Internal/Factories/OAuthTokenRequestFactory/VDFOAuthTokenRequestFactory.m; sourceTree = "<group>"; };
 		49BC3CC01998B1BD008C2108 /* VDFOAuthTokenRequestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFOAuthTokenRequestBuilder.h; path = Internal/Factories/OAuthTokenRequestFactory/VDFOAuthTokenRequestBuilder.h; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49B27D7919AB2E540009C9C0 /* UIKit.framework in Frameworks */,
 				490D4DB519A5E7B700DA3D94 /* CoreTelephony.framework in Frameworks */,
 				49A08B5A1994CB8D00DE60A5 /* libOCMock.a in Frameworks */,
 				4990BFB819923C71005EED39 /* SystemConfiguration.framework in Frameworks */,
@@ -879,6 +882,7 @@
 		49E74BB71962F9D50080EB14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49B27D7819AB2E540009C9C0 /* UIKit.framework */,
 				490D4DB419A5E7B700DA3D94 /* CoreTelephony.framework */,
 				490D4DB219A5E7AB00DA3D94 /* CoreTelephony.framework */,
 				49A08B591994CB8D00DE60A5 /* libOCMock.a */,

@@ -21,8 +21,6 @@
 #import "VDFHttpConnector.h"
 #import "VDFOAuthTokenRequestOptions.h"
 
-extern void __gcov_flush();
-
 #pragma mark -
 #pragma mark - Private properties/methods of mocked/tested classes
 
@@ -30,15 +28,6 @@ extern void __gcov_flush();
 @property (nonatomic, strong) VDFOAuthTokenRequestBuilder *builder;
 
 - (NSData*)postBody;
-@end
-
-@interface VDFArrayObserversContainer ()
-@property SEL notifySelector;
-@property NSMutableArray *observers;
-@end
-
-@interface VDFHttpConnector ()
-@property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
 @end
 
 #pragma mark -
@@ -76,7 +65,6 @@ extern void __gcov_flush();
 
 - (void)tearDown
 {
-    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
@@ -170,7 +158,9 @@ extern void __gcov_flush();
     XCTAssertEqualObjects(result.postBody, postBodyContent, @"Post Body was not set proeprly.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Accept"], @"application/json", @"Accept header was not set.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Content-Type"], @"application/x-www-form-urlencoded", @"Content-Type header was not set.");
-//    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly."); // TODO IMPORTANT when it will be attached to production servers (not mockups) then uncomment this
+    // TODO IMPORTANT when it will be attached to production servers (not mockups) then uncomment this
+//    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
+//    XCTAssertTrue(result.isGSMConnectionRequired, @"GSM Connection is required for this factory.");
 }
 
 

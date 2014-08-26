@@ -7,6 +7,17 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "VDFArrayObserversContainer.h"
+#import "VDFHttpConnector.h"
+
+@interface VDFHttpConnector ()
+@property (nonatomic, assign) id<VDFHttpConnectorDelegate> delegate;
+@end
+
+@interface VDFArrayObserversContainer ()
+@property SEL notifySelector;
+@property NSMutableArray *observers;
+@end
 
 @interface VDFFactoryBaseTestCase : XCTestCase
 

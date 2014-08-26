@@ -29,10 +29,5 @@ extern void __gcov_flush();
     [super tearDown];
 }
 
-- (void)testExample
-{
-    // TODO
-//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
 
 @end

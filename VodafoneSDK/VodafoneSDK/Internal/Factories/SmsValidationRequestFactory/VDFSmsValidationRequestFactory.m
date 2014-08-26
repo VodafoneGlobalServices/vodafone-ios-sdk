@@ -56,7 +56,7 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"PINCode\" : \"%@\" }";
     httpRequest.isGSMConnectionRequired = NO;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
-    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId};
+    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId, @"Content-Type": @"application/json"};
     
     return httpRequest;
 }

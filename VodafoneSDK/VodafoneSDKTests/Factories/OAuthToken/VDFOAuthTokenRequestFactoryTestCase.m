@@ -163,26 +163,6 @@
 //    XCTAssertTrue(result.isGSMConnectionRequired, @"GSM Connection is required for this factory.");
 }
 
-
-/*
- 
- // parameters encoding:
- NSString *encodedClientID = [VDFStringHelper urlEncode:self.builder.requestOptions.clientId];
- NSString *encodedClientSecret = [VDFStringHelper urlEncode:self.builder.requestOptions.clientSecret];
- 
- // formating scopes:
- NSMutableString *bodyString = [NSMutableString stringWithFormat:POST_BODY_FORMAT, encodedClientID, encodedClientSecret];
- if(self.builder.requestOptions.scopes != nil)
- {
- for (NSString *scope in self.builder.requestOptions.scopes) {
- [bodyString appendFormat:POST_BODY_SCOPE_PARAMETER_FORMAT, [VDFStringHelper urlEncode:scope]];
- }
- }
- 
- return [bodyString dataUsingEncoding:NSUTF8StringEncoding];
- 
- */
-
 - (void)testPostBodyCreationWithoutScopes {
     
     // mock

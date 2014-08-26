@@ -38,7 +38,6 @@
         // if there is some request error or not yet preformed the http request then it need to be expired
         self.expiresIn = [NSDate dateWithTimeIntervalSince1970:0];
     }
-    // The user resolve response is never cached, every call schould perform server http request
     return self.expiresIn;
 }
 

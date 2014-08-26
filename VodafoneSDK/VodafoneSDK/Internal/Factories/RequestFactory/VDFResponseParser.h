@@ -18,7 +18,7 @@
 /**
  *  Parse received data object to the model class.
  *
- *  @param responseConnector HTTP connector object holding
+ *  @param response HTTP connector object holding
  *
  *  @return Parsed object or nil if parsing error occured.
  */

@@ -116,6 +116,8 @@
 		49A3DA2219AC693B004B8634 /* VDFSmsValidationRequestFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3DA2119AC693B004B8634 /* VDFSmsValidationRequestFactoryTestCase.m */; };
 		49A3DA2419AC7484004B8634 /* VDFRequestBaseFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3DA2319AC7484004B8634 /* VDFRequestBaseFactoryTestCase.m */; };
 		49A3DA2619AC804D004B8634 /* VDFUserResolveRequestFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3DA2519AC804D004B8634 /* VDFUserResolveRequestFactoryTestCase.m */; };
+		49A3DA2819AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3DA2719AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m */; };
+		49A3DA2A19ACB9D6004B8634 /* VDFOAuthTokenRequestStateTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3DA2919ACB9D6004B8634 /* VDFOAuthTokenRequestStateTestCase.m */; };
 		49A6E8C719ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A6E8C619ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m */; };
 		49B27D7919AB2E540009C9C0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B27D7819AB2E540009C9C0 /* UIKit.framework */; };
 		49B27D7E19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B27D7D19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m */; };
@@ -276,6 +278,8 @@
 		49A3DA2119AC693B004B8634 /* VDFSmsValidationRequestFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsValidationRequestFactoryTestCase.m; path = Factories/SmsValidation/VDFSmsValidationRequestFactoryTestCase.m; sourceTree = "<group>"; };
 		49A3DA2319AC7484004B8634 /* VDFRequestBaseFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFRequestBaseFactoryTestCase.m; path = Factories/RequestBase/VDFRequestBaseFactoryTestCase.m; sourceTree = "<group>"; };
 		49A3DA2519AC804D004B8634 /* VDFUserResolveRequestFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequestFactoryTestCase.m; path = Factories/UsersResolve/VDFUserResolveRequestFactoryTestCase.m; sourceTree = "<group>"; };
+		49A3DA2719AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthTokenResponseParserTestCase.m; path = Factories/OAuthToken/VDFOAuthTokenResponseParserTestCase.m; sourceTree = "<group>"; };
+		49A3DA2919ACB9D6004B8634 /* VDFOAuthTokenRequestStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthTokenRequestStateTestCase.m; path = Factories/OAuthToken/VDFOAuthTokenRequestStateTestCase.m; sourceTree = "<group>"; };
 		49A6E8C619ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsSendPinRequestFactoryTestCase.m; path = Factories/SmsSendPin/VDFSmsSendPinRequestFactoryTestCase.m; sourceTree = "<group>"; };
 		49B27D7819AB2E540009C9C0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		49B27D7D19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthTokenRequestFactoryTestCase.m; path = Factories/OAuthToken/VDFOAuthTokenRequestFactoryTestCase.m; sourceTree = "<group>"; };
@@ -686,6 +690,8 @@
 			isa = PBXGroup;
 			children = (
 				49B27D7D19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m */,
+				49A3DA2719AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m */,
+				49A3DA2919ACB9D6004B8634 /* VDFOAuthTokenRequestStateTestCase.m */,
 			);
 			name = OAuthToken;
 			sourceTree = "<group>";
@@ -1216,6 +1222,7 @@
 				4990BFC019923F90005EED39 /* VDFUserResolveResponseParserTestCase.m in Sources */,
 				498EA2F119823B9800122F05 /* VDFCacheManagerTestCase.m in Sources */,
 				498EA2F819823C4200122F05 /* VDFSettingsTestCase.m in Sources */,
+				49A3DA2819AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m in Sources */,
 				4990BFC21992767E005EED39 /* VDFUserResolveRequestStateTestCase.m in Sources */,
 				49CDA0C91993BB03007E41BA /* VDFUsersServiceDelegateMock.m in Sources */,
 				498EA2EC19823B2F00122F05 /* VDFErrorUtilityTestCase.m in Sources */,
@@ -1229,6 +1236,7 @@
 				49B27D7E19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m in Sources */,
 				4949D43519A2320A00E5D524 /* VDFPendingRequestItemTestCase.m in Sources */,
 				498EA2EA19823B1500122F05 /* VDFStringHelperTestCase.m in Sources */,
+				49A3DA2A19ACB9D6004B8634 /* VDFOAuthTokenRequestStateTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -80,7 +80,7 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"SMSValidation\" : %@ }";
     httpRequest.url = requestUrl;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
-    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId};
+    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId, @"Content-Type": @"application/json"};
     
 //    httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
     

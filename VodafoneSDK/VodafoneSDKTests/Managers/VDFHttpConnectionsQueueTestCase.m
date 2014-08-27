@@ -13,7 +13,6 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFRequestBuilder.h"
 #import "VDFUsersServiceDelegate.h"
-#import "VDFUsersServiceDelegateMock.h"
 #import "VDFHttpConnector.h"
 #import "VDFCacheManager.h"
 #import "VDFRequestFactory.h"

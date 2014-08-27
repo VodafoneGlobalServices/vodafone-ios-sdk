@@ -13,7 +13,6 @@
 #import "VDFUserResolveOptions.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFUsersServiceDelegate.h"
-#import "VDFUsersServiceDelegateMock.h"
 #import "VDFOAuthTokenResponse.h"
 
 extern void __gcov_flush();

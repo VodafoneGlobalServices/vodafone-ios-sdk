@@ -149,7 +149,6 @@
 		49C34226196D71D00079FDF5 /* VDFBaseConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */; };
 		49C34227196D71D00079FDF5 /* VDFBaseConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C34225196D71D00079FDF5 /* VDFBaseConfiguration.m */; };
 		49CDA0C419937D36007E41BA /* VDFUserResolveRequestBuilderTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CDA0C319937D36007E41BA /* VDFUserResolveRequestBuilderTestCase.m */; };
-		49CDA0C91993BB03007E41BA /* VDFUsersServiceDelegateMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CDA0C81993BB03007E41BA /* VDFUsersServiceDelegateMock.m */; };
 		49E100A619A5F44700BFD4A9 /* VDFHttpConnectorResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E100A419A5F44700BFD4A9 /* VDFHttpConnectorResponse.h */; };
 		49E100A719A5F44700BFD4A9 /* VDFHttpConnectorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E100A519A5F44700BFD4A9 /* VDFHttpConnectorResponse.m */; };
 		49E74BB91962F9D50080EB14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB81962F9D50080EB14 /* Foundation.framework */; };
@@ -319,8 +318,6 @@
 		49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFBaseConfiguration.h; path = Internal/Models/VDFBaseConfiguration.h; sourceTree = "<group>"; };
 		49C34225196D71D00079FDF5 /* VDFBaseConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFBaseConfiguration.m; path = Internal/Models/VDFBaseConfiguration.m; sourceTree = "<group>"; };
 		49CDA0C319937D36007E41BA /* VDFUserResolveRequestBuilderTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequestBuilderTestCase.m; path = Factories/UsersResolve/VDFUserResolveRequestBuilderTestCase.m; sourceTree = "<group>"; };
-		49CDA0C71993BB03007E41BA /* VDFUsersServiceDelegateMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUsersServiceDelegateMock.h; path = Mocks/VDFUsersServiceDelegateMock.h; sourceTree = "<group>"; };
-		49CDA0C81993BB03007E41BA /* VDFUsersServiceDelegateMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUsersServiceDelegateMock.m; path = Mocks/VDFUsersServiceDelegateMock.m; sourceTree = "<group>"; };
 		49E100A419A5F44700BFD4A9 /* VDFHttpConnectorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFHttpConnectorResponse.h; path = Internal/Models/HttpConnectorResponse/VDFHttpConnectorResponse.h; sourceTree = "<group>"; };
 		49E100A519A5F44700BFD4A9 /* VDFHttpConnectorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFHttpConnectorResponse.m; path = Internal/Models/HttpConnectorResponse/VDFHttpConnectorResponse.m; sourceTree = "<group>"; };
 		49E74BB51962F9D50080EB14 /* libVodafoneSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVodafoneSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -474,15 +471,6 @@
 				4949D43419A2320A00E5D524 /* VDFPendingRequestItemTestCase.m */,
 			);
 			name = Requests;
-			sourceTree = "<group>";
-		};
-		49852BA7198BABAB00D25AC7 /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				49CDA0C71993BB03007E41BA /* VDFUsersServiceDelegateMock.h */,
-				49CDA0C81993BB03007E41BA /* VDFUsersServiceDelegateMock.m */,
-			);
-			name = Mocks;
 			sourceTree = "<group>";
 		};
 		49852BAB198BC14C00D25AC7 /* Log */ = {
@@ -983,7 +971,6 @@
 		49E74BCE1962F9D60080EB14 /* VodafoneSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				49852BA7198BABAB00D25AC7 /* Mocks */,
 				4990BFBC19923DAA005EED39 /* Factories */,
 				498EA2F419823BCE00122F05 /* Services */,
 				498EA2EF19823B6200122F05 /* Managers */,
@@ -1245,7 +1232,6 @@
 				49A5D77719ADE27F0095B0E3 /* VDFSmsSendPinRequestStateTestCase.m in Sources */,
 				4990BFC21992767E005EED39 /* VDFUserResolveRequestStateTestCase.m in Sources */,
 				49A5D77519ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m in Sources */,
-				49CDA0C91993BB03007E41BA /* VDFUsersServiceDelegateMock.m in Sources */,
 				498EA2EC19823B2F00122F05 /* VDFErrorUtilityTestCase.m in Sources */,
 				49A3DA2F19ACCB90004B8634 /* VDFSmsSendPinResponseParserTestCase.m in Sources */,
 				49B27D8019AB49F80009C9C0 /* VDFFactoryBaseTestCase.m in Sources */,

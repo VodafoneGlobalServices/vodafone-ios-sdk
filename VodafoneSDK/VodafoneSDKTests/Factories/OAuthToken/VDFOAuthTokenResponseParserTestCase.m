@@ -10,10 +10,9 @@
 #import <OCMock/OCMock.h>
 #import "VDFOAuthTokenResponseParser.h"
 #import "VDFHttpConnectorResponse.h"
+#import "VDFResponseParserBaseTestCase.h"
 
-extern void __gcov_flush();
-
-@interface VDFOAuthTokenResponseParserTestCase : XCTestCase
+@interface VDFOAuthTokenResponseParserTestCase : VDFResponseParserBaseTestCase
 @property VDFOAuthTokenResponseParser *parserToTest;
 @end
 
@@ -28,7 +27,6 @@ extern void __gcov_flush();
 
 - (void)tearDown
 {
-    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
@@ -50,24 +48,9 @@ extern void __gcov_flush();
 - (void)testParseInvalidResponse {
     // run & assert
     XCTAssertNil([self.parserToTest parseResponse:nil], @"Nil response should parse to nil.");
-    [self runAndExpectNilResultWithDataFromString:nil responseCode:200 messagePrefix:@"Response with invalid data"];
-    [self runAndExpectNilResultWithDataFromString:@"" responseCode:501 messagePrefix:@"Response with invalid response code"];
-    [self runAndExpectNilResultWithDataFromString:@"dfgdfg dfg" responseCode:200 messagePrefix:@"Response with invalid data structure"];
-}
-
-#pragma mark -
-#pragma mark - private methods
-- (void)runAndExpectNilResultWithDataFromString:(NSString*)stringData responseCode:(NSInteger)responseCode messagePrefix:(NSString*)messagePrefix {
-    
-    // mock
-    id responseMock = OCMClassMock([VDFHttpConnectorResponse class]);
-    
-    // stub
-    [[[responseMock stub] andReturn:stringData!=nil ? [stringData dataUsingEncoding:NSUTF8StringEncoding]:nil] data];
-    [[[responseMock stub] andReturnValue:OCMOCK_VALUE((NSInteger)responseCode)] httpResponseCode];
-    
-    // run & assert
-    XCTAssertNil([self.parserToTest parseResponse:responseMock], @"%@ should parse to nil.", messagePrefix);
+    [super runAndExpectNilResultOnParser:self.parserToTest dataFromString:nil responseCode:200 messagePrefix:@"Response with invalid data"];
+    [super runAndExpectNilResultOnParser:self.parserToTest dataFromString:@"" responseCode:501 messagePrefix:@"Response with invalid response code"];
+    [super runAndExpectNilResultOnParser:self.parserToTest dataFromString:@"dfgdfg dfg" responseCode:200 messagePrefix:@"Response with invalid data structure"];
 }
 
 

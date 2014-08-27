@@ -29,16 +29,12 @@ static NSInteger const SuccessfulResponseCode = 200;
 
 - (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
     
-    BOOL isSucceded = response.httpResponseCode == SuccessfulResponseCode;
-//    if(self.responseCode == SuccessfulResponseCode) {
-//        // on success we do not need to parse response
-//    }
-//    else if(self.responseCode == FailureResponseCode) {
-//        // in case of failure we can read the status and errorMessage
-//        // but for what ?
-//    }
-
-    return [[VDFSmsValidationResponse alloc] initWithSmsCode:self.smsCode isSucceded:isSucceded];
+    if(response != nil) {
+        BOOL isSucceded = response.httpResponseCode == SuccessfulResponseCode;
+        return [[VDFSmsValidationResponse alloc] initWithSmsCode:self.smsCode isSucceded:isSucceded];
+    }
+    
+    return nil;
 }
 
 @end

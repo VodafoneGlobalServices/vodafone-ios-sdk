@@ -14,7 +14,10 @@ static NSInteger const SuccessResponseCode = 200;
 @implementation VDFSmsSendPinResponseParser
 
 - (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
-    return [NSNumber numberWithBool:response.httpResponseCode == SuccessResponseCode];
+    if(response != nil) {
+        return [NSNumber numberWithBool:response.httpResponseCode == SuccessResponseCode];
+    }
+    return nil;
 }
 
 @end

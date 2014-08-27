@@ -7,18 +7,14 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "VDFUserResolveResponseParser.h"
 #import "VDFUserTokenDetails.h"
 #import "VDFHttpConnectorResponse.h"
+#import "VDFResponseParserBaseTestCase.h"
 
-extern void __gcov_flush();
-
-@interface VDFUserResolveResponseParserTestCase : XCTestCase
-
-- (void)assertTokenDetails:(VDFUserTokenDetails*)details withResolved:(BOOL)resolved stillRunning:(BOOL)stillRunning
-                    source:(NSString*)source token:(NSString*)token expires:(NSDate*)expires
-         tetheringConflict:(BOOL)tetheringConflict validated:(BOOL)validated;
-
+@interface VDFUserResolveResponseParserTestCase : VDFResponseParserBaseTestCase
+@property VDFUserResolveResponseParser *parserToTest;
 @end
 
 @implementation VDFUserResolveResponseParserTestCase
@@ -27,51 +23,44 @@ extern void __gcov_flush();
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    self.parserToTest = [[VDFUserResolveResponseParser alloc] init];
 }
 
 - (void)tearDown
 {
-    __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
-// TODO tests
+
+- (void)testParseValidData {
+    
+    // mock
+    NSData *sampleJsonData = [@"{\"resolved\":true,\"stillRunning\":true,\"token\":\"71660abbd4cfb8cc57eb4c97fbe4d164\",\"validationRequired\":true}" dataUsingEncoding:NSUTF8StringEncoding];
+    id responseMock = OCMClassMock([VDFHttpConnectorResponse class]);
+    
+    // stub
+    [[[responseMock stub] andReturn:sampleJsonData] data];
+    [[[responseMock stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
+    
+    // run & assert
+    XCTAssertNotNil([self.parserToTest parseResponse:responseMock], @"Proper json response should parse to object.");
+}
+
+- (void)testParseInvalidResponse {
+    // run & assert
+    XCTAssertNil([self.parserToTest parseResponse:nil], @"Nil response should parse to nil.");
+    [super runAndExpectNilResultOnParser:self.parserToTest dataFromString:nil responseCode:200 messagePrefix:@"Response with invalid data"];
+    [super runAndExpectNilResultOnParser:self.parserToTest dataFromString:@"" responseCode:501 messagePrefix:@"Response with invalid response code"];
+    [super runAndExpectNilResultOnParser:self.parserToTest dataFromString:@"dfgdfg dfg" responseCode:200 messagePrefix:@"Response with invalid data structure"];
+}
+
+
+
 /*
-- (void)testIsProperResponseParsedCorrectly
-{
-//    id parserToTest = [[VDFUserResolveResponseParser alloc] init];
-//    
-//    
-//    NSData *sampleJsonData = [@"{\"resolved\":true,\"stillRunning\":true,\"source\":\"header\",\"token\":\"71660abbd4cfb8cc57eb4c97fbe4d164\",\"expires\":\"2014-08-08T12:57:32+02:00\",\"tetheringConflict\":false,\"validated\":true}" dataUsingEncoding:NSUTF8StringEncoding];
-//    
-//    VDFUserTokenDetails *parsedJson = (VDFUserTokenDetails*)[parserToTest  parseData:sampleJsonData withHttpResponseCode:0];
-//
-//    [self assertTokenDetails:parsedJson withResolved:true stillRunning:true source:@"header" token:@"71660abbd4cfb8cc57eb4c97fbe4d164" expires:[NSDate dateWithTimeIntervalSince1970:1407495452] tetheringConflict:NO validated:YES];
-}
 
-- (void)testInvalidJsonParsing
-{
-//    id parserToTest = [[VDFUserResolveResponseParser alloc] init];
-//    
-//    id invalidJsons = @{@"Not json should parse to nil" : [@"error 2234" dataUsingEncoding:NSUTF8StringEncoding],
-//                        @"Empty string should parse to nil" : [@"" dataUsingEncoding:NSUTF8StringEncoding],
-//                        @"Invalid json should parse to nil" : [@"{some invalid json}" dataUsingEncoding:NSUTF8StringEncoding],
-//                        @"Json without varaiables from model should parse to nil" : [@"{some: \"json\", with: \"diffrent\", values:false}" dataUsingEncoding:NSUTF8StringEncoding],
-//                        @"Json without even one variable from model should parse to nil" : [@"{\"resolved\":true,\"stillRunning\":true,\"source\":\"header\",\"token\":\"71660abbd4cfb8cc57eb4c97fbe4d164\",\"expires\":\"2014-08-08T12:57:32+02:00\",\"tetheringConflict\":false}" dataUsingEncoding:NSUTF8StringEncoding]};
-//    
-//    for (NSString * key in [invalidJsons allKeys]) {
-//        VDFUserTokenDetails *parsedJson = (VDFUserTokenDetails*)[parserToTest parseData:[invalidJsons objectForKey:key] withHttpResponseCode:0];
-//        
-//        XCTAssertNil(parsedJson, @"%@", key);
-//    }
-//    
-//    // check also nil:
-//    VDFUserTokenDetails *parsedJson = (VDFUserTokenDetails*)[parserToTest parseData:nil withHttpResponseCode:0];
-//    
-//    XCTAssertNil(parsedJson, @"Nil string should parse to nil");
-}
-
-
+ // can be used in tests for parsing model class
+ 
 - (void)assertTokenDetails:(VDFUserTokenDetails*)details withResolved:(BOOL)resolved stillRunning:(BOOL)stillRunning
                     source:(NSString*)source token:(NSString*)token expires:(NSDate*)expires
          tetheringConflict:(BOOL)tetheringConflict validated:(BOOL)validated {

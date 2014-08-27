@@ -121,6 +121,8 @@
 		49A3DA2C19ACC763004B8634 /* VDFResponseParserBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3DA2B19ACC763004B8634 /* VDFResponseParserBaseTestCase.m */; };
 		49A3DA2F19ACCB90004B8634 /* VDFSmsSendPinResponseParserTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3DA2E19ACCB90004B8634 /* VDFSmsSendPinResponseParserTestCase.m */; };
 		49A5D77519ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D77419ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m */; };
+		49A5D77719ADE27F0095B0E3 /* VDFSmsSendPinRequestStateTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D77619ADE27F0095B0E3 /* VDFSmsSendPinRequestStateTestCase.m */; };
+		49A5D77919ADEF470095B0E3 /* VDFSmsValidationRequestStateTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D77819ADEF470095B0E3 /* VDFSmsValidationRequestStateTestCase.m */; };
 		49A6E8C719ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A6E8C619ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m */; };
 		49B27D7919AB2E540009C9C0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B27D7819AB2E540009C9C0 /* UIKit.framework */; };
 		49B27D7E19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B27D7D19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m */; };
@@ -287,6 +289,8 @@
 		49A3DA2D19ACC77F004B8634 /* VDFResponseParserBaseTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VDFResponseParserBaseTestCase.h; path = Factories/VDFResponseParserBaseTestCase.h; sourceTree = "<group>"; };
 		49A3DA2E19ACCB90004B8634 /* VDFSmsSendPinResponseParserTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsSendPinResponseParserTestCase.m; path = Factories/SmsSendPin/VDFSmsSendPinResponseParserTestCase.m; sourceTree = "<group>"; };
 		49A5D77419ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsValidationResponseParserTestCase.m; path = Factories/SmsValidation/VDFSmsValidationResponseParserTestCase.m; sourceTree = "<group>"; };
+		49A5D77619ADE27F0095B0E3 /* VDFSmsSendPinRequestStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsSendPinRequestStateTestCase.m; path = Factories/SmsSendPin/VDFSmsSendPinRequestStateTestCase.m; sourceTree = "<group>"; };
+		49A5D77819ADEF470095B0E3 /* VDFSmsValidationRequestStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsValidationRequestStateTestCase.m; path = Factories/SmsValidation/VDFSmsValidationRequestStateTestCase.m; sourceTree = "<group>"; };
 		49A6E8C619ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsSendPinRequestFactoryTestCase.m; path = Factories/SmsSendPin/VDFSmsSendPinRequestFactoryTestCase.m; sourceTree = "<group>"; };
 		49B27D7819AB2E540009C9C0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		49B27D7D19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthTokenRequestFactoryTestCase.m; path = Factories/OAuthToken/VDFOAuthTokenRequestFactoryTestCase.m; sourceTree = "<group>"; };
@@ -567,6 +571,7 @@
 			children = (
 				49A3DA2119AC693B004B8634 /* VDFSmsValidationRequestFactoryTestCase.m */,
 				49A5D77419ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m */,
+				49A5D77819ADEF470095B0E3 /* VDFSmsValidationRequestStateTestCase.m */,
 			);
 			name = SmsValidation;
 			sourceTree = "<group>";
@@ -693,6 +698,7 @@
 			children = (
 				49A6E8C619ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m */,
 				49A3DA2E19ACCB90004B8634 /* VDFSmsSendPinResponseParserTestCase.m */,
+				49A5D77619ADE27F0095B0E3 /* VDFSmsSendPinRequestStateTestCase.m */,
 			);
 			name = SmsSendPin;
 			sourceTree = "<group>";
@@ -1230,11 +1236,13 @@
 				49CDA0C419937D36007E41BA /* VDFUserResolveRequestBuilderTestCase.m in Sources */,
 				49A3DA2219AC693B004B8634 /* VDFSmsValidationRequestFactoryTestCase.m in Sources */,
 				49A6E8C719ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m in Sources */,
+				49A5D77919ADEF470095B0E3 /* VDFSmsValidationRequestStateTestCase.m in Sources */,
 				49A3DA2C19ACC763004B8634 /* VDFResponseParserBaseTestCase.m in Sources */,
 				4990BFC019923F90005EED39 /* VDFUserResolveResponseParserTestCase.m in Sources */,
 				498EA2F119823B9800122F05 /* VDFCacheManagerTestCase.m in Sources */,
 				498EA2F819823C4200122F05 /* VDFSettingsTestCase.m in Sources */,
 				49A3DA2819AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m in Sources */,
+				49A5D77719ADE27F0095B0E3 /* VDFSmsSendPinRequestStateTestCase.m in Sources */,
 				4990BFC21992767E005EED39 /* VDFUserResolveRequestStateTestCase.m in Sources */,
 				49A5D77519ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m in Sources */,
 				49CDA0C91993BB03007E41BA /* VDFUsersServiceDelegateMock.m in Sources */,

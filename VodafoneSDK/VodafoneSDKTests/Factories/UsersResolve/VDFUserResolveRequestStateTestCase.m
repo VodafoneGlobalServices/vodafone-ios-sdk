@@ -7,43 +7,37 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "VDFUserResolveRequestState.h"
+#import "VDFUserResolveRequestBuilder.h"
 #import "VDFUserResolveOptions.h"
 #import "VDFUserTokenDetails.h"
+#import "VDFHttpConnectorResponse.h"
 
 extern void __gcov_flush();
 
+@interface VDFUserResolveRequestState ()
+@property BOOL needRetry;
+@end
+
 @interface VDFUserResolveRequestStateTestCase : XCTestCase
+@property VDFUserResolveRequestState *requestStateToTest;
+@property id requestStateToTestMock;
+@property id mockBuilder;
 
-@property (nonatomic, strong) NSString *initialSessionToken;
-@property (nonatomic, strong) VDFUserResolveOptions *options;
-@property (nonatomic, strong) VDFUserResolveRequestState *requestState;
-@property (nonatomic, strong) NSMutableDictionary *validTokenDetailsJson;
-
-- (void)checkIsCurrentlyInitialStateWithMessagePrefix:(NSString*)messagePrefix;
-
+- (void)assertForInitialState;
 @end
 
 @implementation VDFUserResolveRequestStateTestCase
-/*
+
 - (void)setUp
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     
-    self.initialSessionToken = @"someInitialToken";
-    self.options = [[VDFUserResolveOptions alloc] validateWithSms:NO];
-    self.requestState = [[VDFUserResolveRequestState alloc] initWithBuilder:];
-    
-    self.validTokenDetailsJson = [NSMutableDictionary dictionaryWithDictionary:
-                                  @{ @"resolved": [NSNumber numberWithBool:NO],
-                                     @"stillRunning": [NSNumber numberWithBool:YES],
-                                     @"source": @"some source",
-                                     @"token": @"some changed token",
-                                     @"expires": @"2014-08-08T12:57:32+02:00",
-                                     @"tetheringConflict": [NSNumber numberWithBool:YES],
-                                     @"validated": [NSNumber numberWithBool:YES]
-                                     }];
+    self.mockBuilder = OCMClassMock([VDFUserResolveRequestBuilder class]);
+    self.requestStateToTest = [[VDFUserResolveRequestState alloc] initWithBuilder:self.mockBuilder];
+    self.requestStateToTestMock = OCMPartialMock(self.requestStateToTest);
 }
 
 - (void)tearDown
@@ -53,58 +47,142 @@ extern void __gcov_flush();
     [super tearDown];
 }
 
-- (void)testIsInitialStateProper {
-    [self checkIsCurrentlyInitialStateWithMessagePrefix:@"New created objects"];
+- (void)testInitialState {
+    [self assertForInitialState];
 }
 
-- (void)testIsStateChangeOnResponseCode {
-    for (int i=0; i<600; i++) {
-        [self.requestState updateWithHttpResponseCode:i]; // setting response code should not may any impact on state
-        
-        // Making asserts:
-        [self checkIsCurrentlyInitialStateWithMessagePrefix:@"Setting response code"];
-    }
+- (void)testUpdateWithWrongHttpResponse {
+    
+    // mock
+    id responseMock = OCMClassMock([VDFHttpConnectorResponse class]);
+    id responseMockWithHeaders = OCMClassMock([VDFHttpConnectorResponse class]);
+    
+    // stub
+    [[[responseMock stub] andReturn:[NSData data]] data];
+    [[[responseMock stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
+    [[[responseMock stub] andReturn:nil] responseHeaders];
+    [[[responseMockWithHeaders stub] andReturn:[NSData data]] data];
+    [[[responseMockWithHeaders stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
+    [[[responseMockWithHeaders stub] andReturn:@{ @"someHeaderInvalid" : @"invalidValue" }] responseHeaders];
+    
+    // run & assert
+    [self.requestStateToTest updateWithHttpResponse:responseMock];
+    [self assertForInitialState];
+    
+    // run & assert
+    [self.requestStateToTest updateWithHttpResponse:responseMockWithHeaders];
+    [self assertForInitialState];
+    
+    // run & assert
+    [self.requestStateToTest updateWithHttpResponse:nil];
+    [self assertForInitialState];
 }
 
-- (void)testStateWithValidResponseUpdating {
+- (void)testUpdateWitHttpResponseWithETag {
     
-    // performing operation:
-    VDFUserTokenDetails *tokenDetials = [[VDFUserTokenDetails alloc] initWithJsonObject:self.validTokenDetailsJson];
-    [self.validTokenDetailsJson setObject:[NSNumber numberWithBool:YES] forKey:@"stillRunning"];
-    [self.requestState updateWithParsedResponse:tokenDetials];
+    // mock
+    id etag = @"someExampleETagValue";
+    id responseMock = OCMClassMock([VDFHttpConnectorResponse class]);
     
-    // Assertions:
-    XCTAssertTrue([self.requestState isRetryNeeded], @"After updating with parsed response with stillRuningFlag seted to true the isRetryNeeded property of state should be true.");
-    XCTAssertEqualObjects([self.requestState lastResponseExpirationDate], [NSDate dateWithTimeIntervalSince1970:0], @"After updating with parsed response the last response expiration date should not change and points to date from past.");
+    // stub
+    [[[responseMock stub] andReturn:@{ @"Etag" : etag }] responseHeaders];
     
-    // check is initialized options corresponds to new session token:
-    XCTAssertEqualObjects(self.options.token, tokenDetials.token, @"After updating with new sesion token the token from initialization object should change.");
+    // expect that the builder will get info about etag
+    [[self.mockBuilder expect] setETag:etag];
     
-    // performing operation:
-    [self.validTokenDetailsJson setObject:[NSNumber numberWithBool:NO] forKey:@"stillRunning"];
-    [self.requestState updateWithParsedResponse:[[VDFUserTokenDetails alloc] initWithJsonObject:self.validTokenDetailsJson]];
+    // run
+    [self.requestStateToTest updateWithHttpResponse:responseMock];
     
-    // Assertions:
-    XCTAssertFalse([self.requestState isRetryNeeded], @"After updating with parsed response with stillRuningFlag seted to false the isRetryNeeded property of state should be false.");
+    // verify
+    [self.mockBuilder verify];
+    [self assertForInitialState]; // state should not change
 }
 
-- (void)testStateWithInvalidResponseUpdate {
-    // nil:
-    XCTAssertNoThrow([self.requestState updateWithParsedResponse:nil], @"Update with nil should not throw exceptions");
-    [self checkIsCurrentlyInitialStateWithMessagePrefix:@"Updating with nil object"];
+- (void)testUpdateSessionTokenWithParsedObject {
     
-    // another type object:
-    XCTAssertNoThrow([self.requestState updateWithParsedResponse:@"dummy string"], @"Updating with diffrent type object should not throw exceptions");
-    [self checkIsCurrentlyInitialStateWithMessagePrefix:@"Updating with diffrent type object"];
+    // mock
+    NSString *sessionToken = @"mockSessionToken";
+    id responseWithSessionToken = OCMClassMock([VDFUserTokenDetails class]);
+    id responseWithoutSessionToken = OCMClassMock([VDFUserTokenDetails class]);
+    
+    // stub
+    [[[responseWithSessionToken stub] andReturn:sessionToken] token];
+    [[[responseWithoutSessionToken stub] andReturn:nil] token];
+    
+    // expect that the session token will be passed to the builder only once
+    [[self.mockBuilder expect] setSessionToken:sessionToken];
+    [[self.mockBuilder reject] setSessionToken:[OCMArg any]];
+    
+    // run
+    [self.requestStateToTest updateWithParsedResponse:responseWithSessionToken];
+    [self.requestStateToTest updateWithParsedResponse:responseWithoutSessionToken];
+    
+    // assert & verify
+    [self.mockBuilder verify];
+    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"UserResolve request should have date previus than current because it is not cached.");
+    
 }
 
-- (void)checkIsCurrentlyInitialStateWithMessagePrefix:(NSString*)messagePrefix {
+- (void)testUpdateRetryFlagWithParsedObjectWhenNeedRetry {
     
-    XCTAssertTrue([self.requestState isRetryNeeded], @"%@ should not change initial isRetryNeeded=true flag.", messagePrefix);
-    XCTAssertNotEqualObjects([self.requestState lastResponseExpirationDate], [NSDate dateWithTimeIntervalSinceNow:3600*24], @"%@ should not change the default value of one day.", messagePrefix); // TODO after moving this value to the configutation please update this test case
+    // mock
+    id responseStillRunning = OCMClassMock([VDFUserTokenDetails class]);
+    id responseFinished = OCMClassMock([VDFUserTokenDetails class]);
     
-    // check is initialized options session token do not changed:
-    XCTAssertEqualObjects(self.options.token, self.initialSessionToken, @"%@ should not change the session token in initial properties.", messagePrefix);
+    // stub
+    self.requestStateToTest.needRetry = YES;
+    [[[responseStillRunning stub] andReturnValue:OCMOCK_VALUE(YES)] stillRunning];
+    [[[responseFinished stub] andReturnValue:OCMOCK_VALUE(NO)] stillRunning];
+    
+    // run & assert
+    [self.requestStateToTestMock updateWithParsedResponse:responseStillRunning];
+    XCTAssertTrue([self.requestStateToTest isRetryNeeded], @"UserResolve request should change state of retrying.");
+    
+    // run & assert
+    [self.requestStateToTestMock updateWithParsedResponse:responseFinished];
+    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"UserResolve request should change state of retrying.");
+    
+    // assert
+    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"UserResolve request should have date previus than current because it is not cached.");
 }
-*/
+
+- (void)testUpdateRetryFlagWithParsedObjectWhenNotNeedRetry {
+    
+    // mock
+    id responseStillRunning = OCMClassMock([VDFUserTokenDetails class]);
+    id responseFinished = OCMClassMock([VDFUserTokenDetails class]);
+    
+    // stub
+    self.requestStateToTest.needRetry = NO;
+    [[[responseStillRunning stub] andReturnValue:OCMOCK_VALUE(YES)] stillRunning];
+    [[[responseFinished stub] andReturnValue:OCMOCK_VALUE(NO)] stillRunning];
+    
+    // run & assert
+    [self.requestStateToTestMock updateWithParsedResponse:responseStillRunning];
+    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"UserResolve request when not need to retry should not change state of retrying.");
+    
+    // run & assert
+    [self.requestStateToTestMock updateWithParsedResponse:responseFinished];
+    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"UserResolve request when not need to retry should not change state of retrying.");
+    
+    // assert
+    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"UserResolve request should have date previus than current because it is not cached.");
+}
+
+- (void)testUpdateWithInvalidParsedObject {
+    
+    // run & assert
+    [self.requestStateToTest updateWithParsedResponse:nil];
+    [self assertForInitialState];
+    
+    // run & assert
+    [self.requestStateToTest updateWithParsedResponse:@"fakeMock"];
+    [self assertForInitialState];
+}
+
+- (void)assertForInitialState {
+    XCTAssertTrue([self.requestStateToTest isRetryNeeded], @"Initial state of userResolve request as defaults need to retry.");
+    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"UserResolve request should have date previus than current because it is not cached.");
+}
+
 @end

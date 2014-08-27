@@ -25,7 +25,7 @@
 }
 
 - (NSDate*)lastResponseExpirationDate {
-    return [NSDate date];// this is not cached so it expires immediately
+    return [NSDate dateWithTimeIntervalSince1970:0];// this is not cached so it expires immediately
 }
 
 @end

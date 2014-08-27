@@ -51,22 +51,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestState.m"
-            timestampString = "430406157.202978"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "-updateWithParsedResponse:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Requests/ManagerComponents/VDFPendingRequestItem.m"
             timestampString = "430406523.888157"
             startingColumnNumber = "9223372036854775807"

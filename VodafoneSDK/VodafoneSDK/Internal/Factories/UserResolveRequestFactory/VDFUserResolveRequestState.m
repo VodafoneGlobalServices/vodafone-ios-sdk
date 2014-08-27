@@ -35,18 +35,16 @@
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
     // check for etag
     // if exists update it in builder
-    if(response.responseHeaders != nil && [[response.responseHeaders allKeys] containsObject:@"Etag"]) {
+    if(response != nil && response.responseHeaders != nil && [[response.responseHeaders allKeys] containsObject:@"Etag"]) {
         self.builder.eTag = [response.responseHeaders objectForKey:@"Etag"];
     }
 }
 
 - (void)updateWithParsedResponse:(id)parsedResponse {
-    VDFUserTokenDetails * userTokenDetails = nil;
-    if([parsedResponse isKindOfClass:[VDFUserTokenDetails class]]) {
-        userTokenDetails = (VDFUserTokenDetails*)parsedResponse;
-    }
     
-    if(userTokenDetails != nil) {
+    if(parsedResponse != nil && [parsedResponse isKindOfClass:[VDFUserTokenDetails class]]) {
+        
+        VDFUserTokenDetails * userTokenDetails = (VDFUserTokenDetails*)parsedResponse;
         if(self.needRetry) {
             self.needRetry = userTokenDetails.stillRunning;
         }

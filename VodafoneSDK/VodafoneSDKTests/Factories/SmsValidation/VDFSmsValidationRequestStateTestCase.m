@@ -1,32 +1,32 @@
 //
-//  VDFOAuthTokenRequestStateTestCase.m
+//  VDFSmsValidationRequestStateTestCase.m
 //  VodafoneSDK
 //
-//  Created by Michał Szymańczyk on 26/08/14.
+//  Created by Michał Szymańczyk on 27/08/14.
 //  Copyright (c) 2014 VOD. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "VDFOAuthTokenRequestState.h"
+#import "VDFSmsValidationRequestState.h"
 #import "VDFHttpConnectorResponse.h"
-#import "VDFOAuthTokenResponse.h"
 
 extern void __gcov_flush();
 
-@interface VDFOAuthTokenRequestStateTestCase : XCTestCase
-@property VDFOAuthTokenRequestState *requestStateToTest;
+@interface VDFSmsValidationRequestStateTestCase : XCTestCase
+@property VDFSmsValidationRequestState *requestStateToTest;
 
 - (void)assertForInitialState;
 @end
 
-@implementation VDFOAuthTokenRequestStateTestCase
+@implementation VDFSmsValidationRequestStateTestCase
 
 - (void)setUp
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    self.requestStateToTest = [[VDFOAuthTokenRequestState alloc] init];
+    
+    self.requestStateToTest = [[VDFSmsValidationRequestState alloc] init];
 }
 
 - (void)tearDown
@@ -58,7 +58,7 @@ extern void __gcov_flush();
     [self assertForInitialState];
 }
 
-- (void)testUpdateWithInvalidResponse {
+- (void)testUpdateWithParsedResponse {
     
     // run & assert
     [self.requestStateToTest updateWithParsedResponse:nil];
@@ -67,29 +67,17 @@ extern void __gcov_flush();
     // run & assert
     [self.requestStateToTest updateWithParsedResponse:@"fakeMock"];
     [self assertForInitialState];
+    
+    // run & assert
+    [self.requestStateToTest updateWithParsedResponse:@YES];
+    [self assertForInitialState];
+    
 }
 
-- (void)testUpdateWithValidResponse {
-    
-    // mock
-    NSDate *expirationDate = [NSDate date];
-    id response = OCMClassMock([VDFOAuthTokenResponse class]);
-    
-    // stub
-    [[[response stub] andReturn:expirationDate] expiresIn];
-    
-    // run
-    [self.requestStateToTest updateWithParsedResponse:response];
-    
-    // assert
-    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"OAuthToken request will never retry.");
-    XCTAssertEqualObjects([self.requestStateToTest lastResponseExpirationDate], expirationDate, @"Expiration date should be readed from valid response object.");
-}
 
-#pragma mark - private methods
 - (void)assertForInitialState {
-    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"OAuthToken request will never retry.");
-    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"OAuthToken request should have date previus than current because is expired as default.");
+    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"Initial state of send pin request as defaults do not need to retry.");
+    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"Send pin request should have date previus than current because it is not cached.");
 }
 
 @end

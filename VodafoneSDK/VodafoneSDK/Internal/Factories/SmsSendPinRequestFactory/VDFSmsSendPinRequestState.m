@@ -11,7 +11,7 @@
 @implementation VDFSmsSendPinRequestState
 
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
-    // TODO
+    // TODO if we want to handle some errors (when it will be described)
 }
 
 - (void)updateWithParsedResponse:(id)parsedResponse {
@@ -22,7 +22,7 @@
 }
 
 - (NSDate*)lastResponseExpirationDate {
-    return [NSDate date];// this is not cached so it expires immediately
+    return [NSDate dateWithTimeIntervalSince1970:0];// this is not cached so it expires immediately
 }
 
 @end

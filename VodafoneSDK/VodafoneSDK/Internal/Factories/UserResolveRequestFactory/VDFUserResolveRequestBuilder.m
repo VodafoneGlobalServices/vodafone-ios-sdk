@@ -93,7 +93,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 #pragma mark VDFOAuthTokenRequestDelegate implementation
 
 -(void)didReceivedOAuthToken:(VDFOAuthTokenResponse*)oAuthToken withError:(NSError*)error {
-    if(oAuthToken != nil || error == nil) {
+    if(oAuthToken != nil && error == nil) {
         // everything looks fine:
         self.oAuthToken = oAuthToken;
     }

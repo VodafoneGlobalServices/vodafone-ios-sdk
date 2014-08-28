@@ -15,13 +15,14 @@
 #import "VDFError.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFHttpConnectorResponse.h"
+#import "VDFDIContainer.h"
 
 @interface VDFPendingRequestItem ()
 @property (nonatomic, strong) VDFHttpConnectionsQueue *parentQueue;
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 // pending http request to the server
 @property (nonatomic, strong) VDFHttpConnector *currentHttpRequest;
-@property (nonatomic, strong) VDFBaseConfiguration *configuration;
+@property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, assign) BOOL isRunning;
 
 - (void)retryRequest;
@@ -33,10 +34,10 @@
 
 @implementation VDFPendingRequestItem
 
-- (instancetype)initWithBuilder:(id<VDFRequestBuilder>)builder parentQueue:(VDFHttpConnectionsQueue*)parentQueue cacheManager:(VDFCacheManager*)cacheManager configuration:(VDFBaseConfiguration*)configuration{
+- (instancetype)initWithBuilder:(id<VDFRequestBuilder>)builder parentQueue:(VDFHttpConnectionsQueue*)parentQueue cacheManager:(VDFCacheManager*)cacheManager diContainer:(VDFDIContainer*)diContainer {
     self = [super init];
     if(self) {
-        self.configuration = configuration;
+        self.diContainer = diContainer;
         self.builder = builder;
         self.parentQueue = parentQueue;
         self.numberOfRetries = 0;
@@ -120,16 +121,18 @@
     VDFLogD(@"Retrying request.");
     self.numberOfRetries++;
     
-    if(self.numberOfRetries > self.configuration.maxHttpRequestRetriesCount) {
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    if(self.numberOfRetries > configuration.maxHttpRequestRetriesCount) {
         VDFLogD(@"We run out of the limit, so need to cancel request:\n%@", self.builder);
         // we run out of the limit, so need to return an error and remove this request:
         [self onInternalConnectionError:VDFErrorConnectionTimeout];
     }
     else {
         
-        VDFLogD(@"Dispatching retry request (after %f ms):\n%@", self.configuration.httpRequestRetryTimeSpan, self.builder);
+        VDFLogD(@"Dispatching retry request (after %f ms):\n%@", configuration.httpRequestRetryTimeSpan, self.builder);
         // we still stay in the limit, so wait and make the request
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.configuration.httpRequestRetryTimeSpan * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, configuration.httpRequestRetryTimeSpan * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
             
             // check is ther still waiting delegates
             if([[self.builder observersContainer] count] > 0) {

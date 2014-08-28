@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "VDFRequestBuilder.h"
 
-@class VDFBaseConfiguration;
+@class VDFDIContainer;
 
 @interface VDFRequestBaseBuilder : NSObject <VDFRequestBuilder>
 
 // TODO documentation
-@property (nonatomic, strong) VDFBaseConfiguration *configuration;
+@property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) NSString *applicationId;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId configuration:(VDFBaseConfiguration*)configuration;
+- (instancetype)initWithApplicationId:(NSString*)applicationId diContainer:(VDFDIContainer*)diContainer;
 
 @end

@@ -10,11 +10,11 @@
 #import "VDFHttpConnectorDelegate.h"
 #import "VDFRequestBuilder.h"
 
-@class VDFHttpConnector, VDFHttpConnectionsQueue, VDFCacheManager, VDFBaseConfiguration;
+@class VDFHttpConnector, VDFHttpConnectionsQueue, VDFCacheManager, VDFDIContainer;
 
 @interface VDFPendingRequestItem : NSObject <VDFHttpConnectorDelegate>
 
-- (instancetype)initWithBuilder:(id<VDFRequestBuilder>)builder parentQueue:(VDFHttpConnectionsQueue*)parentQueue cacheManager:(VDFCacheManager*)cacheManager configuration:(VDFBaseConfiguration*)configuration;
+- (instancetype)initWithBuilder:(id<VDFRequestBuilder>)builder parentQueue:(VDFHttpConnectionsQueue*)parentQueue cacheManager:(VDFCacheManager*)cacheManager diContainer:(VDFDIContainer*)diContainer;
 
 // TODO documentation
 @property (nonatomic, strong) id<VDFRequestBuilder> builder;

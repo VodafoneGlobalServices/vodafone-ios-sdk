@@ -25,25 +25,26 @@
 
 #import "VDFHttpConnectionsQueue.h"
 #import "VDFPendingRequestItem.h"
+#import "VDFDIContainer.h"
 
 
 #pragma mark - VDFServiceRequestsManager class
 
 @interface VDFServiceRequestsManager ()
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
-@property (nonatomic, strong) VDFBaseConfiguration *configuration;
+@property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) VDFHttpConnectionsQueue *connectionsQueue;
 @end
 
 @implementation VDFServiceRequestsManager
 
-- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration cacheManager:(VDFCacheManager*)cacheManager {
+- (instancetype)initWithDIContainer:(VDFDIContainer*)diContainer cacheManager:(VDFCacheManager*)cacheManager {
     self = [super init];
     if(self) {
         VDFLogD(@"Initializing Service Request Manager");
         self.cacheManager = cacheManager;
-        self.configuration = configuration;
-        self.connectionsQueue = [[VDFHttpConnectionsQueue alloc] initWithCacheManager:cacheManager configuration:configuration];
+        self.diContainer = diContainer;
+        self.connectionsQueue = [[VDFHttpConnectionsQueue alloc] initWithCacheManager:cacheManager diContainer:diContainer];
     }
     return self;
 }

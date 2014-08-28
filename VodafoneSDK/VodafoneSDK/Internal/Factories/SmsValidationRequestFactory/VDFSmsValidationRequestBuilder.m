@@ -12,6 +12,7 @@
 #import "VDFOAuthTokenRequestBuilder.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFError.h"
+#import "VDFDIContainer.h"
 
 static NSString * const URLEndpointQuery = @"/he/users/tokens/validate/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
@@ -22,8 +23,8 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 @implementation VDFSmsValidationRequestBuilder
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken smsCode:(NSString*)smsCode withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate {
-    self = [super initWithApplicationId:applicationId configuration:configuration];
+- (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken smsCode:(NSString*)smsCode diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
+    self = [super initWithApplicationId:applicationId diContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFSmsValidationRequestFactory alloc] initWithBuilder:self];
         

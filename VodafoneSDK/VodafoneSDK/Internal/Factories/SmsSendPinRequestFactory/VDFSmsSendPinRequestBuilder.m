@@ -12,6 +12,7 @@
 #import "VDFOAuthTokenRequestBuilder.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFError.h"
+#import "VDFDIContainer.h"
 
 static NSString * const URLEndpointQuery = @"/he/users/tokens/sendPIN/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ ";
@@ -23,8 +24,8 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
 
 @implementation VDFSmsSendPinRequestBuilder
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate {
-    self = [super initWithApplicationId:applicationId configuration:configuration];
+- (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
+    self = [super initWithApplicationId:applicationId diContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFSmsSendPinRequestFactory alloc] initWithBuilder:self];
         

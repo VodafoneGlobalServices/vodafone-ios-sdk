@@ -15,6 +15,7 @@
 #import "VDFOAuthTokenRequestState.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFOAuthTokenRequestOptions.h"
+#import "VDFDIContainer.h"
 
 static NSString * const POST_BODY_FORMAT = @"grant_type=client_credentials&client_id=%@&client_secret=%@";
 static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
@@ -58,11 +59,13 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
 
 - (VDFHttpConnector*)createHttpConnectorRequestWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
 //    NSString * requestUrl = [self.builder.configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery]; // TODO IMPORTANT need to be changed
     NSString * requestUrl = [@"https://apisit.developer.vodafone.com" stringByAppendingString:self.builder.urlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
-    httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
+    httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = self.builder.httpRequestMethodType;
     httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;

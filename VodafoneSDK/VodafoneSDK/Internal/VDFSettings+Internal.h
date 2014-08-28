@@ -8,7 +8,7 @@
 
 #import "VDFSettings.h"
 
-@class VDFServiceRequestsManager, VDFCacheManager, VDFBaseConfiguration;
+@class VDFServiceRequestsManager, VDFCacheManager, VDFDIContainer;
 
 @interface VDFSettings ()
 
@@ -16,6 +16,6 @@
 
 + (VDFCacheManager*)sharedCacheManager;
 
-+ (VDFBaseConfiguration*)configuration;
++ (VDFDIContainer*)globalDIContainer;
 
 @end

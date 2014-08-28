@@ -33,13 +33,4 @@ extern void __gcov_flush();
     [super tearDown];
 }
 
-- (void)testSimpleCachingFlow
-{
-    VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
-    configuration.applicationId = @"some test app id";
-    
-//    VDFCacheManager *managerToTest = [[VDFCacheManager alloc] initWithConfiguration:configuration];
-//    managerToTest
-}
-
 @end

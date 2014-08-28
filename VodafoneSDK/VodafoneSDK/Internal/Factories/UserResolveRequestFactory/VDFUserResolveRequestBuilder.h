@@ -13,7 +13,7 @@
 #import "VDFRequestBaseBuilder.h"
 #import "VDFOAuthTokenRequestDelegate.h"
 
-@class VDFBaseConfiguration, VDFUserResolveOptions, VDFOAuthTokenResponse;
+@class VDFDIContainer, VDFUserResolveOptions, VDFOAuthTokenResponse;
 
 @interface VDFUserResolveRequestBuilder : VDFRequestBaseBuilder <VDFOAuthTokenRequestDelegate>
 
@@ -26,6 +26,6 @@
 @property (nonatomic, strong) NSString *eTag;
 @property (nonatomic, strong) NSString *sessionToken;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 @end

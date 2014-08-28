@@ -20,15 +20,21 @@
 #import "VDFSmsValidationRequestBuilder.h"
 #import "VDFSmsSendPinRequestBuilder.h"
 #import "VDFRequestBuilderWithOAuth.h"
+#import "VDFDIContainer.h"
+
+@interface VDFUsersService ()
+@property (nonatomic, strong) VDFDIContainer *diContainer;
+@end
 
 @implementation VDFUsersService
 
 + (instancetype)sharedInstance {
-    static id sharedInstance = nil;
+    static VDFUsersService *sharedInstance = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
+        sharedInstance.diContainer = [VDFSettings globalDIContainer];
     });
     
     return sharedInstance;
@@ -37,7 +43,8 @@
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     
     // create request object
-    NSString * applicationId = [VDFSettings configuration].applicationId;
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    NSString * applicationId = configuration.applicationId;
     if(applicationId == nil) {
         applicationId = [NSString string];
     }
@@ -45,7 +52,7 @@
         options = [[VDFUserResolveOptions alloc] init];
     }
     
-    id builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options withConfiguration:[VDFSettings configuration] delegate:delegate];
+    id builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options diContainer:self.diContainer delegate:delegate];
     
     id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
     
@@ -54,12 +61,13 @@
 
 - (void)sendSmsPinWithSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
     // create request object
-    NSString * applicationId = [VDFSettings configuration].applicationId;
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    NSString * applicationId = configuration.applicationId;
     if(applicationId == nil) {
         applicationId = [NSString string];
     }
     
-    id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken withConfiguration:[VDFSettings configuration] delegate:delegate];
+    id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken diContainer:self.diContainer delegate:delegate];
     
     id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
     
@@ -69,12 +77,13 @@
 - (void)validateSmsPin:(NSString*)smsPin withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
     
     // create request object
-    NSString * applicationId = [VDFSettings configuration].applicationId;
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    NSString * applicationId = configuration.applicationId;
     if(applicationId == nil) {
         applicationId = [NSString string];
     }
     
-    VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsPin withConfiguration:[VDFSettings configuration] delegate:delegate];
+    VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsPin diContainer:self.diContainer delegate:delegate];
     
     id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
     

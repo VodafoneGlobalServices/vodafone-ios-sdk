@@ -15,6 +15,7 @@
 #import "VDFSettings.h"
 #import "VDFSmsSendPinRequestState.h"
 #import "VDFSmsSendPinResponseParser.h"
+#import "VDFDIContainer.h"
 
 @interface VDFSmsSendPinRequestFactory ()
 @property (nonatomic, strong) VDFSmsSendPinRequestBuilder *builder;
@@ -35,10 +36,12 @@
 
 - (VDFHttpConnector*)createHttpConnectorRequestWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
-    NSString * requestUrl = [self.builder.configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
-    httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
+    httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = self.builder.httpRequestMethodType;
     httpRequest.url = requestUrl;
     httpRequest.isGSMConnectionRequired = NO;

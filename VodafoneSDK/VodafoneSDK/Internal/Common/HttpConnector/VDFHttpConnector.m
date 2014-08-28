@@ -16,6 +16,7 @@
 #import "VDFSettings+Internal.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFHttpConnectorResponse.h"
+#import "VDFDIContainer.h"
 
 static NSString * const XVF_SUBJECT_ID_HEADER = @"x-vf-trace-subject-id";
 static NSString * const XVF_SUBJECT_REGION_HEADER = @"x-vf-trace-subject-region";
@@ -105,7 +106,8 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     if(mcc != nil) {
         [request setValue:mcc forHTTPHeaderField:XVF_SUBJECT_REGION_HEADER];
     }
-    [request setValue:[NSString stringWithFormat:@"%@-%@", [VDFSettings sdkVersion], [[VDFSettings configuration] applicationId]] forHTTPHeaderField:XVF_SOURCE_HEADER];
+    VDFBaseConfiguration *configuration = [[VDFSettings globalDIContainer] resolveForClass:[VDFBaseConfiguration class]];
+    [request setValue:[NSString stringWithFormat:@"%@-%@", [VDFSettings sdkVersion], configuration.applicationId] forHTTPHeaderField:XVF_SOURCE_HEADER];
     [request setValue:[VDFStringHelper randomString] forHTTPHeaderField:XVF_TRANSACTION_ID_HEADER];
 }
 

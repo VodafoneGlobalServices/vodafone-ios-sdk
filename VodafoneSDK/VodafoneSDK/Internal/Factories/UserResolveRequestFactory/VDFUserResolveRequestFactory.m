@@ -20,6 +20,7 @@
 #import "VDFUsersServiceDelegate.h"
 #import "VDFOAuthTokenResponse.h"
 #import "VDFSettings.h"
+#import "VDFDIContainer.h"
 
 static NSString * const JSONPayloadBodyFormat = @"{ \"SMSValidation\" : %@ }";
 
@@ -52,10 +53,12 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"SMSValidation\" : %@ }";
 
 - (VDFHttpConnector*)createRetryHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
-    NSString * requestUrl = [self.builder.configuration.apixBaseUrl stringByAppendingString:self.builder.retryUrlEndpointQuery];
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.retryUrlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
-    httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
+    httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodGET;
     httpRequest.url = requestUrl;
     
@@ -71,10 +74,12 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"SMSValidation\" : %@ }";
 
 - (VDFHttpConnector*)createHttpConnectorRequestWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
     
-    NSString * requestUrl = [self.builder.configuration.hapBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    NSString * requestUrl = [configuration.hapBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
-    httpRequest.connectionTimeout = self.builder.configuration.defaultHttpConnectionTimeout;
+    httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodPOST;
     httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;

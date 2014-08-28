@@ -14,12 +14,13 @@
 #import "VDFError.h"
 #import "VDFCacheManager.h"
 #import "VDFBaseConfiguration.h"
+#import "VDFDIContainer.h"
 
 @interface VDFHttpConnectionsQueue ()
 
 // array of VDFPendingRequestItem objects
 @property (nonatomic, strong) NSMutableArray *pendingRequests;
-@property (nonatomic, assign) VDFBaseConfiguration *configuration;
+@property (nonatomic, assign) VDFDIContainer *diContainer;
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 
 - (VDFPendingRequestItem*)findRequestItemByBuilder:(id<VDFRequestBuilder>)builder;
@@ -29,11 +30,11 @@
 
 @implementation VDFHttpConnectionsQueue
 
-- (instancetype)initWithCacheManager:(VDFCacheManager*)cacheManager configuration:(VDFBaseConfiguration*)configuration {
+- (instancetype)initWithCacheManager:(VDFCacheManager*)cacheManager diContainer:(VDFDIContainer*)diContainer {
     self = [super init];
     if(self) {
         self.pendingRequests = [[NSMutableArray alloc] init];
-        self.configuration = configuration;
+        self.diContainer = diContainer;
         self.cacheManager = cacheManager;
     }
     return self;
@@ -98,7 +99,7 @@
 }
 
 - (VDFPendingRequestItem*)createNewItemWithBuilder:(id<VDFRequestBuilder>)builder {
-    return [[VDFPendingRequestItem alloc] initWithBuilder:builder parentQueue:self cacheManager:self.cacheManager configuration:self.configuration];
+    return [[VDFPendingRequestItem alloc] initWithBuilder:builder parentQueue:self cacheManager:self.cacheManager diContainer:self.diContainer];
 }
 
 @end

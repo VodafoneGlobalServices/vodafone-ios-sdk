@@ -22,10 +22,10 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId
                           withOptions:(VDFOAuthTokenRequestOptions*)options
-                    withConfiguration:(VDFBaseConfiguration*)configuration
+                          diContainer:(VDFDIContainer*)diContainer
                              delegate:(id<VDFOAuthTokenRequestDelegate>)delegate {
     self = [super initWithApplicationId:applicationId
-                    configuration:configuration];
+                    diContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFOAuthTokenRequestFactory alloc] initWithBuilder:self];
         

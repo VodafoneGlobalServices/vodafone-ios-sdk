@@ -8,7 +8,7 @@
 
 #import "VDFBaseManager.h"
 
-@class VDFBaseConfiguration, VDFCacheObject;
+@class VDFDIContainer, VDFCacheObject;
 
 /**
  *  Cache manager class. Is responsible of maintaining cache object.
@@ -18,11 +18,11 @@
 /**
  *  Initialize Cache manager with specified configuration object.
  *
- *  @param configuration Configuration object.
+ *  @param diContainer Dependency injection container.
  *
  *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
  */
-- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration;
+- (instancetype)initWithDIContainer:(VDFDIContainer*)diContainer;
 
 // TODO documentation
 - (BOOL)isObjectCached:(VDFCacheObject*)cacheObject;

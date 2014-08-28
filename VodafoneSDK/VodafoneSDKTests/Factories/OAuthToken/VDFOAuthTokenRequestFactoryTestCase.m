@@ -38,7 +38,7 @@
 @property id mockBuilder;
 @property id mockCurrentState;
 @property id factoryToTestMock;
-@property VDFBaseConfiguration *configuration;
+@property VDFBaseConfiguration *diContainer;
 
 - (VDFCacheObject*)createTestCacheObjectWithUrl:(NSString*)url httpMethod:(HTTPMethodType)methodType postBody:(NSData*)body;
 @end

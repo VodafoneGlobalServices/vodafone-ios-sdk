@@ -21,11 +21,11 @@
 
 @implementation VDFRequestBaseBuilder
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId configuration:(VDFBaseConfiguration*)configuration {
+- (instancetype)initWithApplicationId:(NSString*)applicationId diContainer:(VDFDIContainer*)diContainer {
     self = [super init];
     if(self) {
         self.applicationId = applicationId;
-        self.configuration = configuration;
+        self.diContainer = diContainer;
     }
     return self;
 }

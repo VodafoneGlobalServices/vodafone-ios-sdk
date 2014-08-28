@@ -12,6 +12,7 @@
 #import "VDFError.h"
 #import "VDFRequestBaseBuilder.h"
 #import "VDFBaseConfiguration.h"
+#import "VDFDIContainer.h"
 
 @interface VDFRequestBuilderWithOAuth ()
 @property (nonatomic, strong) VDFRequestBaseBuilder *builder;
@@ -69,15 +70,17 @@
     }
     
     if(result == nil && self.oAuthToken == nil) {
+        VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+        
         // creating oauthtoken request
         VDFOAuthTokenRequestOptions *oAuthOptions = [[VDFOAuthTokenRequestOptions alloc] init];
-        oAuthOptions.clientId = self.builder.configuration.oAuthTokenClientId;
-        oAuthOptions.clientSecret = self.builder.configuration.oAuthTokenClientSecret;
-        oAuthOptions.scopes = @[self.builder.configuration.oAuthTokenScope];
+        oAuthOptions.clientId = configuration.oAuthTokenClientId;
+        oAuthOptions.clientSecret = configuration.oAuthTokenClientSecret;
+        oAuthOptions.scopes = @[configuration.oAuthTokenScope];
         
         return [[VDFOAuthTokenRequestBuilder alloc] initWithApplicationId:self.builder.applicationId
                                                               withOptions:oAuthOptions
-                                                        withConfiguration:self.builder.configuration
+                                                              diContainer:self.builder.diContainer
                                                                  delegate:self];
     }
     

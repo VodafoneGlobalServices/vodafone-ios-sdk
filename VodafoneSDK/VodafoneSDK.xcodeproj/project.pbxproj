@@ -32,6 +32,8 @@
 		49011C9519A4CCEF0063CE9E /* VDFSmsSendPinResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 49011C9319A4CCEF0063CE9E /* VDFSmsSendPinResponseParser.m */; };
 		49011C9819A4CD0B0063CE9E /* VDFSmsSendPinRequestState.h in Headers */ = {isa = PBXBuildFile; fileRef = 49011C9619A4CD0B0063CE9E /* VDFSmsSendPinRequestState.h */; };
 		49011C9919A4CD0B0063CE9E /* VDFSmsSendPinRequestState.m in Sources */ = {isa = PBXBuildFile; fileRef = 49011C9719A4CD0B0063CE9E /* VDFSmsSendPinRequestState.m */; };
+		490C06DC19AF53D6003DD339 /* VDFDIContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 490C06DA19AF53D6003DD339 /* VDFDIContainer.h */; };
+		490C06DD19AF53D6003DD339 /* VDFDIContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 490C06DB19AF53D6003DD339 /* VDFDIContainer.m */; };
 		490D4DAF19A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = 490D4DAD19A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.h */; };
 		490D4DB019A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 490D4DAE19A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.m */; };
 		490D4DB319A5E7AB00DA3D94 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490D4DB219A5E7AB00DA3D94 /* CoreTelephony.framework */; };
@@ -199,6 +201,8 @@
 		49011C9319A4CCEF0063CE9E /* VDFSmsSendPinResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsSendPinResponseParser.m; path = Internal/Factories/SmsSendPinRequestFactory/VDFSmsSendPinResponseParser.m; sourceTree = "<group>"; };
 		49011C9619A4CD0B0063CE9E /* VDFSmsSendPinRequestState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFSmsSendPinRequestState.h; path = Internal/Factories/SmsSendPinRequestFactory/VDFSmsSendPinRequestState.h; sourceTree = "<group>"; };
 		49011C9719A4CD0B0063CE9E /* VDFSmsSendPinRequestState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsSendPinRequestState.m; path = Internal/Factories/SmsSendPinRequestFactory/VDFSmsSendPinRequestState.m; sourceTree = "<group>"; };
+		490C06DA19AF53D6003DD339 /* VDFDIContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFDIContainer.h; path = Internal/Common/DIContainer/VDFDIContainer.h; sourceTree = "<group>"; };
+		490C06DB19AF53D6003DD339 /* VDFDIContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFDIContainer.m; path = Internal/Common/DIContainer/VDFDIContainer.m; sourceTree = "<group>"; };
 		490D4DAD19A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFRequestBuilderWithOAuth.h; path = Internal/Decorators/RequestBuilderWithOAuth/VDFRequestBuilderWithOAuth.h; sourceTree = "<group>"; };
 		490D4DAE19A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFRequestBuilderWithOAuth.m; path = Internal/Decorators/RequestBuilderWithOAuth/VDFRequestBuilderWithOAuth.m; sourceTree = "<group>"; };
 		490D4DB219A5E7AB00DA3D94 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -398,6 +402,15 @@
 			name = Builder;
 			sourceTree = "<group>";
 		};
+		490C06D919AF4E30003DD339 /* DIContainer */ = {
+			isa = PBXGroup;
+			children = (
+				490C06DA19AF53D6003DD339 /* VDFDIContainer.h */,
+				490C06DB19AF53D6003DD339 /* VDFDIContainer.m */,
+			);
+			name = DIContainer;
+			sourceTree = "<group>";
+		};
 		490D4DAC19A5D88900DA3D94 /* Decorators */ = {
 			isa = PBXGroup;
 			children = (
@@ -593,6 +606,7 @@
 		49A15863196C0C1200642677 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				490C06D919AF4E30003DD339 /* DIContainer */,
 				498EA2FF1982733900122F05 /* NetworkReachability */,
 				49A1588D196C3E8400642677 /* Helpers */,
 				49A1588B196C3BB100642677 /* HttpConnector */,
@@ -1046,6 +1060,7 @@
 				49BC3CE91998C638008C2108 /* VDFOAuthTokenRequestOptions.h in Headers */,
 				49C34226196D71D00079FDF5 /* VDFBaseConfiguration.h in Headers */,
 				49BC3CCA1998B2B4008C2108 /* VDFOAuthTokenResponseParser.h in Headers */,
+				490C06DC19AF53D6003DD339 /* VDFDIContainer.h in Headers */,
 				494F37C1197E63A700E5D82E /* VDFCacheObject.h in Headers */,
 				49BC3CF21998E564008C2108 /* VDFPendingRequestItem.h in Headers */,
 				49E100A619A5F44700BFD4A9 /* VDFHttpConnectorResponse.h in Headers */,
@@ -1184,6 +1199,7 @@
 				4990BFB619922B4C005EED39 /* VDFSmsValidationResponse.m in Sources */,
 				49A15870196C333800642677 /* VDFBaseManager.m in Sources */,
 				498EA3031982735D00122F05 /* VDFNetworkReachability.m in Sources */,
+				490C06DD19AF53D6003DD339 /* VDFDIContainer.m in Sources */,
 				49A1587E196C33D000642677 /* VDFHttpConnector.m in Sources */,
 				4990BFA619921580005EED39 /* VDFSmsValidationRequestFactory.m in Sources */,
 				49011C8D19A4CC3A0063CE9E /* VDFSmsSendPinRequestFactory.m in Sources */,

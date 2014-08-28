@@ -10,7 +10,7 @@
 #import "VDFEnums.h"
 #import "VDFOAuthTokenRequestDelegate.h"
 
-@class VDFOAuthTokenRequestOptions;
+@class VDFOAuthTokenRequestOptions, VDFDIContainer;
 
 @interface VDFOAuthTokenRequestBuilder : VDFRequestBaseBuilder
 
@@ -20,7 +20,7 @@
 
 - (instancetype)initWithApplicationId:(NSString*)applicationId
                           withOptions:(VDFOAuthTokenRequestOptions*)options
-                    withConfiguration:(VDFBaseConfiguration*)configuration
+                    diContainer:(VDFDIContainer*)diContainer
                              delegate:(id<VDFOAuthTokenRequestDelegate>)delegate;
 
 @end

@@ -15,6 +15,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFErrorUtility.h"
 #import "VDFLogUtility.h"
+#import "VDFDIContainer.h"
 
 static NSString * const g_oAuthClientKey = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
 static NSString * const g_oAuthClientSecret = @"k4l1RXZGqMnw2cD8";
@@ -22,7 +23,7 @@ static NSString * const g_oAuthTokenScope = @"SSO_OAUTH2_INPUT";
 static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 //static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
 static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
-static VDFBaseConfiguration * g_configuration = nil;
+static VDFDIContainer * g_diContainer = nil;
 
 @implementation VDFSettings
 
@@ -30,41 +31,46 @@ static VDFBaseConfiguration * g_configuration = nil;
     if(self == [VDFSettings class]) {
         [VDFLogUtility setVerboseLevel:VODLogInfoVerboseLevelLastCallStackEntry];
         
+        g_diContainer = [[VDFDIContainer alloc] init];
+        
         VDFLogD(@"Loading configuration");
         // load application id from plist
-        g_configuration = [[VDFBaseConfiguration alloc] init];
-        g_configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
-        g_configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
-        g_configuration.hapBaseUrl = g_hapBaseURL;
-        g_configuration.apixBaseUrl = g_apixBaseUrl;
+        VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
+        configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
+        configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
+        configuration.hapBaseUrl = g_hapBaseURL;
+        configuration.apixBaseUrl = g_apixBaseUrl;
         
         
-        VDFLogD(@"-- applicationId:%@", g_configuration.applicationId);
-        VDFLogD(@"-- sdkVersion:%@", g_configuration.sdkVersion);
-        VDFLogD(@"-- hapBaseUrl:%@", g_configuration.hapBaseUrl);
-        VDFLogD(@"-- apixBaseUrl:%@", g_configuration.apixBaseUrl);
+        VDFLogD(@"-- applicationId:%@", configuration.applicationId);
+        VDFLogD(@"-- sdkVersion:%@", configuration.sdkVersion);
+        VDFLogD(@"-- hapBaseUrl:%@", configuration.hapBaseUrl);
+        VDFLogD(@"-- apixBaseUrl:%@", configuration.apixBaseUrl);
         
         
-        g_configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
-        g_configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second
-        g_configuration.maxHttpRequestRetriesCount = 100;
+        configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
+        configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second
+        configuration.maxHttpRequestRetriesCount = 100;
         
         // oAuth token retrieval configuration:
-        g_configuration.oAuthTokenClientId = g_oAuthClientKey;
-        g_configuration.oAuthTokenClientSecret = g_oAuthClientSecret;
-        g_configuration.oAuthTokenScope = g_oAuthTokenScope;
+        configuration.oAuthTokenClientId = g_oAuthClientKey;
+        configuration.oAuthTokenClientSecret = g_oAuthClientSecret;
+        configuration.oAuthTokenScope = g_oAuthTokenScope;
+        
+        [g_diContainer registerInstance:configuration forClass:[VDFBaseConfiguration class]];
     }
 }
 
-+ (void)initializeWithParams:(NSDictionary *)settingsDictionary {
-    if(settingsDictionary) {
++ (void)initializeWithParams:(NSDictionary*)settingsDictionary {
+    if(settingsDictionary != nil) {
         VDFLogD(@"Setting configuration from code");
         // chceck provided settings:
         id applicationId = [settingsDictionary objectForKey:VDFApplicationIdSettingKey];
-        if(applicationId && [applicationId isKindOfClass:[NSString class]]) {
-            g_configuration.applicationId = applicationId;
+        if(applicationId != nil && [applicationId isKindOfClass:[NSString class]]) {
+            VDFBaseConfiguration *configuration = [g_diContainer resolveForClass:[VDFBaseConfiguration class]];
+            configuration.applicationId = applicationId;
+            VDFLogD(@"-- applicationId:%@", configuration.applicationId);
         }
-        VDFLogD(@"-- applicationId:%@", g_configuration.applicationId);
     }
 }
 
@@ -88,7 +94,7 @@ static VDFBaseConfiguration * g_configuration = nil;
     
     static dispatch_once_t onceTokenRequestManager;
     dispatch_once(&onceTokenRequestManager, ^{
-        sharedRequestManagerInstance = [[VDFServiceRequestsManager alloc] initWithConfiguration:g_configuration cacheManager:[VDFSettings sharedCacheManager]];
+        sharedRequestManagerInstance = [[VDFServiceRequestsManager alloc] initWithDIContainer:g_diContainer cacheManager:[VDFSettings sharedCacheManager]];
     });
     
     return sharedRequestManagerInstance;
@@ -99,14 +105,14 @@ static VDFBaseConfiguration * g_configuration = nil;
     
     static dispatch_once_t onceTokenCacheManager;
     dispatch_once(&onceTokenCacheManager, ^{
-        sharedCacheManagerInstance = [[VDFCacheManager alloc] initWithConfiguration:g_configuration];
+        sharedCacheManagerInstance = [[VDFCacheManager alloc] initWithDIContainer:g_diContainer];
     });
     
     return sharedCacheManagerInstance;
 }
 
-+ (VDFBaseConfiguration*)configuration {
-    return g_configuration;
++ (VDFDIContainer*)globalDIContainer {
+    return g_diContainer;
 }
 
 

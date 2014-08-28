@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "VDFRequestBuilder.h"
 
-@class VDFCacheManager, VDFPendingRequestItem, VDFBaseConfiguration;
+@class VDFCacheManager, VDFPendingRequestItem, VDFDIContainer;
 
 @interface VDFHttpConnectionsQueue : NSObject
 
-- (instancetype)initWithCacheManager:(VDFCacheManager*)manager configuration:(VDFBaseConfiguration*)configuration;
+- (instancetype)initWithCacheManager:(VDFCacheManager*)manager diContainer:(VDFDIContainer*)diContainer;
 
 - (VDFPendingRequestItem*)enqueueRequestBuilder:(id<VDFRequestBuilder>)builder;
 

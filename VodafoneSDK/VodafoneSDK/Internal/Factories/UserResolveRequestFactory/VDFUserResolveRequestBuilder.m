@@ -28,8 +28,8 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 @synthesize sessionToken = _sessionToken;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options withConfiguration:(VDFBaseConfiguration*)configuration delegate:(id<VDFUsersServiceDelegate>)delegate {
-    self = [super initWithApplicationId:applicationId configuration:configuration];
+- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
+    self = [super initWithApplicationId:applicationId diContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFUserResolveRequestFactory alloc] initWithBuilder:self];
         

@@ -11,9 +11,10 @@
 #import "VDFErrorUtility.h"
 #import "VDFCacheObject.h"
 #import "VDFLogUtility.h"
+#import "VDFDIContainer.h"
 
 @interface VDFCacheManager ()
-@property (nonatomic, strong) VDFBaseConfiguration *configuration;
+@property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) NSMutableArray *cacheObjects;
 
 /*!
@@ -30,11 +31,11 @@
 
 @implementation VDFCacheManager
 
-- (instancetype)initWithConfiguration:(VDFBaseConfiguration*)configuration {
+- (instancetype)initWithDIContainer:(VDFDIContainer*)diContainer {
     self = [super init];
     if(self) {
         VDFLogD(@"Initializing VDFCacheManager instance.");
-        self.configuration = configuration;
+        self.diContainer = diContainer;
         
         // load main cache files list:
         self.cacheObjects = [[NSMutableArray alloc] init];

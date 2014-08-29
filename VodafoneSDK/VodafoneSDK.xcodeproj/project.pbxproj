@@ -147,6 +147,7 @@
 		49BC3CEF1998E505008C2108 /* VDFHttpConnectionsQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BC3CED1998E505008C2108 /* VDFHttpConnectionsQueue.m */; };
 		49BC3CF21998E564008C2108 /* VDFPendingRequestItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 49BC3CF01998E564008C2108 /* VDFPendingRequestItem.h */; };
 		49BC3CF31998E564008C2108 /* VDFPendingRequestItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BC3CF11998E564008C2108 /* VDFPendingRequestItem.m */; };
+		49C0666519B0684200EB8F23 /* VDFDIContainerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C0666419B0684200EB8F23 /* VDFDIContainerTestCase.m */; };
 		49C3421C196D561D0079FDF5 /* VDFErrorUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */; };
 		49C3421D196D561D0079FDF5 /* VDFErrorUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C3421B196D561D0079FDF5 /* VDFErrorUtility.m */; };
 		49C34226196D71D00079FDF5 /* VDFBaseConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */; };
@@ -318,6 +319,7 @@
 		49BC3CED1998E505008C2108 /* VDFHttpConnectionsQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFHttpConnectionsQueue.m; path = Internal/Managers/Requests/ManagerComponents/VDFHttpConnectionsQueue.m; sourceTree = "<group>"; };
 		49BC3CF01998E564008C2108 /* VDFPendingRequestItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFPendingRequestItem.h; path = Internal/Managers/Requests/ManagerComponents/VDFPendingRequestItem.h; sourceTree = "<group>"; };
 		49BC3CF11998E564008C2108 /* VDFPendingRequestItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFPendingRequestItem.m; path = Internal/Managers/Requests/ManagerComponents/VDFPendingRequestItem.m; sourceTree = "<group>"; };
+		49C0666419B0684200EB8F23 /* VDFDIContainerTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFDIContainerTestCase.m; path = Common/VDFDIContainerTestCase.m; sourceTree = "<group>"; };
 		49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFErrorUtility.h; path = Internal/Common/Helpers/VDFErrorUtility.h; sourceTree = "<group>"; };
 		49C3421B196D561D0079FDF5 /* VDFErrorUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFErrorUtility.m; path = Internal/Common/Helpers/VDFErrorUtility.m; sourceTree = "<group>"; };
 		49C34223196D6BB30079FDF5 /* VDFSettings+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VDFSettings+Internal.h"; path = "Internal/VDFSettings+Internal.h"; sourceTree = "<group>"; };
@@ -503,6 +505,7 @@
 				498EA2EB19823B2F00122F05 /* VDFErrorUtilityTestCase.m */,
 				498EA2ED19823B4C00122F05 /* VDFHttpConnectorTestCase.m */,
 				49A5D77A19AE199C0095B0E3 /* VDFDeviceUtilityTestCase.m */,
+				49C0666419B0684200EB8F23 /* VDFDIContainerTestCase.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1239,6 +1242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C0666519B0684200EB8F23 /* VDFDIContainerTestCase.m in Sources */,
 				49CDA0C419937D36007E41BA /* VDFUserResolveRequestBuilderTestCase.m in Sources */,
 				49A3DA2219AC693B004B8634 /* VDFSmsValidationRequestFactoryTestCase.m in Sources */,
 				49A6E8C719ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m in Sources */,

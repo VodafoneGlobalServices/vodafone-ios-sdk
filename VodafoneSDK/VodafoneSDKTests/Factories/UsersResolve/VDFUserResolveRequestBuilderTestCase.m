@@ -14,6 +14,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFUsersServiceDelegate.h"
 #import "VDFOAuthTokenResponse.h"
+#import "VDFDIContainer.h"
 
 extern void __gcov_flush();
 
@@ -28,6 +29,7 @@ extern void __gcov_flush();
 @property id mockConfiguration;
 @property id mockDelegate;
 @property id mockFactory;
+@property id mockDIContainer;
 @end
 
 @implementation VDFUserResolveRequestBuilderTestCase
@@ -43,7 +45,10 @@ extern void __gcov_flush();
     
     [[[self.mockOptions stub] andReturn:self.mockOptions] copy];
     
-    self.builderToTest = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:self.mockAppId withOptions:self.mockOptions withConfiguration:self.mockConfiguration delegate:self.mockDelegate];
+    self.mockDIContainer = OCMClassMock([VDFDIContainer class]);
+    [[[self.mockDIContainer stub] andReturn:self.mockConfiguration] resolveForClass:[VDFBaseConfiguration class]];
+    
+    self.builderToTest = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:self.mockAppId withOptions:self.mockOptions diContainer:self.mockDIContainer delegate:self.mockDelegate];
     self.builderToTest.internalFactory = self.mockFactory;
 }
 
@@ -135,7 +140,7 @@ extern void __gcov_flush();
 - (void)testIsEqualToFactoryBuilderWhenBuilderEqual {
     
     // mock
-    id mockSameBuilder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:self.mockAppId withOptions:self.mockOptions withConfiguration:nil delegate:nil];
+    id mockSameBuilder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:self.mockAppId withOptions:self.mockOptions diContainer:nil delegate:nil];
     
     // stub
     [[[self.mockOptions stub] andReturnValue:OCMOCK_VALUE(YES)] isEqualToOptions:self.mockOptions];

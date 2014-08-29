@@ -20,6 +20,7 @@
 #import "VDFUserResolveResponseParser.h"
 #import "VDFSettings.h"
 #import "VDFOAuthTokenResponse.h"
+#import "VDFDIContainer.h"
 
 @interface VDFUserResolveRequestFactory ()
 - (NSData*)postBody;
@@ -48,9 +49,12 @@
     
     self.configuration = [[VDFBaseConfiguration alloc] init];
     
+    id mockDIContainer = OCMClassMock([VDFDIContainer class]);
+    [[[mockDIContainer stub] andReturn:self.configuration] resolveForClass:[VDFBaseConfiguration class]];
+    
     // stubs
     [[[self.mockBuilder stub] andReturn:self.mockCurrentState] requestState];
-    [[[self.mockBuilder stub] andReturn:self.configuration] configuration];
+    [[[self.mockBuilder stub] andReturn:mockDIContainer] diContainer];
 }
 
 - (void)tearDown

@@ -16,6 +16,7 @@
 #import "VDFError.h"
 #import "VDFCacheObject.h"
 #import "VDFHttpConnectorResponse.h"
+#import "VDFDIContainer.h"
 
 extern void __gcov_flush();
 
@@ -50,7 +51,7 @@ extern void __gcov_flush();
 @property id mockResponseParser;
 @property id mockFactory;
 @property id mockObserversContainer;
-
+@property id mockDIContainer;
 @end
 
 @implementation VDFPendingRequestItemTestCase
@@ -72,9 +73,11 @@ extern void __gcov_flush();
     self.mockObserversContainer = OCMProtocolMock(@protocol(VDFObserversContainer));
     self.mockHttpRequest = OCMClassMock([VDFHttpConnector class]);
     
+    self.mockDIContainer = OCMClassMock([VDFDIContainer class]);
+    [[[self.mockDIContainer stub] andReturn:self.mockConfiguration] resolveForClass:[VDFBaseConfiguration class]];
     
     self.itemToTest = [[VDFPendingRequestItem alloc] initWithBuilder:self.mockBuilder parentQueue:self.mockParentQueue
-                                                                          cacheManager:self.mockCacheManager configuration:self.mockConfiguration];
+                                                        cacheManager:self.mockCacheManager diContainer:self.mockDIContainer];
     self.itemToTest.currentHttpRequest = self.mockHttpRequest;
     self.itemToTestPartialMock = OCMPartialMock(self.itemToTest);
     

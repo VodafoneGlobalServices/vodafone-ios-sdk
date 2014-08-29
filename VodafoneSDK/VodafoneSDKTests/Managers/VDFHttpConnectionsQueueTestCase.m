@@ -18,13 +18,14 @@
 #import "VDFRequestFactory.h"
 #import "VDFCacheObject.h"
 #import "VDFPendingRequestItem.h"
+#import "VDFDIContainer.h"
 
 extern void __gcov_flush();
 
 @interface VDFHttpConnectionsQueue ()
 // array of VDFPendingRequestItem objects
 @property (nonatomic, strong) NSMutableArray *pendingRequests;
-@property (nonatomic, assign) VDFBaseConfiguration *configuration;
+@property (nonatomic, assign) VDFDIContainer *diContainer;
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 
 - (VDFPendingRequestItem*)findRequestItemByBuilder:(id<VDFRequestBuilder>)builder;
@@ -37,7 +38,7 @@ extern void __gcov_flush();
 
 @property id queueToTestPartialMock;
 @property id pendingRequestsMock;
-
+@property id mockDIContainer;
 @end
 
 @implementation VDFHttpConnectionsQueueTestCase
@@ -57,9 +58,12 @@ extern void __gcov_flush();
                            OCMClassMock([VDFPendingRequestItem class]), OCMClassMock([VDFPendingRequestItem class])];
     self.pendingRequestsMock = OCMPartialMock([NSMutableArray arrayWithArray:pendingRequests]);
     
+    self.mockDIContainer = OCMClassMock([VDFDIContainer class]);
+    [[[self.mockDIContainer stub] andReturn:OCMClassMock([VDFBaseConfiguration class])] resolveForClass:[VDFBaseConfiguration class]];
+    
     queueToTest.pendingRequests = self.pendingRequestsMock;
     queueToTest.cacheManager = OCMClassMock([VDFCacheManager class]);
-    queueToTest.configuration = OCMClassMock([VDFBaseConfiguration class]);
+    queueToTest.diContainer = self.mockDIContainer;
 }
 
 - (void)tearDown

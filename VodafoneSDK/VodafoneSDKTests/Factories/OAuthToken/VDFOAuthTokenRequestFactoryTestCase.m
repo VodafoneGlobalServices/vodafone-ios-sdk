@@ -20,6 +20,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFHttpConnector.h"
 #import "VDFOAuthTokenRequestOptions.h"
+#import "VDFDIContainer.h"
 
 #pragma mark -
 #pragma mark - Private properties/methods of mocked/tested classes
@@ -38,7 +39,8 @@
 @property id mockBuilder;
 @property id mockCurrentState;
 @property id factoryToTestMock;
-@property VDFBaseConfiguration *diContainer;
+@property VDFBaseConfiguration *mockConfiguration;
+@property id mockDIContainer;
 
 - (VDFCacheObject*)createTestCacheObjectWithUrl:(NSString*)url httpMethod:(HTTPMethodType)methodType postBody:(NSData*)body;
 @end
@@ -56,11 +58,14 @@
     self.factoryToTest = [[VDFOAuthTokenRequestFactory alloc] initWithBuilder:self.mockBuilder];
     self.factoryToTestMock = OCMPartialMock(self.factoryToTest);
     
-    self.configuration = [[VDFBaseConfiguration alloc] init];
+    self.mockConfiguration = [[VDFBaseConfiguration alloc] init];
+    
+    self.mockDIContainer = OCMClassMock([VDFDIContainer class]);
+    [[[self.mockDIContainer stub] andReturn:self.mockConfiguration] resolveForClass:[VDFBaseConfiguration class]];
     
     // stubs
     [[[self.mockBuilder stub] andReturn:self.mockCurrentState] requestState];
-    [[[self.mockBuilder stub] andReturn:self.configuration] configuration];
+    [[[self.mockBuilder stub] andReturn:self.mockDIContainer] diContainer];
 }
 
 - (void)tearDown
@@ -142,8 +147,8 @@
     NSData *postBodyContent = [NSData data];
     
     // stubs
-    self.configuration.apixBaseUrl = @"http://someUrl.com/";
-    self.configuration.defaultHttpConnectionTimeout = 100;
+    self.mockConfiguration.apixBaseUrl = @"http://someUrl.com/";
+    self.mockConfiguration.defaultHttpConnectionTimeout = 100;
     [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] urlEndpointQuery];
     [[[self.mockBuilder stub] andReturnValue:OCMOCK_VALUE(HTTPMethodPOST)] httpRequestMethodType];
     [[[self.factoryToTestMock stub] andReturn:postBodyContent] postBody];

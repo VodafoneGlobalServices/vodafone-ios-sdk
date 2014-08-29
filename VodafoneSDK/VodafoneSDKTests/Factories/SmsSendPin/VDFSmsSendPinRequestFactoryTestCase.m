@@ -22,6 +22,7 @@
 #import "VDFHttpConnectorDelegate.h"
 #import "VDFOAuthTokenResponse.h"
 #import "VDFSettings.h"
+#import "VDFDIContainer.h"
 
 
 @interface VDFSmsSendPinRequestFactoryTestCase : VDFFactoryBaseTestCase
@@ -43,8 +44,11 @@
     self.factoryToTestMock = OCMPartialMock(self.factoryToTest);
     self.configuration = [[VDFBaseConfiguration alloc] init];
     
+    id mockDIContainer = OCMClassMock([VDFDIContainer class]);
+    [[[mockDIContainer stub] andReturn:self.configuration] resolveForClass:[VDFBaseConfiguration class]];
+    
     // stubs
-    [[[self.mockBuilder stub] andReturn:self.configuration] configuration];
+    [[[self.mockBuilder stub] andReturn:mockDIContainer] diContainer];
 }
 
 - (void)tearDown

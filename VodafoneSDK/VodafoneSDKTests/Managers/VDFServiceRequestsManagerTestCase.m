@@ -18,13 +18,14 @@
 #import "VDFCacheObject.h"
 #import "VDFHttpConnectionsQueue.h"
 #import "VDFPendingRequestItem.h"
+#import "VDFDIContainer.h"
 
 extern void __gcov_flush();
 
 
 @interface VDFServiceRequestsManager ()
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
-@property (nonatomic, strong) VDFBaseConfiguration *configuration;
+@property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) VDFHttpConnectionsQueue *connectionsQueue;
 @end
 
@@ -55,7 +56,7 @@ extern void __gcov_flush();
     self.mockObserversContainer = OCMProtocolMock(@protocol(VDFObserversContainer));
     
     // test object
-    self.managerToTest = [[VDFServiceRequestsManager alloc] initWithConfiguration:nil cacheManager:self.mockCacheManager];
+    self.managerToTest = [[VDFServiceRequestsManager alloc] initWithDIContainer:nil cacheManager:self.mockCacheManager];
     self.managerToTest.connectionsQueue = self.mockConnectionsQueue;
 }
 
@@ -69,11 +70,11 @@ extern void __gcov_flush();
 - (void)testInit {
     
     // mock
-    id conf = [[VDFBaseConfiguration alloc] init];
+    id mockDIContainer = OCMClassMock([VDFDIContainer class]);
     
-    self.managerToTest = [[VDFServiceRequestsManager alloc] initWithConfiguration:conf cacheManager:self.mockCacheManager];
+    self.managerToTest = [[VDFServiceRequestsManager alloc] initWithDIContainer:mockDIContainer cacheManager:self.mockCacheManager];
     
-    XCTAssertEqualObjects(conf, self.managerToTest.configuration, @"Configuration passed through init method is not assigned properly.");
+    XCTAssertEqualObjects(mockDIContainer, self.managerToTest.diContainer, @"DIContainer passed through init method is not assigned properly.");
     XCTAssertEqualObjects(self.mockCacheManager, self.managerToTest.cacheManager, @"Cache manager passed through init method is not assigned properly.");
     XCTAssertNotNil(self.managerToTest.connectionsQueue, @"Connections queue should be initialized in init method.");
 }

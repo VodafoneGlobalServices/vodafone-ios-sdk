@@ -70,4 +70,15 @@ extern void __gcov_flush();
     }
 }
 
+
+- (void)testIsRandomStringGeneratingProperly {
+    
+    // run
+    NSString *randomString1 = [VDFStringHelper randomString];
+    NSString *randomString2 = [VDFStringHelper randomString];
+    
+    // assert
+    XCTAssertNotEqualObjects(randomString1, randomString2, @"Random string is not generating properly.");
+}
+
 @end

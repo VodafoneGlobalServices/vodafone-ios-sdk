@@ -58,6 +58,9 @@ static VDFDIContainer * g_diContainer = nil;
         configuration.oAuthTokenScope = g_oAuthTokenScope;
         
         [g_diContainer registerInstance:configuration forClass:[VDFBaseConfiguration class]];
+        
+        id requestsManager = [[VDFServiceRequestsManager alloc] initWithDIContainer:g_diContainer cacheManager:[VDFSettings sharedCacheManager]];
+        [g_diContainer registerInstance:requestsManager forClass:[VDFServiceRequestsManager class]];
     }
 }
 
@@ -88,17 +91,6 @@ static VDFDIContainer * g_diContainer = nil;
 
 #pragma mark -
 #pragma mark internal implementation
-
-+ (VDFServiceRequestsManager*)sharedRequestsManager {
-    static id sharedRequestManagerInstance = nil;
-    
-    static dispatch_once_t onceTokenRequestManager;
-    dispatch_once(&onceTokenRequestManager, ^{
-        sharedRequestManagerInstance = [[VDFServiceRequestsManager alloc] initWithDIContainer:g_diContainer cacheManager:[VDFSettings sharedCacheManager]];
-    });
-    
-    return sharedRequestManagerInstance;
-}
 
 + (VDFCacheManager*)sharedCacheManager {
     static id sharedCacheManagerInstance = nil;

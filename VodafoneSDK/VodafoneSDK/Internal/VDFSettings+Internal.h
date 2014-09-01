@@ -12,8 +12,6 @@
 
 @interface VDFSettings ()
 
-+ (VDFServiceRequestsManager*)sharedRequestsManager;
-
 + (VDFCacheManager*)sharedCacheManager;
 
 + (VDFDIContainer*)globalDIContainer;

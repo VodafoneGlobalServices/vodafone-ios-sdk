@@ -17,14 +17,7 @@
 @property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) NSMutableArray *cacheObjects;
 
-/*!
- Check object at specified path is not expired. If expired delete it and create new path for the file
- 
- @param - path to the object cache file
- 
- @return - Cache object with value
- */
-- (VDFCacheObject*)findCorrespondingCacheObject:(VDFCacheObject*)cacheObject;
+- (VDFCacheObject*)findInInternalCache:(NSString*)cacheKey;
 @end
 
 
@@ -44,66 +37,57 @@
 }
 
 - (BOOL)isObjectCached:(VDFCacheObject*)cacheObject {
-    VDFCacheObject *interlCacheObject = [self findCorrespondingCacheObject:cacheObject];
+    VDFCacheObject *interlCacheObject = nil;
+    if(cacheObject != nil && cacheObject.cacheKey != nil) {
+        interlCacheObject = [self findInInternalCache:cacheObject.cacheKey];
+    }
     return interlCacheObject != nil;
 }
 
 - (id)readCacheObject:(VDFCacheObject*)cacheObject {
     VDFLogD(@"Reading response from cache.");
-    VDFCacheObject *interlCacheObject = [self findCorrespondingCacheObject:cacheObject];
+    VDFCacheObject *interlCacheObject = nil;
+    if(cacheObject != nil && cacheObject.cacheKey != nil) {
+        interlCacheObject = [self findInInternalCache:cacheObject.cacheKey];
+    }
     return interlCacheObject;
 }
 
 - (void)cacheObject:(VDFCacheObject*)cacheObject {
-    VDFCacheObject *interlCacheObject = [self findCorrespondingCacheObject:cacheObject];
-    if(interlCacheObject == nil) {
-        VDFLogD(@"Adding new cache object.");
-        // create new cache object:
-        [self.cacheObjects addObject:cacheObject];
-    }
-    else {
-        interlCacheObject.cacheValue = cacheObject.cacheValue;
-    }
-}
-
-- (void)clearExpiredCache {
-    // TODO think is this needed
-    // currently is not used
-    NSMutableArray *objectsToRemove = [[NSMutableArray alloc] init];
-    for (VDFCacheObject *cacheObject in self.cacheObjects) {
+    VDFCacheObject *internalCacheObject = nil;
+    if(cacheObject != nil && cacheObject.cacheKey != nil) {
+        internalCacheObject = [self findInInternalCache:cacheObject.cacheKey];
         
-        if([cacheObject isExpired]) {
-            // file expired !! we have to remove this from cache
-            [objectsToRemove addObject:cacheObject];
+        if(internalCacheObject == nil) {
+            VDFLogD(@"Adding new cache object.");
+            // create new cache object:
+            [self.cacheObjects addObject:cacheObject];
         }
-    }
-    
-    // remove objects marked to delete
-    for (VDFCacheObject *cacheObject in objectsToRemove) {
-        [self.cacheObjects removeObject:cacheObject];
+        else {
+            internalCacheObject.cacheValue = cacheObject.cacheValue;
+            internalCacheObject.expirationDate = cacheObject.expirationDate;
+        }
     }
 }
 
 #pragma mark -
 #pragma mark - private methods implementation
 
-- (VDFCacheObject*)findCorrespondingCacheObject:(VDFCacheObject*)cacheObject {
+- (VDFCacheObject*)findInInternalCache:(NSString*)cacheKey {
     VDFLogD(@"Searching memory cache for response.");
     
     VDFCacheObject *foundObject = nil;
     NSMutableArray *objectsToRemove = [[NSMutableArray alloc] init];
     for (VDFCacheObject *interlCacheObject in self.cacheObjects) {
-        if([interlCacheObject.cacheKey isEqualToString:cacheObject.cacheKey]) {
-            
-            // need to check is this expired or not ?
-            if([cacheObject isExpired]) {
-                [objectsToRemove addObject:cacheObject];
-            }
-            else {
-                // we found it so we move next
-                foundObject = cacheObject;
-                break;
-            }
+        
+        // need to check is this expired or not ?
+        if([interlCacheObject isExpired]) {
+            [objectsToRemove addObject:interlCacheObject];
+        }
+        else if([interlCacheObject.cacheKey isEqualToString:cacheKey]) {
+            // we found it so we move next
+            foundObject = interlCacheObject;
+            break;
         }
     }
     

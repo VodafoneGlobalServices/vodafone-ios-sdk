@@ -82,6 +82,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 }
 
 - (void)cancelCommunication {
+    self.delegate = nil;
     // TODO
 }
 
@@ -131,7 +132,9 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     }
     else {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-        [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:error]];
+        if(self.delegate != nil) {
+            [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:error]];
+        }
     }
     
 }
@@ -166,7 +169,9 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     }
     else {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-        [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:error]];
+        if(self.delegate != nil) {
+            [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:error]];
+        }
     }
 }
 
@@ -200,14 +205,18 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
     self.isConnectionOpen = NO;
     NSError *errorInVDFDomain = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
-    [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:errorInVDFDomain]];
+    if(self.delegate != nil) {
+        [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:errorInVDFDomain]];
+    }
 }
 
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection {
     self.isConnectionOpen = NO;
-    [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithData:self.receivedData httpCode:self.lastResponseCode headers:self.responseHeaders]];
+    if(self.delegate != nil) {
+        [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithData:self.receivedData httpCode:self.lastResponseCode headers:self.responseHeaders]];
+    }
 }
 
 

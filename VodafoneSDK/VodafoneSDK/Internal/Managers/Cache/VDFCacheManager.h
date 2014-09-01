@@ -31,9 +31,4 @@
 
 - (void)cacheObject:(VDFCacheObject*)cacheObject;
 
-/**
- *  Invoked automatically on dealloc of last object, clears the expired data.
- */
-- (void)clearExpiredCache;
-
 @end

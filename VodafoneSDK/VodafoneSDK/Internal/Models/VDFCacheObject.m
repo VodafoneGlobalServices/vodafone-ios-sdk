@@ -13,16 +13,7 @@
 static NSString * const CacheKeyKey = @"key";
 static NSString * const ExpirationDateKey = @"expirationDate";
 
-static NSString *g_cacheDirectory = nil;
-
-@interface VDFCacheObject ()
-@end
-
 @implementation VDFCacheObject
-
-+ (void)setCacheDirectory:(NSString*)cacheDirectory {
-    g_cacheDirectory = cacheDirectory;
-}
 
 #pragma mark -
 #pragma mark Instance Properties/Methods

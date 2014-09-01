@@ -148,6 +148,8 @@
 		49BC3CF21998E564008C2108 /* VDFPendingRequestItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 49BC3CF01998E564008C2108 /* VDFPendingRequestItem.h */; };
 		49BC3CF31998E564008C2108 /* VDFPendingRequestItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BC3CF11998E564008C2108 /* VDFPendingRequestItem.m */; };
 		49C0666519B0684200EB8F23 /* VDFDIContainerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C0666419B0684200EB8F23 /* VDFDIContainerTestCase.m */; };
+		49C0667019B0724700EB8F23 /* VDFConfigurationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C0666E19B0724700EB8F23 /* VDFConfigurationManager.h */; };
+		49C0667119B0724700EB8F23 /* VDFConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C0666F19B0724700EB8F23 /* VDFConfigurationManager.m */; };
 		49C3421C196D561D0079FDF5 /* VDFErrorUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */; };
 		49C3421D196D561D0079FDF5 /* VDFErrorUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C3421B196D561D0079FDF5 /* VDFErrorUtility.m */; };
 		49C34226196D71D00079FDF5 /* VDFBaseConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */; };
@@ -320,6 +322,9 @@
 		49BC3CF01998E564008C2108 /* VDFPendingRequestItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFPendingRequestItem.h; path = Internal/Managers/Requests/ManagerComponents/VDFPendingRequestItem.h; sourceTree = "<group>"; };
 		49BC3CF11998E564008C2108 /* VDFPendingRequestItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFPendingRequestItem.m; path = Internal/Managers/Requests/ManagerComponents/VDFPendingRequestItem.m; sourceTree = "<group>"; };
 		49C0666419B0684200EB8F23 /* VDFDIContainerTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFDIContainerTestCase.m; path = Common/VDFDIContainerTestCase.m; sourceTree = "<group>"; };
+		49C0666E19B0724700EB8F23 /* VDFConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFConfigurationManager.h; path = Internal/Managers/Configuration/VDFConfigurationManager.h; sourceTree = "<group>"; };
+		49C0666F19B0724700EB8F23 /* VDFConfigurationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFConfigurationManager.m; path = Internal/Managers/Configuration/VDFConfigurationManager.m; sourceTree = "<group>"; };
+		49C0667419B086F900EB8F23 /* VDFBaseConfiguration+Manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VDFBaseConfiguration+Manager.h"; path = "Internal/Models/BaseConfiguration/VDFBaseConfiguration+Manager.h"; sourceTree = "<group>"; };
 		49C3421A196D561D0079FDF5 /* VDFErrorUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFErrorUtility.h; path = Internal/Common/Helpers/VDFErrorUtility.h; sourceTree = "<group>"; };
 		49C3421B196D561D0079FDF5 /* VDFErrorUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFErrorUtility.m; path = Internal/Common/Helpers/VDFErrorUtility.m; sourceTree = "<group>"; };
 		49C34223196D6BB30079FDF5 /* VDFSettings+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VDFSettings+Internal.h"; path = "Internal/VDFSettings+Internal.h"; sourceTree = "<group>"; };
@@ -430,11 +435,13 @@
 			name = RequestBuilderWithOAuth;
 			sourceTree = "<group>";
 		};
-		49135060199B9E5D004C1AE8 /* ConfigurationUpdate */ = {
+		49135060199B9E5D004C1AE8 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				49C0666E19B0724700EB8F23 /* VDFConfigurationManager.h */,
+				49C0666F19B0724700EB8F23 /* VDFConfigurationManager.m */,
 			);
-			name = ConfigurationUpdate;
+			name = Configuration;
 			sourceTree = "<group>";
 		};
 		492DDFE9198F831100DA8171 /* Factories */ = {
@@ -596,10 +603,9 @@
 		49A15858196BFE8A00642677 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				49C0667219B0861500EB8F23 /* BaseConfiguration */,
 				49E100A319A5F3DF00BFD4A9 /* HttpConnectorResponse */,
 				49BC3CD71998C29E008C2108 /* OAuthToken */,
-				49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */,
-				49C34225196D71D00079FDF5 /* VDFBaseConfiguration.m */,
 				494F37BF197E63A700E5D82E /* VDFCacheObject.h */,
 				494F37C0197E63A700E5D82E /* VDFCacheObject.m */,
 			);
@@ -630,7 +636,7 @@
 		49A1586C196C330700642677 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				49135060199B9E5D004C1AE8 /* ConfigurationUpdate */,
+				49135060199B9E5D004C1AE8 /* Configuration */,
 				49A15872196C334A00642677 /* Cache */,
 				49A15871196C334100642677 /* Requests */,
 				49A1586D196C333800642677 /* VDFBaseManager.h */,
@@ -926,6 +932,16 @@
 			name = ManagerComponents;
 			sourceTree = "<group>";
 		};
+		49C0667219B0861500EB8F23 /* BaseConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				49C34224196D71D00079FDF5 /* VDFBaseConfiguration.h */,
+				49C34225196D71D00079FDF5 /* VDFBaseConfiguration.m */,
+				49C0667419B086F900EB8F23 /* VDFBaseConfiguration+Manager.h */,
+			);
+			name = BaseConfiguration;
+			sourceTree = "<group>";
+		};
 		49E100A319A5F3DF00BFD4A9 /* HttpConnectorResponse */ = {
 			isa = PBXGroup;
 			children = (
@@ -1050,6 +1066,7 @@
 				492DDFFF198F8C7200DA8171 /* VDFArrayObserversContainer.h in Headers */,
 				49BC3CD21998BB52008C2108 /* VDFOAuthTokenResponse.h in Headers */,
 				4989A7BF19755418009A6BC5 /* VDFHttpConnectorDelegate.h in Headers */,
+				49C0667019B0724700EB8F23 /* VDFConfigurationManager.h in Headers */,
 				492DE003198F8D4F00DA8171 /* VDFUserResolveRequestFactory.h in Headers */,
 				498EA3021982735D00122F05 /* VDFNetworkReachability.h in Headers */,
 				492DE00A198F8E4200DA8171 /* VDFRequestState.h in Headers */,
@@ -1225,6 +1242,7 @@
 				49BC3CCB1998B2B4008C2108 /* VDFOAuthTokenResponseParser.m in Sources */,
 				49A15876196C336500642677 /* VDFServiceRequestsManager.m in Sources */,
 				49A15883196C345700642677 /* VDFBaseService.m in Sources */,
+				49C0667119B0724700EB8F23 /* VDFConfigurationManager.m in Sources */,
 				496559F7196AA838002A30C6 /* VDFUsersService.m in Sources */,
 				491A46C1199159600007489C /* VDFRequestBaseBuilder.m in Sources */,
 				49011C9519A4CCEF0063CE9E /* VDFSmsSendPinResponseParser.m in Sources */,

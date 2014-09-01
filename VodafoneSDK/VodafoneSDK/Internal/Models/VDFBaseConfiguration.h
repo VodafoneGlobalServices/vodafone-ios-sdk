@@ -13,7 +13,7 @@
 /**
  *  Base configuration class
  */
-@interface VDFBaseConfiguration : NSObject
+@interface VDFBaseConfiguration : NSObject <NSCoding>
 
 /**
  *  Id of the application registered as Vodafone 3rd party app.

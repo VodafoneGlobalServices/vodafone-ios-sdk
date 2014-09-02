@@ -10,25 +10,23 @@
 #import "VDFDIContainer.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFBaseConfiguration+Manager.h"
-#import "VDFHttpConnector.h"
+#import "VDFConfigurationUpdater.h"
+#import "VDFLogUtility.h"
+#import "VDFErrorUtility.h"
 
-static NSInteger const NotModifiedHttpCode = 304;
-static NSInteger const VersionNumber = 1;
-static NSString * const ServerUrlSchema = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com/v%i/sdk-config-ios/config.json";
 static NSString * const ConfigurationFileName = @"baseConfig.dat";
-static NSInteger const DefaultValidityTimeSpan = 43200; // in secodns, 12 hours
+static NSInteger const DefaultUpdateCheckTimeSpan = 43200; // in secodns, 12 hours
 
 @interface VDFConfigurationManager ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) id configurationFileLock;
 @property (nonatomic, strong) id updateLock;
-@property (nonatomic, strong) VDFHttpConnector *currentHttpConnector;
-@property (nonatomic, assign) BOOL isUpdating;
+@property (nonatomic, strong) VDFConfigurationUpdater *runningUpdater;
+@property (nonatomic, strong) NSDate *lastCheckDate;
 
+- (void)startUpdaterForConfiguration:(VDFBaseConfiguration*)configuration;
 - (void)writeConfiguration:(VDFBaseConfiguration*)configuration;
 - (NSString*)configurationFilePath;
-- (BOOL)isUpdateNeededFor:(VDFBaseConfiguration*)configuration;
-- (void)perfomHttpCallFor:(VDFBaseConfiguration*)configuration;
 @end
 
 @implementation VDFConfigurationManager
@@ -39,15 +37,8 @@ static NSInteger const DefaultValidityTimeSpan = 43200; // in secodns, 12 hours
         self.diContainer = diContainer;
         self.configurationFileLock = [[NSObject alloc] init];
         self.updateLock = [[NSObject alloc] init];
-        self.isUpdating = NO;
     }
     return self;
-}
-
-- (void)dealloc {
-    if(self.currentHttpConnector != nil) {
-        [self.currentHttpConnector cancelCommunication];
-    }
 }
 
 - (void)checkForUpdate {
@@ -59,12 +50,19 @@ static NSInteger const DefaultValidityTimeSpan = 43200; // in secodns, 12 hours
     }
     
     // check is current configuration still valid, or maybe expired
-    if([self isUpdateNeededFor:configuration]) {
+    NSTimeInterval updateCheckTimeSpan = configuration.configurationUpdateCheckTimeSpan;
+    if(updateCheckTimeSpan == 0) {
+        updateCheckTimeSpan = DefaultUpdateCheckTimeSpan;
+    }
+    
+    BOOL isUpdateNeeded = self.lastCheckDate == nil || [[self.lastCheckDate dateByAddingTimeInterval:updateCheckTimeSpan] compare:[NSDate date]] == NSOrderedAscending;
+    
+    if(isUpdateNeeded) {
         // start update process
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             @synchronized(self.updateLock) {
-                if(self.currentHttpConnector != nil) {
-                    [self perfomHttpCallFor:configuration];
+                if(self.runningUpdater == nil) {
+                    [self startUpdaterForConfiguration:configuration];
                 }
             }
         });
@@ -89,46 +87,18 @@ static NSInteger const DefaultValidityTimeSpan = 43200; // in secodns, 12 hours
 }
 
 #pragma mark -
-#pragma mark - VDFHttpConnectorDelegate implementation
-
-- (void)httpRequest:(VDFHttpConnector*)request onResponse:(VDFHttpConnectorResponse*)response {
-    // TODO handle response
-}
-
-#pragma mark -
 #pragma mark - private implementation
 
-- (void)perfomHttpCallFor:(VDFBaseConfiguration*)configuration {
-    
-    self.currentHttpConnector = [[VDFHttpConnector alloc] initWithDelegate:self];
-    self.currentHttpConnector.connectionTimeout = 60;
-    self.currentHttpConnector.methodType = HTTPMethodGET;
-    self.currentHttpConnector.url = [NSString stringWithFormat:ServerUrlSchema, VersionNumber];
-    
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setObject:@"application/json" forKey:@"Accept"];
-    if(configuration.configurationUpdateEtag != nil) {
-        [headers setObject:configuration.configurationUpdateEtag forKey:@"If-None-Match"];
-    }
-    if(configuration.configurationLastUpdateDate != nil) {
-        [headers setObject:[NSString stringWithFormat:@"%@", configuration.configurationLastUpdateDate] forKey:@"If-Modified-Since"]; // TODO
-    }
-    
-    //    httpRequest.requestHeaders = @{: , /*@"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId*/};
-    self.currentHttpConnector.requestHeaders = headers;
-    [self.currentHttpConnector startCommunication];
-}
-
-- (BOOL)isUpdateNeededFor:(VDFBaseConfiguration*)configuration {
-    if(configuration.configurationLastUpdateDate == nil)
-        return YES;
-    NSInteger validationTimeSpan = configuration.configurationValidityTimeSpan;
-    if(validationTimeSpan == 0) {
-        validationTimeSpan = DefaultValidityTimeSpan;
-    }
-    
-    NSDate *expirationDate = [NSDate dateWithTimeInterval:validationTimeSpan sinceDate:configuration.configurationLastUpdateDate];
-    return [expirationDate compare:[NSDate date]] != NSOrderedDescending;
+- (void)startUpdaterForConfiguration:(VDFBaseConfiguration*)configuration {
+    self.runningUpdater = [[VDFConfigurationUpdater alloc] initWithConfiguration:configuration];
+    [self.runningUpdater startUpdateWithCompletionHandler:^(VDFConfigurationUpdater *updater, BOOL isSucceeded) {
+        self.lastCheckDate = [NSDate date];
+        if(isSucceeded) {
+            [self writeConfiguration:updater.configurationToUpdate];
+            [self.diContainer registerInstance:updater.configurationToUpdate forClass:[VDFBaseConfiguration class]];
+        }
+        self.runningUpdater = nil;
+    }];
 }
 
 - (void)writeConfiguration:(VDFBaseConfiguration*)configuration {

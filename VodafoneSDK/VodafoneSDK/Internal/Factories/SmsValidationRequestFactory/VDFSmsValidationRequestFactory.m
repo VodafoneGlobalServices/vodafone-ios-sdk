@@ -19,7 +19,7 @@
 #import "VDFSettings+Internal.h"
 #import "VDFDIContainer.h"
 
-static NSString * const JSONPayloadBodyFormat = @"{ \"PINCode\" : \"%@\" }";
+static NSString * const JSONPayloadBodyFormat = @"{ \"pin\" : \"%@\" }";
 
 @interface VDFSmsValidationRequestFactory ()
 @property (nonatomic, strong) VDFSmsValidationRequestBuilder *builder;

@@ -168,7 +168,7 @@
     // run
     NSData *result = [self.factoryToTestMock postBody];
     // assert
-    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"SMSValidation\" : true }", @"Post body is generated not properly.");
+    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"smsValidation\" : true }", @"Post body is generated not properly.");
 }
 
 - (void)testPostBodyWithSmsValidationSetToFalse {
@@ -180,7 +180,7 @@
     // run
     NSData *result = [self.factoryToTestMock postBody];
     // assert
-    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"SMSValidation\" : false }", @"Post body is generated not properly.");
+    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"smsValidation\" : false }", @"Post body is generated not properly.");
 }
 
 @end

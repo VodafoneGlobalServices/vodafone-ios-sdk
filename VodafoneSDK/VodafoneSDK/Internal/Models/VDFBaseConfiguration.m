@@ -12,8 +12,8 @@
 static NSString * const DefaultHttpConnectionTimeoutKey = @"defaultHttpConnectionTimeout";
 static NSString * const HttpRequestRetryTimeSpanKey = @"httpRequestRetryTimeSpan";
 static NSString * const MaxHttpRequestRetriesCountKey = @"maxHttpRequestRetriesCount";
-static NSString * const ConfigurationLastUpdateDateKey = @"configurationLastUpdateDate";
-static NSString * const ConfigurationValidityTimeSpanKey = @"configurationValidityTimeSpan";
+static NSString * const ConfigurationLastModifiedDateKey = @"configurationLastModifiedDate";
+static NSString * const ConfigurationUpdateCheckTimeSpanKey = @"configurationUpdateCheckTimeSpan";
 
 
 @implementation VDFBaseConfiguration
@@ -27,8 +27,8 @@ static NSString * const ConfigurationValidityTimeSpanKey = @"configurationValidi
         self.defaultHttpConnectionTimeout = [decoder decodeDoubleForKey:DefaultHttpConnectionTimeoutKey];
         self.httpRequestRetryTimeSpan = [decoder decodeDoubleForKey:HttpRequestRetryTimeSpanKey];
         self.maxHttpRequestRetriesCount = [decoder decodeIntegerForKey:MaxHttpRequestRetriesCountKey];
-        self.configurationLastUpdateDate = [decoder decodeObjectForKey:ConfigurationLastUpdateDateKey];
-        self.configurationValidityTimeSpan = [decoder decodeDoubleForKey:ConfigurationValidityTimeSpanKey];
+        self.configurationLastModifiedDate = [decoder decodeObjectForKey:ConfigurationLastModifiedDateKey];
+        self.configurationUpdateCheckTimeSpan = [decoder decodeDoubleForKey:ConfigurationUpdateCheckTimeSpanKey];
     }
     return self;
 }
@@ -37,8 +37,13 @@ static NSString * const ConfigurationValidityTimeSpanKey = @"configurationValidi
     [encoder encodeDouble:self.defaultHttpConnectionTimeout forKey:DefaultHttpConnectionTimeoutKey];
     [encoder encodeDouble:self.httpRequestRetryTimeSpan forKey:HttpRequestRetryTimeSpanKey];
     [encoder encodeInteger:self.maxHttpRequestRetriesCount forKey:MaxHttpRequestRetriesCountKey];
-    [encoder encodeObject:self.configurationLastUpdateDate forKey:ConfigurationLastUpdateDateKey];
-    [encoder encodeDouble:self.configurationValidityTimeSpan forKey:ConfigurationValidityTimeSpanKey];
+    [encoder encodeObject:self.configurationLastModifiedDate forKey:ConfigurationLastModifiedDateKey];
+    [encoder encodeDouble:self.configurationUpdateCheckTimeSpan forKey:ConfigurationUpdateCheckTimeSpanKey];
+}
+
+- (void)updateWithJson:(NSDictionary*)jsonObjectDictionary {
+    self.configurationLastModifiedDate = [NSDate date];
+    // TODO when we will know how this json file will looks like
 }
 
 @end

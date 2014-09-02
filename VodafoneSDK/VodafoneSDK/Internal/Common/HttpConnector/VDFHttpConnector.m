@@ -110,6 +110,10 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     VDFBaseConfiguration *configuration = [[VDFSettings globalDIContainer] resolveForClass:[VDFBaseConfiguration class]];
     [request setValue:[NSString stringWithFormat:@"%@-%@", [VDFSettings sdkVersion], configuration.applicationId] forHTTPHeaderField:XVF_SOURCE_HEADER];
     [request setValue:[VDFStringHelper randomString] forHTTPHeaderField:XVF_TRANSACTION_ID_HEADER];
+    
+    
+    [request setValue:@"VF-DE" forHTTPHeaderField:@"x-int-opco"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
+    [request setValue:@"he_private_data" forHTTPHeaderField:@"scope"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
 }
 
 - (void)get:(NSString*)url {

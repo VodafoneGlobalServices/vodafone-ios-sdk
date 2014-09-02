@@ -8,14 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "VDFBaseManager.h"
-#import "VDFHttpConnectorDelegate.h"
 
 @class VDFBaseConfiguration, VDFDIContainer;
 
 /**
  *  Manager responsible of SDK configuration versions maintanance.
  */
-@interface VDFConfigurationManager : VDFBaseManager <VDFHttpConnectorDelegate>
+@interface VDFConfigurationManager : VDFBaseManager
 
 /**
  *  Initialize Configuration manager instance.

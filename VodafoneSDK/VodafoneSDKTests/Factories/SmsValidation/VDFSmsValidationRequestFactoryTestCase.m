@@ -126,7 +126,7 @@
     NSData *result = [self.factoryToTestMock postBody];
     
     // assert
-    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"PINCode\" : \"smsCodeTest\" }", @"Post body is generated not properly.");
+    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"pin\" : \"smsCodeTest\" }", @"Post body is generated not properly.");
 }
 
 

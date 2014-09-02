@@ -22,7 +22,7 @@
 #import "VDFSettings.h"
 #import "VDFDIContainer.h"
 
-static NSString * const JSONPayloadBodyFormat = @"{ \"SMSValidation\" : %@ }";
+static NSString * const JSONPayloadBodyFormat = @"{ \"smsValidation\" : %@ }";
 
 @interface VDFUserResolveRequestFactory ()
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *builder;

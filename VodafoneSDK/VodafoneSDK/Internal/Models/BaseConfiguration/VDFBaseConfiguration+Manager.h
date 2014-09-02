@@ -16,16 +16,23 @@
 /**
  *  Date of last configuration update
  */
-@property (nonatomic, strong) NSDate *configurationLastUpdateDate;
+@property (nonatomic, strong) NSDate *configurationLastModifiedDate;
 
 /**
- *  Time interval (in seconds) for how long current configuration is valid.
+ *  Time interval (in seconds) for how long current configuration need to be cheked for updates.
  */
-@property (nonatomic, assign) NSTimeInterval configurationValidityTimeSpan;
+@property (nonatomic, assign) NSTimeInterval configurationUpdateCheckTimeSpan;
 
 /**
  *  Etag returned from last configuration update
  */
 @property (nonatomic, strong) NSString *configurationUpdateEtag;
+
+/**
+ *  Updates current configuration object with parsed json object.
+ *
+ *  @param jsonObjectDictionary Json object dictionary containing parameters to update.
+ */
+- (void)updateWithJson:(NSDictionary*)jsonObjectDictionary;
 
 @end

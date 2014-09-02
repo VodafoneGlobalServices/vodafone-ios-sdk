@@ -16,8 +16,8 @@
 #import "VDFError.h"
 #import "VDFHttpConnector.h"
 
-static NSString * const InitialURLEndpointQuery = @"/he/users/resolve";
-static NSString * const RetryURLEndpointQuery = @"/he/users/token/%@";
+static NSString * const InitialURLEndpointQuery = @"/users/resolve";
+static NSString * const RetryURLEndpointQuery = @"/users/tokens/checkstatus/%@";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t initialUrlEndpointQuery:%@ \n\t retryUrlEndpointQuery:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
 
 @interface VDFUserResolveRequestBuilder ()

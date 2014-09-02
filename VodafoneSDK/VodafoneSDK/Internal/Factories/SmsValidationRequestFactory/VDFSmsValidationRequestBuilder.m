@@ -14,7 +14,7 @@
 #import "VDFError.h"
 #import "VDFDIContainer.h"
 
-static NSString * const URLEndpointQuery = @"/he/users/tokens/validate/";
+static NSString * const URLEndpointQuery = @"/users/tokens/validatepin/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
 
 @interface VDFSmsValidationRequestBuilder ()

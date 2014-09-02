@@ -66,7 +66,7 @@ extern void __gcov_flush();
     self.builderToTest.sessionToken = newSessionToken;
     // assert
     XCTAssertEqualObjects(self.builderToTest.sessionToken, newSessionToken, @"Session token after setting on builder should change.");
-    XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, @"/he/users/token/newSessionToken", @"After session token changing the retry rul request should change properly.");
+    XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, @"/users/tokens/checkstatus/newSessionToken", @"After session token changing the retry rul request should change properly.");
 }
 
 - (void)testCreateCurrentHttpConnectorWithEtag {

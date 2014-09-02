@@ -14,7 +14,7 @@
 #import "VDFError.h"
 #import "VDFDIContainer.h"
 
-static NSString * const URLEndpointQuery = @"/he/users/tokens/sendPIN/";
+static NSString * const URLEndpointQuery = @"/users/tokens/requestpin/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ ";
 
 @interface VDFSmsSendPinRequestBuilder ()

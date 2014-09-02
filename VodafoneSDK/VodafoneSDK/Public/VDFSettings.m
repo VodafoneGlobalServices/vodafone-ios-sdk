@@ -20,9 +20,11 @@
 static NSString * const g_oAuthClientKey = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
 static NSString * const g_oAuthClientSecret = @"k4l1RXZGqMnw2cD8";
 static NSString * const g_oAuthTokenScope = @"SSO_OAUTH2_INPUT";
-static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
+static NSString * const g_hapBaseURL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
+//static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 //static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
-static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
+static NSString * const g_apixBaseUrl = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
+//static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 static VDFDIContainer * g_diContainer = nil;
 
 @implementation VDFSettings

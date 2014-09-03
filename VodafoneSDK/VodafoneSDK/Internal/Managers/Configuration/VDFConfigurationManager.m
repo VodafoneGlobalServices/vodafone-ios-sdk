@@ -49,13 +49,7 @@ static NSInteger const DefaultUpdateCheckTimeSpan = 43200; // in secodns, 12 hou
         configuration = [self readConfiguration];
     }
     
-    // check is current configuration still valid, or maybe expired
-    NSTimeInterval updateCheckTimeSpan = configuration.configurationUpdateCheckTimeSpan;
-    if(updateCheckTimeSpan == 0) {
-        updateCheckTimeSpan = DefaultUpdateCheckTimeSpan;
-    }
-    
-    BOOL isUpdateNeeded = self.lastCheckDate == nil || [[self.lastCheckDate dateByAddingTimeInterval:updateCheckTimeSpan] compare:[NSDate date]] == NSOrderedAscending;
+    BOOL isUpdateNeeded = self.lastCheckDate == nil || [[self.lastCheckDate dateByAddingTimeInterval:configuration.configurationUpdateCheckTimeSpan] compare:[NSDate date]] == NSOrderedAscending;
     
     if(isUpdateNeeded) {
         // start update process
@@ -81,6 +75,7 @@ static NSInteger const DefaultUpdateCheckTimeSpan = 43200; // in secodns, 12 hou
         
         if(configuration == nil) {
             configuration = [[VDFBaseConfiguration alloc] init];
+            configuration.configurationUpdateCheckTimeSpan = DefaultUpdateCheckTimeSpan;
         }
     }
     return configuration;

@@ -13,7 +13,7 @@
 #import "VDFHttpConnectorResponse.h"
 #import "VDFBaseConfiguration+Manager.h"
 
-static NSInteger const NotModifiedHttpCode = 304;
+//static NSInteger const NotModifiedHttpCode = 304;
 static NSInteger const SuccessHttpCode = 200;
 static NSInteger const VersionNumber = 1;
 static NSString * const ServerUrlSchema = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com/v%i/sdk-config-ios/config.json";
@@ -72,7 +72,17 @@ static NSString * const ServerUrlSchema = @"http://hebemock-4953648878.eu-de1.pl
         id jsonObject = [NSJSONSerialization JSONObjectWithData:response.data options:kNilOptions error:&error];
         BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
         
-        if(![VDFErrorUtility handleInternalError:error] || !isResponseValid) {
+        if(![VDFErrorUtility handleInternalError:error] && isResponseValid) {
+            
+            NSString *etag = [response.responseHeaders objectForKey:@"Etag"];
+            if(etag) {
+                self.configurationToUpdate.configurationUpdateEtag = etag;
+            }
+            NSString *lastModifiedString = [response.responseHeaders objectForKey:@"Last-Modified"];
+            if(lastModifiedString) {
+                // TODO when we get know how this will looks like
+            }
+            
             // object parsed correctly
             // and update it:
             [self.configurationToUpdate updateWithJson:jsonObject];

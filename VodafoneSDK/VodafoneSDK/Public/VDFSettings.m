@@ -16,15 +16,8 @@
 #import "VDFErrorUtility.h"
 #import "VDFLogUtility.h"
 #import "VDFDIContainer.h"
+#import "VDFConfigurationManager.h"
 
-static NSString * const g_oAuthClientKey = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
-static NSString * const g_oAuthClientSecret = @"k4l1RXZGqMnw2cD8";
-static NSString * const g_oAuthTokenScope = @"SSO_OAUTH2_INPUT";
-static NSString * const g_hapBaseURL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
-//static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
-//static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
-static NSString * const g_apixBaseUrl = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
-//static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 static VDFDIContainer * g_diContainer = nil;
 
 @implementation VDFSettings
@@ -36,30 +29,21 @@ static VDFDIContainer * g_diContainer = nil;
         g_diContainer = [[VDFDIContainer alloc] init];
         
         VDFLogD(@"Loading configuration");
+        
         // load application id from plist
-        VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
+        VDFConfigurationManager *configurationManager = [[VDFConfigurationManager alloc] initWithDIContainer:g_diContainer];
+        [g_diContainer registerInstance:configurationManager forClass:[VDFConfigurationManager class]];
+        
+        VDFBaseConfiguration *configuration = [configurationManager readConfiguration];
+        [g_diContainer registerInstance:configuration forClass:[VDFBaseConfiguration class]];
+        
         configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
         configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
-        configuration.hapBaseUrl = g_hapBaseURL;
-        configuration.apixBaseUrl = g_apixBaseUrl;
-        
         
         VDFLogD(@"-- applicationId:%@", configuration.applicationId);
         VDFLogD(@"-- sdkVersion:%@", configuration.sdkVersion);
         VDFLogD(@"-- hapBaseUrl:%@", configuration.hapBaseUrl);
         VDFLogD(@"-- apixBaseUrl:%@", configuration.apixBaseUrl);
-        
-        
-        configuration.defaultHttpConnectionTimeout = 60.0; // default 60 seconds timeout
-        configuration.httpRequestRetryTimeSpan = 1000; // default time span for retry request is 1 second
-        configuration.maxHttpRequestRetriesCount = 100;
-        
-        // oAuth token retrieval configuration:
-        configuration.oAuthTokenClientId = g_oAuthClientKey;
-        configuration.oAuthTokenClientSecret = g_oAuthClientSecret;
-        configuration.oAuthTokenScope = g_oAuthTokenScope;
-        
-        [g_diContainer registerInstance:configuration forClass:[VDFBaseConfiguration class]];
         
         id requestsManager = [[VDFServiceRequestsManager alloc] initWithDIContainer:g_diContainer cacheManager:[VDFSettings sharedCacheManager]];
         [g_diContainer registerInstance:requestsManager forClass:[VDFServiceRequestsManager class]];

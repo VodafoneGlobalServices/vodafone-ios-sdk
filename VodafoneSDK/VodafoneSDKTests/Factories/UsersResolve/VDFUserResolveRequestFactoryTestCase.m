@@ -94,7 +94,7 @@
 - (void)testCreateHttpConnectorInitialRequest {
     
     // mock
-    id mockDelegate =OCMProtocolMock(@protocol(VDFOAuthTokenRequestDelegate));
+    id mockDelegate =OCMProtocolMock(@protocol(VDFHttpConnectorDelegate));
     NSData *postBodyContent = [NSData data];
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
@@ -130,7 +130,7 @@
 - (void)testCreateHttpConnectorRetryRequest {
     
     // mock
-    id mockDelegate =OCMProtocolMock(@protocol(VDFOAuthTokenRequestDelegate));
+    id mockDelegate =OCMProtocolMock(@protocol(VDFHttpConnectorDelegate));
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
     // stubs

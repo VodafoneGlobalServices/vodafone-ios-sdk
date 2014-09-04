@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestBuilder.m"
-            timestampString = "430839299.437372"
+            timestampString = "431528528.513196"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
             landmarkName = "-isEqualToFactoryBuilder:"
             landmarkType = "5">
          </BreakpointContent>
@@ -116,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestBuilder.m"
-            timestampString = "430839300.490353"
+            timestampString = "431528528.513196"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "-isEqualToFactoryBuilder:"
             landmarkType = "5">
          </BreakpointContent>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Public/VDFSettings.m"
-            timestampString = "431273260.580331"
+            timestampString = "431530708.663127"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "+initializeWithParams:"
             landmarkType = "5">
          </BreakpointContent>
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Public/VDFSettings.m"
-            timestampString = "431273260.580331"
+            timestampString = "431530708.663127"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "+initializeWithParams:"
             landmarkType = "5">
          </BreakpointContent>
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-            timestampString = "431442457.860842"
+            timestampString = "431530708.663127"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "-startUpdaterForConfiguration:"
             landmarkType = "5">
          </BreakpointContent>
@@ -212,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-            timestampString = "431442459.076628"
+            timestampString = "431530708.663127"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "-startUpdaterForConfiguration:"
             landmarkType = "5">
             <Locations>
@@ -258,11 +258,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-            timestampString = "431445130.108852"
+            timestampString = "431530708.663127"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "-startUpdaterForConfiguration:"
             landmarkType = "5">
          </BreakpointContent>

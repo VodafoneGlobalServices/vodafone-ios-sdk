@@ -13,9 +13,7 @@
 #import "VDFConfigurationUpdater.h"
 #import "VDFLogUtility.h"
 #import "VDFErrorUtility.h"
-
-static NSString * const ConfigurationFileName = @"baseConfig.dat";
-static NSInteger const DefaultUpdateCheckTimeSpan = 43200; // in secodns, 12 hours
+#import "VDFConsts.h"
 
 @interface VDFConfigurationManager ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
@@ -74,8 +72,25 @@ static NSInteger const DefaultUpdateCheckTimeSpan = 43200; // in secodns, 12 hou
         }
         
         if(configuration == nil) {
+            // configuration defaults:
             configuration = [[VDFBaseConfiguration alloc] init];
-            configuration.configurationUpdateCheckTimeSpan = DefaultUpdateCheckTimeSpan;
+            
+            // for manager usage
+            configuration.configurationUpdateCheckTimeSpan = CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN;
+            
+            // for other properties
+            configuration.hapBaseUrl = CONFIGURATION_DEFAULT_HAP_BASE_URL;
+            configuration.apixBaseUrl = CONFIGURATION_DEFAULT_APIX_BASE_URL;
+            
+            configuration.defaultHttpConnectionTimeout = CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT;
+            configuration.httpRequestRetryTimeSpan = CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN;
+            configuration.maxHttpRequestRetriesCount = CONFIGURATION_DEFAULT_MAX_HTTP_REQUEST_RETRIES_COUNT;
+        
+            // oAuth token retrieval configuration:
+            configuration.oAuthTokenClientId = CONFIGURATION_DEFAULT_OAUTH_CLIENT_ID;
+            configuration.oAuthTokenClientSecret = CONFIGURATION_DEFAULT_OAUTH_CLIENT_SECRET;
+            configuration.oAuthTokenScope = CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE;
+            
         }
     }
     return configuration;
@@ -110,7 +125,7 @@ static NSInteger const DefaultUpdateCheckTimeSpan = 43200; // in secodns, 12 hou
 - (NSString*)configurationFilePath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : [NSString string];
-    return [basePath stringByAppendingPathComponent:ConfigurationFileName];
+    return [basePath stringByAppendingPathComponent:CONFIGURATION_CACHE_FILE_NAME];
 }
 
 @end

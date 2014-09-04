@@ -11,11 +11,10 @@
 #import "VDFEnums.h"
 #import "VDFUsersServiceDelegate.h"
 #import "VDFRequestBaseBuilder.h"
-#import "VDFOAuthTokenRequestDelegate.h"
 
 @class VDFDIContainer, VDFUserResolveOptions, VDFOAuthTokenResponse;
 
-@interface VDFUserResolveRequestBuilder : VDFRequestBaseBuilder <VDFOAuthTokenRequestDelegate>
+@interface VDFUserResolveRequestBuilder : VDFRequestBaseBuilder
 
 // TODO documentation
 @property (nonatomic, strong) VDFUserResolveOptions *requestOptions;

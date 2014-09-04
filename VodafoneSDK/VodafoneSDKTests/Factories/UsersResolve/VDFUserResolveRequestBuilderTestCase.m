@@ -15,6 +15,7 @@
 #import "VDFUsersServiceDelegate.h"
 #import "VDFOAuthTokenResponse.h"
 #import "VDFDIContainer.h"
+#import "VDFConfigurationManager.h"
 
 extern void __gcov_flush();
 
@@ -93,14 +94,18 @@ extern void __gcov_flush();
     
     // mock
     id delegate = [[NSObject alloc] init];
+    id mockConfigurationManager = OCMClassMock([VDFConfigurationManager class]);
     
     // stub
     self.builderToTest.eTag = nil;
+    [[[self.mockDIContainer stub] andReturn:mockConfigurationManager] resolveForClass:[VDFConfigurationManager class]];
     
     // expect that the factory wont be invoked to generate retry request object
     [[self.mockFactory reject] createRetryHttpConnectorWithDelegate:delegate];
     // expect that the factory will be invoked to generate initial request object
     [[self.mockFactory expect] createHttpConnectorRequestWithDelegate:delegate];
+    // expect tha the configuration manager will be called to perform update check
+    [[mockConfigurationManager expect] checkForUpdate];
     
     // run
     [self.builderToTest createCurrentHttpConnectorWithDelegate:delegate];
@@ -147,36 +152,6 @@ extern void __gcov_flush();
     
     // run & assert
     XCTAssertTrue([self.builderToTest isEqualToFactoryBuilder:mockSameBuilder], @"Builder wit the same application Id and request options should equal.");
-}
-
-- (void)testDidReceivedOAuthTokenWhenErrorOccuredOrOAuthTokenNotProvided {
-    
-    // mock
-    VDFOAuthTokenResponse *tokenMock = [[VDFOAuthTokenResponse alloc] init];
-    self.builderToTest.oAuthToken = nil;
-    
-    // run & assert
-    [self.builderToTest didReceivedOAuthToken:nil withError:nil];
-    XCTAssertNil(self.builderToTest.oAuthToken, @"OAuth token should not change when didUpdate was invoked with nil oauthToken");
-    
-    // run & assert
-    [self.builderToTest didReceivedOAuthToken:tokenMock withError:[[NSError alloc] init]];
-    XCTAssertNil(self.builderToTest.oAuthToken, @"OAuth token should not change when didUpdate was invoked with error");
-    
-    // run & assert
-    [self.builderToTest didReceivedOAuthToken:nil withError:[[NSError alloc] init]];
-    XCTAssertNil(self.builderToTest.oAuthToken, @"OAuth token should not change when didUpdate was invoked with nil oauthToken and error");
-}
-
-- (void)testDidReceivedOAuthTokenWhenTokenProvidedWithoutError {
-    
-    // mock
-    VDFOAuthTokenResponse *tokenMock = [[VDFOAuthTokenResponse alloc] init];
-    self.builderToTest.oAuthToken = nil;
-    
-    // run & assert
-    [self.builderToTest didReceivedOAuthToken:tokenMock withError:nil];
-    XCTAssertEqualObjects(self.builderToTest.oAuthToken, tokenMock, @"OAuth token should change when didReceivedOAuthToken was called with valid token and no error.");
 }
 
 @end

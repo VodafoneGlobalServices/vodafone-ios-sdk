@@ -97,6 +97,9 @@
 		4990BFC21992767E005EED39 /* VDFUserResolveRequestStateTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990BFC11992767E005EED39 /* VDFUserResolveRequestStateTestCase.m */; };
 		4998786E198A246400023E87 /* VDFLogUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4998786C198A246400023E87 /* VDFLogUtility.h */; };
 		4998786F198A246400023E87 /* VDFLogUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4998786D198A246400023E87 /* VDFLogUtility.m */; };
+		499C3EB619B9E31B00C2EC16 /* VDFRequestCallsCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 499C3EB419B9E31B00C2EC16 /* VDFRequestCallsCounter.h */; };
+		499C3EB719B9E31B00C2EC16 /* VDFRequestCallsCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 499C3EB519B9E31B00C2EC16 /* VDFRequestCallsCounter.m */; };
+		499C3EB919B9FA7600C2EC16 /* VDFRequestCallsCounterTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 499C3EB819B9FA7600C2EC16 /* VDFRequestCallsCounterTestCase.m */; };
 		49A08B5A1994CB8D00DE60A5 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A08B591994CB8D00DE60A5 /* libOCMock.a */; };
 		49A1585B196BFEA400642677 /* VDFUserResolveOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A15859196BFEA400642677 /* VDFUserResolveOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49A1585C196BFEA400642677 /* VDFUserResolveOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1585A196BFEA400642677 /* VDFUserResolveOptions.m */; };
@@ -272,6 +275,9 @@
 		4990BFC11992767E005EED39 /* VDFUserResolveRequestStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequestStateTestCase.m; path = Factories/UsersResolve/VDFUserResolveRequestStateTestCase.m; sourceTree = "<group>"; };
 		4998786C198A246400023E87 /* VDFLogUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFLogUtility.h; path = Internal/Common/Helpers/VDFLogUtility.h; sourceTree = "<group>"; };
 		4998786D198A246400023E87 /* VDFLogUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFLogUtility.m; path = Internal/Common/Helpers/VDFLogUtility.m; sourceTree = "<group>"; };
+		499C3EB419B9E31B00C2EC16 /* VDFRequestCallsCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFRequestCallsCounter.h; path = Internal/Managers/Requests/ManagerComponents/VDFRequestCallsCounter.h; sourceTree = "<group>"; };
+		499C3EB519B9E31B00C2EC16 /* VDFRequestCallsCounter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFRequestCallsCounter.m; path = Internal/Managers/Requests/ManagerComponents/VDFRequestCallsCounter.m; sourceTree = "<group>"; };
+		499C3EB819B9FA7600C2EC16 /* VDFRequestCallsCounterTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFRequestCallsCounterTestCase.m; path = Managers/VDFRequestCallsCounterTestCase.m; sourceTree = "<group>"; };
 		49A08B591994CB8D00DE60A5 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = usr/lib/libOCMock.a; sourceTree = "<group>"; };
 		49A15859196BFEA400642677 /* VDFUserResolveOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserResolveOptions.h; path = Public/Models/VDFUserResolveOptions.h; sourceTree = "<group>"; };
 		49A1585A196BFEA400642677 /* VDFUserResolveOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveOptions.m; path = Public/Models/VDFUserResolveOptions.m; sourceTree = "<group>"; };
@@ -504,6 +510,7 @@
 				498EA2F919823C7600122F05 /* VDFServiceRequestsManagerTestCase.m */,
 				497A89D3199CF3E5007EC20C /* VDFHttpConnectionsQueueTestCase.m */,
 				4949D43419A2320A00E5D524 /* VDFPendingRequestItemTestCase.m */,
+				499C3EB819B9FA7600C2EC16 /* VDFRequestCallsCounterTestCase.m */,
 			);
 			name = Requests;
 			sourceTree = "<group>";
@@ -941,6 +948,8 @@
 				49BC3CED1998E505008C2108 /* VDFHttpConnectionsQueue.m */,
 				49BC3CF01998E564008C2108 /* VDFPendingRequestItem.h */,
 				49BC3CF11998E564008C2108 /* VDFPendingRequestItem.m */,
+				499C3EB419B9E31B00C2EC16 /* VDFRequestCallsCounter.h */,
+				499C3EB519B9E31B00C2EC16 /* VDFRequestCallsCounter.m */,
 			);
 			name = ManagerComponents;
 			sourceTree = "<group>";
@@ -1106,6 +1115,7 @@
 				492DE00D198F8EA800DA8171 /* VDFUserResolveRequestState.h in Headers */,
 				49A1587D196C33D000642677 /* VDFHttpConnector.h in Headers */,
 				492DDFFA198F8BDF00DA8171 /* VDFResponseParser.h in Headers */,
+				499C3EB619B9E31B00C2EC16 /* VDFRequestCallsCounter.h in Headers */,
 				49BC3CBE1998B174008C2108 /* VDFOAuthTokenRequestFactory.h in Headers */,
 				49011C8C19A4CC3A0063CE9E /* VDFSmsSendPinRequestFactory.h in Headers */,
 				4990BFA9199215CD005EED39 /* VDFSmsValidationRequestBuilder.h in Headers */,
@@ -1258,6 +1268,7 @@
 				49011C8D19A4CC3A0063CE9E /* VDFSmsSendPinRequestFactory.m in Sources */,
 				49BC3CC71998B26B008C2108 /* VDFOAuthTokenRequestState.m in Sources */,
 				4990BFAE199215FA005EED39 /* VDFSmsValidationResponseParser.m in Sources */,
+				499C3EB719B9E31B00C2EC16 /* VDFRequestCallsCounter.m in Sources */,
 				492DE008198F8D8500DA8171 /* VDFUserResolveResponseParser.m in Sources */,
 				496559F2196A92DC002A30C6 /* VDFSettings.m in Sources */,
 				49BC3CEA1998C638008C2108 /* VDFOAuthTokenRequestOptions.m in Sources */,
@@ -1316,6 +1327,7 @@
 				49A3DA2619AC804D004B8634 /* VDFUserResolveRequestFactoryTestCase.m in Sources */,
 				49A3DA2419AC7484004B8634 /* VDFRequestBaseFactoryTestCase.m in Sources */,
 				498EA2EE19823B4C00122F05 /* VDFHttpConnectorTestCase.m in Sources */,
+				499C3EB919B9FA7600C2EC16 /* VDFRequestCallsCounterTestCase.m in Sources */,
 				497A89D4199CF3E5007EC20C /* VDFHttpConnectionsQueueTestCase.m in Sources */,
 				498EA2F619823BF600122F05 /* VDFUsersServiceTestCase.m in Sources */,
 				498EA2FA19823C7600122F05 /* VDFServiceRequestsManagerTestCase.m in Sources */,

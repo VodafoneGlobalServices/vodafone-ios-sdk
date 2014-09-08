@@ -26,6 +26,7 @@
 #import "VDFHttpConnectionsQueue.h"
 #import "VDFPendingRequestItem.h"
 #import "VDFDIContainer.h"
+#import "VDFRequestCallsCounter.h"
 
 
 #pragma mark - VDFServiceRequestsManager class
@@ -34,6 +35,7 @@
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 @property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) VDFHttpConnectionsQueue *connectionsQueue;
+@property (nonatomic, strong) VDFRequestCallsCounter *callsCounter;
 @end
 
 @implementation VDFServiceRequestsManager
@@ -45,6 +47,7 @@
         self.cacheManager = cacheManager;
         self.diContainer = diContainer;
         self.connectionsQueue = [[VDFHttpConnectionsQueue alloc] initWithCacheManager:cacheManager diContainer:diContainer];
+        self.callsCounter = [[VDFRequestCallsCounter alloc] initWithDIContainer:diContainer];
     }
     return self;
 }
@@ -74,8 +77,17 @@
                 responseCachedObject = [self.cacheManager readCacheObject:cacheObject];
             }
             else {
-                // add this to queue:
-                [self.connectionsQueue enqueueRequestBuilder:builder];
+                // check for throttling:
+                if([self.callsCounter canPerformRequestOfType:[builder class]]) {
+                    // add this to queue:
+                    [self.callsCounter incrementCallType:[builder class]];
+                    [self.connectionsQueue enqueueRequestBuilder:builder];
+                }
+                else {
+                    // invoke with error:
+                    NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorThrottlingLimitExceeded userInfo:nil];
+                    [[builder observersContainer] notifyAllObserversWith:nil error:error];
+                }
             }
         }
         

@@ -268,6 +268,8 @@ extern void __gcov_flush();
     
     // stub
     [[[self.mockConfiguration stub] andReturnValue:@1] maxHttpRequestRetriesCount];
+    [[[self.mockConfiguration stub] andReturnValue:@36000.0] requestsThrottlingPeriod];
+    [[[self.mockConfiguration stub] andReturnValue:@1] requestsThrottlingLimit];
     [[[self.mockConfiguration stub] andReturnValue:@1] httpRequestRetryTimeSpan];
     
     // expect that the on error method will be fired
@@ -293,6 +295,8 @@ extern void __gcov_flush();
     
     // stub
     [[[self.mockConfiguration stub] andReturnValue:@5] maxHttpRequestRetriesCount];
+    [[[self.mockConfiguration stub] andReturnValue:@3.0] requestsThrottlingPeriod];
+    [[[self.mockConfiguration stub] andReturnValue:@5] requestsThrottlingLimit];
     
     
     // expect that the request retry time span will be readed
@@ -328,10 +332,12 @@ extern void __gcov_flush();
     // mock
     self.itemToTest.isRunning = YES;
     self.itemToTest.numberOfRetries = 0;
-    
+
     
     // stub
     [[[self.mockConfiguration stub] andReturnValue:@5] maxHttpRequestRetriesCount];
+    [[[self.mockConfiguration stub] andReturnValue:@3.0] requestsThrottlingPeriod];
+    [[[self.mockConfiguration stub] andReturnValue:@5] requestsThrottlingLimit];
     
     
     // expect that the request retry time span will be readed

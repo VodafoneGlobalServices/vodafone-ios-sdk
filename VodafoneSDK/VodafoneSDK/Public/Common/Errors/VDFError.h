@@ -39,6 +39,10 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      Problems in communication with server.
      */
     VDFErrorServerCommunication,
+    /*!
+     To many calls in last time period.
+     */
+    VDFErrorThrottlingLimitExceeded,
 };
 
 

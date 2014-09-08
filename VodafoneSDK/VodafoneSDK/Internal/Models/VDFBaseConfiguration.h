@@ -51,6 +51,16 @@
 @property (nonatomic, assign) NSInteger maxHttpRequestRetriesCount;
 
 /**
+ *  Number of maximum requests count in perticular time period.
+ */
+@property (nonatomic, assign) NSInteger requestsThrottlingLimit;
+
+/**
+ *  Time period of throttling limit count time period in seconds.
+ */
+@property (nonatomic, assign) NSTimeInterval requestsThrottlingPeriod;
+
+/**
  *  Client id for oAuthToken retrieval.
  */
 @property (nonatomic, strong) NSString *oAuthTokenClientId;

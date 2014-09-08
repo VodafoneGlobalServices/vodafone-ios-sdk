@@ -20,10 +20,12 @@ static NSString * const CONFIGURATION_DEFAULT_HAP_BASE_URL = @"http://SeamId-409
 static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
 //static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 
-static NSInteger const CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN = 43200; // in secodns, 12 hours
-static NSInteger const CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT = 60.0; // default 60 seconds timeout
-static NSInteger const CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN = 1000; // default time span for retry request is 1 second
+static NSTimeInterval const CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN = 43200; // in secodns, 12 hours
+static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT = 60.0; // default 60 seconds timeout
+static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN = 1000; // default time span for retry request is 1 second
 static NSInteger const CONFIGURATION_DEFAULT_MAX_HTTP_REQUEST_RETRIES_COUNT = 100;
+static NSInteger const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT = 100;
+static NSTimeInterval const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD = 60.0; // 60 seconds
 
 static NSString * const CONFIGURATION_CACHE_FILE_NAME = @"baseConfig.dat";
 

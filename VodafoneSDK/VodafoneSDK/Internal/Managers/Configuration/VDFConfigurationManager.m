@@ -85,6 +85,8 @@
             configuration.defaultHttpConnectionTimeout = CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT;
             configuration.httpRequestRetryTimeSpan = CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN;
             configuration.maxHttpRequestRetriesCount = CONFIGURATION_DEFAULT_MAX_HTTP_REQUEST_RETRIES_COUNT;
+            configuration.requestsThrottlingLimit = CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT;
+            configuration.requestsThrottlingPeriod = CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD;
         
             // oAuth token retrieval configuration:
             configuration.oAuthTokenClientId = CONFIGURATION_DEFAULT_OAUTH_CLIENT_ID;

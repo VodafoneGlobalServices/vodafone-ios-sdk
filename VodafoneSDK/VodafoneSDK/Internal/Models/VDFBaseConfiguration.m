@@ -12,6 +12,8 @@
 static NSString * const DefaultHttpConnectionTimeoutKey = @"defaultHttpConnectionTimeout";
 static NSString * const HttpRequestRetryTimeSpanKey = @"httpRequestRetryTimeSpan";
 static NSString * const MaxHttpRequestRetriesCountKey = @"maxHttpRequestRetriesCount";
+static NSString * const RequestsThrottlingLimitKey = @"requestsThrottlingLimit";
+static NSString * const RequestsThrottlingPeriodKey = @"requestsThrottlingPeriod";
 static NSString * const ConfigurationLastModifiedDateKey = @"configurationLastModifiedDate";
 static NSString * const ConfigurationUpdateCheckTimeSpanKey = @"configurationUpdateCheckTimeSpan";
 
@@ -27,6 +29,8 @@ static NSString * const ConfigurationUpdateCheckTimeSpanKey = @"configurationUpd
         self.defaultHttpConnectionTimeout = [decoder decodeDoubleForKey:DefaultHttpConnectionTimeoutKey];
         self.httpRequestRetryTimeSpan = [decoder decodeDoubleForKey:HttpRequestRetryTimeSpanKey];
         self.maxHttpRequestRetriesCount = [decoder decodeIntegerForKey:MaxHttpRequestRetriesCountKey];
+        self.requestsThrottlingLimit = [decoder decodeIntegerForKey:RequestsThrottlingLimitKey];
+        self.requestsThrottlingPeriod = [decoder decodeDoubleForKey:RequestsThrottlingPeriodKey];
         self.configurationLastModifiedDate = [decoder decodeObjectForKey:ConfigurationLastModifiedDateKey];
         self.configurationUpdateCheckTimeSpan = [decoder decodeDoubleForKey:ConfigurationUpdateCheckTimeSpanKey];
     }
@@ -37,9 +41,13 @@ static NSString * const ConfigurationUpdateCheckTimeSpanKey = @"configurationUpd
     [encoder encodeDouble:self.defaultHttpConnectionTimeout forKey:DefaultHttpConnectionTimeoutKey];
     [encoder encodeDouble:self.httpRequestRetryTimeSpan forKey:HttpRequestRetryTimeSpanKey];
     [encoder encodeInteger:self.maxHttpRequestRetriesCount forKey:MaxHttpRequestRetriesCountKey];
+    [encoder encodeInteger:self.requestsThrottlingLimit forKey:RequestsThrottlingLimitKey];
+    [encoder encodeDouble:self.requestsThrottlingPeriod forKey:RequestsThrottlingPeriodKey];
     [encoder encodeObject:self.configurationLastModifiedDate forKey:ConfigurationLastModifiedDateKey];
     [encoder encodeDouble:self.configurationUpdateCheckTimeSpan forKey:ConfigurationUpdateCheckTimeSpanKey];
 }
+
+
 
 - (void)updateWithJson:(NSDictionary*)jsonObjectDictionary {
     self.configurationLastModifiedDate = [NSDate date];

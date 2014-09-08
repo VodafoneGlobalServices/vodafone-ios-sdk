@@ -119,6 +119,8 @@ extern void __gcov_flush();
     configuration.defaultHttpConnectionTimeout = 123;
     configuration.httpRequestRetryTimeSpan = 234;
     configuration.maxHttpRequestRetriesCount = 345;
+    configuration.requestsThrottlingLimit = 345;
+    configuration.requestsThrottlingPeriod = 345;
     configuration.configurationLastModifiedDate = [NSDate date];
     configuration.configurationUpdateCheckTimeSpan = 456;
     [NSKeyedArchiver archiveRootObject:configuration toFile:filePath];
@@ -133,6 +135,8 @@ extern void __gcov_flush();
     XCTAssertEqual(readedConfiguration.defaultHttpConnectionTimeout, configuration.defaultHttpConnectionTimeout, @"Configuration object is not properly readed.");
     XCTAssertEqual(readedConfiguration.httpRequestRetryTimeSpan, configuration.httpRequestRetryTimeSpan, @"Configuration object is not properly readed.");
     XCTAssertEqual(readedConfiguration.maxHttpRequestRetriesCount, configuration.maxHttpRequestRetriesCount, @"Configuration object is not properly readed.");
+    XCTAssertEqual(readedConfiguration.requestsThrottlingLimit, configuration.requestsThrottlingLimit, @"Configuration object is not properly readed.");
+    XCTAssertEqual(readedConfiguration.requestsThrottlingPeriod, configuration.requestsThrottlingPeriod, @"Configuration object is not properly readed.");
     XCTAssertEqualObjects(readedConfiguration.configurationLastModifiedDate, configuration.configurationLastModifiedDate, @"Configuration object is not properly readed.");
     XCTAssertEqual(readedConfiguration.configurationUpdateCheckTimeSpan, configuration.configurationUpdateCheckTimeSpan, @"Configuration object is not properly readed.");
 }
@@ -267,6 +271,8 @@ extern void __gcov_flush();
     configuration.defaultHttpConnectionTimeout = 123;
     configuration.httpRequestRetryTimeSpan = 234;
     configuration.maxHttpRequestRetriesCount = 345;
+    configuration.requestsThrottlingLimit = 345;
+    configuration.requestsThrottlingPeriod = 345;
     configuration.configurationLastModifiedDate = [NSDate date];
     configuration.configurationUpdateCheckTimeSpan = 456;
     
@@ -281,7 +287,9 @@ extern void __gcov_flush();
     XCTAssertNoThrow(readedConfiguration = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath], @"Configuration file was not created properly.");
     XCTAssertEqual(readedConfiguration.defaultHttpConnectionTimeout, configuration.defaultHttpConnectionTimeout, @"Configuration object is not properly written.");
     XCTAssertEqual(readedConfiguration.httpRequestRetryTimeSpan, configuration.httpRequestRetryTimeSpan, @"Configuration object is not properly written.");
-    XCTAssertEqual(readedConfiguration.maxHttpRequestRetriesCount, configuration.maxHttpRequestRetriesCount, @"Configuration object is not properly written.");
+    XCTAssertEqual(readedConfiguration.maxHttpRequestRetriesCount, configuration.maxHttpRequestRetriesCount, @"Configuration object is not properly readed.");
+    XCTAssertEqual(readedConfiguration.requestsThrottlingLimit, configuration.requestsThrottlingLimit, @"Configuration object is not properly readed.");
+    XCTAssertEqual(readedConfiguration.requestsThrottlingPeriod, configuration.requestsThrottlingPeriod, @"Configuration object is not properly readed.");
     XCTAssertEqualObjects(readedConfiguration.configurationLastModifiedDate, configuration.configurationLastModifiedDate, @"Configuration object is not properly written.");
     XCTAssertEqual(readedConfiguration.configurationUpdateCheckTimeSpan, configuration.configurationUpdateCheckTimeSpan, @"Configuration object is not properly written.");
 }

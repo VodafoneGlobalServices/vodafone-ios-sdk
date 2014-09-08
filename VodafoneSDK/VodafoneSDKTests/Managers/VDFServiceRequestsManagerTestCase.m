@@ -19,6 +19,8 @@
 #import "VDFHttpConnectionsQueue.h"
 #import "VDFPendingRequestItem.h"
 #import "VDFDIContainer.h"
+#import "VDFRequestCallsCounter.h"
+#import "VDFError.h"
 
 extern void __gcov_flush();
 
@@ -27,6 +29,7 @@ extern void __gcov_flush();
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 @property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) VDFHttpConnectionsQueue *connectionsQueue;
+@property (nonatomic, strong) VDFRequestCallsCounter *callsCounter;
 @end
 
 
@@ -37,6 +40,7 @@ extern void __gcov_flush();
 @property (nonatomic, strong) id mockCacheManager;
 @property (nonatomic, strong) id mockCacheObject;
 @property (nonatomic, strong) id mockObserversContainer;
+@property (nonatomic, strong) id mockCallsCounter;
 @property (nonatomic, strong) VDFServiceRequestsManager *managerToTest;
 @end
 
@@ -54,10 +58,12 @@ extern void __gcov_flush();
     self.mockCacheManager = OCMClassMock([VDFCacheManager class]);
     self.mockCacheObject = OCMClassMock([VDFCacheObject class]);
     self.mockObserversContainer = OCMProtocolMock(@protocol(VDFObserversContainer));
+    self.mockCallsCounter = OCMClassMock([VDFRequestCallsCounter class]);
     
     // test object
     self.managerToTest = [[VDFServiceRequestsManager alloc] initWithDIContainer:nil cacheManager:self.mockCacheManager];
     self.managerToTest.connectionsQueue = self.mockConnectionsQueue;
+    self.managerToTest.callsCounter = self.mockCallsCounter;
 }
 
 - (void)tearDown
@@ -100,6 +106,12 @@ extern void __gcov_flush();
 
 - (void)testPerformRequestIsAddingToQueueAndNotCacheble {
     
+    // stub:
+    [[[self.mockCallsCounter stub] andReturnValue:@YES] canPerformRequestOfType:[self.mockBuilder class]];
+    
+    // expect that the call counter will be incremented
+    [[self.mockCallsCounter expect] incrementCallType:[self.mockBuilder class]];
+    
     // expect that the request would be added to queue:
     [[self.mockConnectionsQueue expect] enqueueRequestBuilder:self.mockBuilder];
     
@@ -116,6 +128,7 @@ extern void __gcov_flush();
     [self.mockFactory verify];
     [self.mockBuilder verify];
     [self.mockConnectionsQueue verify];
+    [self.mockCallsCounter verify];
 }
 
 - (void)testPerformeRequestWhenResponseIsReadedFromCache {
@@ -125,6 +138,9 @@ extern void __gcov_flush();
     // stubbing that check in isObjectCache method can be invoked on manager and it would resturn YES:
     [[[self.mockCacheManager stub] andReturnValue:@YES] isObjectCached:self.mockCacheObject];
     
+    
+    // expect that the call counter wont be incremented
+    [[self.mockCallsCounter reject] incrementCallType:[self.mockBuilder class]];
     
     // expect that the request would not be added to queue:
     [[self.mockConnectionsQueue reject] enqueueRequestBuilder:self.mockBuilder];
@@ -153,6 +169,7 @@ extern void __gcov_flush();
     [self.mockFactory verify];
     [self.mockBuilder verify];
     [self.mockObserversContainer verify];
+    [self.mockCallsCounter verify];
 }
 
 - (void)testPerformRequestWhenResponseIsCachableButNotAvailableInCache {
@@ -168,6 +185,12 @@ extern void __gcov_flush();
     // stub that the observers container can be obtained from builder
     [[[self.mockBuilder stub] andReturn:self.mockObserversContainer] observersContainer];
     
+    // stub calls counter call
+    [[[self.mockCallsCounter stub] andReturnValue:@YES] canPerformRequestOfType:[self.mockBuilder class]];
+    
+    
+    // expect that the call counter will be incremented
+    [[self.mockCallsCounter expect] incrementCallType:[self.mockBuilder class]];
     
     // expect that the request would be added to queue:
     [[self.mockConnectionsQueue expect] enqueueRequestBuilder:self.mockBuilder];
@@ -190,6 +213,7 @@ extern void __gcov_flush();
     [self.mockFactory verify];
     [self.mockBuilder verify];
     [self.mockObserversContainer verify];
+    [self.mockCallsCounter verify];
 }
 
 - (void)testPerformRequestWithNilBuilder {
@@ -207,6 +231,36 @@ extern void __gcov_flush();
     // verify
     [self.mockConnectionsQueue verify];
     [self.mockCacheManager verify];
+}
+
+- (void)testPerformRequestWhenCallIsThrottled {
+    
+    // stub:
+    [[[self.mockCallsCounter stub] andReturnValue:@NO] canPerformRequestOfType:[self.mockBuilder class]];
+    
+    
+    // expect that the call counter wont be incremented
+    [[self.mockCallsCounter reject] incrementCallType:[self.mockBuilder class]];
+    
+    // expect that the request wont be added to queue:
+    [[self.mockConnectionsQueue reject] enqueueRequestBuilder:self.mockBuilder];
+    
+    // expect that the observers container would be obtained from builder
+    [[[self.mockBuilder expect] andReturn:self.mockObserversContainer] observersContainer];
+    
+    // expect that the all observers would be notified with error
+    [[self.mockObserversContainer expect] notifyAllObserversWith:nil error:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [((NSError*)obj).domain isEqualToString:VodafoneErrorDomain] && ((NSError*)obj).code == VDFErrorThrottlingLimitExceeded;
+    }]];
+    
+    // run:
+    [self.managerToTest performRequestWithBuilder:self.mockBuilder];
+    
+    // verify
+    [self.mockBuilder verify];
+    [self.mockConnectionsQueue verify];
+    [self.mockObserversContainer verify];
+    [self.mockCallsCounter verify];
 }
 
 - (void)testRemoveRequestWithNilObserver {

@@ -23,7 +23,6 @@
 		49A15819196BFC7800642677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A157FE196BFC7800642677 /* Foundation.framework */; };
 		49A1581A196BFC7800642677 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15802196BFC7800642677 /* UIKit.framework */; };
 		49A15822196BFC7800642677 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49A15820196BFC7800642677 /* InfoPlist.strings */; };
-		49A15824196BFC7800642677 /* HESampleAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A15823196BFC7800642677 /* HESampleAppTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,7 +78,6 @@
 		49A15817196BFC7800642677 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		49A1581F196BFC7800642677 /* HESampleAppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HESampleAppTests-Info.plist"; sourceTree = "<group>"; };
 		49A15821196BFC7800642677 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		49A15823196BFC7800642677 /* HESampleAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HESampleAppTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,7 +217,6 @@
 		49A1581D196BFC7800642677 /* HESampleAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				49A15823196BFC7800642677 /* HESampleAppTests.m */,
 				49A1581E196BFC7800642677 /* Supporting Files */,
 			);
 			path = HESampleAppTests;
@@ -368,7 +365,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49A15824196BFC7800642677 /* HESampleAppTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,7 +31,7 @@
 - (void)keyboardWasShown:(NSNotification*)aNotification;
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification;
 - (void)scrollTap:(UIGestureRecognizer*)gestureRecognizer;
-//- (void)recalculateScrollViewContent;
+- (void)recalculateScrollViewContent;
 - (void)hideKeyboard;
 
 @end
@@ -53,23 +53,14 @@
     
     UITapGestureRecognizer *yourTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollTap:)];
     
-//    [self.scrollView setBorderType:NSNoBorder];
-//    [self.scrollView setHasVerticalScroller:YES];
-//    [self.scrollView setHasHorizontalScroller:NO];
-//    [self.scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-//    
-//    [self.outputTextView setMinSize:NSMakeSize(0.0, contentSize.height)];
-//    [self.outputTextView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
-//    [self.outputTextView setVerticallyResizable:YES];
-//    [self.outputTextView setHorizontallyResizable:NO];
-//    [self.outputTextView setAutoresizingMask:NSViewWidthSizable];
-//    
-//    [[self.outputTextView textContainer]
-//     setContainerSize:NSMakeSize(contentSize.width, FLT_MAX)];
-//    [[self.outputTextView textContainer] setWidthTracksTextView:YES];
-    
     [self.scrollView addGestureRecognizer:yourTap];
     [self.view addSubview:self.scrollView];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self.scrollView setScrollEnabled:YES];
+    
+    [self recalculateScrollViewContent];
 }
 
 - (void)dealloc {
@@ -77,6 +68,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
+- (void)recalculateScrollViewContent {
+    CGRect frame = self.outputTextView.frame;
+    frame.size.height = self.outputTextView.contentSize.height;
+    self.outputTextView.frame = frame;
+    
+    [self.scrollView setContentSize:(CGSizeMake(self.view.frame.size.width,480+self.outputTextView.frame.size.height))];
+}
 
 - (IBAction)onAppIdSetButtonClick:(id)sender {
     [self hideKeyboard];
@@ -117,14 +115,18 @@
     } else {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: errorCode=%i", [error code]];
     }
+    
+    [self recalculateScrollViewContent];
 }
 
 - (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)errorCode {
     self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorCode=%i", response.smsCode, response.isSucceded, [errorCode code]];
+    [self recalculateScrollViewContent];
 }
 
 - (void)didSMSPinRequested:(NSNumber *)isSuccess withError:(NSError *)error {
     self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didSMSPinRequested: success=%@, errorCode=%i", isSuccess, [error code]];
+    [self recalculateScrollViewContent];
 }
 
 #pragma mark -
@@ -133,6 +135,7 @@
 - (void)logMessage:(NSString*)message {
     if([self.displayLogSwitch isOn]) {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n Log: %@", message];
+        [self recalculateScrollViewContent];
     }
     NSLog(@"%@",message);
 }
@@ -160,6 +163,7 @@
 
 - (IBAction)onClearOutputButtonClick:(id)sender {
     self.outputTextView.text = @"";
+    [self recalculateScrollViewContent];
 }
 
 // Called when the UIKeyboardDidShowNotification is sent.

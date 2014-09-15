@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-// TODO documentation
+/**
+ *  Response object of validateSMSCode: method in VDFUsersService class.
+ */
 @interface VDFSmsValidationResponse : NSObject <NSCoding>
 
+// TODO documentation
 - (instancetype)initWithSmsCode:(NSString*)code isSucceded:(BOOL)isSucceded;
 
 /**

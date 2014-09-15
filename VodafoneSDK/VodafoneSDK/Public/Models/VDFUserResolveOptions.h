@@ -17,9 +17,15 @@
 @interface VDFUserResolveOptions : NSObject <NSCopying>
 
 /*! @abstract If set to YES, the server will send an SMS with code. */
-@property (nonatomic, assign) BOOL validateWithSms;
+@property (nonatomic, assign) BOOL smsValidation;
 
-- (instancetype)initWithValidateWithSms:(BOOL)validateWithSms;
+@property (nonatomic, strong) NSString *msisdn;
+
+@property (nonatomic, strong) NSString *market;
+
+- (instancetype)initWithSmsValidation:(BOOL)smsValidation;
+
+- (instancetype)initWithMSISDN:(NSString*)msisdn market:(NSString*)market;
 
 - (BOOL)isEqualToOptions:(VDFUserResolveOptions*)options;
 

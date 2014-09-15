@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) UITextField *activeField;
 @property (weak, nonatomic) IBOutlet UISwitch *displayLogSwitch;
+@property (weak, nonatomic) IBOutlet UITextField *marketTextField;
+@property (weak, nonatomic) IBOutlet UITextField *imsiTextField;
 
 - (IBAction)onAppIdSetButtonClick:(id)sender;
 - (IBAction)onSmsCodeSendButtonClick:(id)sender;
@@ -60,6 +62,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [self.scrollView setScrollEnabled:YES];
     
+    self.imsiTextField.text = @"491748862966";
+//    self.imsiTextField.text = @"204049810027400";
+    
     [self recalculateScrollViewContent];
 }
 
@@ -67,6 +72,22 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
+
+- (NSString*)vdfErrorCodeToString:(VDFErrorCode)errorCode {
+    switch (errorCode) {
+        case VDFErrorNoConnection: return @"VDFErrorNoConnection";
+        case VDFErrorConnectionTimeout: return @"VDFErrorConnectionTimeout";
+        case VDFErrorNoGSMConnection: return @"VDFErrorNoGSMConnection";
+        case VDFErrorInvalidSMSToken: return @"VDFErrorInvalidSMSToken";
+        case VDFErrorServerCommunication: return @"VDFErrorServerCommunication";
+        case VDFErrorThrottlingLimitExceeded: return @"VDFErrorThrottlingLimitExceeded";
+        case VDFErrorInvalidInput: return @"VDFErrorInvalidInput";
+            
+        default:
+            return [NSString stringWithFormat:@"%i", errorCode];
+    }
+}
+
 
 - (void)recalculateScrollViewContent {
     CGRect frame = self.outputTextView.frame;
@@ -85,20 +106,26 @@
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [[VDFUsersService sharedInstance] validateSmsPin:self.smsCodeTextField.text withSessionToken:self.smsCodeSessionTokenTextField.text delegate:self];
+    [[VDFUsersService sharedInstance] validateSmsCode:self.smsCodeTextField.text inSession:self.smsCodeSessionTokenTextField.text delegate:self];
 }
 
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender {
     [self hideKeyboard];
     
-    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithValidateWithSms:self.smsValidationSwitch.isOn];
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:self.smsValidationSwitch.isOn];
+    if(self.imsiTextField.text != nil && ![self.imsiTextField.text isEqualToString:@""]) {
+        options.msisdn = self.imsiTextField.text;
+    }
+    if(self.marketTextField.text != nil && ![self.marketTextField.text isEqualToString:@""]) {
+        options.market = self.marketTextField.text;
+    }
     [[VDFUsersService sharedInstance] retrieveUserDetails:options delegate:self];
 }
 
 - (IBAction)onSendSMSPinButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [[VDFUsersService sharedInstance] sendSmsPinWithSession:self.smsCodeSessionTokenTextField.text delegate:self];
+    [[VDFUsersService sharedInstance] sendSmsPinInSession:self.smsCodeSessionTokenTextField.text delegate:self];
 }
 
 #pragma mark -
@@ -106,26 +133,26 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, token=%@, validationRequired=%i", userDetails.resolved, userDetails.stillRunning, userDetails.token, userDetails.validationRequired];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, token=%@, validationRequired=%i, expiresIn=%@", userDetails.resolved, userDetails.stillRunning, userDetails.token, userDetails.validationRequired, userDetails.expiresIn];
         
         // autofill box:
         if([self.smsCodeSessionTokenTextField.text isEqualToString:@""]) {
             self.smsCodeSessionTokenTextField.text = userDetails.token;
         }
     } else {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: errorCode=%i", [error code]];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]];
     }
     
     [self recalculateScrollViewContent];
 }
 
-- (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)errorCode {
-    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorCode=%i", response.smsCode, response.isSucceded, [errorCode code]];
+- (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)error {
+    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorName=%@", response.smsCode, response.isSucceded, [self vdfErrorCodeToString:[error code]]];
     [self recalculateScrollViewContent];
 }
 
 - (void)didSMSPinRequested:(NSNumber *)isSuccess withError:(NSError *)error {
-    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didSMSPinRequested: success=%@, errorCode=%i", isSuccess, [error code]];
+    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didSMSPinRequested: success=%@, errorName=%@", isSuccess, [self vdfErrorCodeToString:[error code]]];
     [self recalculateScrollViewContent];
 }
 
@@ -133,11 +160,13 @@
 #pragma mark VDFMessageLogger Implementation
 
 - (void)logMessage:(NSString*)message {
-    if([self.displayLogSwitch isOn]) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n Log: %@", message];
-        [self recalculateScrollViewContent];
-    }
-    NSLog(@"%@",message);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([self.displayLogSwitch isOn]) {
+            self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n Log: %@", message];
+            [self recalculateScrollViewContent];
+        }
+        NSLog(@"%@",message);
+    });
 }
 
 #pragma mark -

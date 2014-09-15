@@ -18,8 +18,9 @@
 #import "VDFSettings.h"
 #import "VDFSettings+Internal.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
-static NSString * const JSONPayloadBodyFormat = @"{ \"pin\" : \"%@\" }";
+static NSString * const JSONPayloadBodyFormat = @"{ \"code\" : \"%@\" }";
 
 @interface VDFSmsValidationRequestFactory ()
 @property (nonatomic, strong) VDFSmsValidationRequestBuilder *builder;
@@ -59,7 +60,8 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"pin\" : \"%@\" }";
     httpRequest.isGSMConnectionRequired = NO;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
-    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId, @"Content-Type": @"application/json"};
+    httpRequest.requestHeaders = @{HTTP_HEADER_AUTHORIZATION: authorizationHeader,
+                                   HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON};
     
     return httpRequest;
 }

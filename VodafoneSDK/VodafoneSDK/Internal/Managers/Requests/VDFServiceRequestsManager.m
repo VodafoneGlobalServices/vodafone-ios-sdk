@@ -74,7 +74,7 @@
             if(cacheObject != nil && [self.cacheManager isObjectCached:cacheObject]) {
                 // our object is cached so we read cache:
                 VDFLogD(@"Response Object is cached, so we read this from cache.");
-                responseCachedObject = [self.cacheManager readCacheObject:cacheObject];
+                responseCachedObject = [self.cacheManager readCacheObject:cacheObject] ;
             }
             else {
                 // check for throttling:

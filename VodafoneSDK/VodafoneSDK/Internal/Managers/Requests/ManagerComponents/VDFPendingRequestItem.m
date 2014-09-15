@@ -16,6 +16,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFHttpConnectorResponse.h"
 #import "VDFDIContainer.h"
+#import "VDFRequestState.h"
 
 @interface VDFPendingRequestItem ()
 @property (nonatomic, strong) VDFHttpConnectionsQueue *parentQueue;
@@ -71,6 +72,7 @@
     VDFLogD(@"Http response code: \n%i", request.lastResponseCode);
     VDFLogD(@"Http response data: \n%@", response.data);
     VDFLogD(@"Http response data string: \n%@", [[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding]);
+    VDFLogD(@"Http response headers: \n%@", response.responseHeaders);
     
     [self parseAndNotifyWithResponse:response];
     
@@ -98,8 +100,6 @@
     if(errorCode > 0) {
         [self onInternalConnectionError:VDFErrorNoConnection];
     }
-    
-    VDFLogD(@"Request started.");
 }
 
 
@@ -130,9 +130,9 @@
     }
     else {
         
-        VDFLogD(@"Dispatching retry request (after %f ms):\n%@", configuration.httpRequestRetryTimeSpan, self.builder);
+        VDFLogD(@"Dispatching retry request (after %f ms):\n%@", [[self.builder requestState] retryAfter], self.builder);
         // we still stay in the limit, so wait and make the request
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, configuration.httpRequestRetryTimeSpan * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, [[self.builder requestState] retryAfter] * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
             
             // check is ther still waiting delegates
             if([[self.builder observersContainer] count] > 0) {
@@ -158,13 +158,14 @@
 - (void)parseAndNotifyWithResponse:(VDFHttpConnectorResponse*)response {
     
     id<NSCoding> parsedObject = nil;
+    id<VDFRequestState> requestState = [self.builder requestState];
     
     @synchronized(self.parentQueue) {
-        [[self.builder requestState] updateWithHttpResponse:response];
+        [requestState updateWithHttpResponse:response];
         
         // parse retrieved data and update builder:
         parsedObject = [[self.builder responseParser] parseResponse:response];
-        [[self.builder requestState] updateWithParsedResponse:parsedObject];
+        [requestState updateWithParsedResponse:parsedObject];
         
         if(parsedObject != nil) {
             // store response in cache:
@@ -177,9 +178,10 @@
     }
     
     // responding to all delegates:
-    if(parsedObject != nil || response.error != nil) {
+    NSError *error = requestState.responseError != nil ? requestState.responseError : response.error;
+    if(parsedObject != nil || error != nil) {
         VDFLogD(@"Responding to request delegates started.");
-        [[self.builder observersContainer] notifyAllObserversWith:parsedObject error:response.error];
+        [[self.builder observersContainer] notifyAllObserversWith:parsedObject error:error];
         VDFLogD(@"Responding to request delegates finished.");
     }
 }

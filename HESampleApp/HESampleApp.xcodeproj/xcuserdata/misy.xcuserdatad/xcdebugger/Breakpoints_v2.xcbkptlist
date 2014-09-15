@@ -16,32 +16,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestState.m"
-            timestampString = "430404538.160671"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "-updateWithHttpResponse:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Common/HttpConnector/VDFHttpConnector.m"
-            timestampString = "431274582.149819"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/OAuthTokenRequestFactory/VDFOAuthTokenRequestFactory.m"
+            timestampString = "431959305.679116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
-            landmarkName = "-connection:didReceiveAuthenticationChallenge:"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "-createHttpConnectorRequestWithDelegate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Requests/ManagerComponents/VDFPendingRequestItem.m"
-            timestampString = "430928850.657034"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Requests/ManagerComponents/VDFHttpConnectionsQueue.m"
+            timestampString = "431959429.583606"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "-parseAndNotifyWithResponse:"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "-enqueueRequestBuilder:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -65,42 +49,10 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveResponseParser.m"
-            timestampString = "430406698.538205"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "-parseResponse:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HESampleApp/Controllers/Main/VDFMainViewController.m"
-            timestampString = "430409366.714248"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "@implementation VDFMainViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestBuilder.m"
-            timestampString = "431528528.513196"
+            timestampString = "431966665.304648"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "87"
@@ -112,16 +64,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestBuilder.m"
-            timestampString = "431528528.513196"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveResponseParser.m"
+            timestampString = "431966341.699137"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
-            landmarkName = "-isEqualToFactoryBuilder:"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "-parseResponse:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -131,61 +83,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Public/VDFSettings.m"
-            timestampString = "431530708.663127"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveResponseParser.m"
+            timestampString = "432040883.830159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "+initializeWithParams:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Public/VDFSettings.m"
-            timestampString = "431530708.663127"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "+initializeWithParams:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDKTests/Managers/VDFConfigurationManagerTestCase.m"
-            timestampString = "431598834.533823"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
-            landmarkName = "-testStartUpdateConfigurationWithCompletionHandlerOnSuccess"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDKTests/Managers/VDFConfigurationManagerTestCase.m"
-            timestampString = "431598834.533823"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
-            landmarkName = "-testStartUpdateConfigurationWithCompletionHandlerOnSuccess"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "-parseResponse:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -195,13 +99,45 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-            timestampString = "431598834.533823"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Common/HttpConnector/VDFHttpConnector.m"
+            timestampString = "432129861.530322"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "-startUpdaterForConfiguration:"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
+            landmarkName = "-connection:willSendRequest:redirectResponse:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Common/HttpConnector/VDFHttpConnector.m"
+            timestampString = "432129861.530322"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
+            landmarkName = "-connectionDidFinishLoading:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Common/HttpConnector/VDFHttpConnector.m"
+            timestampString = "432129861.530322"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "-connection:didReceiveResponse:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -211,59 +147,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-            timestampString = "431598834.533823"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveResponseParser.m"
+            timestampString = "432506244.133413"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "-startUpdaterForConfiguration:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[VDFConfigurationManager startUpdaterForConfiguration:]"
-                  moduleName = "VodafoneSDKTests"
-                  urlString = "file:///Users/misy/workspace/vod/HeApiIOsSdk/VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-                  timestampString = "431858757.789764"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "106"
-                  endingLineNumber = "106"
-                  offsetFromSymbolStart = "242">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__56-[VDFConfigurationManager startUpdaterForConfiguration:]_block_invoke"
-                  moduleName = "VodafoneSDKTests"
-                  urlString = "file:///Users/misy/workspace/vod/HeApiIOsSdk/VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-                  timestampString = "431858757.790091"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "106"
-                  endingLineNumber = "106"
-                  offsetFromSymbolStart = "103">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/VDFConfigurationManager.m"
-            timestampString = "431598834.533823"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "-startUpdaterForConfiguration:"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "-parseResponse:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -273,13 +163,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/ManagerComponents/VDFConfigurationUpdater.m"
-            timestampString = "431510398.423588"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveResponseParser.m"
+            timestampString = "432506244.133413"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "-parseResponse:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveResponseParser.m"
+            timestampString = "432506244.133413"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "-parseResponse:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Common/HttpConnector/VDFHttpConnector.m"
+            timestampString = "432129861.530322"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "-connection:willSendRequest:redirectResponse:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestFactory.m"
+            timestampString = "432135573.211126"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
             endingLineNumber = "43"
-            landmarkName = "-startUpdateWithCompletionHandler:"
+            landmarkName = "-postBody"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -289,61 +227,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Configuration/ManagerComponents/VDFConfigurationUpdater.m"
-            timestampString = "431515507.720196"
+            filePath = "../VodafoneSDK/VodafoneSDKTests/Factories/UsersResolve/VDFUserResolveRequestFactoryTestCase.m"
+            timestampString = "432136801.65397"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "-httpRequest:onResponse:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDKTests/Managers/VDFRequestCallsCounterTestCase.m"
-            timestampString = "431859021.648408"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "-testCanPerformRequest"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDK/Internal/Managers/Requests/ManagerComponents/VDFRequestCallsCounter.m"
-            timestampString = "431858769.314095"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "-canPerformRequestOfType:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../VodafoneSDK/VodafoneSDKTests/Managers/VDFRequestCallsCounterTestCase.m"
-            timestampString = "431859021.648408"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "-testIsIncrementingByCallTypeProperly"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
+            landmarkName = "-testPostBodyIsGeneratedProperlyWithMSISDN"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

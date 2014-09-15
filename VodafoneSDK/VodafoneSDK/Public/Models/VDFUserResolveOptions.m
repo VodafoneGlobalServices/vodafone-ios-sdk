@@ -10,10 +10,21 @@
 
 @implementation VDFUserResolveOptions
 
-- (instancetype)initWithValidateWithSms:(BOOL)validateWithSms {
+- (instancetype)initWithSmsValidation:(BOOL)smsValidation {
     self = [super init];
     if(self) {
-        self.validateWithSms = validateWithSms;
+        self.smsValidation = smsValidation;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithMSISDN:(NSString*)msisdn market:(NSString*)market {
+    self = [super init];
+    if(self) {
+        self.smsValidation = YES;
+        self.msisdn = msisdn;
+        self.market = market;
     }
     
     return self;
@@ -23,14 +34,38 @@
     if(options == nil) {
         return NO;
     }
-    return self.validateWithSms == options.validateWithSms;
+    
+    BOOL result = YES;
+    if(self.msisdn != nil && options.msisdn != nil) {
+        result = [self.msisdn isEqualToString:options.msisdn];
+    }
+    else {
+        result = self.msisdn == nil && options.msisdn == nil;
+    }
+    
+    if(result) {
+        if(self.market != nil && options.market != nil) {
+            result = [self.market isEqualToString:options.market];
+        }
+        else {
+            result = self.market == nil && options.market == nil;
+        }
+    }
+    
+    if(result) {
+        result = self.smsValidation == options.smsValidation;
+    }
+    
+    return result;
 }
 
 #pragma mark -
 #pragma mark - NSCopying Implementation
 - (id)copyWithZone:(NSZone *)zone {
     VDFUserResolveOptions *newOptions = [[VDFUserResolveOptions allocWithZone:zone] init];
-    newOptions.validateWithSms = self.validateWithSms;
+    newOptions.smsValidation = self.smsValidation;
+    newOptions.msisdn = self.msisdn;
+    newOptions.market = self.market;
     return newOptions;
 }
 

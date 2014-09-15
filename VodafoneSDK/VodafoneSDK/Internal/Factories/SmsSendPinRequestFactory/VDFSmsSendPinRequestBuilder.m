@@ -13,8 +13,8 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFError.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
-static NSString * const URLEndpointQuery = @"/users/tokens/requestpin/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ ";
 
 @interface VDFSmsSendPinRequestBuilder ()
@@ -29,7 +29,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
     if(self) {
         self.internalFactory = [[VDFSmsSendPinRequestFactory alloc] initWithBuilder:self];
         
-        _urlEndpointQuery = [URLEndpointQuery stringByAppendingString:sessionToken];
+        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_SEND_PIN, sessionToken, applicationId];
         _httpRequestMethodType = HTTPMethodGET;
         self.sessionToken = sessionToken;
         self.oAuthToken = nil;

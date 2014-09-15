@@ -36,11 +36,15 @@
  */
 - (BOOL)isRetryNeeded;
 
+- (NSTimeInterval)retryAfter;
+
 /**
  *  Indicates date when last response has to be expired.
  *
  *  @return Date object
  */
 - (NSDate*)lastResponseExpirationDate;
+
+- (NSError*)responseError;
 
 @end

@@ -13,11 +13,18 @@
 #import "VDFUserResolveOptions.h"
 #import "VDFUserTokenDetails.h"
 #import "VDFHttpConnectorResponse.h"
+#import "VDFConsts.h"
+#import "VDFError.h"
 
 extern void __gcov_flush();
 
 @interface VDFUserResolveRequestState ()
 @property BOOL needRetry;
+@property NSTimeInterval retryAfterMiliseconds;
+@property (nonatomic, strong) NSError *error;
+
+- (void)readEtagFromResponse:(VDFHttpConnectorResponse*)response;
+- (void)readErrorFromResponse:(VDFHttpConnectorResponse*)response;
 @end
 
 @interface VDFUserResolveRequestStateTestCase : XCTestCase
@@ -47,55 +54,133 @@ extern void __gcov_flush();
     [super tearDown];
 }
 
+- (void)testReadEtagFromResponse {
+    
+    // mock
+    id etag = @"someExampleETagValue";
+    id responseMockWithoutHeaders = OCMClassMock([VDFHttpConnectorResponse class]);
+    id responseMockWithoutEtag = OCMClassMock([VDFHttpConnectorResponse class]);
+    id responseMockWithEtag = OCMClassMock([VDFHttpConnectorResponse class]);
+    self.requestStateToTest.needRetry = YES;
+    
+    // stub
+    [[[responseMockWithoutHeaders stub] andReturn:nil] responseHeaders];
+    [[[responseMockWithoutEtag stub] andReturn:@{ @"some header" : @"some value" }] responseHeaders];
+    [[[responseMockWithEtag stub] andReturn:@{ HTTP_HEADER_ETAG : etag }] responseHeaders];
+    
+    // expect that the builder will get at first initial etag value:
+    [[self.mockBuilder expect] setETag:CHECK_STATUS_ETAG_INITIAL_VALUE];
+    // run
+    [self.requestStateToTest readEtagFromResponse:responseMockWithoutHeaders];
+    // verify
+    [self.mockBuilder verify];
+    
+    
+    // expect that next etag will be set to proper value:
+    [[self.mockBuilder expect] setETag:etag];
+    // run
+    [self.requestStateToTest readEtagFromResponse:responseMockWithEtag];
+    // verify
+    [self.mockBuilder verify];
+    
+    
+    // test when do not need retry:
+    // stub
+    self.requestStateToTest.needRetry = NO;
+    // expect that this method will be not call more than twice
+    [[self.mockBuilder reject] setETag:[OCMArg any]];
+    // run
+    [self.requestStateToTest readEtagFromResponse:responseMockWithoutEtag];
+    // verify
+    [self.mockBuilder verify];
+    
+    
+    // test when etag alread initialized
+    // stub
+    self.requestStateToTest.needRetry = YES;
+    [[[self.mockBuilder stub] andReturn:@"some etag"] eTag];
+    // expect that this method will be not call more than twice
+    [[self.mockBuilder reject] setETag:[OCMArg any]];
+    // run
+    [self.requestStateToTest readEtagFromResponse:responseMockWithoutEtag];
+    // verify
+    [self.mockBuilder verify];
+}
+
+
+- (void)testReadErrorFromResponse{
+    
+    // mock
+    VDFHttpConnectorResponse *mockResponse = [[VDFHttpConnectorResponse alloc] init];
+    
+    // stub & run
+    mockResponse.httpResponseCode = 201; // created - from resolve
+    [self.requestStateToTest readErrorFromResponse:mockResponse];
+    // stub & run
+    mockResponse.httpResponseCode = 200; // ok - from check status
+    [self.requestStateToTest readErrorFromResponse:mockResponse];
+    // stub & run
+    mockResponse.httpResponseCode = 302; // redirect
+    [self.requestStateToTest readErrorFromResponse:mockResponse];
+    // stub & run
+    mockResponse.httpResponseCode = 304; // redirect
+    [self.requestStateToTest readErrorFromResponse:mockResponse];
+    // stub & run
+    mockResponse.httpResponseCode = 404; // TODO check
+    [self.requestStateToTest readErrorFromResponse:mockResponse];
+    
+    // assert for valid respones
+    XCTAssertNil(self.requestStateToTest.error, @"Error should not be set");
+    
+    // stub & run & assert
+    mockResponse.httpResponseCode = 400; // invalid input
+    [self.requestStateToTest readErrorFromResponse:mockResponse];
+    XCTAssertEqual([self.requestStateToTest.error code], VDFErrorInvalidInput, @"Error code is invalid");
+    XCTAssertEqualObjects([self.requestStateToTest.error domain], VodafoneErrorDomain, @"Error domain is invalid");
+    
+    // stub & run & assert
+    mockResponse.httpResponseCode = 500; // some other error always server communication
+    [self.requestStateToTest readErrorFromResponse:mockResponse];
+    XCTAssertEqual([self.requestStateToTest.error code], VDFErrorServerCommunication, @"Error code is invalid");
+    XCTAssertEqualObjects([self.requestStateToTest.error domain], VodafoneErrorDomain, @"Error domain is invalid");
+}
+
+
 - (void)testInitialState {
     [self assertForInitialState];
 }
 
 - (void)testUpdateWithWrongHttpResponse {
     
-    // mock
-    id responseMock = OCMClassMock([VDFHttpConnectorResponse class]);
-    id responseMockWithHeaders = OCMClassMock([VDFHttpConnectorResponse class]);
-    
-    // stub
-    [[[responseMock stub] andReturn:[NSData data]] data];
-    [[[responseMock stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
-    [[[responseMock stub] andReturn:nil] responseHeaders];
-    [[[responseMockWithHeaders stub] andReturn:[NSData data]] data];
-    [[[responseMockWithHeaders stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
-    [[[responseMockWithHeaders stub] andReturn:@{ @"someHeaderInvalid" : @"invalidValue" }] responseHeaders];
-    
-    // run & assert
-    [self.requestStateToTest updateWithHttpResponse:responseMock];
-    [self assertForInitialState];
-    
-    // run & assert
-    [self.requestStateToTest updateWithHttpResponse:responseMockWithHeaders];
-    [self assertForInitialState];
-    
-    // run & assert
+    // run
     [self.requestStateToTest updateWithHttpResponse:nil];
+    
+    // assert
     [self assertForInitialState];
 }
 
-- (void)testUpdateWitHttpResponseWithETag {
+- (void)testUpdateWitValidHttpResponse {
     
     // mock
     id etag = @"someExampleETagValue";
     id responseMock = OCMClassMock([VDFHttpConnectorResponse class]);
     
     // stub
-    [[[responseMock stub] andReturn:@{ @"Etag" : etag }] responseHeaders];
+    [[[responseMock stub] andReturn:@{ HTTP_HEADER_ETAG : etag }] responseHeaders];
+    [[[responseMock stub] andReturnValue:@302] httpResponseCode];
     
-    // expect that the builder will get info about etag
-    [[self.mockBuilder expect] setETag:etag];
+    // expect that the etag will be readed:
+    [[self.requestStateToTestMock expect] readEtagFromResponse:responseMock];
+    
+    // expect that the error will be readed:
+    [[self.requestStateToTestMock expect] readErrorFromResponse:responseMock];
     
     // run
-    [self.requestStateToTest updateWithHttpResponse:responseMock];
+    [self.requestStateToTestMock updateWithHttpResponse:responseMock];
     
     // verify
-    [self.mockBuilder verify];
-    [self assertForInitialState]; // state should not change
+    [self.requestStateToTestMock verify];
+    [self assertForInitialState]; // state should not change in this case
 }
 
 - (void)testUpdateSessionTokenWithParsedObject {
@@ -123,52 +208,6 @@ extern void __gcov_flush();
     
 }
 
-- (void)testUpdateRetryFlagWithParsedObjectWhenNeedRetry {
-    
-    // mock
-    id responseStillRunning = OCMClassMock([VDFUserTokenDetails class]);
-    id responseFinished = OCMClassMock([VDFUserTokenDetails class]);
-    
-    // stub
-    self.requestStateToTest.needRetry = YES;
-    [[[responseStillRunning stub] andReturnValue:OCMOCK_VALUE(YES)] stillRunning];
-    [[[responseFinished stub] andReturnValue:OCMOCK_VALUE(NO)] stillRunning];
-    
-    // run & assert
-    [self.requestStateToTestMock updateWithParsedResponse:responseStillRunning];
-    XCTAssertTrue([self.requestStateToTest isRetryNeeded], @"UserResolve request should change state of retrying.");
-    
-    // run & assert
-    [self.requestStateToTestMock updateWithParsedResponse:responseFinished];
-    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"UserResolve request should change state of retrying.");
-    
-    // assert
-    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"UserResolve request should have date previus than current because it is not cached.");
-}
-
-- (void)testUpdateRetryFlagWithParsedObjectWhenNotNeedRetry {
-    
-    // mock
-    id responseStillRunning = OCMClassMock([VDFUserTokenDetails class]);
-    id responseFinished = OCMClassMock([VDFUserTokenDetails class]);
-    
-    // stub
-    self.requestStateToTest.needRetry = NO;
-    [[[responseStillRunning stub] andReturnValue:OCMOCK_VALUE(YES)] stillRunning];
-    [[[responseFinished stub] andReturnValue:OCMOCK_VALUE(NO)] stillRunning];
-    
-    // run & assert
-    [self.requestStateToTestMock updateWithParsedResponse:responseStillRunning];
-    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"UserResolve request when not need to retry should not change state of retrying.");
-    
-    // run & assert
-    [self.requestStateToTestMock updateWithParsedResponse:responseFinished];
-    XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"UserResolve request when not need to retry should not change state of retrying.");
-    
-    // assert
-    XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"UserResolve request should have date previus than current because it is not cached.");
-}
-
 - (void)testUpdateWithInvalidParsedObject {
     
     // run & assert
@@ -183,6 +222,7 @@ extern void __gcov_flush();
 - (void)assertForInitialState {
     XCTAssertTrue([self.requestStateToTest isRetryNeeded], @"Initial state of userResolve request as defaults need to retry.");
     XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"UserResolve request should have date previus than current because it is not cached.");
+    XCTAssertNil([self.requestStateToTest responseError], @"Initial state of userResolve request as defaults has no error.");
 }
 
 @end

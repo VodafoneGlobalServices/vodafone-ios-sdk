@@ -90,6 +90,7 @@ extern void __gcov_flush();
 - (void)assertForInitialState {
     XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"OAuthToken request will never retry.");
     XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"OAuthToken request should have date previus than current because is expired as default.");
+    XCTAssertNil([self.requestStateToTest responseError], @"Initial state of oAuthToken request as defaults has no error.");
 }
 
 @end

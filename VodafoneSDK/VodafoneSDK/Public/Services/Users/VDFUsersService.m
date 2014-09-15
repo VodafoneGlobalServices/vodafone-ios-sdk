@@ -61,7 +61,7 @@
     }
 }
 
-- (void)sendSmsPinWithSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)sendSmsPinInSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
     
     if(delegate != nil) {
         // create request object
@@ -82,7 +82,7 @@
     }
 }
 
-- (void)validateSmsPin:(NSString*)smsPin withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)validateSmsCode:(NSString*)smsCode inSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
     
     if(delegate != nil) {
         // create request object
@@ -91,14 +91,14 @@
         if(applicationId == nil) {
             applicationId = [NSString string];
         }
-        if(smsPin == nil) {
-            smsPin = [NSString string];
+        if(smsCode == nil) {
+            smsCode = [NSString string];
         }
         if(sessionToken == nil) {
             sessionToken = [NSString string];
         }
         
-        VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsPin diContainer:self.diContainer delegate:delegate];
+        VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsCode diContainer:self.diContainer delegate:delegate];
         
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
         

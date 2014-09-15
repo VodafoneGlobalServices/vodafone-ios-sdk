@@ -19,6 +19,7 @@
 #import "VDFOAuthTokenResponse.h"
 #import "VDFSettings.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
 @interface VDFSmsValidationRequestFactory ()
 - (NSData*)postBody;
@@ -110,10 +111,8 @@
     XCTAssertEqual(result.methodType, HTTPMethodPOST, @"Http method type was not set from builder.");
     XCTAssertFalse(result.isGSMConnectionRequired, @"GSM Connection is not required for this factory.");
     XCTAssertEqualObjects(result.postBody, postBodyContent, @"Post Body was not set proeprly.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Content-Type"], @"application/json", @"Content-Type header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Authorization"], @"Barier asd", @"Authorization header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"User-Agent"], [VDFSettings sdkVersion], @"User-Agent header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Application-ID"], @"appID", @"User-Agent header was not set.");
+    XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_CONTENT_TYPE], @"application/json", @"Content-Type header was not set.");
+    XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_AUTHORIZATION], @"Barier asd", @"Authorization header was not set.");
     XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
 }
 
@@ -126,7 +125,7 @@
     NSData *result = [self.factoryToTestMock postBody];
     
     // assert
-    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"pin\" : \"smsCodeTest\" }", @"Post body is generated not properly.");
+    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"code\" : \"smsCodeTest\" }", @"Post body is generated not properly.");
 }
 
 

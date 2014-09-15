@@ -33,12 +33,20 @@
     return NO;// not needed
 }
 
+- (NSTimeInterval)retryAfter {
+    return 0;
+}
+
 - (NSDate*)lastResponseExpirationDate {
     if (self.expiresIn == nil) {
         // if there is some request error or not yet preformed the http request then it need to be expired
         self.expiresIn = [NSDate dateWithTimeIntervalSince1970:0];
     }
     return self.expiresIn;
+}
+
+- (NSError*)responseError {
+    return nil;
 }
 
 @end

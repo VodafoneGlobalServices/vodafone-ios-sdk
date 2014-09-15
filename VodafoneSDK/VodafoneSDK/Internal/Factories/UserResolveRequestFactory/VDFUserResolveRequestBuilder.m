@@ -17,9 +17,8 @@
 #import "VDFHttpConnector.h"
 #import "VDFConfigurationManager.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
-static NSString * const InitialURLEndpointQuery = @"/users/resolve";
-static NSString * const RetryURLEndpointQuery = @"/users/tokens/checkstatus/%@";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t initialUrlEndpointQuery:%@ \n\t retryUrlEndpointQuery:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
 
 @interface VDFUserResolveRequestBuilder ()
@@ -35,10 +34,10 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     if(self) {
         self.internalFactory = [[VDFUserResolveRequestFactory alloc] initWithBuilder:self];
         
-        _initialUrlEndpointQuery = InitialURLEndpointQuery;
+        _initialUrlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_RESOLVE, applicationId];
         _httpRequestMethodType = HTTPMethodPOST;
         
-        self.requestOptions = [options copy]; // we need to copy this options because if the session token will change we need to update it
+        self.requestOptions = options;
         self.oAuthToken = nil;
         
         if(delegate != nil) {
@@ -54,11 +53,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 - (void)setSessionToken:(NSString*)sessionToken {
     _sessionToken = sessionToken;
-    _retryUrlEndpointQuery = [NSString stringWithFormat:RetryURLEndpointQuery, sessionToken];
+    _retryUrlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS, sessionToken, self.applicationId];
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self initialUrlEndpointQuery], [self retryUrlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.applicationId, self.requestOptions];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self initialUrlEndpointQuery],
+            [self retryUrlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST",
+            self.applicationId, self.requestOptions];
 }
 
 #pragma mark -

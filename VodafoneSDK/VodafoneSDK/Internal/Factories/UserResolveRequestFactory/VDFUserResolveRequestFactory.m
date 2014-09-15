@@ -21,8 +21,7 @@
 #import "VDFOAuthTokenResponse.h"
 #import "VDFSettings.h"
 #import "VDFDIContainer.h"
-
-static NSString * const JSONPayloadBodyFormat = @"{ \"smsValidation\" : %@ }";
+#import "VDFConsts.h"
 
 @interface VDFUserResolveRequestFactory ()
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *builder;
@@ -41,14 +40,32 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"smsValidation\" : %@ }";
 }
 
 - (NSData*)postBody {
-    NSString *validateWithSmsString = nil;
-    if(self.builder.requestOptions.validateWithSms) {
-        validateWithSmsString = @"true";
+    NSMutableDictionary *jsonObject = [[NSMutableDictionary alloc] init];
+    
+    if(self.builder.requestOptions.smsValidation) {
+        [jsonObject setObject:@"true" forKey:@"smsValidation"];
     }
     else {
-        validateWithSmsString = @"false";
+        [jsonObject setObject:@"false" forKey:@"smsValidation"];
     }
-    return [[NSString stringWithFormat:JSONPayloadBodyFormat, validateWithSmsString] dataUsingEncoding:NSUTF8StringEncoding];
+    
+    if(self.builder.requestOptions.market != nil) {
+        [jsonObject setObject:self.builder.requestOptions.market forKey:@"market"];
+    }
+    
+    if(self.builder.requestOptions.msisdn != nil) {
+        [jsonObject setObject:self.builder.requestOptions.msisdn forKey:@"msisdn"];
+    }
+    
+    NSData *result = nil;
+    @try {
+        result = [NSJSONSerialization dataWithJSONObject:jsonObject options:NSJSONWritingPrettyPrinted error:nil];
+    }
+    @catch (NSException *exception) {
+        result = [NSData data];
+    }
+    
+    return result;
 }
 
 - (VDFHttpConnector*)createRetryHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
@@ -63,8 +80,8 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"smsValidation\" : %@ }";
     httpRequest.url = requestUrl;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
-    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId,
-                                   @"ETag": self.builder.eTag};
+    httpRequest.requestHeaders = @{HTTP_HEADER_AUTHORIZATION: authorizationHeader,
+                                   HTTP_HEADER_IF_NONE_MATCH: self.builder.eTag};
     
     return httpRequest;
 }
@@ -76,18 +93,28 @@ static NSString * const JSONPayloadBodyFormat = @"{ \"smsValidation\" : %@ }";
     
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-    NSString * requestUrl = [configuration.hapBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
-    
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodPOST;
     httpRequest.postBody = [self postBody];
+    
+    
+    NSString * requestUrl = nil;
+    if(self.builder.requestOptions.market != nil && self.builder.requestOptions.msisdn != nil) {
+        // it goes directly throught APIX
+        requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
+    }
+    else {
+        requestUrl = [configuration.hapBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
+//      httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
+    }
+    
     httpRequest.url = requestUrl;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
-    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId, @"Content-Type": @"application/json"};
+    httpRequest.requestHeaders = @{HTTP_HEADER_AUTHORIZATION: authorizationHeader,
+                                   HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON};
     
-//    httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
     
     return httpRequest;
 }

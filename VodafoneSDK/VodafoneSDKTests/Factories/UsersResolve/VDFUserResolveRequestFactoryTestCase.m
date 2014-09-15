@@ -21,6 +21,7 @@
 #import "VDFSettings.h"
 #import "VDFOAuthTokenResponse.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
 @interface VDFUserResolveRequestFactory ()
 - (NSData*)postBody;
@@ -117,10 +118,8 @@
     XCTAssertEqual(result.connectionTimeout, (NSTimeInterval)100, @"Default connection time out from configuration was not set.");
     XCTAssertEqual(result.methodType, HTTPMethodPOST, @"Http method type was not set from builder.");
     XCTAssertEqualObjects(result.postBody, postBodyContent, @"Post Body was not set proeprly.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Content-Type"], @"application/json", @"Content-Type header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Authorization"], @"Barier asd", @"Authorization header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"User-Agent"], [VDFSettings sdkVersion], @"User-Agent header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Application-ID"], @"appID", @"User-Agent header was not set.");
+    XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_CONTENT_TYPE], @"application/json", @"Content-Type header was not set.");
+    XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_AUTHORIZATION], @"Barier asd", @"Authorization header was not set.");
     XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
     
     // TODO IMPORTANT when it will be attached to production servers (not mockups) then uncomment this
@@ -151,36 +150,42 @@
     XCTAssertEqual(result.connectionTimeout, (NSTimeInterval)100, @"Default connection time out from configuration was not set.");
     XCTAssertEqual(result.methodType, HTTPMethodGET, @"Http method type was not set from builder.");
     XCTAssertNil(result.postBody, @"Post Body need to be nil.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Authorization"], @"Barier asd", @"Authorization header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"User-Agent"], [VDFSettings sdkVersion], @"User-Agent header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Application-ID"], @"appID", @"User-Agent header was not set.");
-    XCTAssertEqualObjects([result.requestHeaders objectForKey:@"ETag"], @"etagtest", @"ETag header was not set.");
+    XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_AUTHORIZATION], @"Barier asd", @"Authorization header was not set.");
+    XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_IF_NONE_MATCH], @"etagtest", @"ETag header was not set.");
     XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
     XCTAssertFalse(result.isGSMConnectionRequired, @"GSM Connection is not required for this factory.");
 }
 
-- (void)testPostBodyWithSmsValidationSetToTrue {
+- (void)testPostBodyIsGeneratedProperlyWithSmsValidation {
     
     // mock
-    id options = [[VDFUserResolveOptions alloc] initWithValidateWithSms:YES];
+    id optionsWithSms = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
+    
     // stub
-    [[[self.mockBuilder stub] andReturn:options] requestOptions];
+    [[[self.mockBuilder stub] andReturn:optionsWithSms] requestOptions];
+    
     // run
-    NSData *result = [self.factoryToTestMock postBody];
+    NSData *resultWithSms = [self.factoryToTestMock postBody];
+    
     // assert
-    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"smsValidation\" : true }", @"Post body is generated not properly.");
+    NSString *resultWithSmsString = [[NSString alloc] initWithData:resultWithSms encoding:NSUTF8StringEncoding];
+    XCTAssertEqualObjects(resultWithSmsString, @"{\n  \"smsValidation\" : \"false\"\n}", @"Post body is generated not properly.");
 }
 
-- (void)testPostBodyWithSmsValidationSetToFalse {
+- (void)testPostBodyIsGeneratedProperlyWithMSISDN {
     
     // mock
-    id options = [[VDFUserResolveOptions alloc] initWithValidateWithSms:NO];
+    id optionsWithMSISDN = [[VDFUserResolveOptions alloc] initWithMSISDN:@"some msisdn" market:@"some market"];
+    
     // stub
-    [[[self.mockBuilder stub] andReturn:options] requestOptions];
+    [[[self.mockBuilder stub] andReturn:optionsWithMSISDN] requestOptions];
+    
     // run
-    NSData *result = [self.factoryToTestMock postBody];
+    NSData *resultWithMSISDN = [self.factoryToTestMock postBody];
+    
     // assert
-    XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding], @"{ \"smsValidation\" : false }", @"Post body is generated not properly.");
+    NSString *resultWithMSISDNString = [[NSString alloc] initWithData:resultWithMSISDN encoding:NSUTF8StringEncoding];
+    XCTAssertEqualObjects(resultWithMSISDNString, @"{\n  \"smsValidation\" : \"true\",\n  \"market\" : \"some market\",\n  \"msisdn\" : \"some msisdn\"\n}", @"Post body is generated not properly.");
 }
 
 @end

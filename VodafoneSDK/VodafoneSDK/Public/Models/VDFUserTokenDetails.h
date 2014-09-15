@@ -10,30 +10,23 @@
 
 @interface VDFUserTokenDetails : NSObject <NSCoding>
 
-/**
- *  Initializes model class with json object.
- *
- *  @param jsonObject Readed json object to the dictionary.
- *
- *  @return An initialized object, or nil if any json property is not provided and object could not be created for some reason that would not result in an exception.
- */
-- (instancetype)initWithJsonObject:(NSDictionary*)jsonObject;
-
 /*! @abstract
     True if the backend was able to determine at least one MSISDN from the incoming request */
-@property (nonatomic, readonly) BOOL resolved;
+@property (nonatomic, assign) BOOL resolved;
 
 /*! @abstract 
     True if there is at least one thread still running on the server side for the request 
     identified by this token.
     SMS Validation and Secure work flow are done on separate threads. */
-@property (nonatomic, readonly) BOOL stillRunning;
+@property (nonatomic, assign) BOOL stillRunning;
 
 /*! @abstract The session token used to identify this client session */
-@property (nonatomic, readonly) NSString *token;
+@property (nonatomic, strong) NSString *token;
 
 /*! @abstract
     True if the SMS validation was successfully performed. */
-@property (nonatomic, readonly) BOOL validationRequired;
+@property (nonatomic, assign) BOOL validationRequired;
+
+@property (nonatomic, strong) NSDate *expiresIn;
 
 @end

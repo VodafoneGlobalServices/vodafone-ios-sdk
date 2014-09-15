@@ -26,7 +26,7 @@ static NSString * const ExpiresInKey = @"expires_in";
         if(accessToken != nil && tokenType != nil && expiresIn != nil) {
             _accessToken = accessToken;
             _tokenType = tokenType;
-            [NSDate dateWithTimeIntervalSinceNow:[expiresIn intValue]];
+            _expiresIn = [NSDate dateWithTimeIntervalSinceNow:[expiresIn intValue]];
         } else {
             self = nil;
         }

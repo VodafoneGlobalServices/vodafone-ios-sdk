@@ -108,6 +108,14 @@
     return [self.builder createCurrentHttpConnectorWithDelegate:delegate];
 }
 
-- (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder { return [self.builder isEqualToFactoryBuilder:builder]; }
+- (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder {
+    if(builder != nil) {
+        if([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]]) {
+            return [self.builder isEqualToFactoryBuilder:((VDFRequestBuilderWithOAuth*)builder).builder];
+        }
+        return [self.builder isEqualToFactoryBuilder:builder];
+    }
+    return NO;
+}
 
 @end

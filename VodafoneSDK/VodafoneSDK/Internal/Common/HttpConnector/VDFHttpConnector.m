@@ -17,6 +17,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFHttpConnectorResponse.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
 static NSString * const XVF_SUBJECT_ID_HEADER = @"x-vf-trace-subject-id";
 static NSString * const XVF_SUBJECT_REGION_HEADER = @"x-vf-trace-subject-region";
@@ -108,12 +109,13 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         [request setValue:mcc forHTTPHeaderField:XVF_SUBJECT_REGION_HEADER];
     }
     VDFBaseConfiguration *configuration = [[VDFSettings globalDIContainer] resolveForClass:[VDFBaseConfiguration class]];
-    [request setValue:[NSString stringWithFormat:@"%@-%@", [VDFSettings sdkVersion], configuration.applicationId] forHTTPHeaderField:XVF_SOURCE_HEADER];
+    [request setValue:[NSString stringWithFormat:@"VFSeamlessID SDK/iOS (v%@)-%@", [VDFSettings sdkVersion], configuration.applicationId] forHTTPHeaderField:XVF_SOURCE_HEADER];
     [request setValue:[VDFStringHelper randomString] forHTTPHeaderField:XVF_TRANSACTION_ID_HEADER];
+    [request setValue:[NSString stringWithFormat:@"VFSeamlessID SDK/iOS (v%@)", [VDFSettings sdkVersion]] forHTTPHeaderField:HTTP_HEADER_USER_AGENT];
+   
     
-    
-    [request setValue:@"VF-DE" forHTTPHeaderField:@"x-int-opco"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
-    [request setValue:@"he_private_data" forHTTPHeaderField:@"scope"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
+    [request setValue:@"DE" forHTTPHeaderField:@"x-int-opco"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
+    [request setValue:@"seamless_id_user_details_all" forHTTPHeaderField:@"scope"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
 }
 
 - (void)get:(NSString*)url {
@@ -128,6 +130,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
     VDFLogD(@"GET %@", url);
+    VDFLogD(@"Headers %@", request.allHTTPHeaderFields);
     
     if(conn) {
         self.isConnectionOpen = YES;
@@ -153,7 +156,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     request.HTTPMethod = @"POST";
     
     //[request addValue:@"8bit" forHTTPHeaderField:@"Content-Transfer-Encoding"];
-    [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+//    [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request addValue:[NSString stringWithFormat:@"%lu", (unsigned long)[body length]] forHTTPHeaderField:@"Content-Length"];
     
     [self addHeadersToRequest:request];
@@ -161,6 +164,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     [request setHTTPBody:body];
     
     VDFLogD(@"POST %@\n------\n%@\n------", url, [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+    VDFLogD(@"Headers %@", request.allHTTPHeaderFields);
     
     // sending request:
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -181,6 +185,15 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 
 #pragma mark -
 #pragma mark NSURLConnectionDelegate
+
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
+    if(redirectResponse) {
+        return nil;
+    }
+    else {
+        return request;
+    }
+}
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];

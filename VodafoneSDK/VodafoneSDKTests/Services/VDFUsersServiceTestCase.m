@@ -69,7 +69,7 @@ extern void __gcov_flush();
 - (void)testRetrieveUserDetailsWithInvalidData {
     
     // mock
-    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithValidateWithSms:NO];
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub
@@ -78,7 +78,7 @@ extern void __gcov_flush();
     // expect that the perform request will be ivoked only once
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
         VDFUserResolveRequestBuilder *innerBuilder = (VDFUserResolveRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).builder;
-        return [innerBuilder.applicationId isEqualToString:[NSString string]] && innerBuilder.requestOptions.validateWithSms == NO;
+        return [innerBuilder.applicationId isEqualToString:[NSString string]] && innerBuilder.requestOptions.smsValidation == NO;
     }]];
     
     // expect that the perform request method will newer will be called after this one call
@@ -96,7 +96,7 @@ extern void __gcov_flush();
 - (void)testRetrieveUserDetailsIsRequestPerformingProperly {
     
     // mock
-    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithValidateWithSms:YES];
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:YES];
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub
@@ -115,7 +115,7 @@ extern void __gcov_flush();
         
         VDFUserResolveRequestBuilder *innerBuilder = (VDFUserResolveRequestBuilder*)oAuthBuilder.builder;
         return [innerBuilder.applicationId isEqualToString:self.configuration.applicationId]
-        && innerBuilder.requestOptions.validateWithSms
+        && innerBuilder.requestOptions.smsValidation
         && [[[innerBuilder observersContainer] registeredObservers] containsObject:mockDelegate];
     }]];
     
@@ -144,9 +144,9 @@ extern void __gcov_flush();
     [[self.mockServiceRequestsManager reject] performRequestWithBuilder:[OCMArg any]];
     
     // run
-    [self.serviceToTest sendSmsPinWithSession:nil delegate:nil]; // wont happend anything
-    [self.serviceToTest sendSmsPinWithSession:@"some session token" delegate:nil]; // wont happend anything too
-    [self.serviceToTest sendSmsPinWithSession:nil delegate:mockDelegate];
+    [self.serviceToTest sendSmsPinInSession:nil delegate:nil]; // wont happend anything
+    [self.serviceToTest sendSmsPinInSession:@"some session token" delegate:nil]; // wont happend anything too
+    [self.serviceToTest sendSmsPinInSession:nil delegate:mockDelegate];
     
     // verify
     [self.mockServiceRequestsManager verify];
@@ -179,7 +179,7 @@ extern void __gcov_flush();
     }]];
     
     // run
-    [self.serviceToTest sendSmsPinWithSession:sessionToken delegate:mockDelegate];
+    [self.serviceToTest sendSmsPinInSession:sessionToken delegate:mockDelegate];
     
     // verify
     [self.mockServiceRequestsManager verify];
@@ -205,10 +205,10 @@ extern void __gcov_flush();
     [[self.mockServiceRequestsManager reject] performRequestWithBuilder:[OCMArg any]];
     
     // run
-    [self.serviceToTest validateSmsPin:nil withSessionToken:nil delegate:nil]; // wont happend anything
-    [self.serviceToTest validateSmsPin:nil withSessionToken:@"some session token" delegate:nil]; // wont happend anything too
-    [self.serviceToTest validateSmsPin:@"some pin" withSessionToken:@"some session token" delegate:nil]; // wont happend anything too
-    [self.serviceToTest validateSmsPin:nil withSessionToken:nil delegate:mockDelegate];
+    [self.serviceToTest validateSmsCode:nil inSession:nil delegate:nil]; // wont happend anything
+    [self.serviceToTest validateSmsCode:nil inSession:@"some session token" delegate:nil]; // wont happend anything too
+    [self.serviceToTest validateSmsCode:@"some pin" inSession:@"some session token" delegate:nil]; // wont happend anything too
+    [self.serviceToTest validateSmsCode:nil inSession:nil delegate:mockDelegate];
     
     // verify
     [self.mockServiceRequestsManager verify];
@@ -217,7 +217,7 @@ extern void __gcov_flush();
 - (void)testValidateSmsPinIsRequestPerformedProperly {
     
     // mock
-    NSString *smsPin = @"some sms pin code";
+    NSString *smsCode = @"some sms pin code";
     NSString *sessionToken = @"some session token";
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
@@ -238,12 +238,12 @@ extern void __gcov_flush();
         VDFSmsValidationRequestBuilder *innerBuilder = (VDFSmsValidationRequestBuilder*)oAuthBuilder.builder;
         return [innerBuilder.applicationId isEqualToString:self.configuration.applicationId]
         && [innerBuilder.sessionToken isEqualToString:sessionToken]
-        && [innerBuilder.smsCode isEqualToString:smsPin]
+        && [innerBuilder.smsCode isEqualToString:smsCode]
         && [[[innerBuilder observersContainer] registeredObservers] containsObject:mockDelegate];
     }]];
     
     // run
-    [self.serviceToTest validateSmsPin:smsPin withSessionToken:sessionToken delegate:mockDelegate];
+    [self.serviceToTest validateSmsCode:smsCode inSession:sessionToken delegate:mockDelegate];
     
     // verify
     [self.mockServiceRequestsManager verify];

@@ -24,7 +24,7 @@ static VDFDIContainer * g_diContainer = nil;
 
 + (void)initialize {
     if(self == [VDFSettings class]) {
-        [VDFLogUtility setVerboseLevel:VODLogInfoVerboseLevelLastCallStackEntry];
+        [VDFLogUtility setVerboseLevel:VODLogInfoVerboseLevelBasic];
         
         g_diContainer = [[VDFDIContainer alloc] init];
         

@@ -7,11 +7,26 @@
 //
 
 #import "VDFSmsSendPinRequestState.h"
+#import "VDFHttpConnectorResponse.h"
+#import "VDFError.h"
+
+@interface VDFSmsSendPinRequestState ()
+@property (nonatomic, strong) NSError *error;
+@end
 
 @implementation VDFSmsSendPinRequestState
 
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
-    // TODO if we want to handle some errors (when it will be described)
+    if(response != nil && response.httpResponseCode != 200) {
+        NSInteger errorCode = VDFErrorServerCommunication;
+        if(response.httpResponseCode == 400) {
+            errorCode = VDFErrorInvalidInput;
+        }
+        if(response.httpResponseCode == 404) {
+            errorCode = VDFErrorTokenNotFound;
+        }
+        self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
+    }
 }
 
 - (void)updateWithParsedResponse:(id)parsedResponse {
@@ -21,8 +36,16 @@
     return NO; // it never need to retry because this request is not waiting for server side changes
 }
 
+- (NSTimeInterval)retryAfter {
+    return 0;
+}
+
 - (NSDate*)lastResponseExpirationDate {
     return [NSDate dateWithTimeIntervalSince1970:0];// this is not cached so it expires immediately
+}
+
+- (NSError*)responseError {
+    return self.error;
 }
 
 @end

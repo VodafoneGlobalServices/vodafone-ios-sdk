@@ -13,8 +13,8 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFError.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
-static NSString * const URLEndpointQuery = @"/users/tokens/validatepin/";
 static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
 
 @interface VDFSmsValidationRequestBuilder ()
@@ -28,7 +28,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     if(self) {
         self.internalFactory = [[VDFSmsValidationRequestFactory alloc] initWithBuilder:self];
         
-        _urlEndpointQuery = [URLEndpointQuery stringByAppendingString:sessionToken];
+        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_VALIDATE_PIN, sessionToken, applicationId];
         _httpRequestMethodType = HTTPMethodPOST;
         self.sessionToken = sessionToken;
         self.smsCode = smsCode;

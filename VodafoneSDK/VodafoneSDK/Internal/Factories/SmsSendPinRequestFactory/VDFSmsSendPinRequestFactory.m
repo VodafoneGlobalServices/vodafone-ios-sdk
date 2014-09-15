@@ -16,6 +16,7 @@
 #import "VDFSmsSendPinRequestState.h"
 #import "VDFSmsSendPinResponseParser.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
 @interface VDFSmsSendPinRequestFactory ()
 @property (nonatomic, strong) VDFSmsSendPinRequestBuilder *builder;
@@ -47,7 +48,7 @@
     httpRequest.isGSMConnectionRequired = NO;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
-    httpRequest.requestHeaders = @{@"Authorization": authorizationHeader, @"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId};
+    httpRequest.requestHeaders = @{HTTP_HEADER_AUTHORIZATION: authorizationHeader};
     
     return httpRequest;
 }

@@ -38,12 +38,12 @@ extern void __gcov_flush();
     
     NSDate *expDate = [NSDate dateWithTimeIntervalSinceNow:3600];
     NSMutableArray *cacheObjects = [NSMutableArray arrayWithArray:
-                                    @[[[VDFCacheObject alloc] initWithValue:nil forKey:@"someKey1" withExpirationDate:expDate],
-                                      [[VDFCacheObject alloc] initWithValue:nil forKey:@"someKey2" withExpirationDate:expDate],
-                                      [[VDFCacheObject alloc] initWithValue:nil forKey:@"someKey3" withExpirationDate:expDate],
-                                      [[VDFCacheObject alloc] initWithValue:nil forKey:@"someKey4" withExpirationDate:expDate],
-                                      [[VDFCacheObject alloc] initWithValue:nil forKey:@"someKey5" withExpirationDate:expDate],
-                                      [[VDFCacheObject alloc] initWithValue:nil forKey:@"someKey6" withExpirationDate:expDate]]];
+                                    @[[[VDFCacheObject alloc] initWithValue:@"someVal1" forKey:@"someKey1" withExpirationDate:expDate],
+                                      [[VDFCacheObject alloc] initWithValue:@"someVal2" forKey:@"someKey2" withExpirationDate:expDate],
+                                      [[VDFCacheObject alloc] initWithValue:@"someVal3" forKey:@"someKey3" withExpirationDate:expDate],
+                                      [[VDFCacheObject alloc] initWithValue:@"someVal4" forKey:@"someKey4" withExpirationDate:expDate],
+                                      [[VDFCacheObject alloc] initWithValue:@"someVal5" forKey:@"someKey5" withExpirationDate:expDate],
+                                      [[VDFCacheObject alloc] initWithValue:@"someVal6" forKey:@"someKey6" withExpirationDate:expDate]]];
     self. mockCacheObjectsArray = OCMPartialMock(cacheObjects);
     self.managerToTest.cacheObjects = self.mockCacheObjectsArray;
 }
@@ -94,7 +94,7 @@ extern void __gcov_flush();
     VDFCacheObject *cacheObject = [[VDFCacheObject alloc] initWithValue:nil forKey:@"someKey4" withExpirationDate:nil];
     
     // run & assert
-    XCTAssertEqualObjects([self.managerToTest readCacheObject:cacheObject], [self.managerToTest.cacheObjects objectAtIndex:3], @"Object with key stored in cache should be found.");
+    XCTAssertEqualObjects([self.managerToTest readCacheObject:cacheObject], ((VDFCacheObject*)[self.managerToTest.cacheObjects objectAtIndex:3]).cacheValue, @"Object with key stored in cache should be found.");
 }
 
 - (void)testCacheObjectWhenInvalidData {

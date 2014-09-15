@@ -50,7 +50,7 @@
     if(cacheObject != nil && cacheObject.cacheKey != nil) {
         interlCacheObject = [self findInInternalCache:cacheObject.cacheKey];
     }
-    return interlCacheObject;
+    return interlCacheObject.cacheValue;
 }
 
 - (void)cacheObject:(VDFCacheObject*)cacheObject {

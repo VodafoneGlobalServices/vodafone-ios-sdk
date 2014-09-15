@@ -16,6 +16,7 @@
 #import "VDFOAuthTokenResponse.h"
 #import "VDFDIContainer.h"
 #import "VDFConfigurationManager.h"
+#import "VDFConsts.h"
 
 extern void __gcov_flush();
 
@@ -62,12 +63,15 @@ extern void __gcov_flush();
 
 - (void)testSetSessionToken {
     // mock
-    id newSessionToken = @"newSessionToken";
+    NSString *newSessionToken = @"newSessionToken";
+    
     // run
     self.builderToTest.sessionToken = newSessionToken;
+    
     // assert
+    NSString *newRetryUrlEndpoint = [NSString stringWithFormat:SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS, newSessionToken, self.mockAppId];
     XCTAssertEqualObjects(self.builderToTest.sessionToken, newSessionToken, @"Session token after setting on builder should change.");
-    XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, @"/users/tokens/checkstatus/newSessionToken", @"After session token changing the retry rul request should change properly.");
+    XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, newRetryUrlEndpoint, @"After session token changing the retry rul request should change properly.");
 }
 
 - (void)testCreateCurrentHttpConnectorWithEtag {
@@ -128,7 +132,7 @@ extern void __gcov_flush();
     // mock
     id mockBuilderDiffAppId = OCMClassMock([VDFUserResolveRequestBuilder class]);
     id mockBuilderDiffRequestOptions = OCMClassMock([VDFUserResolveRequestBuilder class]);
-    VDFUserResolveOptions *differentRequestOptions = [[VDFUserResolveOptions alloc] initWithValidateWithSms:YES];
+    VDFUserResolveOptions *differentRequestOptions = [[VDFUserResolveOptions alloc] initWithSmsValidation:YES];
     
     // stub
     [[[self.mockOptions stub] andReturnValue:OCMOCK_VALUE(YES)] isEqualToOptions:self.mockOptions];

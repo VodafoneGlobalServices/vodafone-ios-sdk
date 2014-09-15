@@ -62,7 +62,7 @@
     via SMS. In case of success or failure, delegate method didValidateSMSToken: withError: will be 
     invoked with either error set to nil or error object which occurred.
  
- @param smsPin
+ @param smsCode
     The pin that was received via SMS.
  
  @param sessionToken
@@ -74,11 +74,11 @@
     and implement didValidateSMSToken: withError:. The delegate is not retained. 
     This parameter is optional.
  */
-- (void)validateSmsPin:(NSString*)smsPin withSessionToken:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)validateSmsCode:(NSString*)smsCode inSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 /*!
  @abstract
- Method used in user resolving process to perform operation of sending validation code from server
+ Method used in user resolving process to perform operation of sending validation code by server
  via SMS. In case of success or failure, delegate method didSMSPinRequested: withError: will be
  invoked with either error set to nil or error object which occurred.
  
@@ -91,7 +91,7 @@
  and implement didSMSPinRequested: withError:. The delegate is not retained.
  This parameter is optional.
  */
-- (void)sendSmsPinWithSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)sendSmsPinInSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 /*!
  @abstract

@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSDate *configurationLastModifiedDate;
 
 /**
- *  Time interval (in seconds) for how long current configuration need to be cheked for updates.
+ *  Time interval (in seconds) - time to wait until next configuration update can run
  */
 @property (nonatomic, assign) NSTimeInterval configurationUpdateCheckTimeSpan;
 

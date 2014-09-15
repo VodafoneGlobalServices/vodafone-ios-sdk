@@ -33,6 +33,9 @@
     [super tearDown];
 }
 
+// TODO implement parser unit tests
+
+/*
 - (void)testParseValidData {
     
     // mock
@@ -46,6 +49,7 @@
     // run & assert
     XCTAssertNotNil([self.parserToTest parseResponse:responseMock], @"Proper json response should parse to object.");
 }
+ */
 
 - (void)testParseInvalidResponse {
     // run & assert
@@ -56,23 +60,4 @@
 }
 
 
-
-/*
-
- // can be used in tests for parsing model class
- 
-- (void)assertTokenDetails:(VDFUserTokenDetails*)details withResolved:(BOOL)resolved stillRunning:(BOOL)stillRunning
-                    source:(NSString*)source token:(NSString*)token expires:(NSDate*)expires
-         tetheringConflict:(BOOL)tetheringConflict validated:(BOOL)validated {
-//    
-//    XCTAssertNotNil(details, @"Proper json do not can be parsed to nil.");
-//    XCTAssertEqualObjects(details.source, source, "The source parsed incorrectly.");
-//    XCTAssertEqualObjects(details.token, token, "The token parsed incorrectly.");
-////    XCTAssertEqualObjects(details.expires, expires, "The expires parsed incorrectly.");
-//    XCTAssertEqual(details.resolved, resolved, "The resolved parsed incorrectly.");
-//    XCTAssertEqual(details.stillRunning, stillRunning, "The stillRunning parsed incorrectly.");
-//    XCTAssertEqual(details.tetheringConflict, tetheringConflict, "The tetheringConflict parsed incorrectly.");
-//    XCTAssertEqual(details.validated, validated, "The validated parsed incorrectly.");
-}
-*/
 @end

@@ -76,6 +76,7 @@ extern void __gcov_flush();
 - (void)assertForInitialState {
     XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"Initial state of send pin request as defaults do not need to retry.");
     XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"Send pin request should have date previus than current because it is not cached.");
+    XCTAssertNil([self.requestStateToTest responseError], @"Initial state of send pin request as defaults has no error.");
 }
 
 @end

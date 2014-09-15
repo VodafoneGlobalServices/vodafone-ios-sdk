@@ -43,6 +43,18 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      To many calls in last time period.
      */
     VDFErrorThrottlingLimitExceeded,
+    /*!
+     The request has not passed the input validation.
+     */
+    VDFErrorInvalidInput,
+    /*!
+     Session token used in the process has expired or was wrong.
+     */
+    VDFErrorTokenNotFound,
+    /*!
+     Wrong OTP provided error for Validate PIN.
+     */
+    VDFErrorWrongOTP,
 };
 
 

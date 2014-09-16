@@ -13,6 +13,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFBaseConfiguration+Manager.h"
 #import "VDFHttpConnectorResponse.h"
+#import "VDFConsts.h"
 
 extern void __gcov_flush();
 
@@ -60,8 +61,8 @@ extern void __gcov_flush();
     XCTAssertEqual(self.updaterToTest.completionHandler, handler, @"Completion handler is not set properly.");
     XCTAssertEqual(self.updaterToTest.httpConnector.methodType, HTTPMethodGET, @"Http connector method type is not set properly.");
     XCTAssertNotNil(self.updaterToTest.httpConnector.url, @"Http connector url is not set properly.");
-    XCTAssertEqualObjects([self.updaterToTest.httpConnector.requestHeaders objectForKey:@"If-None-Match"], self.configurationToUpdate.configurationUpdateEtag, @"Etag was not set.");
-    XCTAssertEqualObjects([self.updaterToTest.httpConnector.requestHeaders objectForKey:@"If-Modified-Since"], stringDate, @"If-Modified-Since header was not set.");
+    XCTAssertEqualObjects([self.updaterToTest.httpConnector.requestHeaders objectForKey:HTTP_HEADER_IF_NONE_MATCH], self.configurationToUpdate.configurationUpdateEtag, @"Etag was not set.");
+    XCTAssertEqualObjects([self.updaterToTest.httpConnector.requestHeaders objectForKey:HTTP_HEADER_IF_MODIFIED_SINCE], stringDate, @"If-Modified-Since header was not set.");
 }
 
 - (void)testIsHttpConnectorStoppedOnDealloc {
@@ -119,7 +120,7 @@ extern void __gcov_flush();
     self.updaterToTest.completionHandler = handler;
     [[[mockResponse stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
     [[[mockResponse stub] andReturn:data] data];
-    [[[mockResponse stub] andReturn:@{@"Etag": etag, @"Last-Modified" : [NSString stringWithFormat:@"%@", lastModification]}] responseHeaders];
+    [[[mockResponse stub] andReturn:@{HTTP_HEADER_ETAG: etag, HTTP_HEADER_LAST_MODIFIED : [NSString stringWithFormat:@"%@", lastModification]}] responseHeaders];
     
     // expect that the configuration wont be invoked to update
     [[mockConfiguration reject] updateWithJson:[OCMArg isNotNil]];
@@ -157,7 +158,7 @@ extern void __gcov_flush();
     self.updaterToTest.completionHandler = handler;
     [[[mockResponse stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
     [[[mockResponse stub] andReturn:data] data];
-    [[[mockResponse stub] andReturn:@{@"Etag": etag, @"Last-Modified" : [NSString stringWithFormat:@"%@", lastModification]}] responseHeaders];
+    [[[mockResponse stub] andReturn:@{HTTP_HEADER_ETAG: etag, HTTP_HEADER_LAST_MODIFIED : [NSString stringWithFormat:@"%@", lastModification]}] responseHeaders];
     
     // expect that the configuration will be invoked to update
     [[mockConfiguration expect] updateWithJson:[OCMArg isNotNil]];

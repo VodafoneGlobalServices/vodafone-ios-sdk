@@ -41,7 +41,13 @@
  */
 - (id<VDFObserversContainer>)observersContainer;
 
-// TODO documentation
+/**
+ *  Create http connector object for http request.
+ *
+ *  @param delegate Delegate object to handle response from server.
+ *
+ *  @return Prepared http request object.
+ */
 - (VDFHttpConnector*)createCurrentHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate;
 
 /**

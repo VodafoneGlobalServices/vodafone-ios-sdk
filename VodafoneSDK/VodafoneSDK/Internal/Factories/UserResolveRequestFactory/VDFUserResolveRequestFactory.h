@@ -15,9 +15,22 @@
  */
 @interface VDFUserResolveRequestFactory : VDFRequestBaseFactory
 
-// TODO documentation
+/**
+ *  Initialize user resolve requests factory instance.
+ *
+ *  @param builder User resolve request builder.
+ *
+ *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
+ */
 - (instancetype)initWithBuilder:(VDFUserResolveRequestBuilder*)builder;
 
+/**
+ *  Creates prepared Http connector object used for check status call.
+ *
+ *  @param delegate Delegate object used as callback method.
+ *
+ *  @return Prepared http connector object.
+ */
 - (VDFHttpConnector*)createRetryHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate;
 
 @end

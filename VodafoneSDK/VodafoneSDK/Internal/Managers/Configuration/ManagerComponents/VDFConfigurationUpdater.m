@@ -12,11 +12,11 @@
 #import "VDFErrorUtility.h"
 #import "VDFHttpConnectorResponse.h"
 #import "VDFBaseConfiguration+Manager.h"
+#import "VDFConsts.h"
 
 //static NSInteger const NotModifiedHttpCode = 304;
 static NSInteger const SuccessHttpCode = 200;
 static NSInteger const VersionNumber = 1;
-static NSString * const ServerUrlSchema = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com/v%i/sdk-config-ios/config.json";
 
 @interface VDFConfigurationUpdater ()
 @property (nonatomic, assign) UpdateCompletionHandler completionHandler;
@@ -45,18 +45,17 @@ static NSString * const ServerUrlSchema = @"http://hebemock-4953648878.eu-de1.pl
     self.httpConnector = [[VDFHttpConnector alloc] initWithDelegate:self];
     self.httpConnector.connectionTimeout = 60;
     self.httpConnector.methodType = HTTPMethodGET;
-    self.httpConnector.url = [NSString stringWithFormat:ServerUrlSchema, VersionNumber];
+    self.httpConnector.url = [NSString stringWithFormat:SERVICE_URL_SCHEME_CONFIGURATION_UPDATE, VersionNumber];
     
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    [headers setObject:@"application/json" forKey:@"Accept"];
+    [headers setObject:HTTP_VALUE_CONTENT_TYPE_JSON forKey:HTTP_HEADER_ACCEPT];
     if(self.configurationToUpdate.configurationUpdateEtag != nil) {
-        [headers setObject:self.configurationToUpdate.configurationUpdateEtag forKey:@"If-None-Match"];
+        [headers setObject:self.configurationToUpdate.configurationUpdateEtag forKey:HTTP_HEADER_IF_NONE_MATCH];
     }
     if(self.configurationToUpdate.configurationLastModifiedDate != nil) {
-        [headers setObject:[NSString stringWithFormat:@"%@", self.configurationToUpdate.configurationLastModifiedDate] forKey:@"If-Modified-Since"]; // TODO move this hardcoded strings to another file
+        [headers setObject:[NSString stringWithFormat:@"%@", self.configurationToUpdate.configurationLastModifiedDate] forKey:HTTP_HEADER_IF_MODIFIED_SINCE];
     }
     
-//    httpRequest.requestHeaders = @{: , /*@"User-Agent": [VDFSettings sdkVersion], @"Application-ID": self.builder.applicationId*/};
     self.httpConnector.requestHeaders = headers;
     [self.httpConnector startCommunication];
 }
@@ -74,11 +73,11 @@ static NSString * const ServerUrlSchema = @"http://hebemock-4953648878.eu-de1.pl
         
         if(![VDFErrorUtility handleInternalError:error] && isResponseValid) {
             
-            NSString *etag = [response.responseHeaders objectForKey:@"Etag"];
+            NSString *etag = [response.responseHeaders objectForKey:HTTP_HEADER_ETAG];
             if(etag) {
                 self.configurationToUpdate.configurationUpdateEtag = etag;
             }
-            NSString *lastModifiedString = [response.responseHeaders objectForKey:@"Last-Modified"];
+            NSString *lastModifiedString = [response.responseHeaders objectForKey:HTTP_HEADER_LAST_MODIFIED];
             if(lastModifiedString) {
                 // TODO when we get know how this will looks like
             }

@@ -95,22 +95,6 @@ extern void __gcov_flush();
     [super tearDown];
 }
 
-
-/*
- - (instancetype)initWithBuilder:(id<VDFRequestBuilder>)builder parentQueue:(VDFHttpConnectionsQueue*)parentQueue cacheManager:(VDFCacheManager*)cacheManager configuration:(VDFBaseConfiguration*)configuration;
- 
- // TODO documentation
- @property (nonatomic, strong) id<VDFRequestBuilder> builder;
- // number of all http requests made for this holder
- @property (nonatomic, assign) NSInteger numberOfRetries;
- 
- - (void)startRequest;
- 
- - (void)cancelRequest;
- 
- */
-
-
 - (void)testStartRequestWhenNotRunning {
     
     // mock:

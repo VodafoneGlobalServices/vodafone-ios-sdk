@@ -13,7 +13,14 @@
  */
 @interface VDFSmsValidationResponse : NSObject <NSCoding>
 
-// TODO documentation
+/**
+ *  Initialize sms validation repsonse model instance.
+ *
+ *  @param code       Sms of which this response corresponds.
+ *  @param isSucceded Flag with result of operation.
+ *
+ *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
+ */
 - (instancetype)initWithSmsCode:(NSString*)code isSucceded:(BOOL)isSucceded;
 
 /**

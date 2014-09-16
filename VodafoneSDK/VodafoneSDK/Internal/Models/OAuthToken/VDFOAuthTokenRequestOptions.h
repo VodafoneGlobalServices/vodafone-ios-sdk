@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Class of options passed to oAuthToken requests
+ */
 @interface VDFOAuthTokenRequestOptions : NSObject
 
 /**
@@ -23,7 +26,13 @@
  */
 @property (nonatomic, copy) NSArray *scopes;
 
-// TODO documentation
+/**
+ *  Check options for equality.
+ *
+ *  @param options Options object to compare with.
+ *
+ *  @return YES - if options object has the same values, NO - if not
+ */
 - (BOOL)isEqualToOptions:(VDFOAuthTokenRequestOptions*)options;
 
 @end

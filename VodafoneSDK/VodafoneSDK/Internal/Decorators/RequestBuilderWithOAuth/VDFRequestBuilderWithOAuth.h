@@ -12,8 +12,19 @@
 
 @class VDFRequestBaseBuilder;
 
+/**
+ *  Decorator class of requests builder which require oAuthToken.
+ */
 @interface VDFRequestBuilderWithOAuth : NSObject <VDFRequestBuilder, VDFOAuthTokenRequestDelegate>
 
+/**
+ *  Initialize decorator class instance.
+ *
+ *  @param builder  Builder object to decorate.
+ *  @param selector Selector to method waiting for oAuthToken details.
+ *
+ *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
+ */
 - (instancetype)initWithBuilder:(VDFRequestBaseBuilder*)builder oAuthTokenSetSelector:(SEL)selector;
 
 @end

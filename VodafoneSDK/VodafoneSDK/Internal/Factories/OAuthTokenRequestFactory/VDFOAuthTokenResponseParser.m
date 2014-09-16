@@ -24,11 +24,7 @@
         id jsonObject = [NSJSONSerialization JSONObjectWithData:response.data options:kNilOptions error:&error];
         BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
         
-        if([VDFErrorUtility handleInternalError:error] || !isResponseValid) {
-            // handle error here
-            // TODO
-        }
-        else {
+        if(![VDFErrorUtility handleInternalError:error] && isResponseValid) {
             // object parsed correctlly
             oAuthToken = [[VDFOAuthTokenResponse alloc] initWithJsonObject:jsonObject];
         }

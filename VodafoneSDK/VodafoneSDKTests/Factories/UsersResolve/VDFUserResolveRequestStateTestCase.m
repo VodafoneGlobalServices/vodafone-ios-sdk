@@ -126,7 +126,7 @@ extern void __gcov_flush();
     mockResponse.httpResponseCode = 304; // redirect
     [self.requestStateToTest readErrorFromResponse:mockResponse];
     // stub & run
-    mockResponse.httpResponseCode = 404; // TODO check
+    mockResponse.httpResponseCode = 404; // Not found - Token expired - from check status
     [self.requestStateToTest readErrorFromResponse:mockResponse];
     
     // assert for valid respones

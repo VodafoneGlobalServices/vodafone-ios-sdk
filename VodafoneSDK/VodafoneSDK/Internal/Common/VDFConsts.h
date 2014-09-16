@@ -32,15 +32,19 @@ static NSString * const CONFIGURATION_CACHE_FILE_NAME = @"baseConfig.dat";
 
 
 // http headers consts:
+static NSString * const HTTP_HEADER_ACCEPT = @"Accept";
 static NSString * const HTTP_HEADER_AUTHORIZATION = @"Authorization";
 static NSString * const HTTP_HEADER_USER_AGENT = @"User-Agent";
 static NSString * const HTTP_HEADER_IF_NONE_MATCH = @"If-None-Match";
+static NSString * const HTTP_HEADER_IF_MODIFIED_SINCE = @"If-Modified-Since";
+static NSString * const HTTP_HEADER_LAST_MODIFIED = @"Last-Modified";
 static NSString * const HTTP_HEADER_LOCATION = @"Location";
 static NSString * const HTTP_HEADER_RETRY_AFTER = @"Retry-After";
 static NSString * const HTTP_HEADER_ETAG = @"Etag";
 
 static NSString * const HTTP_HEADER_CONTENT_TYPE = @"Content-Type";
 static NSString * const HTTP_VALUE_CONTENT_TYPE_JSON = @"application/json";
+static NSString * const HTTP_VALUE_CONTENT_TYPE_WWW_FORM = @"application/x-www-form-urlencoded";
 
 
 
@@ -50,6 +54,9 @@ static NSString * const SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS = @"/seamless-id
 static NSString * const SERVICE_URL_SCHEME_SEND_PIN = @"/seamless-id/users/tokens/%@/pins?backendId=%@";
 static NSString * const SERVICE_URL_SCHEME_VALIDATE_PIN = @"/seamless-id/users/tokens/%@/pins?backendId=%@";
 
+static NSString * const SERVICE_URL_SCHEME_CONFIGURATION_UPDATE = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com/v%i/sdk-config-ios/config.json";
+
+static NSString * const ServerUrlSchema = @"";
 
 // user resolve consts
 static NSString * const CHECK_STATUS_ETAG_INITIAL_VALUE = @"etagInitialValue";

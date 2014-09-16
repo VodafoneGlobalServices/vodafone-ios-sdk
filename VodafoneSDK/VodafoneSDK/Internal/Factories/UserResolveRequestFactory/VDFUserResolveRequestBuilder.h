@@ -14,17 +14,55 @@
 
 @class VDFDIContainer, VDFUserResolveOptions, VDFOAuthTokenResponse;
 
+/**
+ *  Builder class of user resolve request.
+ */
 @interface VDFUserResolveRequestBuilder : VDFRequestBaseBuilder
 
-// TODO documentation
+/**
+ *  Options of request.
+ */
 @property (nonatomic, strong) VDFUserResolveOptions *requestOptions;
+
+/**
+ *  Url of initial call over hap.
+ */
 @property (nonatomic, readonly) NSString *initialUrlEndpointQuery;
+
+/**
+ *  Url used to make retry requests for check status.
+ */
 @property (nonatomic, readonly) NSString *retryUrlEndpointQuery;
+
+/**
+ *  Http method type of requests.
+ */
 @property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
+
+/**
+ *  OAuthToken details used in authorization over APIX.
+ */
 @property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;
+
+/**
+ *  Etag value used in check status calls.
+ */
 @property (nonatomic, strong) NSString *eTag;
+
+/**
+ *  Session token of pending user resolve process.
+ */
 @property (nonatomic, strong) NSString *sessionToken;
 
+/**
+ *  Initialize user resolve request builder instance.
+ *
+ *  @param options     Options object of request.
+ *  @param diContainer Dependency injection container.
+ *  @param delegate    Delegate object used as callback of request.
+ *
+ *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
+ */
 - (instancetype)initWithOptions:(VDFUserResolveOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 @end

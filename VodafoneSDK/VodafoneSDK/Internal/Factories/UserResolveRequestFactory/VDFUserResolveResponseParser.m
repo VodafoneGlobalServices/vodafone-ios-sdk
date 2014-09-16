@@ -50,7 +50,7 @@
     }
     else if(response.httpResponseCode == 302) {
         
-        // TODO if it is first response of check status we should not inform delegates so we need to not do not parse it
+        // TODO if it is first response of check status we should not inform delegates so we need to not parse it
         
         userTokenDetails = [[VDFUserTokenDetails alloc] init];
         userTokenDetails.stillRunning = YES;

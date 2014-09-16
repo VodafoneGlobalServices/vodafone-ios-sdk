@@ -10,9 +10,17 @@
 
 @class VDFOAuthTokenResponse;
 
-// TODO documentation
+/**
+ *  Delegate protocol of oAuthToken response receiver.
+ */
 @protocol VDFOAuthTokenRequestDelegate <NSObject>
 
+/**
+ *  Callback method for oAuthToken
+ *
+ *  @param oAuthToken Response object with oAuthToken data.
+ *  @param error      Erro object if occured or nil if operation finish with success.
+ */
 -(void)didReceivedOAuthToken:(VDFOAuthTokenResponse*)oAuthToken withError:(NSError*)error;
 
 @end

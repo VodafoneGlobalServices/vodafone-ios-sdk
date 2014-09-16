@@ -447,6 +447,7 @@
 			children = (
 				490D4DAD19A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.h */,
 				490D4DAE19A5D94200DA3D94 /* VDFRequestBuilderWithOAuth.m */,
+				49C183B919C8610300FAD559 /* Components */,
 			);
 			name = RequestBuilderWithOAuth;
 			sourceTree = "<group>";
@@ -962,6 +963,13 @@
 				49C0667419B086F900EB8F23 /* VDFBaseConfiguration+Manager.h */,
 			);
 			name = BaseConfiguration;
+			sourceTree = "<group>";
+		};
+		49C183B919C8610300FAD559 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Components;
 			sourceTree = "<group>";
 		};
 		49D9E6EE19B5CCBE00AE6417 /* ManagerComponents */ = {

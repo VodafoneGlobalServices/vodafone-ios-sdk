@@ -16,6 +16,7 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFOAuthTokenRequestOptions.h"
 #import "VDFDIContainer.h"
+#import "VDFConsts.h"
 
 static NSString * const POST_BODY_FORMAT = @"grant_type=client_credentials&client_id=%@&client_secret=%@";
 static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
@@ -69,8 +70,8 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
     httpRequest.methodType = self.builder.httpRequestMethodType;
     httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;
-    httpRequest.requestHeaders = @{ @"Accept" : @"application/json",
-                                    @"Content-Type" : @"application/x-www-form-urlencoded" };
+    httpRequest.requestHeaders = @{ HTTP_HEADER_ACCEPT : HTTP_VALUE_CONTENT_TYPE_JSON,
+                                    HTTP_HEADER_CONTENT_TYPE : HTTP_VALUE_CONTENT_TYPE_WWW_FORM };
     
     return httpRequest;
 }

@@ -101,7 +101,9 @@
     [[[self.mockBuilder stub] andReturn:mockOAuthToken] oAuthToken];
     [[[mockOAuthToken stub] andReturn:@"Barier"] tokenType];
     [[[mockOAuthToken stub] andReturn:@"asd"] accessToken];
-    [[[self.mockBuilder stub] andReturn:@"appID"] applicationId];
+    [[[self.mockBuilder stub] andReturn:@"clientAppKey"] clientAppKey];
+    [[[self.mockBuilder stub] andReturn:@"clientAppSecret"] clientAppSecret];
+    [[[self.mockBuilder stub] andReturn:@"backendAppKey"] backendAppKey];
     
     // run
     VDFHttpConnector *result = [self.factoryToTestMock createHttpConnectorRequestWithDelegate:mockDelegate];

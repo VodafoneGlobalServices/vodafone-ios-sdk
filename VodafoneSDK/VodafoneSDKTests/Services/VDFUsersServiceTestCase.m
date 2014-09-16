@@ -70,16 +70,6 @@ extern void __gcov_flush();
     
     // mock
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
-    id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
-    
-    // stub
-    self.configuration.applicationId = nil;
-    
-    // expect that the perform request will be ivoked only once
-    [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
-        VDFUserResolveRequestBuilder *innerBuilder = (VDFUserResolveRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).builder;
-        return [innerBuilder.applicationId isEqualToString:[NSString string]] && innerBuilder.requestOptions.smsValidation == NO;
-    }]];
     
     // expect that the perform request method will newer will be called after this one call
     [[self.mockServiceRequestsManager reject] performRequestWithBuilder:[OCMArg any]];
@@ -87,7 +77,6 @@ extern void __gcov_flush();
     // run
     [self.serviceToTest retrieveUserDetails:nil delegate:nil]; // wont happend anything
     [self.serviceToTest retrieveUserDetails:options delegate:nil]; // wont happend anything too
-    [self.serviceToTest retrieveUserDetails:nil delegate:mockDelegate];
     
     // verify
     [self.mockServiceRequestsManager verify];
@@ -100,7 +89,9 @@ extern void __gcov_flush();
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub
-    self.configuration.applicationId = @"some app id";
+    self.configuration.clientAppKey = @"some client app key";
+    self.configuration.clientAppSecret = @"some client app secret";
+    self.configuration.backendAppKey = @"some backend app key";
     
     // expect that the perform request will be ivoked
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -114,7 +105,9 @@ extern void __gcov_flush();
         }
         
         VDFUserResolveRequestBuilder *innerBuilder = (VDFUserResolveRequestBuilder*)oAuthBuilder.builder;
-        return [innerBuilder.applicationId isEqualToString:self.configuration.applicationId]
+        return [innerBuilder.clientAppKey isEqualToString:self.configuration.clientAppKey]
+        &&[innerBuilder.clientAppSecret isEqualToString:self.configuration.clientAppSecret]
+        &&[innerBuilder.backendAppKey isEqualToString:self.configuration.backendAppKey]
         && innerBuilder.requestOptions.smsValidation
         && [[[innerBuilder observersContainer] registeredObservers] containsObject:mockDelegate];
     }]];
@@ -131,13 +124,10 @@ extern void __gcov_flush();
     // mock
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
-    // stub
-    self.configuration.applicationId = nil;
-    
     // expect that the perform request will be ivoked only once
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
         VDFSmsSendPinRequestBuilder *innerBuilder = (VDFSmsSendPinRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).builder;
-        return [innerBuilder.applicationId isEqualToString:[NSString string]] && [innerBuilder.sessionToken isEqualToString:[NSString string]];
+        return [innerBuilder.sessionToken isEqualToString:[NSString string]];
     }]];
     
     // expect that the perform request method will newer will be called after this one call
@@ -159,7 +149,9 @@ extern void __gcov_flush();
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub
-    self.configuration.applicationId = @"some app id";
+    self.configuration.clientAppKey = @"some client app key";
+    self.configuration.clientAppSecret = @"some client app secret";
+    self.configuration.backendAppKey = @"some backend app key";
     
     // expect that the perform request will be ivoked
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -173,7 +165,9 @@ extern void __gcov_flush();
         }
         
         VDFSmsSendPinRequestBuilder *innerBuilder = (VDFSmsSendPinRequestBuilder*)oAuthBuilder.builder;
-        return [innerBuilder.applicationId isEqualToString:self.configuration.applicationId]
+        return [innerBuilder.clientAppKey isEqualToString:self.configuration.clientAppKey]
+        &&[innerBuilder.clientAppSecret isEqualToString:self.configuration.clientAppSecret]
+        &&[innerBuilder.backendAppKey isEqualToString:self.configuration.backendAppKey]
         && [innerBuilder.sessionToken isEqualToString:sessionToken]
         && [[[innerBuilder observersContainer] registeredObservers] containsObject:mockDelegate];
     }]];
@@ -190,14 +184,10 @@ extern void __gcov_flush();
     // mock
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
-    // stub
-    self.configuration.applicationId = nil;
-    
     // expect that the perform request will be ivoked only once
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
         VDFSmsValidationRequestBuilder *innerBuilder = (VDFSmsValidationRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).builder;
-        return [innerBuilder.applicationId isEqualToString:[NSString string]]
-        && [innerBuilder.sessionToken isEqualToString:[NSString string]]
+        return [innerBuilder.sessionToken isEqualToString:[NSString string]]
         && [innerBuilder.smsCode isEqualToString:[NSString string]];
     }]];
     
@@ -222,7 +212,9 @@ extern void __gcov_flush();
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub
-    self.configuration.applicationId = @"some app id";
+    self.configuration.clientAppKey = @"some client app key";
+    self.configuration.clientAppSecret = @"some client app secret";
+    self.configuration.backendAppKey = @"some backend app key";
     
     // expect that the perform request will be ivoked
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -236,7 +228,9 @@ extern void __gcov_flush();
         }
         
         VDFSmsValidationRequestBuilder *innerBuilder = (VDFSmsValidationRequestBuilder*)oAuthBuilder.builder;
-        return [innerBuilder.applicationId isEqualToString:self.configuration.applicationId]
+        return [innerBuilder.clientAppKey isEqualToString:self.configuration.clientAppKey]
+        &&[innerBuilder.clientAppSecret isEqualToString:self.configuration.clientAppSecret]
+        &&[innerBuilder.backendAppKey isEqualToString:self.configuration.backendAppKey]
         && [innerBuilder.sessionToken isEqualToString:sessionToken]
         && [innerBuilder.smsCode isEqualToString:smsCode]
         && [[[innerBuilder observersContainer] registeredObservers] containsObject:mockDelegate];

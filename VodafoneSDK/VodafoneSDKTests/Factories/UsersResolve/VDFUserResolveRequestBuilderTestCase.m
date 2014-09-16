@@ -26,7 +26,9 @@ extern void __gcov_flush();
 
 @interface VDFUserResolveRequestBuilderTestCase : XCTestCase
 @property VDFUserResolveRequestBuilder *builderToTest;
-@property NSString *mockAppId;
+@property NSString *mockClientAppKey;
+@property NSString *mockClientAppSecret;
+@property NSString *mockBackendAppKey;
 @property id mockOptions;
 @property id mockConfiguration;
 @property id mockDelegate;
@@ -40,17 +42,22 @@ extern void __gcov_flush();
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    self.mockAppId = @"fake mock app id";
+    self.mockClientAppKey = @"fake mock client app key";
+    self.mockClientAppSecret = @"fake mock client app secret";
+    self.mockBackendAppKey = @"fake mock backend app key";
     self.mockConfiguration = OCMClassMock([VDFBaseConfiguration class]);
     self.mockOptions = OCMClassMock([VDFUserResolveOptions class]);
     self.mockFactory = OCMClassMock([VDFUserResolveRequestFactory class]);
     
+    [[[self.mockConfiguration stub] andReturn:self.mockClientAppKey] clientAppKey];
+    [[[self.mockConfiguration stub] andReturn:self.mockClientAppSecret] clientAppSecret];
+    [[[self.mockConfiguration stub] andReturn:self.mockBackendAppKey] backendAppKey];
     [[[self.mockOptions stub] andReturn:self.mockOptions] copy];
     
     self.mockDIContainer = OCMClassMock([VDFDIContainer class]);
     [[[self.mockDIContainer stub] andReturn:self.mockConfiguration] resolveForClass:[VDFBaseConfiguration class]];
     
-    self.builderToTest = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:self.mockAppId withOptions:self.mockOptions diContainer:self.mockDIContainer delegate:self.mockDelegate];
+    self.builderToTest = [[VDFUserResolveRequestBuilder alloc] initWithOptions:self.mockOptions diContainer:self.mockDIContainer delegate:self.mockDelegate];
     self.builderToTest.internalFactory = self.mockFactory;
 }
 
@@ -69,7 +76,7 @@ extern void __gcov_flush();
     self.builderToTest.sessionToken = newSessionToken;
     
     // assert
-    NSString *newRetryUrlEndpoint = [NSString stringWithFormat:SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS, newSessionToken, self.mockAppId];
+    NSString *newRetryUrlEndpoint = [NSString stringWithFormat:SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS, newSessionToken, self.mockBackendAppKey];
     XCTAssertEqualObjects(self.builderToTest.sessionToken, newSessionToken, @"Session token after setting on builder should change.");
     XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, newRetryUrlEndpoint, @"After session token changing the retry rul request should change properly.");
 }
@@ -136,20 +143,24 @@ extern void __gcov_flush();
     
     // stub
     [[[self.mockOptions stub] andReturnValue:OCMOCK_VALUE(YES)] isEqualToOptions:self.mockOptions];
-    [[[mockBuilderDiffAppId stub] andReturn:@"some app id different"] applicationId];
+    [[[mockBuilderDiffAppId stub] andReturn:@"some client app key different"] clientAppKey];
+    [[[mockBuilderDiffAppId stub] andReturn:@"some client app secret different"] clientAppSecret];
+    [[[mockBuilderDiffAppId stub] andReturn:@"some backend app key different"] backendAppKey];
     [[[mockBuilderDiffAppId stub] andReturn:self.mockOptions] requestOptions];
-    [[[mockBuilderDiffRequestOptions stub] andReturn:self.mockAppId] applicationId];
+    [[[mockBuilderDiffRequestOptions stub] andReturn:self.mockClientAppKey] clientAppKey];
+    [[[mockBuilderDiffRequestOptions stub] andReturn:self.mockClientAppSecret] clientAppSecret];
+    [[[mockBuilderDiffRequestOptions stub] andReturn:self.mockBackendAppKey] backendAppKey];
     [[[mockBuilderDiffRequestOptions stub] andReturn:differentRequestOptions] requestOptions];
 
     // run & assert
-    XCTAssertFalse([self.builderToTest isEqualToFactoryBuilder:mockBuilderDiffAppId], @"Equality check of builder with different appId should return false.");
+    XCTAssertFalse([self.builderToTest isEqualToFactoryBuilder:mockBuilderDiffAppId], @"Equality check of builder with different clientAppKey should return false.");
     XCTAssertFalse([self.builderToTest isEqualToFactoryBuilder:mockBuilderDiffRequestOptions], @"Equality check of builder with different request options should return false.");
 }
 
 - (void)testIsEqualToFactoryBuilderWhenBuilderEqual {
     
     // mock
-    id mockSameBuilder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:self.mockAppId withOptions:self.mockOptions diContainer:nil delegate:nil];
+    id mockSameBuilder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:self.mockOptions diContainer:self.mockDIContainer delegate:nil];
     
     // stub
     [[[self.mockOptions stub] andReturnValue:OCMOCK_VALUE(YES)] isEqualToOptions:self.mockOptions];

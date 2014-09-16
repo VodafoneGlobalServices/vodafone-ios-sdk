@@ -163,20 +163,25 @@ extern void __gcov_flush();
     
     // mock
     id etag = @"someExampleETagValue";
-    id responseMock = OCMClassMock([VDFHttpConnectorResponse class]);
+    id responseMockWithRedirect = OCMClassMock([VDFHttpConnectorResponse class]);
+    id responseMockWithNotModified = OCMClassMock([VDFHttpConnectorResponse class]);
     
     // stub
-    [[[responseMock stub] andReturn:@{ HTTP_HEADER_ETAG : etag }] responseHeaders];
-    [[[responseMock stub] andReturnValue:@302] httpResponseCode];
+    [[[responseMockWithRedirect stub] andReturn:@{ HTTP_HEADER_ETAG : etag }] responseHeaders];
+    [[[responseMockWithRedirect stub] andReturnValue:@302] httpResponseCode];
+    [[[responseMockWithNotModified stub] andReturnValue:@304] httpResponseCode];
     
     // expect that the etag will be readed:
-    [[self.requestStateToTestMock expect] readEtagFromResponse:responseMock];
+    [[self.requestStateToTestMock expect] readEtagFromResponse:responseMockWithRedirect];
+    [[self.requestStateToTestMock expect] readEtagFromResponse:responseMockWithNotModified];
     
     // expect that the error will be readed:
-    [[self.requestStateToTestMock expect] readErrorFromResponse:responseMock];
+    [[self.requestStateToTestMock expect] readErrorFromResponse:responseMockWithRedirect];
+    [[self.requestStateToTestMock expect] readErrorFromResponse:responseMockWithNotModified];
     
     // run
-    [self.requestStateToTestMock updateWithHttpResponse:responseMock];
+    [self.requestStateToTestMock updateWithHttpResponse:responseMockWithRedirect];
+    [self.requestStateToTestMock updateWithHttpResponse:responseMockWithNotModified];
     
     // verify
     [self.requestStateToTestMock verify];

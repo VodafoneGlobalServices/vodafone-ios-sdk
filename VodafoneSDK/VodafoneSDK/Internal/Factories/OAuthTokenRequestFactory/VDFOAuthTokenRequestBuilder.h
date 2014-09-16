@@ -18,8 +18,7 @@
 @property (nonatomic, readonly) NSString *urlEndpointQuery;
 @property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId
-                          withOptions:(VDFOAuthTokenRequestOptions*)options
+- (instancetype)initWithOptions:(VDFOAuthTokenRequestOptions*)options
                     diContainer:(VDFDIContainer*)diContainer
                              delegate:(id<VDFOAuthTokenRequestDelegate>)delegate;
 

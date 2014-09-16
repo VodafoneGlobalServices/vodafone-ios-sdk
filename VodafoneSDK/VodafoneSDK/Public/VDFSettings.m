@@ -37,10 +37,26 @@ static VDFDIContainer * g_diContainer = nil;
         VDFBaseConfiguration *configuration = [configurationManager readConfiguration];
         [g_diContainer registerInstance:configuration forClass:[VDFBaseConfiguration class]];
         
-        configuration.applicationId = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFApplicationIdSettingKey] copy];
+        configuration.clientAppKey = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFClientAppKeySettingKey] copy];
+        configuration.clientAppSecret = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFClientAppSecretSettingKey] copy];
+        configuration.backendAppKey = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFBackendAppKeySettingKey] copy];
+        
+        // set empty string than nil:
+        if(configuration.clientAppKey == nil) {
+            configuration.clientAppKey = [NSString string];
+        }
+        if(configuration.clientAppSecret == nil) {
+            configuration.clientAppSecret = [NSString string];
+        }
+        if(configuration.backendAppKey == nil) {
+            configuration.backendAppKey = [NSString string];
+        }
+        
         configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
         
-        VDFLogD(@"-- applicationId:%@", configuration.applicationId);
+        VDFLogD(@"-- clientAppKey:%@", configuration.clientAppKey);
+        VDFLogD(@"-- clientAppSecret:%@", configuration.clientAppSecret);
+        VDFLogD(@"-- backendAppKey:%@", configuration.backendAppKey);
         VDFLogD(@"-- sdkVersion:%@", configuration.sdkVersion);
         VDFLogD(@"-- hapBaseUrl:%@", configuration.hapBaseUrl);
         VDFLogD(@"-- apixBaseUrl:%@", configuration.apixBaseUrl);
@@ -54,11 +70,22 @@ static VDFDIContainer * g_diContainer = nil;
     if(settingsDictionary != nil) {
         VDFLogD(@"Setting configuration from code");
         // chceck provided settings:
-        id applicationId = [settingsDictionary objectForKey:VDFApplicationIdSettingKey];
-        if(applicationId != nil && [applicationId isKindOfClass:[NSString class]]) {
-            VDFBaseConfiguration *configuration = [g_diContainer resolveForClass:[VDFBaseConfiguration class]];
-            configuration.applicationId = applicationId;
-            VDFLogD(@"-- applicationId:%@", configuration.applicationId);
+        id clientAppKey = [settingsDictionary objectForKey:VDFClientAppKeySettingKey];
+        id clientAppSecret = [settingsDictionary objectForKey:VDFClientAppSecretSettingKey];
+        id backendAppKey = [settingsDictionary objectForKey:VDFBackendAppKeySettingKey];
+        
+        VDFBaseConfiguration *configuration = [g_diContainer resolveForClass:[VDFBaseConfiguration class]];
+        if(clientAppKey != nil && [clientAppKey isKindOfClass:[NSString class]]) {
+            configuration.clientAppKey = clientAppKey;
+            VDFLogD(@"-- clientAppKey:%@", configuration.clientAppKey);
+        }
+        if(clientAppSecret != nil && [clientAppSecret isKindOfClass:[NSString class]]) {
+            configuration.clientAppSecret = clientAppSecret;
+            VDFLogD(@"-- clientAppSecret:%@", configuration.clientAppSecret);
+        }
+        if(backendAppKey != nil && [backendAppKey isKindOfClass:[NSString class]]) {
+            configuration.backendAppKey = backendAppKey;
+            VDFLogD(@"-- backendAppKey:%@", configuration.backendAppKey);
         }
     }
 }

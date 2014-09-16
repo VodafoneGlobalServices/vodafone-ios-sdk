@@ -25,6 +25,6 @@
 @property (nonatomic, strong) NSString *eTag;
 @property (nonatomic, strong) NSString *sessionToken;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (instancetype)initWithOptions:(VDFUserResolveOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 @end

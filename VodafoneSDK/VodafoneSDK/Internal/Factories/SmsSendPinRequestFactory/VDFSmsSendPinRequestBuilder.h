@@ -21,5 +21,5 @@
 @property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
 @property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (instancetype)initWithSessionToken:(NSString*)sessionToken diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate;
 @end

@@ -12,7 +12,7 @@
 #import "VDFOAuthTokenRequestDelegate.h"
 
 static NSString * const URLEndpointQuery = @"/2/oauth/access-token";
-static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t requestOptions:%@ ";
 
 @interface VDFOAuthTokenRequestBuilder ()
 @property (nonatomic, strong) VDFOAuthTokenRequestFactory *internalFactory;
@@ -20,12 +20,8 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
 
 @implementation VDFOAuthTokenRequestBuilder
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId
-                          withOptions:(VDFOAuthTokenRequestOptions*)options
-                          diContainer:(VDFDIContainer*)diContainer
-                             delegate:(id<VDFOAuthTokenRequestDelegate>)delegate {
-    self = [super initWithApplicationId:applicationId
-                    diContainer:diContainer];
+- (instancetype)initWithOptions:(VDFOAuthTokenRequestOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFOAuthTokenRequestDelegate>)delegate {
+    self = [super initWithDIContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFOAuthTokenRequestFactory alloc] initWithBuilder:self];
         
@@ -42,7 +38,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.applicationId, self.requestOptions];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.clientAppKey, self.backendAppKey, self.requestOptions];
 }
 
 #pragma mark -
@@ -58,7 +54,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
     }
     
     VDFOAuthTokenRequestBuilder *tokenRequestBuilder = (VDFOAuthTokenRequestBuilder*)builder;
-    if(![self.applicationId isEqualToString:tokenRequestBuilder.applicationId]) {
+    if(![self.clientAppKey isEqualToString:tokenRequestBuilder.clientAppKey]) {
+        return NO;
+    }
+    if(![self.clientAppSecret isEqualToString:tokenRequestBuilder.clientAppSecret]) {
+        return NO;
+    }
+    if(![self.backendAppKey isEqualToString:tokenRequestBuilder.backendAppKey]) {
         return NO;
     }
     

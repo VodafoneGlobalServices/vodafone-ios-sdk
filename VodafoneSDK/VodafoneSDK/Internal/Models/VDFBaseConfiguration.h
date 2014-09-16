@@ -16,9 +16,19 @@
 @interface VDFBaseConfiguration : NSObject <NSCoding>
 
 /**
- *  Id of the application registered as Vodafone 3rd party app.
+ *  Key of the application registered as Vodafone 3rd party app.
  */
-@property (nonatomic, copy) NSString *applicationId;
+@property (nonatomic, copy) NSString *clientAppKey;
+
+/**
+ *  Secret of the application registered as Vodafone 3rd party app.
+ */
+@property (nonatomic, copy) NSString *clientAppSecret;
+
+/**
+ *  Key of the backend application registered as Vodafone 3rd party app.
+ */
+@property (nonatomic, copy) NSString *backendAppKey;
 
 /**
  *  Current version of SDK.

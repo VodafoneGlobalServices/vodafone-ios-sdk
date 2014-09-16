@@ -15,8 +15,10 @@
 
 // TODO documentation
 @property (nonatomic, strong) VDFDIContainer *diContainer;
-@property (nonatomic, strong) NSString *applicationId;
+@property (nonatomic, strong) NSString *clientAppKey;
+@property (nonatomic, strong) NSString *clientAppSecret;
+@property (nonatomic, strong) NSString *backendAppKey;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId diContainer:(VDFDIContainer*)diContainer;
+- (instancetype)initWithDIContainer:(VDFDIContainer*)diContainer;
 
 @end

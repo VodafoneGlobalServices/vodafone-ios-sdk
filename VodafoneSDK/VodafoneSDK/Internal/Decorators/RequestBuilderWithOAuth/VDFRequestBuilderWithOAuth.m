@@ -78,10 +78,9 @@
         oAuthOptions.clientSecret = configuration.oAuthTokenClientSecret;
         oAuthOptions.scopes = @[configuration.oAuthTokenScope];
         
-        return [[VDFOAuthTokenRequestBuilder alloc] initWithApplicationId:self.builder.applicationId
-                                                              withOptions:oAuthOptions
-                                                              diContainer:self.builder.diContainer
-                                                                 delegate:self];
+        return [[VDFOAuthTokenRequestBuilder alloc] initWithOptions:oAuthOptions
+                                                        diContainer:self.builder.diContainer
+                                                           delegate:self];
     }
     
     return result;

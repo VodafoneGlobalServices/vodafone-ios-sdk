@@ -19,7 +19,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t initialUrlEndpointQuery:%@ \n\t retryUrlEndpointQuery:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t requestOptions:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t initialUrlEndpointQuery:%@ \n\t retryUrlEndpointQuery:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@\n\t backendAppKey:%@ \n\t requestOptions:%@ ";
 
 @interface VDFUserResolveRequestBuilder ()
 @property (nonatomic, strong) VDFUserResolveRequestFactory *internalFactory;
@@ -29,12 +29,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 @synthesize sessionToken = _sessionToken;
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId withOptions:(VDFUserResolveOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
-    self = [super initWithApplicationId:applicationId diContainer:diContainer];
+- (instancetype)initWithOptions:(VDFUserResolveOptions*)options diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
+    self = [super initWithDIContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFUserResolveRequestFactory alloc] initWithBuilder:self];
         
-        _initialUrlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_RESOLVE, applicationId];
+        VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
+        _initialUrlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_RESOLVE, configuration.backendAppKey];
         _httpRequestMethodType = HTTPMethodPOST;
         
         self.requestOptions = options;
@@ -53,13 +54,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 - (void)setSessionToken:(NSString*)sessionToken {
     _sessionToken = sessionToken;
-    _retryUrlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS, sessionToken, self.applicationId];
+    _retryUrlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS, sessionToken, self.backendAppKey];
 }
 
 - (NSString*)description {
     return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self initialUrlEndpointQuery],
             [self retryUrlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST",
-            self.applicationId, self.requestOptions];
+            self.clientAppKey, self.backendAppKey, self.requestOptions];
 }
 
 #pragma mark -
@@ -89,7 +90,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     }
     
     VDFUserResolveRequestBuilder *userResolveBuilder = (VDFUserResolveRequestBuilder*)builder;
-    if(![self.applicationId isEqualToString:userResolveBuilder.applicationId]) {
+    if(![self.clientAppKey isEqualToString:userResolveBuilder.clientAppKey]) {
+        return NO;
+    }
+    if(![self.clientAppSecret isEqualToString:userResolveBuilder.clientAppSecret]) {
+        return NO;
+    }
+    if(![self.backendAppKey isEqualToString:userResolveBuilder.backendAppKey]) {
         return NO;
     }
     

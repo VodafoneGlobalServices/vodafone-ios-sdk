@@ -44,16 +44,11 @@
     
     if(delegate != nil) {
         // create request object
-        VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-        NSString * applicationId = configuration.applicationId;
-        if(applicationId == nil) {
-            applicationId = [NSString string];
-        }
         if(options == nil) {
             options = [[VDFUserResolveOptions alloc] init];
         }
         
-        id builder = [[VDFUserResolveRequestBuilder alloc] initWithApplicationId:applicationId withOptions:options diContainer:self.diContainer delegate:delegate];
+        id builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:delegate];
         
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
         
@@ -65,16 +60,11 @@
     
     if(delegate != nil) {
         // create request object
-        VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-        NSString * applicationId = configuration.applicationId;
-        if(applicationId == nil) {
-            applicationId = [NSString string];
-        }
         if(sessionToken == nil) {
             sessionToken = [NSString string];
         }
         
-        id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken diContainer:self.diContainer delegate:delegate];
+        id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithSessionToken:sessionToken diContainer:self.diContainer delegate:delegate];
         
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
         
@@ -86,11 +76,6 @@
     
     if(delegate != nil) {
         // create request object
-        VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-        NSString * applicationId = configuration.applicationId;
-        if(applicationId == nil) {
-            applicationId = [NSString string];
-        }
         if(smsCode == nil) {
             smsCode = [NSString string];
         }
@@ -98,7 +83,7 @@
             sessionToken = [NSString string];
         }
         
-        VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithApplicationId:applicationId sessionToken:sessionToken smsCode:smsCode diContainer:self.diContainer delegate:delegate];
+        VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithSessionToken:sessionToken smsCode:smsCode diContainer:self.diContainer delegate:delegate];
         
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
         

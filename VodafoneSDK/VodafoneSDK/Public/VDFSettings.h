@@ -10,7 +10,9 @@
 #import "VDFMessageLogger.h"
 
 
-static NSString * const VDFApplicationIdSettingKey = @"VodafoneApplicationId";
+static NSString * const VDFClientAppKeySettingKey = @"VodafoneClientAppKey";
+static NSString * const VDFClientAppSecretSettingKey = @"VodafoneClientAppSecret";
+static NSString * const VDFBackendAppKeySettingKey = @"VodafoneBackendAppKey";
 
 
 @interface VDFSettings : NSObject

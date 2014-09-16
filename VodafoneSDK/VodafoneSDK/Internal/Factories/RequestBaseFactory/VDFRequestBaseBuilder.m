@@ -11,6 +11,8 @@
 #import "VDFResponseParser.h"
 #import "VDFRequestState.h"
 #import "VDFObserversContainer.h"
+#import "VDFBaseConfiguration.h"
+#import "VDFDIContainer.h"
 
 @interface VDFRequestBaseBuilder ()
 @property id<VDFResponseParser> internalResponseParser;
@@ -21,10 +23,13 @@
 
 @implementation VDFRequestBaseBuilder
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId diContainer:(VDFDIContainer*)diContainer {
+- (instancetype)initWithDIContainer:(VDFDIContainer*)diContainer {
     self = [super init];
     if(self) {
-        self.applicationId = applicationId;
+        VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
+        self.clientAppKey = configuration.clientAppKey;
+        self.clientAppSecret = configuration.clientAppSecret;
+        self.backendAppKey = configuration.backendAppKey;
         self.diContainer = diContainer;
     }
     return self;

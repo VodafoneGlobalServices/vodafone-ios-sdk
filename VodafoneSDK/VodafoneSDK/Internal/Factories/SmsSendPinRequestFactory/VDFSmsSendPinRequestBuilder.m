@@ -15,7 +15,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t sessionToken:%@ ";
 
 @interface VDFSmsSendPinRequestBuilder ()
 @property (nonatomic, strong) VDFSmsSendPinRequestFactory *internalFactory;
@@ -24,12 +24,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
 
 @implementation VDFSmsSendPinRequestBuilder
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
-    self = [super initWithApplicationId:applicationId diContainer:diContainer];
+- (instancetype)initWithSessionToken:(NSString*)sessionToken diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
+    self = [super initWithDIContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFSmsSendPinRequestFactory alloc] initWithBuilder:self];
         
-        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_SEND_PIN, sessionToken, applicationId];
+        VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
+        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_SEND_PIN, sessionToken, configuration.backendAppKey];
         _httpRequestMethodType = HTTPMethodGET;
         self.sessionToken = sessionToken;
         self.oAuthToken = nil;
@@ -42,7 +43,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.applicationId, self.sessionToken];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.clientAppKey, self.backendAppKey, self.sessionToken];
 }
 
 #pragma mark -
@@ -58,7 +59,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
     }
     
     VDFSmsSendPinRequestBuilder * smsValidationBuilder = (VDFSmsSendPinRequestBuilder*)builder;
-    if(![self.applicationId isEqualToString:smsValidationBuilder.applicationId]) {
+    if(![self.clientAppKey isEqualToString:smsValidationBuilder.clientAppKey]) {
+        return NO;
+    }
+    if(![self.clientAppSecret isEqualToString:smsValidationBuilder.clientAppSecret]) {
+        return NO;
+    }
+    if(![self.backendAppKey isEqualToString:smsValidationBuilder.backendAppKey]) {
         return NO;
     }
     

@@ -15,7 +15,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t applicationId:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
 
 @interface VDFSmsValidationRequestBuilder ()
 @property (nonatomic, strong) VDFSmsValidationRequestFactory *internalFactory;
@@ -23,12 +23,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 
 @implementation VDFSmsValidationRequestBuilder
 
-- (instancetype)initWithApplicationId:(NSString*)applicationId sessionToken:(NSString*)sessionToken smsCode:(NSString*)smsCode diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
-    self = [super initWithApplicationId:applicationId diContainer:diContainer];
+- (instancetype)initWithSessionToken:(NSString*)sessionToken smsCode:(NSString*)smsCode diContainer:(VDFDIContainer*)diContainer delegate:(id<VDFUsersServiceDelegate>)delegate {
+    self = [super initWithDIContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFSmsValidationRequestFactory alloc] initWithBuilder:self];
         
-        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_VALIDATE_PIN, sessionToken, applicationId];
+        VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
+        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_VALIDATE_PIN, sessionToken, configuration.backendAppKey];
         _httpRequestMethodType = HTTPMethodPOST;
         self.sessionToken = sessionToken;
         self.smsCode = smsCode;
@@ -42,7 +43,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.applicationId, self.sessionToken, self.smsCode];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.clientAppKey, self.backendAppKey, self.sessionToken, self.smsCode];
 }
 
 #pragma mark -
@@ -58,7 +59,13 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     }
     
     VDFSmsValidationRequestBuilder * smsValidationBuilder = (VDFSmsValidationRequestBuilder*)builder;
-    if(![self.applicationId isEqualToString:smsValidationBuilder.applicationId]) {
+    if(![self.clientAppKey isEqualToString:smsValidationBuilder.clientAppKey]) {
+        return NO;
+    }
+    if(![self.clientAppSecret isEqualToString:smsValidationBuilder.clientAppSecret]) {
+        return NO;
+    }
+    if(![self.backendAppKey isEqualToString:smsValidationBuilder.backendAppKey]) {
         return NO;
     }
     if(![self.sessionToken isEqualToString:smsValidationBuilder.sessionToken]) {

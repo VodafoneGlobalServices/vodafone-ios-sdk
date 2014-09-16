@@ -11,7 +11,6 @@
 
 @interface VDFMainViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextField *appIdTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *smsValidationSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *smsCodeTextField;
 @property (weak, nonatomic) IBOutlet UITextField *smsCodeSessionTokenTextField;
@@ -21,6 +20,9 @@
 @property (weak, nonatomic) IBOutlet UISwitch *displayLogSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *marketTextField;
 @property (weak, nonatomic) IBOutlet UITextField *imsiTextField;
+@property (weak, nonatomic) IBOutlet UITextField *backendAppKeyTextField;
+@property (weak, nonatomic) IBOutlet UITextField *clientAppSecretTextField;
+@property (weak, nonatomic) IBOutlet UITextField *clientAppKeyTextField;
 
 - (IBAction)onAppIdSetButtonClick:(id)sender;
 - (IBAction)onSmsCodeSendButtonClick:(id)sender;
@@ -100,7 +102,9 @@
 - (IBAction)onAppIdSetButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [VDFSettings initializeWithParams:@{ VDFApplicationIdSettingKey: self.appIdTextField.text }];
+    [VDFSettings initializeWithParams:@{ VDFClientAppKeySettingKey: self.clientAppKeyTextField.text,
+                                         VDFClientAppSecretSettingKey: self.clientAppSecretTextField.text,
+                                         VDFBackendAppKeySettingKey: self.backendAppKeyTextField.text }];
 }
 
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {

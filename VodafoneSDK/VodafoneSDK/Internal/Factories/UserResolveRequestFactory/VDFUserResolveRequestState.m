@@ -68,7 +68,7 @@
     // if exists update it in builder
     if(response != nil) {
         
-        self.needRetry = response.httpResponseCode == 302;
+        self.needRetry = response.httpResponseCode == 302 || response.httpResponseCode == 304;
         
         [self readEtagFromResponse:response];
         

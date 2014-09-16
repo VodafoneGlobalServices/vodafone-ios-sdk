@@ -228,11 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDKTests/Factories/UsersResolve/VDFUserResolveRequestFactoryTestCase.m"
-            timestampString = "432136801.65397"
+            timestampString = "432551759.066799"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "-testPostBodyIsGeneratedProperlyWithMSISDN"
             landmarkType = "5">
          </BreakpointContent>

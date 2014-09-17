@@ -18,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) UITextField *activeField;
 @property (weak, nonatomic) IBOutlet UISwitch *displayLogSwitch;
-@property (weak, nonatomic) IBOutlet UITextField *marketTextField;
 @property (weak, nonatomic) IBOutlet UITextField *imsiTextField;
 @property (weak, nonatomic) IBOutlet UITextField *backendAppKeyTextField;
 @property (weak, nonatomic) IBOutlet UITextField *clientAppSecretTextField;
@@ -84,7 +83,11 @@
         case VDFErrorServerCommunication: return @"VDFErrorServerCommunication";
         case VDFErrorThrottlingLimitExceeded: return @"VDFErrorThrottlingLimitExceeded";
         case VDFErrorInvalidInput: return @"VDFErrorInvalidInput";
-            
+        case VDFErrorTokenNotFound: return @"VDFErrorTokenNotFound";
+        case VDFErrorWrongOTP: return @"VDFErrorWrongOTP";
+        case VDFErrorApixAuthorization: return @"VDFErrorApixAuthorization";
+        case VDFErrorMsisdnCountryNotSupported: return @"VDFErrorMsisdnCountryNotSupported";
+        case VDFErrorOAuthTokenRetrieval: return @"VDFErrorOAuthTokenRetrieval";
         default:
             return [NSString stringWithFormat:@"%i", errorCode];
     }
@@ -119,9 +122,6 @@
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:self.smsValidationSwitch.isOn];
     if(self.imsiTextField.text != nil && ![self.imsiTextField.text isEqualToString:@""]) {
         options.msisdn = self.imsiTextField.text;
-    }
-    if(self.marketTextField.text != nil && ![self.marketTextField.text isEqualToString:@""]) {
-        options.market = self.marketTextField.text;
     }
     [[VDFUsersService sharedInstance] retrieveUserDetails:options delegate:self];
 }

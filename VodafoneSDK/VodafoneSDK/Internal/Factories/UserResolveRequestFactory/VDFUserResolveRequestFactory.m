@@ -22,6 +22,7 @@
 #import "VDFSettings.h"
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
+#import "VDFUserResolveOptions+Internal.h"
 
 @interface VDFUserResolveRequestFactory ()
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *builder;

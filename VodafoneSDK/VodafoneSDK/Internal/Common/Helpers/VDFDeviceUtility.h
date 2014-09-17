@@ -32,4 +32,15 @@
  */
 + (NSString*)simMCC;
 
+/**
+ *  Compare mcc included in msisdn to available market codes.
+ *
+ *  @param msisdn           MSISDN with mobice country code and phone number without leading 00 and +
+ *  @param availableMarkets Dictionary with markets (e.g @{ @"DE": 49, ... } )
+ *
+ *  @return Market code (e.g. "DE") or nil if msisdn is wrong or mcc from msisdn is not avaialble in markets dictionary
+ */
++ (NSString*)findMarketForMsisdn:(NSString*)msisdn inMarkets:(NSDictionary*)markets;
+
+
 @end

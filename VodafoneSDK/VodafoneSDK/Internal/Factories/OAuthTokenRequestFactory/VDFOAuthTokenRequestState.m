@@ -8,10 +8,13 @@
 
 #import "VDFOAuthTokenRequestState.h"
 #import "VDFOAuthTokenResponse.h"
+#import "VDFHttpConnectorResponse.h"
+#import "VDFError.h"
 
 @interface VDFOAuthTokenRequestState ()
 @property (nonatomic, strong) NSDate *expiresIn;
 @property (nonatomic, assign) BOOL needRetry;
+@property (nonatomic, strong) NSError *error;
 @end
 
 @implementation VDFOAuthTokenRequestState
@@ -25,6 +28,9 @@
 
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
     // if response code is another than 200 then there is an error
+    if(response.httpResponseCode != 200) {
+        self.error = [NSError errorWithDomain:VodafoneErrorDomain code:VDFErrorOAuthTokenRetrieval userInfo:nil];
+    }
     self.needRetry = NO;
 }
 
@@ -52,7 +58,7 @@
 }
 
 - (NSError*)responseError {
-    return nil;
+    return self.error;
 }
 
 @end

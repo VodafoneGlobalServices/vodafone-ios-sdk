@@ -21,11 +21,9 @@
 
 @property (nonatomic, strong) NSString *msisdn;
 
-@property (nonatomic, strong) NSString *market;
-
 - (instancetype)initWithSmsValidation:(BOOL)smsValidation;
 
-- (instancetype)initWithMSISDN:(NSString*)msisdn market:(NSString*)market;
+- (instancetype)initWithMSISDN:(NSString*)msisdn;
 
 - (BOOL)isEqualToOptions:(VDFUserResolveOptions*)options;
 

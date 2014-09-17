@@ -7,6 +7,7 @@
 //
 
 #import "VDFUserResolveOptions.h"
+#import "VDFUserResolveOptions+Internal.h"
 
 @implementation VDFUserResolveOptions
 
@@ -19,12 +20,11 @@
     return self;
 }
 
-- (instancetype)initWithMSISDN:(NSString*)msisdn market:(NSString*)market {
+- (instancetype)initWithMSISDN:(NSString*)msisdn {
     self = [super init];
     if(self) {
         self.smsValidation = YES;
         self.msisdn = msisdn;
-        self.market = market;
     }
     
     return self;

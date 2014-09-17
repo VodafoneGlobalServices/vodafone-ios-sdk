@@ -21,6 +21,8 @@
 #import "VDFSmsSendPinRequestBuilder.h"
 #import "VDFRequestBuilderWithOAuth.h"
 #import "VDFDIContainer.h"
+#import "VDFUserResolveOptions+Internal.h"
+#import "VDFDeviceUtility.h"
 
 @interface VDFUsersService ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
@@ -48,11 +50,36 @@
             options = [[VDFUserResolveOptions alloc] init];
         }
         
-        id builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:delegate];
+        NSError *error = nil;
+        if(options.msisdn == nil) {
+            // TODO we need to check our country code is avaialable on list, if not, we cannot perform this request
+        }
+        else {
+            // msisdn is provided
+            // we need to read market code from msisdn
+            VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+            
+            options.market = [VDFDeviceUtility findMarketForMsisdn:options.msisdn inMarkets:configuration.availableMarkets];
+            
+            if(options.market == nil) {
+                // this phone number is not available for user resolve:
+                error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorMsisdnCountryNotSupported userInfo:nil];
+            }
+        }
         
-        id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
-        
-        [[self.diContainer resolveForClass:[VDFServiceRequestsManager class]] performRequestWithBuilder:builderWithOAuth];
+        if(error != nil) {
+            // there is error so we cannot start the request
+            [delegate didReceivedUserDetails:nil withError:error];
+        }
+        else {
+            // everything looks fine, move forward
+            
+            id builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:delegate];
+            
+            id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
+            
+            [[self.diContainer resolveForClass:[VDFServiceRequestsManager class]] performRequestWithBuilder:builderWithOAuth];
+        }
     }
 }
 

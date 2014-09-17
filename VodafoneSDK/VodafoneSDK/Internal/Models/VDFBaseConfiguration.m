@@ -16,6 +16,7 @@ static NSString * const RequestsThrottlingLimitKey = @"requestsThrottlingLimit";
 static NSString * const RequestsThrottlingPeriodKey = @"requestsThrottlingPeriod";
 static NSString * const ConfigurationLastModifiedDateKey = @"configurationLastModifiedDate";
 static NSString * const ConfigurationUpdateCheckTimeSpanKey = @"configurationUpdateCheckTimeSpan";
+static NSString * const AvailableMarketsKey = @"availableMarkets";
 
 
 @implementation VDFBaseConfiguration
@@ -33,6 +34,7 @@ static NSString * const ConfigurationUpdateCheckTimeSpanKey = @"configurationUpd
         self.requestsThrottlingPeriod = [decoder decodeDoubleForKey:RequestsThrottlingPeriodKey];
         self.configurationLastModifiedDate = [decoder decodeObjectForKey:ConfigurationLastModifiedDateKey];
         self.configurationUpdateCheckTimeSpan = [decoder decodeDoubleForKey:ConfigurationUpdateCheckTimeSpanKey];
+        self.availableMarkets = [decoder decodeObjectForKey:AvailableMarketsKey];
     }
     return self;
 }
@@ -45,6 +47,7 @@ static NSString * const ConfigurationUpdateCheckTimeSpanKey = @"configurationUpd
     [encoder encodeDouble:self.requestsThrottlingPeriod forKey:RequestsThrottlingPeriodKey];
     [encoder encodeObject:self.configurationLastModifiedDate forKey:ConfigurationLastModifiedDateKey];
     [encoder encodeDouble:self.configurationUpdateCheckTimeSpan forKey:ConfigurationUpdateCheckTimeSpanKey];
+    [encoder encodeObject:self.availableMarkets forKey:AvailableMarketsKey];
 }
 
 

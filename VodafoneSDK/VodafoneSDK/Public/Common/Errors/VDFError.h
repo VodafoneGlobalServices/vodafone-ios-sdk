@@ -56,9 +56,17 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      */
     VDFErrorWrongOTP,
     /*!
-     *  Error in authorization over APIX
+     *  Error in authorization over APIX.
      */
     VDFErrorApixAuthorization,
+    /**
+     *  Mobile country code included in msisdn is not supported by user resolve.
+     */
+    VDFErrorMsisdnCountryNotSupported,
+    /*!
+     Problems in communication oAuthToken retrieval from APIX.
+     */
+    VDFErrorOAuthTokenRetrieval,
 };
 
 

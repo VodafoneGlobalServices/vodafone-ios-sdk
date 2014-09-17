@@ -93,6 +93,8 @@
             configuration.oAuthTokenClientSecret = CONFIGURATION_DEFAULT_OAUTH_CLIENT_SECRET;
             configuration.oAuthTokenScope = CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE;
             
+            configuration.availableMarkets = @{ @"DE": @49, @"PT": @353 };
+            
         }
     }
     return configuration;

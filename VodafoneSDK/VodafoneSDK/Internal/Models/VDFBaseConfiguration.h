@@ -85,4 +85,9 @@
  */
 @property (nonatomic, strong) NSString *oAuthTokenScope;
 
+/**
+ *  Dictionary of avaialable markets. (e.g. "DE": 49, "PT": 353, ...)
+ */
+@property (nonatomic, strong) NSDictionary *availableMarkets;
+
 @end

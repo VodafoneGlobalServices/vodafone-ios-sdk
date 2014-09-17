@@ -12,12 +12,35 @@
 
 @class VDFOAuthTokenRequestOptions, VDFDIContainer;
 
+/**
+ *  Builder class of oAuthToken retrieval requests
+ */
 @interface VDFOAuthTokenRequestBuilder : VDFRequestBaseBuilder
 
+/**
+ *  Options of request.
+ */
 @property (nonatomic, strong) VDFOAuthTokenRequestOptions *requestOptions;
+
+/**
+ *  Url for http calls.
+ */
 @property (nonatomic, readonly) NSString *urlEndpointQuery;
+
+/**
+ *  Http method type of http call.
+ */
 @property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
 
+/**
+ *  Initialize builder object of oAuthToken retrievals request.
+ *
+ *  @param options     Request options.
+ *  @param diContainer Dependency injection container.
+ *  @param delegate    Delegate object for callback purpose.
+ *
+ *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
+ */
 - (instancetype)initWithOptions:(VDFOAuthTokenRequestOptions*)options
                     diContainer:(VDFDIContainer*)diContainer
                              delegate:(id<VDFOAuthTokenRequestDelegate>)delegate;

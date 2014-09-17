@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "VDFRequestState.h"
 
+/**
+ *  Request state class of OAuth token
+ */
 @interface VDFOAuthTokenRequestState : NSObject <VDFRequestState>
 
 - (void)setNeedRetryUntilFirstResponse:(BOOL)needRetry;

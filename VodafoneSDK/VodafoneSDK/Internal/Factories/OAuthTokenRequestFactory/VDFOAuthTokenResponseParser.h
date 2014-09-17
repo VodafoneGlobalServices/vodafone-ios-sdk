@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "VDFResponseParser.h"
 
+/**
+ *  Response parser class of oAuth token responses objects
+ */
 @interface VDFOAuthTokenResponseParser : NSObject <VDFResponseParser>
 
 @end

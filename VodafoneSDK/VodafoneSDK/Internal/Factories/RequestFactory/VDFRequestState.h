@@ -45,6 +45,11 @@
  */
 - (NSDate*)lastResponseExpirationDate;
 
+/**
+ *  Error object.
+ *
+ *  @return Error object if any occures or nil if there is no errors.
+ */
 - (NSError*)responseError;
 
 @end

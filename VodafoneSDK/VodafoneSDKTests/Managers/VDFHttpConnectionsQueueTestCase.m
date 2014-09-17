@@ -25,7 +25,7 @@ extern void __gcov_flush();
 @interface VDFHttpConnectionsQueue ()
 // array of VDFPendingRequestItem objects
 @property (nonatomic, strong) NSMutableArray *pendingRequests;
-@property (nonatomic, assign) VDFDIContainer *diContainer;
+@property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) VDFCacheManager *cacheManager;
 
 - (VDFPendingRequestItem*)findRequestItemByBuilder:(id<VDFRequestBuilder>)builder;

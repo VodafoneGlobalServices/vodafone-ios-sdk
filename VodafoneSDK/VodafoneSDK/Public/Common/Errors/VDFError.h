@@ -55,6 +55,10 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      Wrong OTP provided error for Validate PIN.
      */
     VDFErrorWrongOTP,
+    /*!
+     *  Error in authorization over APIX
+     */
+    VDFErrorApixAuthorization,
 };
 
 

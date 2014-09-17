@@ -11,4 +11,6 @@
 
 @interface VDFOAuthTokenRequestState : NSObject <VDFRequestState>
 
+- (void)setNeedRetryUntilFirstResponse:(BOOL)needRetry;
+
 @end

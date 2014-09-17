@@ -27,4 +27,6 @@
  */
 - (instancetype)initWithBuilder:(VDFRequestBaseBuilder*)builder oAuthTokenSetSelector:(SEL)selector;
 
+- (void)setNeedRetryForOAuth:(BOOL)needOAuth;
+
 @end

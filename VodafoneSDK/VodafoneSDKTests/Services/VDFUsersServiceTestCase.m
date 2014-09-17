@@ -26,7 +26,7 @@
 extern void __gcov_flush();
 
 @interface VDFRequestBuilderWithOAuth ()
-@property (nonatomic, strong) VDFRequestBaseBuilder *builder;
+@property (nonatomic, strong) VDFRequestBaseBuilder *activeBuilder;
 @property (nonatomic, assign) SEL selector;
 @end
 
@@ -99,12 +99,12 @@ extern void __gcov_flush();
             return NO;
         }
         VDFRequestBuilderWithOAuth *oAuthBuilder = (VDFRequestBuilderWithOAuth*)obj;
-        if(![oAuthBuilder.builder isKindOfClass:[VDFUserResolveRequestBuilder class]]
+        if(![oAuthBuilder.activeBuilder isKindOfClass:[VDFUserResolveRequestBuilder class]]
            || oAuthBuilder.selector != @selector(setOAuthToken:)) {
             return NO;
         }
         
-        VDFUserResolveRequestBuilder *innerBuilder = (VDFUserResolveRequestBuilder*)oAuthBuilder.builder;
+        VDFUserResolveRequestBuilder *innerBuilder = (VDFUserResolveRequestBuilder*)oAuthBuilder.activeBuilder;
         return [innerBuilder.clientAppKey isEqualToString:self.configuration.clientAppKey]
         &&[innerBuilder.clientAppSecret isEqualToString:self.configuration.clientAppSecret]
         &&[innerBuilder.backendAppKey isEqualToString:self.configuration.backendAppKey]
@@ -126,7 +126,7 @@ extern void __gcov_flush();
     
     // expect that the perform request will be ivoked only once
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
-        VDFSmsSendPinRequestBuilder *innerBuilder = (VDFSmsSendPinRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).builder;
+        VDFSmsSendPinRequestBuilder *innerBuilder = (VDFSmsSendPinRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).activeBuilder;
         return [innerBuilder.sessionToken isEqualToString:[NSString string]];
     }]];
     
@@ -159,12 +159,12 @@ extern void __gcov_flush();
             return NO;
         }
         VDFRequestBuilderWithOAuth *oAuthBuilder = (VDFRequestBuilderWithOAuth*)obj;
-        if(![oAuthBuilder.builder isKindOfClass:[VDFSmsSendPinRequestBuilder class]]
+        if(![oAuthBuilder.activeBuilder isKindOfClass:[VDFSmsSendPinRequestBuilder class]]
            || oAuthBuilder.selector != @selector(setOAuthToken:)) {
             return NO;
         }
         
-        VDFSmsSendPinRequestBuilder *innerBuilder = (VDFSmsSendPinRequestBuilder*)oAuthBuilder.builder;
+        VDFSmsSendPinRequestBuilder *innerBuilder = (VDFSmsSendPinRequestBuilder*)oAuthBuilder.activeBuilder;
         return [innerBuilder.clientAppKey isEqualToString:self.configuration.clientAppKey]
         &&[innerBuilder.clientAppSecret isEqualToString:self.configuration.clientAppSecret]
         &&[innerBuilder.backendAppKey isEqualToString:self.configuration.backendAppKey]
@@ -186,7 +186,7 @@ extern void __gcov_flush();
     
     // expect that the perform request will be ivoked only once
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
-        VDFSmsValidationRequestBuilder *innerBuilder = (VDFSmsValidationRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).builder;
+        VDFSmsValidationRequestBuilder *innerBuilder = (VDFSmsValidationRequestBuilder*)((VDFRequestBuilderWithOAuth*)obj).activeBuilder;
         return [innerBuilder.sessionToken isEqualToString:[NSString string]]
         && [innerBuilder.smsCode isEqualToString:[NSString string]];
     }]];
@@ -222,12 +222,12 @@ extern void __gcov_flush();
             return NO;
         }
         VDFRequestBuilderWithOAuth *oAuthBuilder = (VDFRequestBuilderWithOAuth*)obj;
-        if(![oAuthBuilder.builder isKindOfClass:[VDFSmsValidationRequestBuilder class]]
+        if(![oAuthBuilder.activeBuilder isKindOfClass:[VDFSmsValidationRequestBuilder class]]
            || oAuthBuilder.selector != @selector(setOAuthToken:)) {
             return NO;
         }
         
-        VDFSmsValidationRequestBuilder *innerBuilder = (VDFSmsValidationRequestBuilder*)oAuthBuilder.builder;
+        VDFSmsValidationRequestBuilder *innerBuilder = (VDFSmsValidationRequestBuilder*)oAuthBuilder.activeBuilder;
         return [innerBuilder.clientAppKey isEqualToString:self.configuration.clientAppKey]
         &&[innerBuilder.clientAppSecret isEqualToString:self.configuration.clientAppSecret]
         &&[innerBuilder.backendAppKey isEqualToString:self.configuration.backendAppKey]

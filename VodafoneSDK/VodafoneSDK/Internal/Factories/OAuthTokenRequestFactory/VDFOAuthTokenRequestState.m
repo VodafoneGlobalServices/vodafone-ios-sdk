@@ -10,16 +10,22 @@
 #import "VDFOAuthTokenResponse.h"
 
 @interface VDFOAuthTokenRequestState ()
-@property NSDate *expiresIn;
+@property (nonatomic, strong) NSDate *expiresIn;
+@property (nonatomic, assign) BOOL needRetry;
 @end
 
 @implementation VDFOAuthTokenRequestState
+
+- (void)setNeedRetryUntilFirstResponse:(BOOL)needRetry {
+    self.needRetry = needRetry;
+}
 
 #pragma mark -
 #pragma mark - VDFRequestState Impelemnetation
 
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
     // if response code is another than 200 then there is an error
+    self.needRetry = NO;
 }
 
 - (void)updateWithParsedResponse:(id)parsedResponse {
@@ -30,7 +36,7 @@
 }
 
 - (BOOL)isRetryNeeded {
-    return NO;// not needed
+    return self.needRetry;// not needed
 }
 
 - (NSTimeInterval)retryAfter {

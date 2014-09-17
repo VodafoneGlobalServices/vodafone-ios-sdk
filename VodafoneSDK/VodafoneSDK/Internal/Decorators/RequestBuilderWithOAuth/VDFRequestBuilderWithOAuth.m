@@ -13,29 +13,74 @@
 #import "VDFRequestBaseBuilder.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFDIContainer.h"
+#import "VDFOAuthTokenRequestState.h"
+#import "VDFRequestStateWithOAuth.h"
 
 @interface VDFRequestBuilderWithOAuth ()
-@property (nonatomic, strong) VDFRequestBaseBuilder *builder;
+@property (nonatomic, strong) VDFRequestBaseBuilder *activeBuilder; // currently used builder
+@property (nonatomic, strong) VDFRequestStateWithOAuth *activeRequestState; // currently used request state object
+@property (nonatomic, strong) VDFRequestBaseBuilder *initiallyDecoratedBuilder;
+@property (nonatomic, strong) VDFRequestStateWithOAuth *initiallyDecoratedRequestState;
 @property (nonatomic, assign) SEL selector;
 @property (nonatomic, assign) id restorePointObject;
 @property (nonatomic, assign) SEL restorePointSelector;
 @property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;
+@property (nonatomic, strong) VDFOAuthTokenRequestBuilder *oAuthRequestBuilder;
 @end
 
 @implementation VDFRequestBuilderWithOAuth
 
+@synthesize oAuthRequestBuilder = _oAuthRequestBuilder;
+
 - (instancetype)initWithBuilder:(VDFRequestBaseBuilder*)builder oAuthTokenSetSelector:(SEL)selector {
     self = [super init];
     if(self) {
-        self.builder = builder;
+        self.activeBuilder = builder;
+        self.initiallyDecoratedBuilder = builder;
         self.selector = selector;
         self.oAuthToken = nil;
+        self.oAuthRequestBuilder = nil;
+        
+        self.initiallyDecoratedRequestState = [[VDFRequestStateWithOAuth alloc] initWithRequestState:[builder requestState] andParentBuilder:self];
+        self.activeRequestState = self.initiallyDecoratedRequestState;
     }
     return self;
 }
 
 - (NSString*)description {
-    return [self.builder description];
+    return [self.activeBuilder description];
+}
+
+- (VDFOAuthTokenRequestBuilder*)oAuthRequestBuilder {
+    if(_oAuthRequestBuilder == nil) {
+        VDFBaseConfiguration *configuration = [self.activeBuilder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+        
+        // creating oauthtoken request
+        VDFOAuthTokenRequestOptions *oAuthOptions = [[VDFOAuthTokenRequestOptions alloc] init];
+        oAuthOptions.clientId = configuration.oAuthTokenClientId;
+        oAuthOptions.clientSecret = configuration.oAuthTokenClientSecret;
+        oAuthOptions.scopes = @[configuration.oAuthTokenScope];
+        
+        _oAuthRequestBuilder = [[VDFOAuthTokenRequestBuilder alloc] initWithOptions:oAuthOptions
+                                                                        diContainer:self.activeBuilder.diContainer
+                                                                           delegate:self];
+    }
+    return _oAuthRequestBuilder;
+}
+
+- (void)setNeedRetryForOAuth:(BOOL)needOAuth {
+    if(needOAuth) {
+        // when we need o Auth then we change the currently decorates builder
+        // because call is currenlty pending so we cannot use dependant functionality
+        [((VDFOAuthTokenRequestState*)[self.oAuthRequestBuilder requestState]) setNeedRetryUntilFirstResponse:YES];
+        self.restorePointObject = nil;
+        self.activeBuilder = self.oAuthRequestBuilder;
+        self.activeRequestState = nil;
+    }
+    else {
+        self.activeBuilder = self.initiallyDecoratedBuilder;
+        self.activeRequestState = self.initiallyDecoratedRequestState;
+    }
 }
 
 #pragma mark -
@@ -52,10 +97,16 @@
     else {
         // everything looks fine:
         self.oAuthToken = oAuthToken;
-        [self.builder performSelector:self.selector withObject:self.oAuthToken];
+        [self.initiallyDecoratedBuilder performSelector:self.selector withObject:self.oAuthToken];
         
         // lets move one with this request:
-        [self.restorePointObject performSelector:self.restorePointSelector withObject:self];
+        if(self.restorePointObject != nil) {
+            [self.restorePointObject performSelector:self.restorePointSelector withObject:self];
+        }
+        else {
+            // if restore point is not set, then this response is for expired oAuthToken
+            [self setNeedRetryForOAuth:NO];
+        }
     }
 }
 
@@ -65,22 +116,12 @@
 - (id<VDFRequestBuilder>)dependentRequestBuilder {
     id result = nil;
     
-    if([self.builder respondsToSelector:@selector(dependentRequestBuilder)]) {
-        result = [self.builder dependentRequestBuilder];
+    if([self.activeBuilder respondsToSelector:@selector(dependentRequestBuilder)]) {
+        result = [self.activeBuilder dependentRequestBuilder];
     }
     
     if(result == nil && self.oAuthToken == nil) {
-        VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
-        
-        // creating oauthtoken request
-        VDFOAuthTokenRequestOptions *oAuthOptions = [[VDFOAuthTokenRequestOptions alloc] init];
-        oAuthOptions.clientId = configuration.oAuthTokenClientId;
-        oAuthOptions.clientSecret = configuration.oAuthTokenClientSecret;
-        oAuthOptions.scopes = @[configuration.oAuthTokenScope];
-        
-        return [[VDFOAuthTokenRequestBuilder alloc] initWithOptions:oAuthOptions
-                                                        diContainer:self.builder.diContainer
-                                                           delegate:self];
+        return self.oAuthRequestBuilder;
     }
     
     return result;
@@ -95,24 +136,29 @@
 #pragma mark VDFRequestBuilder implementation as proxy
 
 
-- (id<VDFRequestFactory>)factory { return [self.builder factory]; }
+- (id<VDFRequestFactory>)factory { return [self.activeBuilder factory]; }
 
-- (id<VDFResponseParser>)responseParser { return [self.builder responseParser]; }
+- (id<VDFResponseParser>)responseParser { return [self.activeBuilder responseParser]; }
 
-- (id<VDFRequestState>)requestState { return [self.builder requestState]; }
+- (id<VDFRequestState>)requestState {
+    if(self.activeRequestState != nil) {
+        return self.activeRequestState;
+    }
+    return [self.activeBuilder requestState];
+}
 
-- (id<VDFObserversContainer>)observersContainer { return [self.builder observersContainer]; }
+- (id<VDFObserversContainer>)observersContainer { return [self.activeBuilder observersContainer]; }
 
 - (VDFHttpConnector*)createCurrentHttpConnectorWithDelegate:(id<VDFHttpConnectorDelegate>)delegate {
-    return [self.builder createCurrentHttpConnectorWithDelegate:delegate];
+    return [self.activeBuilder createCurrentHttpConnectorWithDelegate:delegate];
 }
 
 - (BOOL)isEqualToFactoryBuilder:(id<VDFRequestBuilder>)builder {
     if(builder != nil) {
         if([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]]) {
-            return [self.builder isEqualToFactoryBuilder:((VDFRequestBuilderWithOAuth*)builder).builder];
+            return [self.initiallyDecoratedBuilder isEqualToFactoryBuilder:((VDFRequestBuilderWithOAuth*)builder).initiallyDecoratedBuilder];
         }
-        return [self.builder isEqualToFactoryBuilder:builder];
+        return [self.initiallyDecoratedBuilder isEqualToFactoryBuilder:builder];
     }
     return NO;
 }

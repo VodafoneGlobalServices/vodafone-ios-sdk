@@ -89,8 +89,6 @@
             configuration.requestsThrottlingPeriod = CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD;
         
             // oAuth token retrieval configuration:
-            configuration.oAuthTokenClientId = CONFIGURATION_DEFAULT_OAUTH_CLIENT_ID;
-            configuration.oAuthTokenClientSecret = CONFIGURATION_DEFAULT_OAUTH_CLIENT_SECRET;
             configuration.oAuthTokenScope = CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE;
             
             configuration.availableMarkets = @{ @"DE": @49, @"PT": @353 };

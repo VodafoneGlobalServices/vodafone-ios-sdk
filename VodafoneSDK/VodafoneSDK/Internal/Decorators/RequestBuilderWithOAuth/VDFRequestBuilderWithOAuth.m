@@ -57,8 +57,8 @@
         
         // creating oauthtoken request
         VDFOAuthTokenRequestOptions *oAuthOptions = [[VDFOAuthTokenRequestOptions alloc] init];
-        oAuthOptions.clientId = configuration.oAuthTokenClientId;
-        oAuthOptions.clientSecret = configuration.oAuthTokenClientSecret;
+        oAuthOptions.clientId = configuration.clientAppKey;
+        oAuthOptions.clientSecret = configuration.clientAppSecret;
         oAuthOptions.scopes = @[configuration.oAuthTokenScope];
         
         _oAuthRequestBuilder = [[VDFOAuthTokenRequestBuilder alloc] initWithOptions:oAuthOptions

@@ -22,6 +22,7 @@
 #import "VDFOAuthTokenResponse.h"
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
+#import "VDFUserResolveOptions+Internal.h"
 
 @interface VDFUserResolveRequestFactory ()
 - (NSData*)postBody;
@@ -179,7 +180,8 @@
 - (void)testPostBodyIsGeneratedProperlyWithMSISDN {
     
     // mock
-    id optionsWithMSISDN = [[VDFUserResolveOptions alloc] initWithMSISDN:@"some msisdn" market:@"some market"];
+    VDFUserResolveOptions *optionsWithMSISDN = [[VDFUserResolveOptions alloc] initWithMSISDN:@"some msisdn"];
+    optionsWithMSISDN.market = @"some market";
     
     // stub
     [[[self.mockBuilder stub] andReturn:optionsWithMSISDN] requestOptions];

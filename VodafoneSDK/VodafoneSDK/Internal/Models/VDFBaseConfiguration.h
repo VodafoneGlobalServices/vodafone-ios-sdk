@@ -71,16 +71,6 @@
 @property (nonatomic, assign) NSTimeInterval requestsThrottlingPeriod;
 
 /**
- *  Client id for oAuthToken retrieval.
- */
-@property (nonatomic, strong) NSString *oAuthTokenClientId;
-
-/**
- *  Client secret for oAuthToken retrieval.
- */
-@property (nonatomic, strong) NSString *oAuthTokenClientSecret;
-
-/**
  *  Scope for oAuthToken retrieval.
  */
 @property (nonatomic, strong) NSString *oAuthTokenScope;

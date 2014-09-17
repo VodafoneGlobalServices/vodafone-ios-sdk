@@ -10,8 +10,6 @@
 #define VodafoneSDK_VDFConsts_h
 
 #pragma mark - Configuration consts:
-static NSString * const CONFIGURATION_DEFAULT_OAUTH_CLIENT_ID = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
-static NSString * const CONFIGURATION_DEFAULT_OAUTH_CLIENT_SECRET = @"k4l1RXZGqMnw2cD8";
 static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"SSO_OAUTH2_INPUT";
 
 static NSString * const CONFIGURATION_DEFAULT_HAP_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";

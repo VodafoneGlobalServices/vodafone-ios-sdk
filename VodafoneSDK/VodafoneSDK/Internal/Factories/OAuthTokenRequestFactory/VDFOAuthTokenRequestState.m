@@ -28,7 +28,7 @@
 
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
     // if response code is another than 200 then there is an error
-    if(response.httpResponseCode != 200) {
+    if(response == nil || response.httpResponseCode != 200) {
         self.error = [NSError errorWithDomain:VodafoneErrorDomain code:VDFErrorOAuthTokenRetrieval userInfo:nil];
     }
     self.needRetry = NO;

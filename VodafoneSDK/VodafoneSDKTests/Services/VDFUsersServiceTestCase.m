@@ -22,6 +22,8 @@
 #import "VDFObserversContainer.h"
 #import "VDFSmsSendPinRequestBuilder.h"
 #import "VDFSmsValidationRequestBuilder.h"
+#import "VDFUserResolveOptions.h"
+#import "VDFUserResolveOptions+Internal.h"
 
 extern void __gcov_flush();
 
@@ -85,10 +87,12 @@ extern void __gcov_flush();
 - (void)testRetrieveUserDetailsIsRequestPerformingProperly {
     
     // mock
-    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:YES];
+    id options = OCMPartialMock([[VDFUserResolveOptions alloc] initWithSmsValidation:YES]);
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub
+    [[[options stub] andReturn:@"somethig stub"] msisdn];
+    [[[options stub] andReturn:@"somethig stub"] market];
     self.configuration.clientAppKey = @"some client app key";
     self.configuration.clientAppSecret = @"some client app secret";
     self.configuration.backendAppKey = @"some backend app key";

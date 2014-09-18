@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../VodafoneSDK/VodafoneSDK/Public/Services/Users/VDFUsersService.m"
-            timestampString = "432671015.173252"
+            timestampString = "432734230.200535"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "-retrieveUserDetails:delegate:"
             landmarkType = "5">
          </BreakpointContent>

@@ -67,6 +67,10 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      Problems in communication oAuthToken retrieval from APIX.
      */
     VDFErrorOAuthTokenRetrieval,
+    /*!
+     User resolve cannot be continued because device is in onther cellurar than Vodafone.
+     */
+    VDFErrorOutOfVodafoneCellular,
 };
 
 

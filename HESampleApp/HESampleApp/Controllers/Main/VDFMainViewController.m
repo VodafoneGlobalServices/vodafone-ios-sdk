@@ -88,6 +88,7 @@
         case VDFErrorApixAuthorization: return @"VDFErrorApixAuthorization";
         case VDFErrorMsisdnCountryNotSupported: return @"VDFErrorMsisdnCountryNotSupported";
         case VDFErrorOAuthTokenRetrieval: return @"VDFErrorOAuthTokenRetrieval";
+        case VDFErrorOutOfVodafoneCellular: return @"VDFErrorOutOfVodafoneCellular";
         default:
             return [NSString stringWithFormat:@"%i", errorCode];
     }

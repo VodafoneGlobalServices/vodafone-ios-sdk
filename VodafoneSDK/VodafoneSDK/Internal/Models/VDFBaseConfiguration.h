@@ -76,8 +76,13 @@
 @property (nonatomic, strong) NSString *oAuthTokenScope;
 
 /**
- *  Dictionary of avaialable markets. (e.g. "DE": 49, "PT": 353, ...)
+ *  Dictionary of avaialable markets. (e.g. { "DE": 49, "PT": 353, ... } )
  */
 @property (nonatomic, strong) NSDictionary *availableMarkets;
+
+/**
+ *  Dictionary of avaialable MCC and MNC combinations, used to validate that you are vodafone user. (e.g. [ "26202", "26204", ... ])
+ */
+@property (nonatomic, strong) NSArray *availableMccMnc;
 
 @end

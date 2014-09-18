@@ -52,7 +52,16 @@
         
         NSError *error = nil;
         if(options.msisdn == nil) {
-            // TODO we need to check our country code is avaialable on list, if not, we cannot perform this request
+            NSString *mccMnc = [VDFDeviceUtility simMccMnc];
+            VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+            if(mccMnc != nil) {
+                if(![configuration.availableMccMnc containsObject:mccMnc]) {
+                    error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOutOfVodafoneCellular userInfo:nil];
+                }
+            }
+            else {
+                error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoGSMConnection userInfo:nil];
+            }
         }
         else {
             // msisdn is provided

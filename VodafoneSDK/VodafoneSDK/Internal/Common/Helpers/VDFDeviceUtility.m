@@ -25,6 +25,16 @@
     return [carrier mobileCountryCode];
 }
 
++ (NSString*)simMccMnc {
+    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
+    NSString *mcc = [carrier mobileCountryCode];
+    NSString *mnc = [carrier mobileNetworkCode];
+    if(mcc != nil && mnc != nil) {
+        return [mcc stringByAppendingString:mnc];
+    }
+    return nil;
+}
 
 + (NSString*)findMarketForMsisdn:(NSString*)msisdn inMarkets:(NSDictionary*)markets {
 

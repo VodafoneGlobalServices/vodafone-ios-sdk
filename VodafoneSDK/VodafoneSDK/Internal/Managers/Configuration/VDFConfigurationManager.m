@@ -92,7 +92,7 @@
             configuration.oAuthTokenScope = CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE;
             
             configuration.availableMarkets = @{ @"DE": @49, @"PT": @353 };
-            
+            configuration.availableMccMnc = @[ @"26202", @"26204" ];
         }
     }
     return configuration;

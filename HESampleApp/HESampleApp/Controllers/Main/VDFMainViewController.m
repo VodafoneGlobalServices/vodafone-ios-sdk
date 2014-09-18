@@ -151,12 +151,12 @@
 }
 
 - (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)error {
-    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorName=%@", response.smsCode, response.isSucceded, [self vdfErrorCodeToString:[error code]]];
+    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorName=%@", response.smsCode, response.isSucceded, error != nil ? [self vdfErrorCodeToString:[error code]] : @""];
     [self recalculateScrollViewContent];
 }
 
 - (void)didSMSPinRequested:(NSNumber *)isSuccess withError:(NSError *)error {
-    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didSMSPinRequested: success=%@, errorName=%@", isSuccess, [self vdfErrorCodeToString:[error code]]];
+    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didSMSPinRequested: success=%@, errorName=%@", isSuccess, error != nil ? [self vdfErrorCodeToString:[error code]] : @""];
     [self recalculateScrollViewContent];
 }
 

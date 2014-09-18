@@ -13,6 +13,11 @@
 #import "VDFHttpConnectorResponse.h"
 #import "VDFConsts.h"
 
+@interface VDFUserResolveResponseParser ()
+@property (nonatomic, strong) NSString *last302LocationHeader;
+@property (nonatomic, strong) NSString *lastResponseEtagHeader;
+@end
+
 @implementation VDFUserResolveResponseParser
 
 - (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
@@ -50,28 +55,48 @@
     }
     else if(response.httpResponseCode == 302) {
         
-        // TODO if it is first response of check status we should not inform delegates so we need to not parse it
+        NSString *locationHeader = [response.responseHeaders objectForKey:HTTP_HEADER_LOCATION];
+        NSString *eTagHeader = [response.responseHeaders objectForKey:HTTP_HEADER_ETAG];
         
-        userTokenDetails = [[VDFUserTokenDetails alloc] init];
-        userTokenDetails.stillRunning = YES;
-        userTokenDetails.resolved = NO;
+        // if it is first response of check status we should not inform delegates so we need to not parse it
         
-        // try to parse the location header
-        NSString *location = [response.responseHeaders objectForKey:HTTP_HEADER_LOCATION];
-        if(location != nil) {
-            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"/users/tokens/([^?/]+)[?/]" options:NSRegularExpressionCaseInsensitive error:nil];
+        // so we parse the response when, it is first redirect (from resolve)
+        BOOL parseResponse = self.last302LocationHeader == nil && self.lastResponseEtagHeader == nil;
+        // or when location header has changed
+        parseResponse = parseResponse || ![self.last302LocationHeader isEqualToString:locationHeader];
+        // or etag value has changed
+        parseResponse = parseResponse || (self.lastResponseEtagHeader != nil && ![self.lastResponseEtagHeader isEqualToString:eTagHeader]);
+        
+        if(parseResponse) {
+        
+            userTokenDetails = [[VDFUserTokenDetails alloc] init];
+            userTokenDetails.stillRunning = YES;
+            userTokenDetails.resolved = NO;
             
-            NSArray *matches = [regex matchesInString:location options:0 range:NSMakeRange(0, [location length])];
-            NSTextCheckingResult *match = [matches objectAtIndex:0];
-            
-            if(match != nil) {
-                userTokenDetails.token = [location substringWithRange:NSMakeRange(match.range.location+14, match.range.length-15)];
-            }
-            
-            if([location rangeOfString:@"/pins?backendId="].location != NSNotFound) {
-                userTokenDetails.validationRequired = YES;
+            // try to parse the location header
+            if(locationHeader != nil) {
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"/users/tokens/([^?/]+)[?/]" options:NSRegularExpressionCaseInsensitive error:nil];
+                
+                NSArray *matches = [regex matchesInString:locationHeader options:0 range:NSMakeRange(0, [locationHeader length])];
+                NSTextCheckingResult *match = [matches objectAtIndex:0];
+                
+                if(match != nil) {
+                    userTokenDetails.token = [locationHeader substringWithRange:NSMakeRange(match.range.location+14, match.range.length-15)];
+                }
+                
+                if([locationHeader rangeOfString:@"/pins?backendId="].location != NSNotFound) {
+                    userTokenDetails.validationRequired = YES;
+                }
             }
         }
+        
+        self.last302LocationHeader = locationHeader;
+        self.lastResponseEtagHeader = eTagHeader;
+    }
+    
+    if(response.httpResponseCode != 302) {
+        self.last302LocationHeader = nil;
+        self.lastResponseEtagHeader = nil;
     }
     
     return userTokenDetails;

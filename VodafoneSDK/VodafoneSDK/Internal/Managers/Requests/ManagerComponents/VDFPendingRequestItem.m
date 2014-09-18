@@ -41,7 +41,6 @@
         self.diContainer = diContainer;
         self.builder = builder;
         self.parentQueue = parentQueue;
-        self.numberOfRetries = 0;
         self.cacheManager = cacheManager;
     }
     return self;
@@ -119,34 +118,24 @@
 - (void)retryRequest {
     
     VDFLogD(@"Retrying request.");
-    self.numberOfRetries++;
     
     VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-    if(self.numberOfRetries > configuration.maxHttpRequestRetriesCount) {
-        VDFLogD(@"We run out of the limit, so need to cancel request:\n%@", self.builder);
-        // we run out of the limit, so need to return an error and remove this request:
-        [self onInternalConnectionError:VDFErrorConnectionTimeout];
-    }
-    else {
+    VDFLogD(@"Dispatching retry request (after %f ms):\n%@", [[self.builder requestState] retryAfter], self.builder);
+    // we still stay in the limit, so wait and make the request
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, [[self.builder requestState] retryAfter] * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
         
-        VDFLogD(@"Dispatching retry request (after %f ms):\n%@", [[self.builder requestState] retryAfter], self.builder);
-        // we still stay in the limit, so wait and make the request
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, [[self.builder requestState] retryAfter] * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
-            
-            // check is ther still waiting delegates
-            if([[self.builder observersContainer] count] > 0) {
-                [self startHttpRequest];
-            }
-            else {
-                VDFLogD(@"Nobody is waiting, removing request:%@", self.builder);
-                self.isRunning = NO;
-                // if nobody is waiting, so we can remove this request:
-                [self safeDequeueRequest];
-            }
-        });
-    }
-    
+        // check is ther still waiting delegates
+        if([[self.builder observersContainer] count] > 0) {
+            [self startHttpRequest];
+        }
+        else {
+            VDFLogD(@"Nobody is waiting, removing request:%@", self.builder);
+            self.isRunning = NO;
+            // if nobody is waiting, so we can remove this request:
+            [self safeDequeueRequest];
+        }
+    });
 }
 
 - (void)safeDequeueRequest {

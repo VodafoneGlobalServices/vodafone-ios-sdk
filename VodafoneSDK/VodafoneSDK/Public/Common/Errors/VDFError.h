@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-static NSString * const VodafoneErrorDomain = @"com.vodafone.sdk";
+static NSString * const VodafoneErrorDomain = @"com.vodafone.seamlessIdSdk.ErrorDomain";
 
 /*!
  @typedef NS_ENUM (NSUInteger, VDFErrorCode)
@@ -32,10 +32,6 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      */
     VDFErrorNoGSMConnection,
     /*!
-     Provided validation SMS token is invalid
-     */
-    VDFErrorInvalidSMSToken,
-    /*!
      Problems in communication with server.
      */
     VDFErrorServerCommunication,
@@ -52,9 +48,9 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      */
     VDFErrorTokenNotFound,
     /*!
-     Wrong OTP provided error for Validate PIN.
+     Wrong sms code provided for Validate PIN.
      */
-    VDFErrorWrongOTP,
+    VDFErrorWrongSmsCode,
     /*!
      *  Error in authorization over APIX.
      */

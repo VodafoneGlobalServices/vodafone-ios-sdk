@@ -56,11 +56,6 @@
 @property (nonatomic, assign) NSTimeInterval httpRequestRetryTimeSpan;
 
 /**
- *  Number of maximum requests retries.
- */
-@property (nonatomic, assign) NSInteger maxHttpRequestRetriesCount;
-
-/**
  *  Number of maximum requests which can be performed in specified time period.
  */
 @property (nonatomic, assign) NSInteger requestsThrottlingLimit;

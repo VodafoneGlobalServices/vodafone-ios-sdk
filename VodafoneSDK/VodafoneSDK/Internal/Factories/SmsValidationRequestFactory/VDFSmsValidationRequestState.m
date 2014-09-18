@@ -29,7 +29,7 @@
             errorCode = VDFErrorTokenNotFound;
         }
         if(response.httpResponseCode == 409) {
-            errorCode = VDFErrorWrongOTP;
+            errorCode = VDFErrorWrongSmsCode;
         }
         self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     }

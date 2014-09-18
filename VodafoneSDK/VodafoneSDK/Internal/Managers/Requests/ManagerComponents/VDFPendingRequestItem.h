@@ -35,11 +35,6 @@
 @property (nonatomic, strong) id<VDFRequestBuilder> builder;
 
 /**
- *  Number of all http requests made for this holder
- */
-@property (nonatomic, assign) NSInteger numberOfRetries;
-
-/**
  *  Starts request.
  */
 - (void)startRequest;

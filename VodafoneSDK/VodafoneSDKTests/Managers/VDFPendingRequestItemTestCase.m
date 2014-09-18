@@ -243,42 +243,13 @@ extern void __gcov_flush();
 }
 
 
-
-
-- (void)testRetryRequestWhenNumberOfRetriesExceeds {
-    
-    // mock
-    self.itemToTest.numberOfRetries = 2;
-    
-    // stub
-    [[[self.mockConfiguration stub] andReturnValue:@1] maxHttpRequestRetriesCount];
-    [[[self.mockConfiguration stub] andReturnValue:@36000.0] requestsThrottlingPeriod];
-    [[[self.mockConfiguration stub] andReturnValue:@1] requestsThrottlingLimit];
-    [[[self.mockConfiguration stub] andReturnValue:@1] httpRequestRetryTimeSpan];
-    
-    // expect that the on error method will be fired
-    [[self.itemToTestPartialMock expect] onInternalConnectionError:VDFErrorConnectionTimeout];
-    
-    // expect that the http request wont be started again
-    [[self.itemToTestPartialMock reject] startHttpRequest];
-    
-    // run
-    [self.itemToTestPartialMock retryRequest];
-    
-    // verify
-    XCTAssertEqual(self.itemToTest.numberOfRetries, 3, @"After retrying request number of retries should +=1");
-    [self.itemToTestPartialMock verifyWithDelay:2];
-}
-
 - (void)testRetryRequestWhenObserversNotAvailable {
     
     // mock
     self.itemToTest.isRunning = YES;
-    self.itemToTest.numberOfRetries = 0;
     
     
     // stub
-    [[[self.mockConfiguration stub] andReturnValue:@5] maxHttpRequestRetriesCount];
     [[[self.mockConfiguration stub] andReturnValue:@3.0] requestsThrottlingPeriod];
     [[[self.mockConfiguration stub] andReturnValue:@5] requestsThrottlingLimit];
     
@@ -305,7 +276,6 @@ extern void __gcov_flush();
     
     // verify
     [self.itemToTestPartialMock verifyWithDelay:2];
-    XCTAssertEqual(self.itemToTest.numberOfRetries, 1, @"After retrying request number of retries should +=1");
     XCTAssertFalse(self.itemToTest.isRunning, @"After retrying request and no observers are waiting the isRunning flag should be set to NO.");
     [self.mockObserversContainer verify];
     [self.mockConfiguration verify];
@@ -315,11 +285,9 @@ extern void __gcov_flush();
     
     // mock
     self.itemToTest.isRunning = YES;
-    self.itemToTest.numberOfRetries = 0;
 
     
     // stub
-    [[[self.mockConfiguration stub] andReturnValue:@5] maxHttpRequestRetriesCount];
     [[[self.mockConfiguration stub] andReturnValue:@3.0] requestsThrottlingPeriod];
     [[[self.mockConfiguration stub] andReturnValue:@5] requestsThrottlingLimit];
     
@@ -345,7 +313,6 @@ extern void __gcov_flush();
     
     
     // verify
-    XCTAssertEqual(self.itemToTest.numberOfRetries, 1, @"After retrying request number of retries should +=1");
     XCTAssertTrue(self.itemToTest.isRunning, @"After retrying request and no observers are waiting the isRunning flag should not change.");
     [self.itemToTestPartialMock verifyWithDelay:2];
     [self.mockObserversContainer verify];

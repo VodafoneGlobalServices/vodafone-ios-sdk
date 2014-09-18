@@ -79,12 +79,11 @@
         case VDFErrorNoConnection: return @"VDFErrorNoConnection";
         case VDFErrorConnectionTimeout: return @"VDFErrorConnectionTimeout";
         case VDFErrorNoGSMConnection: return @"VDFErrorNoGSMConnection";
-        case VDFErrorInvalidSMSToken: return @"VDFErrorInvalidSMSToken";
         case VDFErrorServerCommunication: return @"VDFErrorServerCommunication";
         case VDFErrorThrottlingLimitExceeded: return @"VDFErrorThrottlingLimitExceeded";
         case VDFErrorInvalidInput: return @"VDFErrorInvalidInput";
         case VDFErrorTokenNotFound: return @"VDFErrorTokenNotFound";
-        case VDFErrorWrongOTP: return @"VDFErrorWrongOTP";
+        case VDFErrorWrongSmsCode: return @"VDFErrorWrongSmsCode";
         case VDFErrorApixAuthorization: return @"VDFErrorApixAuthorization";
         case VDFErrorMsisdnCountryNotSupported: return @"VDFErrorMsisdnCountryNotSupported";
         case VDFErrorOAuthTokenRetrieval: return @"VDFErrorOAuthTokenRetrieval";

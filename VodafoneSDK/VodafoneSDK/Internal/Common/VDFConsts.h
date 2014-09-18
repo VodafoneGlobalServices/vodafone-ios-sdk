@@ -21,7 +21,6 @@ static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"http://SeamId-40
 static NSTimeInterval const CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN = 43200; // in secodns, 12 hours
 static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT = 60.0; // default 60 seconds timeout
 static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN = 5000; // default time span for retry request is 5 second
-static NSInteger const CONFIGURATION_DEFAULT_MAX_HTTP_REQUEST_RETRIES_COUNT = 100;
 static NSInteger const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT = 100;
 static NSTimeInterval const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD = 60.0; // 60 seconds
 

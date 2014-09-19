@@ -7,6 +7,7 @@
 //
 
 #import "VDFMainViewController.h"
+#import <MessageUI/MessageUI.h>
 #import <VodafoneSDK/VodafoneSDK.h>
 
 @interface VDFMainViewController ()
@@ -30,6 +31,7 @@
 - (IBAction)textFieldDidEndEditing:(UITextField*)textField;
 - (IBAction)onClearOutputButtonClick:(id)sender;
 - (IBAction)onSendSMSPinButtonClick:(id)sender;
+- (IBAction)onSendLogsButtonClick:(id)sender;
 
 - (void)keyboardWasShown:(NSNotification*)aNotification;
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification;
@@ -141,6 +143,44 @@
     [self hideKeyboard];
     
     [[VDFUsersService sharedInstance] sendSmsPinInSession:self.smsCodeSessionTokenTextField.text delegate:self];
+}
+
+- (IBAction)onSendLogsButtonClick:(id)sender {
+    NSString *emailTitle = [NSString stringWithFormat: @"Seamless Id Error Report (%@)", [NSDate date]];
+    NSString *messageBody = self.outputTextView.text;
+    NSArray *toRecipents = [NSArray arrayWithObject:@"michal.szymanczyk@mobica.com"];
+    
+    MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+    mc.mailComposeDelegate = self;
+    [mc setSubject:emailTitle];
+    [mc setMessageBody:messageBody isHTML:NO];
+    [mc setToRecipients:toRecipents];
+    
+    [self presentViewController:mc animated:YES completion:NULL];
+}
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate Implementation
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    // dismiss email interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark -

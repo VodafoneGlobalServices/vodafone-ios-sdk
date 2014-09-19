@@ -11,6 +11,7 @@
 		491101FE1973FC14006325C5 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491101FD1973FC14006325C5 /* MainView.xib */; };
 		491102021973FC56006325C5 /* VDFMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491102011973FC56006325C5 /* VDFMainViewController.m */; };
 		49809CDD197E55CB003F5C66 /* libVodafoneSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 491C2C0719790D1C00C7FB54 /* libVodafoneSDK.a */; };
+		4983375F19CC716A0093D457 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4983375E19CC716A0093D457 /* MessageUI.framework */; };
 		498EA30719829A8600122F05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA30619829A8600122F05 /* SystemConfiguration.framework */; };
 		4990BFB919923C83005EED39 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA30619829A8600122F05 /* SystemConfiguration.framework */; };
 		49A157FF196BFC7800642677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A157FE196BFC7800642677 /* Foundation.framework */; };
@@ -62,6 +63,7 @@
 		491102001973FC56006325C5 /* VDFMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFMainViewController.h; path = Controllers/Main/VDFMainViewController.h; sourceTree = "<group>"; };
 		491102011973FC56006325C5 /* VDFMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFMainViewController.m; path = Controllers/Main/VDFMainViewController.m; sourceTree = "<group>"; };
 		491C2C0019790D1C00C7FB54 /* VodafoneSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = VodafoneSDK.xcodeproj; path = ../VodafoneSDK/VodafoneSDK.xcodeproj; sourceTree = "<group>"; };
+		4983375E19CC716A0093D457 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		498EA30619829A8600122F05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		49A157FB196BFC7800642677 /* HESampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HESampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49A157FE196BFC7800642677 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -85,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4983375F19CC716A0093D457 /* MessageUI.framework in Frameworks */,
 				490D4DB719A5E7CA00DA3D94 /* CoreTelephony.framework in Frameworks */,
 				498EA30719829A8600122F05 /* SystemConfiguration.framework in Frameworks */,
 				49809CDD197E55CB003F5C66 /* libVodafoneSDK.a in Frameworks */,
@@ -178,6 +181,7 @@
 		49A157FD196BFC7800642677 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4983375E19CC716A0093D457 /* MessageUI.framework */,
 				490D4DB619A5E7CA00DA3D94 /* CoreTelephony.framework */,
 				498EA30619829A8600122F05 /* SystemConfiguration.framework */,
 				49A157FE196BFC7800642677 /* Foundation.framework */,

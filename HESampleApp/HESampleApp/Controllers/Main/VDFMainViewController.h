@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import <VodafoneSDK/VodafoneSDK.h>
 
-@interface VDFMainViewController : UIViewController <VDFUsersServiceDelegate, VDFMessageLogger>
+@interface VDFMainViewController : UIViewController <VDFUsersServiceDelegate, VDFMessageLogger, MFMailComposeViewControllerDelegate>
 
 @end

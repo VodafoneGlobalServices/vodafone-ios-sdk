@@ -32,6 +32,10 @@
  */
 @property (nonatomic, assign) BOOL isGSMConnectionRequired;
 /**
+ *  Flag for setting redirect behaviour, if set to YES then automatic http redirect will be performed. Default is YES.
+ */
+@property (nonatomic, assign) BOOL allowRedirects;
+/**
  *  Timeout of http/https communication.
  */
 @property (nonatomic, assign) NSTimeInterval connectionTimeout;

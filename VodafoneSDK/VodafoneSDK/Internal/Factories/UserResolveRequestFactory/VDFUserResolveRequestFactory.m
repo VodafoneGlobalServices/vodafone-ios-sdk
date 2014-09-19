@@ -79,6 +79,7 @@
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodGET;
     httpRequest.url = requestUrl;
+    httpRequest.allowRedirects = NO;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
     httpRequest.requestHeaders = @{HTTP_HEADER_AUTHORIZATION: authorizationHeader,
@@ -98,6 +99,7 @@
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodPOST;
     httpRequest.postBody = [self postBody];
+    httpRequest.allowRedirects = NO;
     
     
     NSString * requestUrl = nil;

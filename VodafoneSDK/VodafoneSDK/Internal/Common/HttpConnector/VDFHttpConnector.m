@@ -47,6 +47,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         self.connectionTimeout = 60.0; // default if is not set from outside
         _lastResponseCode = 0;
         self.isConnectionOpen = NO;
+        self.allowRedirects = YES;
     }
     return self;
 }
@@ -188,14 +189,14 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 #pragma mark NSURLConnectionDelegate
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse {
-    if(redirectResponse) {
+    if(redirectResponse && !self.allowRedirects) {
         return nil;
     }
     else {
         return request;
     }
 }
-
+/*
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
@@ -208,7 +209,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
-
+*/
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
     [self.receivedData setLength:0];
     _lastResponseCode = [(NSHTTPURLResponse*)response statusCode];

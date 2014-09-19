@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      */
     VDFErrorOAuthTokenRetrieval,
     /*!
-     User resolve cannot be continued because device is in onther cellurar than Vodafone.
+     User resolve cannot be continued because device is in another cellurar network than Vodafone.
      */
     VDFErrorOutOfVodafoneCellular,
 };

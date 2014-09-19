@@ -33,7 +33,7 @@
     VDFErrorApixAuthorization - when error in authorization over APIX occures,
     VDFErrorMsisdnCountryNotSupported - when mobile country code included in msisdn is not supported by user resolve,
     VDFErrorOAuthTokenRetrieval - when unhandled erorr occures in oAuthToken retrieval process over APIX,
-    VDFErrorOutOfVodafoneCellular - when msisdn was not provided in user resolv call and user resolve cannot be continued because device is in onther cellurar network than Vodafone
+    VDFErrorOutOfVodafoneCellular - when msisdn was not provided in user resolv call and user resolve cannot be continued because device is in another cellurar network than Vodafone
  */
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error;
 

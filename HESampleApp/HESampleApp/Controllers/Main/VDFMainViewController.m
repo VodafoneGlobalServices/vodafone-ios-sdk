@@ -93,12 +93,12 @@
     }
 }
 
-- (NSString*)resolutionStatusToString:(ResolutionStatus)resolutionStatus {
+- (NSString*)resolutionStatusToString:(VDFResolutionStatus)resolutionStatus {
     switch (resolutionStatus) {
-        case ResolutionStatusCompleted: return @"ResolutionStatusCompleted";
-        case ResolutionStatusPending: return @"ResolutionStatusPending";
-        case ResolutionStatusFailed: return @"ResolutionStatusFailed";
-        case ResolutionStatusValidationRequired: return @"ResolutionStatusValidationRequired";
+        case VDFResolutionStatusCompleted: return @"VDFResolutionStatusCompleted";
+        case VDFResolutionStatusPending: return @"VDFResolutionStatusPending";
+        case VDFResolutionStatusFailed: return @"VDFResolutionStatusFailed";
+        case VDFResolutionStatusValidationRequired: return @"VDFResolutionStatusValidationRequired";
         default:
             return [NSString stringWithFormat:@"%i", resolutionStatus];
     }

@@ -37,12 +37,12 @@
             if(jsonObject != nil && [jsonObject isKindOfClass:[NSDictionary class]]) {
                 // object parsed correctlly
                 userTokenDetails = [[VDFUserTokenDetails alloc] init];
-                userTokenDetails.resolutionStatus = ResolutionStatusCompleted;
+                userTokenDetails.resolutionStatus = VDFResolutionStatusCompleted;
                 userTokenDetails.acr = [jsonObject objectForKey:@"acr"];
                 userTokenDetails.token = [jsonObject objectForKey:@"token"];
                 id expiresInObject = [jsonObject objectForKey:@"expiresIn"];
                 if(expiresInObject != nil) {
-                    userTokenDetails.expiresIn = [NSDate dateWithTimeIntervalSinceNow:[expiresInObject intValue]];
+                    userTokenDetails.expiresIn = [NSDate dateWithTimeIntervalSinceNow:[expiresInObject intValue]/1000.0];
                 }
             }
             VDFLogD(@"Parsed object: \n%@", userTokenDetails);
@@ -50,7 +50,7 @@
     }
     else if(response.httpResponseCode == 404) {
         userTokenDetails = [[VDFUserTokenDetails alloc] init];
-        userTokenDetails.resolutionStatus = ResolutionStatusFailed;
+        userTokenDetails.resolutionStatus = VDFResolutionStatusFailed;
     }
     else if(response.httpResponseCode == 302) {
         
@@ -70,7 +70,7 @@
         
             userTokenDetails = [[VDFUserTokenDetails alloc] init];
             
-            userTokenDetails.resolutionStatus = ResolutionStatusPending;
+            userTokenDetails.resolutionStatus = VDFResolutionStatusPending;
             
             // try to parse the location header
             if(locationHeader != nil) {
@@ -84,7 +84,7 @@
                 }
                 
                 if([locationHeader rangeOfString:@"/pins?backendId="].location != NSNotFound) {
-                    userTokenDetails.resolutionStatus = ResolutionStatusValidationRequired;
+                    userTokenDetails.resolutionStatus = VDFResolutionStatusValidationRequired;
                 }
             }
         }

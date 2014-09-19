@@ -11,26 +11,26 @@
 /**
  *  Types of statuses for user resolve process.
  */
-typedef NS_ENUM(NSInteger, ResolutionStatus) {
+typedef NS_ENUM(NSInteger, VDFResolutionStatus) {
     /**
      *  User resolve process has finished with success.
      */
-    ResolutionStatusCompleted = 0,
+    VDFResolutionStatusCompleted = 0,
     /**
      *  Resolution of the user identity is still ongoing. 
      *  At this stage the backend has no clraity yest if the resolution will be completed by asking for OTP validation or not.
      */
-    ResolutionStatusPending,
+    VDFResolutionStatusPending,
     /**
      *  The resolution of the user indentity has failed because no MSISDN header enrichement or IMSI have been helpful.
      *  The client might try to ask the phone number to the user and proceed with the Resolve API call including it for OTP validation.
      */
-    ResolutionStatusFailed,
+    VDFResolutionStatusFailed,
     /**
      *  Resolution of the user identity requires OTP validation.
      *  The client SDK should proceed by calling the Generate PIN API.
      */
-    ResolutionStatusValidationRequired,
+    VDFResolutionStatusValidationRequired,
 };
 
 @interface VDFUserTokenDetails : NSObject <NSCoding>
@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, ResolutionStatus) {
 /**
  *  Status of currently pending resolve process.
  */
-@property (nonatomic, assign) ResolutionStatus resolutionStatus;
+@property (nonatomic, assign) VDFResolutionStatus resolutionStatus;
 
 /**
  *  The session token used to identify this client session 

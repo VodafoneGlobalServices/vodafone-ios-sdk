@@ -8,11 +8,10 @@
 
 #import "VDFUserTokenDetails.h"
 
-static NSString * const ResolvedKey = @"resolved";
-static NSString * const StillRunningKey = @"stillRunning";
+static NSString * const ResolutionStatusKey = @"resolutionStatus";
 static NSString * const TokenKey = @"token";
-static NSString * const ValidationRequiredKey = @"validationRequired";
 static NSString * const ExpiresInKey = @"expiresIn";
+static NSString * const ACRKey = @"acr";
 
 @implementation VDFUserTokenDetails
 
@@ -22,22 +21,20 @@ static NSString * const ExpiresInKey = @"expiresIn";
 - (id)initWithCoder:(NSCoder*)decoder {
     self = [super init];
     if(self) {
-        _resolved = [decoder decodeBoolForKey:ResolvedKey];
-        _stillRunning = [decoder decodeBoolForKey:StillRunningKey];
+        _resolutionStatus = [decoder decodeIntForKey:ResolutionStatusKey];
         _token = [decoder decodeObjectForKey:TokenKey];
-        _validationRequired = [decoder decodeBoolForKey:ValidationRequiredKey];
         _expiresIn = [decoder decodeObjectForKey:ExpiresInKey];
+        _acr = [decoder decodeObjectForKey:ACRKey];
     }
     
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder*)encoder {
-    [encoder encodeBool:_resolved forKey:ResolvedKey];
-    [encoder encodeBool:_stillRunning forKey:StillRunningKey];
+    [encoder encodeInt:_resolutionStatus forKey:ResolutionStatusKey];
     [encoder encodeObject:_token forKey:TokenKey];
-    [encoder encodeBool:_validationRequired forKey:ValidationRequiredKey];
     [encoder encodeObject:_expiresIn forKey:ExpiresInKey];
+    [encoder encodeObject:_acr forKey:ACRKey];
 }
 
 

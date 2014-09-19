@@ -8,25 +8,51 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Types of statuses for user resolve process.
+ */
+typedef NS_ENUM(NSInteger, ResolutionStatus) {
+    /**
+     *  User resolve process has finished with success.
+     */
+    ResolutionStatusCompleted = 0,
+    /**
+     *  Resolution of the user identity is still ongoing. 
+     *  At this stage the backend has no clraity yest if the resolution will be completed by asking for OTP validation or not.
+     */
+    ResolutionStatusPending,
+    /**
+     *  The resolution of the user indentity has failed because no MSISDN header enrichement or IMSI have been helpful.
+     *  The client might try to ask the phone number to the user and proceed with the Resolve API call including it for OTP validation.
+     */
+    ResolutionStatusFailed,
+    /**
+     *  Resolution of the user identity requires OTP validation.
+     *  The client SDK should proceed by calling the Generate PIN API.
+     */
+    ResolutionStatusValidationRequired,
+};
+
 @interface VDFUserTokenDetails : NSObject <NSCoding>
 
-/*! @abstract
-    True if the backend was able to determine at least one MSISDN from the incoming request */
-@property (nonatomic, assign) BOOL resolved;
+/**
+ *  Status of currently pending resolve process.
+ */
+@property (nonatomic, assign) ResolutionStatus resolutionStatus;
 
-/*! @abstract 
-    True if there is at least one thread still running on the server side for the request 
-    identified by this token.
-    SMS Validation and Secure work flow are done on separate threads. */
-@property (nonatomic, assign) BOOL stillRunning;
-
-/*! @abstract The session token used to identify this client session */
+/**
+ *  The session token used to identify this client session 
+ */
 @property (nonatomic, strong) NSString *token;
 
-/*! @abstract
-    True if the SMS validation was successfully performed. */
-@property (nonatomic, assign) BOOL validationRequired;
-
+/**
+ *  Expiration time of session token.
+ */
 @property (nonatomic, strong) NSDate *expiresIn;
+
+/**
+ *  ACR of resolved user.
+ */
+@property (nonatomic, strong) NSString *acr;
 
 @end

@@ -37,8 +37,8 @@
             if(jsonObject != nil && [jsonObject isKindOfClass:[NSDictionary class]]) {
                 // object parsed correctlly
                 userTokenDetails = [[VDFUserTokenDetails alloc] init];
-                userTokenDetails.stillRunning = NO;
-                userTokenDetails.resolved = YES;
+                userTokenDetails.resolutionStatus = ResolutionStatusCompleted;
+                userTokenDetails.acr = [jsonObject objectForKey:@"acr"];
                 userTokenDetails.token = [jsonObject objectForKey:@"token"];
                 id expiresInObject = [jsonObject objectForKey:@"expiresIn"];
                 if(expiresInObject != nil) {
@@ -50,8 +50,7 @@
     }
     else if(response.httpResponseCode == 404) {
         userTokenDetails = [[VDFUserTokenDetails alloc] init];
-        userTokenDetails.stillRunning = NO;
-        userTokenDetails.resolved = NO;
+        userTokenDetails.resolutionStatus = ResolutionStatusFailed;
     }
     else if(response.httpResponseCode == 302) {
         
@@ -70,8 +69,8 @@
         if(parseResponse) {
         
             userTokenDetails = [[VDFUserTokenDetails alloc] init];
-            userTokenDetails.stillRunning = YES;
-            userTokenDetails.resolved = NO;
+            
+            userTokenDetails.resolutionStatus = ResolutionStatusPending;
             
             // try to parse the location header
             if(locationHeader != nil) {
@@ -85,7 +84,7 @@
                 }
                 
                 if([locationHeader rangeOfString:@"/pins?backendId="].location != NSNotFound) {
-                    userTokenDetails.validationRequired = YES;
+                    userTokenDetails.resolutionStatus = ResolutionStatusValidationRequired;
                 }
             }
         }

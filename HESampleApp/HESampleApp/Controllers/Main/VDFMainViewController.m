@@ -93,6 +93,17 @@
     }
 }
 
+- (NSString*)resolutionStatusToString:(ResolutionStatus)resolutionStatus {
+    switch (resolutionStatus) {
+        case ResolutionStatusCompleted: return @"ResolutionStatusCompleted";
+        case ResolutionStatusPending: return @"ResolutionStatusPending";
+        case ResolutionStatusFailed: return @"ResolutionStatusFailed";
+        case ResolutionStatusValidationRequired: return @"ResolutionStatusValidationRequired";
+        default:
+            return [NSString stringWithFormat:@"%i", resolutionStatus];
+    }
+}
+
 
 - (void)recalculateScrollViewContent {
     CGRect frame = self.outputTextView.frame;
@@ -137,7 +148,7 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolved=%i, stillRunning=%i, token=%@, validationRequired=%i, expiresIn=%@", userDetails.resolved, userDetails.stillRunning, userDetails.token, userDetails.validationRequired, userDetails.expiresIn];
+        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn];
         
         // autofill box:
         if([self.smsCodeSessionTokenTextField.text isEqualToString:@""]) {

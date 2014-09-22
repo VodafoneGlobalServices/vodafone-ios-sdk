@@ -117,10 +117,6 @@
 
 - (void)retryRequest {
     
-    VDFLogD(@"Retrying request.");
-    
-    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-    
     VDFLogD(@"Dispatching retry request (after %f ms):\n%@", [[self.builder requestState] retryAfter], self.builder);
     // we still stay in the limit, so wait and make the request
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, [[self.builder requestState] retryAfter] * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{

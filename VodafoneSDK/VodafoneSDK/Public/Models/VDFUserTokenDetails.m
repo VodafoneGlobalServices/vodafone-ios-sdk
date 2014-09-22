@@ -9,7 +9,7 @@
 #import "VDFUserTokenDetails.h"
 
 static NSString * const ResolutionStatusKey = @"resolutionStatus";
-static NSString * const TokenKey = @"token";
+static NSString * const TokenKey = @"tokenId";
 static NSString * const ExpiresInKey = @"expiresIn";
 static NSString * const ACRKey = @"acr";
 

@@ -54,6 +54,8 @@
 		492DE00A198F8E4200DA8171 /* VDFRequestState.h in Headers */ = {isa = PBXBuildFile; fileRef = 492DE009198F8E4200DA8171 /* VDFRequestState.h */; };
 		492DE00D198F8EA800DA8171 /* VDFUserResolveRequestState.h in Headers */ = {isa = PBXBuildFile; fileRef = 492DE00B198F8EA800DA8171 /* VDFUserResolveRequestState.h */; };
 		492DE00E198F8EA800DA8171 /* VDFUserResolveRequestState.m in Sources */ = {isa = PBXBuildFile; fileRef = 492DE00C198F8EA800DA8171 /* VDFUserResolveRequestState.m */; };
+		4946CBF519D017FF00C3A4EA /* libOHHTTPStubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4946CBED19D016D300C3A4EA /* libOHHTTPStubs.a */; };
+		4946CBFB19D019CC00C3A4EA /* VDFUserResolveTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4946CBFA19D019CC00C3A4EA /* VDFUserResolveTestCase.m */; };
 		4949D43519A2320A00E5D524 /* VDFPendingRequestItemTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4949D43419A2320A00E5D524 /* VDFPendingRequestItemTestCase.m */; };
 		494F37C1197E63A700E5D82E /* VDFCacheObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 494F37BF197E63A700E5D82E /* VDFCacheObject.h */; };
 		494F37C2197E63A700E5D82E /* VDFCacheObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 494F37C0197E63A700E5D82E /* VDFCacheObject.m */; };
@@ -176,6 +178,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4946CBEC19D016D300C3A4EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4946CBE519D016D300C3A4EA /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 09110A4119805F4800D175E4;
+			remoteInfo = "OHHTTPStubs iOS";
+		};
+		4946CBEE19D016D300C3A4EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4946CBE519D016D300C3A4EA /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 09110A5119805F4800D175E4;
+			remoteInfo = "OHHTTPStubs iOS Tests";
+		};
+		4946CBF019D016D300C3A4EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4946CBE519D016D300C3A4EA /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 095981C219806A7900807DBE;
+			remoteInfo = "OHHTTPStubs Mac";
+		};
+		4946CBF219D016D300C3A4EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4946CBE519D016D300C3A4EA /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 095981D219806A7900807DBE;
+			remoteInfo = "OHHTTPStubs Mac Tests";
+		};
 		49C244B11976AFDD00B34512 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49E74BAD1962F9D50080EB14 /* Project object */;
@@ -237,6 +267,8 @@
 		492DE009198F8E4200DA8171 /* VDFRequestState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFRequestState.h; path = Internal/Factories/RequestFactory/VDFRequestState.h; sourceTree = "<group>"; };
 		492DE00B198F8EA800DA8171 /* VDFUserResolveRequestState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserResolveRequestState.h; path = Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestState.h; sourceTree = "<group>"; };
 		492DE00C198F8EA800DA8171 /* VDFUserResolveRequestState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequestState.m; path = Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestState.m; sourceTree = "<group>"; };
+		4946CBE519D016D300C3A4EA /* OHHTTPStubs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OHHTTPStubs.xcodeproj; path = usr/include/OHHTTPStubs/OHHTTPStubs.xcodeproj; sourceTree = SOURCE_ROOT; };
+		4946CBFA19D019CC00C3A4EA /* VDFUserResolveTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveTestCase.m; path = SDKIntegrationTests/UserService/VDFUserResolveTestCase.m; sourceTree = "<group>"; };
 		4949D43419A2320A00E5D524 /* VDFPendingRequestItemTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFPendingRequestItemTestCase.m; path = Managers/VDFPendingRequestItemTestCase.m; sourceTree = "<group>"; };
 		494F37BF197E63A700E5D82E /* VDFCacheObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFCacheObject.h; path = Internal/Models/VDFCacheObject.h; sourceTree = "<group>"; };
 		494F37C0197E63A700E5D82E /* VDFCacheObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFCacheObject.m; path = Internal/Models/VDFCacheObject.m; sourceTree = "<group>"; };
@@ -379,6 +411,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4946CBF519D017FF00C3A4EA /* libOHHTTPStubs.a in Frameworks */,
 				49B27D7919AB2E540009C9C0 /* UIKit.framework in Frameworks */,
 				490D4DB519A5E7B700DA3D94 /* CoreTelephony.framework in Frameworks */,
 				49A08B5A1994CB8D00DE60A5 /* libOCMock.a in Frameworks */,
@@ -509,6 +542,41 @@
 				49BC3CE61998C555008C2108 /* Products */,
 			);
 			name = RequestFactory;
+			sourceTree = "<group>";
+		};
+		4946CBE619D016D300C3A4EA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4946CBED19D016D300C3A4EA /* libOHHTTPStubs.a */,
+				4946CBEF19D016D300C3A4EA /* OHHTTPStubs iOS Tests.xctest */,
+				4946CBF119D016D300C3A4EA /* OHHTTPStubs.framework */,
+				4946CBF319D016D300C3A4EA /* OHHTTPStubs Mac Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4946CBF419D0173300C3A4EA /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				4946CBE519D016D300C3A4EA /* OHHTTPStubs.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		4946CBF819D0190200C3A4EA /* SDKIntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				4946CBF919D0198D00C3A4EA /* UserSevice */,
+			);
+			name = SDKIntegrationTests;
+			sourceTree = "<group>";
+		};
+		4946CBF919D0198D00C3A4EA /* UserSevice */ = {
+			isa = PBXGroup;
+			children = (
+				4946CBFA19D019CC00C3A4EA /* VDFUserResolveTestCase.m */,
+			);
+			name = UserSevice;
 			sourceTree = "<group>";
 		};
 		497A89D5199CF3F2007EC20C /* Requests */ = {
@@ -1064,6 +1132,8 @@
 		49E74BCE1962F9D60080EB14 /* VodafoneSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				4946CBF819D0190200C3A4EA /* SDKIntegrationTests */,
+				4946CBF419D0173300C3A4EA /* Libraries */,
 				4990BFBC19923DAA005EED39 /* Factories */,
 				498EA2F419823BCE00122F05 /* Services */,
 				498EA2EF19823B6200122F05 /* Managers */,
@@ -1214,6 +1284,12 @@
 			mainGroup = 49E74BAC1962F9D50080EB14;
 			productRefGroup = 49E74BB61962F9D50080EB14 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4946CBE619D016D300C3A4EA /* Products */;
+					ProjectRef = 4946CBE519D016D300C3A4EA /* OHHTTPStubs.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				49E74BB41962F9D50080EB14 /* VodafoneSDK */,
@@ -1222,6 +1298,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4946CBED19D016D300C3A4EA /* libOHHTTPStubs.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOHHTTPStubs.a;
+			remoteRef = 4946CBEC19D016D300C3A4EA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4946CBEF19D016D300C3A4EA /* OHHTTPStubs iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "OHHTTPStubs iOS Tests.xctest";
+			remoteRef = 4946CBEE19D016D300C3A4EA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4946CBF119D016D300C3A4EA /* OHHTTPStubs.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OHHTTPStubs.framework;
+			remoteRef = 4946CBF019D016D300C3A4EA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4946CBF319D016D300C3A4EA /* OHHTTPStubs Mac Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "OHHTTPStubs Mac Tests.xctest";
+			remoteRef = 4946CBF219D016D300C3A4EA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		49E74BC31962F9D60080EB14 /* Resources */ = {
@@ -1355,6 +1462,7 @@
 				4949D43519A2320A00E5D524 /* VDFPendingRequestItemTestCase.m in Sources */,
 				498EA2EA19823B1500122F05 /* VDFStringHelperTestCase.m in Sources */,
 				49A3DA2A19ACB9D6004B8634 /* VDFOAuthTokenRequestStateTestCase.m in Sources */,
+				4946CBFB19D019CC00C3A4EA /* VDFUserResolveTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,7 +39,7 @@
                 userTokenDetails = [[VDFUserTokenDetails alloc] init];
                 userTokenDetails.resolutionStatus = VDFResolutionStatusCompleted;
                 userTokenDetails.acr = [jsonObject objectForKey:@"acr"];
-                userTokenDetails.token = [jsonObject objectForKey:@"token"];
+                userTokenDetails.token = [jsonObject objectForKey:@"tokenId"];
                 id expiresInObject = [jsonObject objectForKey:@"expiresIn"];
                 if(expiresInObject != nil) {
                     userTokenDetails.expiresIn = [NSDate dateWithTimeIntervalSinceNow:[expiresInObject intValue]/1000.0];

@@ -26,6 +26,9 @@
 
 @interface VDFUsersService ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
+
+- (NSError*)checkPotentialHAPResolveError;
+- (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
 @end
 
 @implementation VDFUsersService
@@ -52,28 +55,11 @@
         
         NSError *error = nil;
         if(options.msisdn == nil) {
-            NSString *mccMnc = [VDFDeviceUtility simMccMnc];
-            VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-            if(mccMnc != nil) {
-                if(![configuration.availableMccMnc containsObject:mccMnc]) {
-                    error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOutOfVodafoneCellular userInfo:nil];
-                }
-            }
-            else {
-                error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoGSMConnection userInfo:nil];
-            }
+            error = [self checkPotentialHAPResolveError];
         }
         else {
             // msisdn is provided
-            // we need to read market code from msisdn
-            VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-            
-            options.market = [VDFDeviceUtility findMarketForMsisdn:options.msisdn inMarkets:configuration.availableMarkets];
-            
-            if(options.market == nil) {
-                // this phone number is not available for user resolve:
-                error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorMsisdnCountryNotSupported userInfo:nil];
-            }
+            error = [self updateResolveOptionsAndCheckMSISDNForError:options];
         }
         
         if(error != nil) {
@@ -136,6 +122,35 @@
         // inform about request remove
         [requestsManager removeRequestObserver:delegate];
     }
+}
+
+#pragma mark -
+#pragma mark - Private Implementation
+- (NSError*)checkPotentialHAPResolveError {
+    NSString *mccMnc = [VDFDeviceUtility simMccMnc];
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    if(mccMnc != nil) {
+        if(![configuration.availableMccMnc containsObject:mccMnc]) {
+            return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOutOfVodafoneCellular userInfo:nil];
+        }
+    }
+    else {
+        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoGSMConnection userInfo:nil];
+    }
+    return nil;
+}
+
+- (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options {
+    // we need to read market code from msisdn
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    options.market = [VDFDeviceUtility findMarketForMsisdn:options.msisdn inMarkets:configuration.availableMarkets];
+    
+    if(options.market == nil) {
+        // this phone number is not available for user resolve:
+        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorMsisdnCountryNotSupported userInfo:nil];
+    }
+    return nil;
 }
 
 @end

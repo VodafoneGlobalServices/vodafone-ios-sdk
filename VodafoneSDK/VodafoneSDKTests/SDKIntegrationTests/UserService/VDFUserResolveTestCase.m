@@ -98,7 +98,7 @@ extern void __gcov_flush();
     
     
     // verify
-    [mockDelegate verifyWithDelay:4];
+    [mockDelegate verifyWithDelay:6];
 }
 
 @end

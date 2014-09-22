@@ -64,17 +64,8 @@
  
  @param smsCode
     The pin that was received via SMS.
- 
- @param sessionToken
-    Token describing current session.
- 
- @param delegate
- 	The objects that acts as the delegate of the receiving VDFUsersService. 
-    The delegate must adopt the VDFUsersServiceDelegate protocol 
-    and implement didValidateSMSToken: withError:. The delegate is not retained. 
-    This parameter is optional.
  */
-- (void)validateSmsCode:(NSString*)smsCode inSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)validateSmsCode:(NSString*)smsCode;
 
 /*!
  @abstract
@@ -82,16 +73,8 @@
  via SMS. In case of success or failure, delegate method didSMSPinRequested: withError: will be
  invoked with either error set to nil or error object which occurred.
  
- @param sessionToken
- Token describing current session.
- 
- @param delegate
- The objects that acts as the delegate of the receiving VDFUsersService.
- The delegate must adopt the VDFUsersServiceDelegate protocol
- and implement didSMSPinRequested: withError:. The delegate is not retained.
- This parameter is optional.
  */
-- (void)sendSmsPinInSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)sendSmsPin;
 
 /*!
  @abstract
@@ -102,6 +85,6 @@
  @param delegate
     The delegate object to remove from waiting for response queue.
  */
-- (void)removeDelegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)setDelegate:(id<VDFUsersServiceDelegate>)delegate;
 
 @end

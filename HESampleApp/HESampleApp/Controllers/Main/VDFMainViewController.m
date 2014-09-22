@@ -14,7 +14,6 @@
 
 @property (weak, nonatomic) IBOutlet UISwitch *smsValidationSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *smsCodeTextField;
-@property (weak, nonatomic) IBOutlet UITextField *smsCodeSessionTokenTextField;
 @property (weak, nonatomic) IBOutlet UITextView *outputTextView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) UITextField *activeField;
@@ -126,7 +125,7 @@
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [[VDFUsersService sharedInstance] validateSmsCode:self.smsCodeTextField.text inSession:self.smsCodeSessionTokenTextField.text delegate:self];
+    [[VDFUsersService sharedInstance] validateSmsCode:self.smsCodeTextField.text];
 }
 
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender {
@@ -142,7 +141,7 @@
 - (IBAction)onSendSMSPinButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [[VDFUsersService sharedInstance] sendSmsPinInSession:self.smsCodeSessionTokenTextField.text delegate:self];
+    [[VDFUsersService sharedInstance] sendSmsPin];
 }
 
 - (IBAction)onSendLogsButtonClick:(id)sender {
@@ -189,11 +188,6 @@
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn];
-        
-        // autofill box:
-        if([self.smsCodeSessionTokenTextField.text isEqualToString:@""]) {
-            self.smsCodeSessionTokenTextField.text = userDetails.token;
-        }
     } else {
         self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]];
     }

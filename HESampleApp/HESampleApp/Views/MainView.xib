@@ -14,7 +14,6 @@
                 <outlet property="imsiTextField" destination="qxB-cZ-plE" id="gd3-4j-Xph"/>
                 <outlet property="outputTextView" destination="irN-FG-1q8" id="bPD-06-JJc"/>
                 <outlet property="scrollView" destination="7o7-ql-AEK" id="jSE-VB-HYW"/>
-                <outlet property="smsCodeSessionTokenTextField" destination="L8J-0J-vlv" id="ElA-2M-TSk"/>
                 <outlet property="smsCodeTextField" destination="vtn-L8-mTa" id="IwV-DJ-7OU"/>
                 <outlet property="smsValidationSwitch" destination="ITi-dk-HTO" id="OPm-6F-BLZ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="6Ee-Gm-oyS"/>
@@ -51,7 +50,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Rxd-oZ-O4I" userLabel="sms code send button">
-                            <rect key="frame" x="21" y="343" width="67" height="44"/>
+                            <rect key="frame" x="21" y="305" width="67" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Send">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -91,25 +90,15 @@
                                 <action selector="textFieldDidEndEditing:" destination="-1" eventType="editingDidEnd" id="7tr-rL-PDD"/>
                             </connections>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Session Token" minimumFontSize="17" id="L8J-0J-vlv" userLabel="sms code session token text">
-                            <rect key="frame" x="21" y="305" width="280" height="30"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <action selector="textFieldDidBeginEditing:" destination="-1" eventType="editingDidBegin" id="c61-hI-FGj"/>
-                                <action selector="textFieldDidEndEditing:" destination="-1" eventType="editingDidEnd" id="57I-bJ-OeQ"/>
-                            </connections>
-                        </textField>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" selectable="NO" id="irN-FG-1q8" userLabel="output textview">
-                            <rect key="frame" x="19" y="451" width="280" height="77"/>
+                            <rect key="frame" x="19" y="413" width="280" height="115"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="10"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xEC-5l-GZR">
-                            <rect key="frame" x="198" y="343" width="103" height="44"/>
+                            <rect key="frame" x="198" y="305" width="103" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Clear output">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -119,11 +108,11 @@
                             </connections>
                         </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Cx7-A9-CFO" userLabel="display logs switch">
-                            <rect key="frame" x="224" y="408" width="79" height="27"/>
+                            <rect key="frame" x="224" y="370" width="79" height="27"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         </switch>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display logs" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gcv-dh-opq">
-                            <rect key="frame" x="122" y="411" width="94" height="21"/>
+                            <rect key="frame" x="122" y="373" width="94" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -170,7 +159,7 @@
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ybj-8f-U9A">
-                            <rect key="frame" x="21" y="400" width="93" height="44"/>
+                            <rect key="frame" x="21" y="362" width="93" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Send logs">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

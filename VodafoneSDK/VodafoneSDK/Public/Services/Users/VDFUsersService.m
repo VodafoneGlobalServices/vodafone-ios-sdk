@@ -24,8 +24,11 @@
 #import "VDFUserResolveOptions+Internal.h"
 #import "VDFDeviceUtility.h"
 
-@interface VDFUsersService ()
+@interface VDFUsersService () <VDFUsersServiceDelegate>
 @property (nonatomic, strong) VDFDIContainer *diContainer;
+@property (nonatomic, strong) NSString *currentSessionToken;
+@property (nonatomic, strong) VDFUserResolveRequestBuilder *currentResolveBuilder;
+@property (nonatomic, assign) id<VDFUsersServiceDelegate> currentDelegate;
 
 - (NSError*)checkPotentialHAPResolveError;
 - (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
@@ -47,7 +50,7 @@
 
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     
-    if(delegate != nil) {
+    if(delegate != nil && self.currentSessionToken == nil && self.currentResolveBuilder == nil) {
         // create request object
         if(options == nil) {
             options = [[VDFUserResolveOptions alloc] init];
@@ -69,7 +72,10 @@
         else {
             // everything looks fine, move forward
             
-            id builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:delegate];
+            VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:delegate];
+            [[builder observersContainer] registerObserver:self];
+            self.currentResolveBuilder = builder;
+            self.currentDelegate = delegate;
             
             id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
             
@@ -78,15 +84,11 @@
     }
 }
 
-- (void)sendSmsPinInSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)sendSmsPin {
     
-    if(delegate != nil) {
+    if(self.currentSessionToken != nil && self.currentResolveBuilder != nil) {
         // create request object
-        if(sessionToken == nil) {
-            sessionToken = [NSString string];
-        }
-        
-        id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithSessionToken:sessionToken diContainer:self.diContainer delegate:delegate];
+        id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithSessionToken:self.currentSessionToken diContainer:self.diContainer delegate:self.currentDelegate];
         
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
         
@@ -94,18 +96,16 @@
     }
 }
 
-- (void)validateSmsCode:(NSString*)smsCode inSession:(NSString*)sessionToken delegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)validateSmsCode:(NSString*)smsCode {
     
-    if(delegate != nil) {
+    if(self.currentSessionToken != nil && self.currentResolveBuilder != nil) {
         // create request object
         if(smsCode == nil) {
             smsCode = [NSString string];
         }
-        if(sessionToken == nil) {
-            sessionToken = [NSString string];
-        }
         
-        VDFSmsValidationRequestBuilder *builder = [[VDFSmsValidationRequestBuilder alloc] initWithSessionToken:sessionToken smsCode:smsCode diContainer:self.diContainer delegate:delegate];
+        // create request object
+        id builder = [[VDFSmsValidationRequestBuilder alloc] initWithSessionToken:self.currentSessionToken smsCode:smsCode diContainer:self.diContainer delegate:self.currentDelegate];
         
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
         
@@ -113,14 +113,25 @@
     }
 }
 
-- (void)removeDelegate:(id<VDFUsersServiceDelegate>)delegate {
+- (void)setDelegate:(id<VDFUsersServiceDelegate>)delegate {
     
-    if(delegate != nil) {
-        // get http request manager
-        VDFServiceRequestsManager * requestsManager = [self.diContainer resolveForClass:[VDFServiceRequestsManager class]];
+    if(self.currentResolveBuilder != nil) {
+        // first step is to register new delegate:
+        if(delegate != nil) {
+            [[self.currentResolveBuilder observersContainer] registerObserver:delegate];
+        }
         
-        // inform about request remove
-        [requestsManager removeRequestObserver:delegate];
+        // next step removes old delegate:
+        if(self.currentDelegate != nil) {
+            // get http request manager
+            VDFServiceRequestsManager * requestsManager = [self.diContainer resolveForClass:[VDFServiceRequestsManager class]];
+            
+            // inform request manager about removal remove
+            [requestsManager removeRequestObserver:self.currentDelegate];
+        }
+        
+        // store new delegate
+        self.currentDelegate = delegate;
     }
 }
 
@@ -152,5 +163,29 @@
     }
     return nil;
 }
+
+#pragma mark -
+#pragma mark - VDFUsersServiceDelegate Implementation
+
+- (void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
+    if(userDetails != nil) {
+        if(userDetails.resolutionStatus == VDFResolutionStatusCompleted
+           || userDetails.resolutionStatus == VDFResolutionStatusFailed) {
+            // resolution has finished
+            // current session has finished, so clear it:
+            self.currentResolveBuilder = nil;
+            self.currentSessionToken = nil;
+            self.currentDelegate = nil;
+        }
+        else {
+            // we store session token for next use:
+            self.currentSessionToken = userDetails.token;
+        }
+    }
+}
+
+- (void)didSMSPinRequested:(NSNumber*)isSuccess withError:(NSError*)error {}
+
+- (void)didValidatedSMSToken:(VDFSmsValidationResponse*)response withError:(NSError*)error {}
 
 @end

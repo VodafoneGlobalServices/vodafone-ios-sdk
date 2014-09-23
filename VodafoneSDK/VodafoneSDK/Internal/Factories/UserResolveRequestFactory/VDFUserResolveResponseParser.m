@@ -27,7 +27,7 @@
     }
     
     VDFUserTokenDetails* userTokenDetails = nil;
-    if(response.httpResponseCode == 201) {
+    if(response.httpResponseCode == 201 || response.httpResponseCode == 200) {
         // read ACR, expires in, tokenID from body
         if(response.data != nil) {
             

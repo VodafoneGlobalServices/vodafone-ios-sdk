@@ -54,7 +54,7 @@
     adopt the VDFUsersServiceDelegate protocol. The delegate is not retained.
  
  */
-- (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (BOOL)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 /*!
  @abstract
@@ -65,7 +65,7 @@
  @param smsCode
     The pin that was received via SMS.
  */
-- (void)validateSmsCode:(NSString*)smsCode;
+- (BOOL)validateSmsCode:(NSString*)smsCode;
 
 /*!
  @abstract

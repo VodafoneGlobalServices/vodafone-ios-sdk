@@ -64,7 +64,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [self.scrollView setScrollEnabled:YES];
     
-    self.imsiTextField.text = @"491748862966";
+    self.imsiTextField.text = @"34678774201";
+//    self.imsiTextField.text = @"491748862966"; //joaquim phone number
 //    self.imsiTextField.text = @"204049810027400";
     
     [self recalculateScrollViewContent];
@@ -161,7 +162,7 @@
 #pragma mark -
 #pragma mark MFMailComposeViewControllerDelegate Implementation
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     switch (result) {
         case MFMailComposeResultCancelled:
             [self logMessage:@"Mail cancelled"];

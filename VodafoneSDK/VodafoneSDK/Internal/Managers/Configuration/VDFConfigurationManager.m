@@ -90,7 +90,7 @@
             // oAuth token retrieval configuration:
             configuration.oAuthTokenScope = CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE;
             
-            configuration.availableMarkets = @{ @"DE": @49, @"PT": @353 };
+            configuration.availableMarkets = @{ @"DE": @49, @"PT": @353, @"ES": @34 };
             configuration.availableMccMnc = @[ @"26202", @"26204" ];
         }
     }

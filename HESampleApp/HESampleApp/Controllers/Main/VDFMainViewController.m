@@ -31,6 +31,7 @@
 - (IBAction)onClearOutputButtonClick:(id)sender;
 - (IBAction)onSendSMSPinButtonClick:(id)sender;
 - (IBAction)onSendLogsButtonClick:(id)sender;
+- (IBAction)onCancelRetrieveButtonClick:(id)sender;
 
 - (void)keyboardWasShown:(NSNotification*)aNotification;
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification;
@@ -107,12 +108,12 @@
 }
 
 
-- (void)recalculateScrollViewContent {
-    CGRect frame = self.outputTextView.frame;
+- (void)recalculateScrollViewContent {    CGRect frame = self.outputTextView.frame;
     frame.size.height = self.outputTextView.contentSize.height;
-    self.outputTextView.frame = frame;
-    
+;
+    self.outputTextView.frame = frame    
     [self.scrollView setContentSize:(CGSizeMake(self.view.frame.size.width,480+self.outputTextView.frame.size.height))];
+];
 }
 
 - (IBAction)onAppIdSetButtonClick:(id)sender {
@@ -157,6 +158,10 @@
     [mc setToRecipients:toRecipents];
     
     [self presentViewController:mc animated:YES completion:NULL];
+}
+
+- (IBAction)onCancelRetrieveButtonClick:(id)sender {
+    [[VDFUsersService sharedInstance] cancelRetrieveUserDetails];
 }
 
 #pragma mark -

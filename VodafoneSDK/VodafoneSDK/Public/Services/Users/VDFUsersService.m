@@ -126,12 +126,32 @@
             // get http request manager
             VDFServiceRequestsManager * requestsManager = [self.diContainer resolveForClass:[VDFServiceRequestsManager class]];
             
-            // inform request manager about removal remove
+            // inform request manager about removal
             [requestsManager removeRequestObserver:self.currentDelegate];
         }
         
         // store new delegate
         self.currentDelegate = delegate;
+    }
+}
+
+- (void)cancelRetrieveUserDetails {
+    
+    if(self.currentResolveBuilder != nil) {
+        // if there is pending request we need to cancel request by removing all delegates:
+        VDFServiceRequestsManager * requestsManager = [self.diContainer resolveForClass:[VDFServiceRequestsManager class]];
+        
+        if(self.currentDelegate != nil) {
+            // inform request manager about removal
+            [requestsManager removeRequestObserver:self.currentDelegate];
+        }
+        
+        // and service class need to be removed
+        [requestsManager removeRequestObserver:self];
+        
+        self.currentDelegate = nil;
+        self.currentResolveBuilder = nil;
+        self.currentSessionToken = nil;
     }
 }
 

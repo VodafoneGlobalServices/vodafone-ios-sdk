@@ -54,7 +54,7 @@
     adopt the VDFUsersServiceDelegate protocol. The delegate is not retained.
  
  */
-- (BOOL)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate;
+- (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate;
 
 /*!
  @abstract
@@ -65,7 +65,7 @@
  @param smsCode
     The pin that was received via SMS.
  */
-- (BOOL)validateSmsCode:(NSString*)smsCode;
+- (void)validateSmsCode:(NSString*)smsCode;
 
 /*!
  @abstract
@@ -80,11 +80,17 @@
  @abstract
     When a caller class register itself as a delegate in retrieveUserDetails or
     validateSMSToken process then it can be removed manually from a service by calling
-    removeDelegate: method if you do not want to wait longer for callback invocation.
+    setDelegate: method if you do not want to wait longer for callback invocation.
  
  @param delegate
     The delegate object to remove from waiting for response queue.
  */
 - (void)setDelegate:(id<VDFUsersServiceDelegate>)delegate;
+
+/*!
+ @abstract
+ If there is pending user resolve process then it is cancelled. If there is not any pending request then method do nothing.
+ */
+- (void)cancelRetrieveUserDetails;
 
 @end

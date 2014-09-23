@@ -108,12 +108,14 @@
 }
 
 
-- (void)recalculateScrollViewContent {    CGRect frame = self.outputTextView.frame;
-    frame.size.height = self.outputTextView.contentSize.height;
-;
-    self.outputTextView.frame = frame    
-    [self.scrollView setContentSize:(CGSizeMake(self.view.frame.size.width,480+self.outputTextView.frame.size.height))];
-];
+- (void)recalculateScrollViewContent {
+    CGRect frame = self.outputTextView.frame;
+    CGSize outputContentSize = [self.outputTextView sizeThatFits:CGSizeMake(self.outputTextView.contentSize.width, FLT_MAX)];
+    frame.size.height = outputContentSize.height;
+    self.outputTextView.frame = frame;
+    
+    CGSize newSize = CGSizeMake(self.view.frame.size.width,480+outputContentSize.height);
+    [self.scrollView setContentSize:newSize];
 }
 
 - (IBAction)onAppIdSetButtonClick:(id)sender {

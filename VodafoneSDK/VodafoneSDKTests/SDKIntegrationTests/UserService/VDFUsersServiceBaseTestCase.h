@@ -51,12 +51,13 @@
 - (OHHTTPStubsResponseBlock)responseOAuthScopeNotValidError;
 
 - (OHHTTPStubsResponseBlock)responseResolve201;
-- (OHHTTPStubsResponseBlock)responseResolve302NotFinished;
-- (OHHTTPStubsResponseBlock)responseResolve302SmsRequired;
+- (OHHTTPStubsResponseBlock)responseResolve302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs;
+- (OHHTTPStubsResponseBlock)responseResolve302SmsRequiredAndRetryAfterMs:(NSInteger)retryAfterMs;
 
 
-- (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinished;
-- (OHHTTPStubsResponseBlock)responseCheckStatus302SmsRequired;
+- (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs;
+- (OHHTTPStubsResponseBlock)responseCheckStatus302SmsRequiredAndRetryAfterMs:(NSInteger)retryAfterMs;
+- (OHHTTPStubsResponseBlock)responseCheckStatus304NotModifiedAndRetryAfterMs:(NSInteger)retryAfterMs;
 - (OHHTTPStubsResponseBlock)responseCheckStatus200;
 
 - (OHHTTPStubsResponseBlock)responseValidatePin200;

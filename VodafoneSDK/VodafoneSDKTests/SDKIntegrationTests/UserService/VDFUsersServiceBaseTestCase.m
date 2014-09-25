@@ -140,11 +140,7 @@ extern void __gcov_flush();
     return ^BOOL(NSURLRequest *request) {
         if([request.URL.absoluteString hasSuffix:[NSString stringWithFormat:@"seamless-id/users/tokens/%@?backendId=%@", self.sessionToken, self.backendId]]
            && [[request HTTPMethod] isEqualToString:@"GET"]) {
-            if([self checkStandardRequiredHeaders:request]) {
-                // check if-none-match header
-                NSDictionary *headers = [request allHTTPHeaderFields];
-                return [[headers objectForKey:HTTP_HEADER_IF_NONE_MATCH] isEqualToString:self.etag];
-            }
+            return [self checkStandardRequiredHeaders:request];
         }
         return NO;
     };
@@ -233,52 +229,68 @@ extern void __gcov_flush();
 }
 
 
-- (OHHTTPStubsResponseBlock)responseResolve302NotFinished {
+- (OHHTTPStubsResponseBlock)responseResolve302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:nil
-                                          statusCode:302
-                                             headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON,
-                                                       HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@?backendId=%@",
-                                                                              self.sessionToken, self.backendId],
-                                                       HTTP_HEADER_RETRY_AFTER: @5000 }];
+        OHHTTPStubsResponse *stub =
+        [OHHTTPStubsResponse responseWithData:nil
+                                   statusCode:302
+                                      headers:@{HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@?backendId=%@",
+                                                                       self.sessionToken, self.backendId],
+                                                HTTP_HEADER_RETRY_AFTER: [NSString stringWithFormat:@"%i", retryAfterMs]}];
+        stub.allowRedirects = NO;
+        return stub;
     };
 }
 
-- (OHHTTPStubsResponseBlock)responseResolve302SmsRequired {
+- (OHHTTPStubsResponseBlock)responseResolve302SmsRequiredAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:nil
+        OHHTTPStubsResponse *stub =
+        [OHHTTPStubsResponse responseWithData:nil
                                           statusCode:302
-                                             headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON,
-                                                       HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@/pins?backendId=%@",
+                                             headers:@{HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@/pins?backendId=%@",
                                                                               self.sessionToken, self.backendId],
-                                                       HTTP_HEADER_RETRY_AFTER: @5000 }];
+                                                       HTTP_HEADER_RETRY_AFTER: [NSString stringWithFormat:@"%i", retryAfterMs]}];
+        stub.allowRedirects = NO;
+        return stub;
     };
 }
 
 
-- (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinished {
+- (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:nil
+        OHHTTPStubsResponse *stub =
+        [OHHTTPStubsResponse responseWithData:nil
                                           statusCode:302
-                                             headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON,
-                                                       HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@?backendId=%@",
+                                             headers:@{HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@?backendId=%@",
                                                                               self.sessionToken, self.backendId],
-                                                       HTTP_HEADER_RETRY_AFTER: @5000,
+                                                       HTTP_HEADER_RETRY_AFTER: [NSString stringWithFormat:@"%i", retryAfterMs],
                                                        HTTP_HEADER_ETAG: self.etag,
                                                        @"Cache-Control": @"must-revalidate"}];
+        stub.allowRedirects = NO;
+        return stub;
     };
 }
 
-- (OHHTTPStubsResponseBlock)responseCheckStatus302SmsRequired {
+- (OHHTTPStubsResponseBlock)responseCheckStatus302SmsRequiredAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:nil
+        OHHTTPStubsResponse *stub =
+        [OHHTTPStubsResponse responseWithData:nil
                                           statusCode:302
-                                             headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON,
-                                                       HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@/pins?backendId=%@",
+                                             headers:@{HTTP_HEADER_LOCATION: [NSString stringWithFormat:@"/seamless-id/users/tokens/%@/pins?backendId=%@",
                                                                               self.sessionToken, self.backendId],
-                                                       HTTP_HEADER_RETRY_AFTER: @5000,
+                                                       HTTP_HEADER_RETRY_AFTER: [NSString stringWithFormat:@"%i", retryAfterMs],
                                                        HTTP_HEADER_ETAG: self.etag,
                                                        @"Cache-Control": @"must-revalidate"}];
+        stub.allowRedirects = NO;
+        return stub;
+    };
+}
+
+- (OHHTTPStubsResponseBlock)responseCheckStatus304NotModifiedAndRetryAfterMs:(NSInteger)retryAfterMs {
+    return ^OHHTTPStubsResponse*(NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithData:nil
+                                          statusCode:304
+                                             headers:@{HTTP_HEADER_RETRY_AFTER: [NSString stringWithFormat:@"%i", retryAfterMs]}];
     };
 }
 

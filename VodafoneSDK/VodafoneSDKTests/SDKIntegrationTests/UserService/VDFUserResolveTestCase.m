@@ -161,6 +161,74 @@ static NSInteger const VERIFY_DELAY = 5;
 }
 
 
+- (void)test_Resolution_AfterCheckStatus_IsSuccessful {
+    
+    // mock
+    super.smsValidation = NO;
+    
+    // stub http oauth
+    [super stubRequest:[super filterOAuthRequest] withResponsesList:@[[super responseOAuthSuccessExpireInSeconds:3200]]];
+    
+    // stub resolve response with 302 - not yet know sms validation
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302NotFinishedAndRetryAfterMs:1000]]];
+    
+    // stub check status response with sequence:
+    // 302 - not finished
+    // 304 - not modified
+    // 200 - ok
+    [super stubRequest:[super filterCheckStatusRequest]
+     withResponsesList:@[[super responseCheckStatus302NotFinishedAndRetryAfterMs:1000],
+                         [super responseCheckStatus304NotModifiedAndRetryAfterMs:1000],
+                         [super responseCheckStatus200]]];
+    
+    // expect that the delegate object will be invoked correctly:
+    [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
+    [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
+    
+    
+    // run
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
+    
+    
+    // verify
+    [super.mockDelegate verifyWithDelay:8];
+}
+
+
+- (void)test_Resolution_AfterCheckStatus_IsFailed {
+    
+    // mock
+    super.smsValidation = NO;
+    
+    // stub http oauth
+    [super stubRequest:[super filterOAuthRequest] withResponsesList:@[[super responseOAuthSuccessExpireInSeconds:3200]]];
+    
+    // stub resolve response with 302 - not yet know sms validation
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302NotFinishedAndRetryAfterMs:1000]]];
+    
+    // stub check status response with sequence:
+    // 302 - not finished
+    // 304 - not modified
+    // 400 - ok
+    [super stubRequest:[super filterCheckStatusRequest]
+     withResponsesList:@[[super responseCheckStatus302NotFinishedAndRetryAfterMs:1000],
+                         [super responseCheckStatus304NotModifiedAndRetryAfterMs:1000],
+                         [super responseEmptyWithCode:404]]];
+    
+    // expect that the delegate object will be invoked correctly:
+    [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
+    [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusFailed];
+    
+    // run
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
+    
+    // verify
+    [super.mockDelegate verifyWithDelay:8];
+}
+
+
 
 
 

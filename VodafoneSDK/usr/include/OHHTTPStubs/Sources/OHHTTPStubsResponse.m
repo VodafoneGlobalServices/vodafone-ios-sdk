@@ -120,6 +120,7 @@ const double OHHTTPStubsDownloadSpeedWifi   =- 12000 / 8; // kbps -> KB/s
             headers[ContentLengthHeader] = [NSString stringWithFormat:@"%llu",_dataSize];
         }
         _httpHeaders = [NSDictionary dictionaryWithDictionary:headers];
+        _allowRedirects = YES;
     }
     return self;
 }

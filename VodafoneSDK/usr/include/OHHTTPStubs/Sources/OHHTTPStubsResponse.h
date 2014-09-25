@@ -58,6 +58,7 @@ OHHTTPStubsDownloadSpeedWifi;
 //! @note if responseTime<0, it is interpreted as a download speed in KBps ( -200 => 200KB/s )
 @property(nonatomic, assign) NSTimeInterval responseTime;
 @property(nonatomic, strong) NSError* error;
+@property(nonatomic, assign) BOOL allowRedirects;
 
 
 

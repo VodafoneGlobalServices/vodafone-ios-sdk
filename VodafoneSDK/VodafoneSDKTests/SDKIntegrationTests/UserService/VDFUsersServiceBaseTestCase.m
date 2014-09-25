@@ -15,6 +15,7 @@
 #import "VDFSettings.h"
 #import "VDFConsts.h"
 #import "VDFDeviceUtility.h"
+#import "VDFSmsValidationResponse.h"
 
 extern void __gcov_flush();
 
@@ -345,6 +346,99 @@ extern void __gcov_flush();
                                    return responseBlock(request);
                                }];
     return stub;
+}
+
+
+
+#pragma mark -
+#pragma mark - expect methods
+- (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode {
+    
+    [[self.mockDelegate expect] didReceivedUserDetails:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
+        NSError *error = (NSError*)obj;
+        return [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        
+    }]];
+}
+- (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus {
+    [self expectDidReceivedUserDetailsWithResolutionStatus:resolutionStatus onSuccessExecution:nil];
+}
+- (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus onSuccessExecution:(void(^)(VDFUserTokenDetails *details))onSuccess {
+    
+    [[self.mockDelegate expect] didReceivedUserDetails:[OCMArg checkWithBlock:^BOOL(id obj) {
+        
+        VDFUserTokenDetails *tokenDetails = (VDFUserTokenDetails*)obj;
+        
+        if(tokenDetails.resolutionStatus != resolutionStatus) {
+            return NO;
+        }
+        
+        BOOL result = NO;
+        
+        if(resolutionStatus == VDFResolutionStatusCompleted) {
+            result = [tokenDetails.token isEqualToString:self.sessionToken]
+            && [tokenDetails.acr isEqualToString:self.acr]
+            && tokenDetails.expiresIn != nil;
+        }
+        else if(resolutionStatus == VDFResolutionStatusFailed) {
+            result = tokenDetails.token == nil
+            && tokenDetails.acr == nil
+            && tokenDetails.expiresIn == nil;
+        }
+        else {
+            result = [tokenDetails.token isEqualToString:self.sessionToken] // TODO if we get know that this should not be returned to the 3rd party app in this case
+            && tokenDetails.acr == nil
+            && tokenDetails.expiresIn == nil;
+        }
+        
+        if(result && onSuccess != nil) {
+            onSuccess(tokenDetails);
+        }
+        
+        return result;
+        
+    }] withError:[OCMArg isNil]];
+}
+
+- (void)expectDidSMSPinRequestedWithSuccess:(BOOL)isSuccess {
+    [self expectDidSMSPinRequestedWithSuccess:isSuccess onSuccessExecution:nil];
+}
+
+- (void)expectDidSMSPinRequestedWithSuccess:(BOOL)isSuccess onSuccessExecution:(void(^)())onSuccess {
+    [[self.mockDelegate expect] didSMSPinRequested:[OCMArg checkWithBlock:^BOOL(id obj) {
+        NSNumber *isSuccessResult = (NSNumber*)obj;
+        
+        BOOL result = [isSuccessResult boolValue] == isSuccess;
+        if(result && onSuccess != nil) {
+            onSuccess();
+        }
+        return result;
+    }] withError:[OCMArg isNil]];
+}
+
+- (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode {
+    [[self.mockDelegate expect] didSMSPinRequested:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
+        NSError *error = (NSError*)obj;
+        return [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        
+    }]];
+}
+
+- (void)expectDidValidatedSMSWithSuccess:(BOOL)isSuccess {
+    [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
+        
+        VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
+        return [response.smsCode isEqualToString:self.smsCode] && response.isSucceded == isSuccess;
+        
+    }] withError:[OCMArg isNil]];
+}
+
+- (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode {
+    [[self.mockDelegate expect] didValidatedSMSToken:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
+        NSError *error = (NSError*)obj;
+        return [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        
+    }]];
 }
 
 

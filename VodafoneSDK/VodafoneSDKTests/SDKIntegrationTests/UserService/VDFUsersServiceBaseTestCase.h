@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "VDFError.h"
+#import "VDFUserTokenDetails.h"
 
 @class VDFBaseConfiguration;
 
@@ -62,6 +64,24 @@
 
 - (OHHTTPStubsResponseBlock)responseValidatePin200;
 
+#pragma mark -
+#pragma mark - stub
 - (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
                        withResponsesList:(NSArray*)responses;
+
+
+#pragma mark -
+#pragma mark - expect methods
+- (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode;
+- (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus;
+- (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus onSuccessExecution:(void(^)(VDFUserTokenDetails *details))onSuccess;
+
+- (void)expectDidSMSPinRequestedWithSuccess:(BOOL)isSuccess;
+- (void)expectDidSMSPinRequestedWithSuccess:(BOOL)isSuccess onSuccessExecution:(void(^)())onSuccess;
+- (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode;
+
+- (void)expectDidValidatedSMSWithSuccess:(BOOL)isSuccess;
+- (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode;
+
+
 @end

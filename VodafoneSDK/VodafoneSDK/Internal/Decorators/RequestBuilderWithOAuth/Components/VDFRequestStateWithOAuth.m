@@ -47,7 +47,7 @@
             NSString *errorCode = [jsonObject objectForKey:@"id"];
             NSString *errorDescription = [jsonObject objectForKey:@"description"];
             if(errorCode != nil && errorDescription != nil) {
-                BOOL isOAuthExpired = [errorCode isEqualToString:@"POL0002"] && [errorDescription isEqualToString:@"Privacy Verification Failed –Authorization"];
+                BOOL isOAuthExpired = [errorCode isEqualToString:@"POL0002"] && [errorDescription isEqualToString:@"Privacy Verification Failed -Authorization"];
                 
                 if(isOAuthExpired) {
                     self.needRetryForOAuth = YES;
@@ -57,6 +57,8 @@
                 else if([errorCode isEqualToString:@"POL0001"] || [errorCode isEqualToString:@"POL0002"]) {
                     // there is some APIX error
                     self.apixError = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorApixAuthorization userInfo:nil];
+                    // remove current o Auth token from cache:
+                    [self.parentBuilder updateOAuthTokenInCache:nil];
                 }
             }
         }

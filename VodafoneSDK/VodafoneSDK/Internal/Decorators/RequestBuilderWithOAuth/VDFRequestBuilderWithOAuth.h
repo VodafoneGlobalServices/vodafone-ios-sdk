@@ -29,4 +29,6 @@
 
 - (void)setNeedRetryForOAuth:(BOOL)needOAuth;
 
+- (void)updateOAuthTokenInCache:(VDFOAuthTokenResponse*)oAuthTokenDetails;
+
 @end

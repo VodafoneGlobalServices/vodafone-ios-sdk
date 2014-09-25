@@ -24,6 +24,8 @@
 #import "VDFUserResolveOptions+Internal.h"
 #import "VDFDeviceUtility.h"
 
+static dispatch_once_t * oneInstanceToken;
+
 @interface VDFUsersService () <VDFUsersServiceDelegate>
 @property (nonatomic, strong) VDFDIContainer *diContainer;
 @property (nonatomic, strong) NSString *currentSessionToken;
@@ -32,14 +34,20 @@
 
 - (NSError*)checkPotentialHAPResolveError;
 - (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
+
+#ifdef DEBUG
+- (void)resetOneInstanceToken;
+#endif
+
 @end
 
 @implementation VDFUsersService
 
 + (instancetype)sharedInstance {
     static VDFUsersService *sharedInstance = nil;
-    
     static dispatch_once_t onceToken;
+    oneInstanceToken = &onceToken;
+    
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
         sharedInstance.diContainer = [VDFSettings globalDIContainer];
@@ -47,6 +55,13 @@
     
     return sharedInstance;
 }
+
+#ifdef DEBUG
+- (void)resetOneInstanceToken {
+    // only for unit testing, reseting the singleton instance
+    *oneInstanceToken = 0;
+}
+#endif
 
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     

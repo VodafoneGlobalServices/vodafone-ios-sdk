@@ -15,6 +15,8 @@
 #import "VDFDIContainer.h"
 #import "VDFOAuthTokenRequestState.h"
 #import "VDFRequestStateWithOAuth.h"
+#import "VDFCacheObject.h"
+#import "VDFCacheManager.h"
 
 @interface VDFRequestBuilderWithOAuth ()
 @property (nonatomic, strong) VDFRequestBaseBuilder *activeBuilder; // currently used builder
@@ -76,12 +78,28 @@
         self.restorePointObject = nil;
         self.activeBuilder = self.oAuthRequestBuilder;
         self.activeRequestState = nil;
+        
+        // we need to remove oAuthToken from cache because when we get APIX error with current oAuth token then we cannot use it for next usage
+        [self updateOAuthTokenInCache:nil];
     }
     else {
         self.activeBuilder = self.initiallyDecoratedBuilder;
         self.activeRequestState = self.initiallyDecoratedRequestState;
     }
 }
+
+- (void)updateOAuthTokenInCache:(VDFOAuthTokenResponse*)oAuthTokenDetails {
+    
+    VDFCacheObject *cacheObject = [[self oAuthRequestBuilder].factory createCacheObject];
+    if(cacheObject != nil) {
+        cacheObject.cacheValue = (id<NSCoding>)oAuthTokenDetails;
+        if(oAuthTokenDetails == nil) {
+            cacheObject.expirationDate = [NSDate distantPast];
+        }
+        [[self.activeBuilder.diContainer resolveForClass:[VDFCacheManager class]] cacheObject:cacheObject];
+    }
+}
+
 
 #pragma mark -
 #pragma mark VDFOAuthTokenRequestDelegate
@@ -91,8 +109,8 @@
         if(error == nil) {
             error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorServerCommunication userInfo:nil];
         }
-        // there is some error, forward this:
-        [[self observersContainer] notifyAllObserversWith:nil error:error];
+        // there is some error with o auth token, forward this:
+        [[self.initiallyDecoratedBuilder observersContainer] notifyAllObserversWith:nil error:error];
     }
     else {
         // everything looks fine:
@@ -106,6 +124,9 @@
         else {
             // if restore point is not set, then this response is for expired oAuthToken
             [self setNeedRetryForOAuth:NO];
+            
+            // and we need to store this token in cache because this go over retry request, but the best way to do this will be to handled in depend request
+            [self updateOAuthTokenInCache:oAuthToken];
         }
     }
 }

@@ -61,7 +61,10 @@ static VDFDIContainer * g_diContainer = nil;
         VDFLogD(@"-- hapBaseUrl:%@", configuration.hapBaseUrl);
         VDFLogD(@"-- apixBaseUrl:%@", configuration.apixBaseUrl);
         
-        id requestsManager = [[VDFServiceRequestsManager alloc] initWithDIContainer:g_diContainer cacheManager:[VDFSettings sharedCacheManager]];
+        id cacheManager = [[VDFCacheManager alloc] initWithDIContainer:g_diContainer];
+        [g_diContainer registerInstance:cacheManager forClass:[VDFCacheManager class]];
+        
+        id requestsManager = [[VDFServiceRequestsManager alloc] initWithDIContainer:g_diContainer cacheManager:cacheManager];
         [g_diContainer registerInstance:requestsManager forClass:[VDFServiceRequestsManager class]];
     }
 }
@@ -104,17 +107,6 @@ static VDFDIContainer * g_diContainer = nil;
 
 #pragma mark -
 #pragma mark internal implementation
-
-+ (VDFCacheManager*)sharedCacheManager {
-    static id sharedCacheManagerInstance = nil;
-    
-    static dispatch_once_t onceTokenCacheManager;
-    dispatch_once(&onceTokenCacheManager, ^{
-        sharedCacheManagerInstance = [[VDFCacheManager alloc] initWithDIContainer:g_diContainer];
-    });
-    
-    return sharedCacheManagerInstance;
-}
 
 + (VDFDIContainer*)globalDIContainer {
     return g_diContainer;

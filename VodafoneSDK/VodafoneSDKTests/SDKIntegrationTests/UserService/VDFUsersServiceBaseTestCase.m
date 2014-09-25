@@ -18,10 +18,22 @@
 
 extern void __gcov_flush();
 
+@interface VDFUsersService ()
+- (NSError*)checkPotentialHAPResolveError;
+- (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
+
+- (void)resetOneInstanceToken;
+@end
+
 @implementation VDFUsersServiceBaseTestCase
 
 - (void)setUp
 {
+    [super setUp];
+    
+    [[VDFUsersService sharedInstance] resetOneInstanceToken];
+    [VDFSettings initialize];
+    
     self.backendId = @"someBackendId";
     self.appId = @"someAppId";
     self.appSecret = @"someAppSecret";
@@ -39,23 +51,31 @@ extern void __gcov_flush();
                                          VDFClientAppSecretSettingKey: self.appSecret,
                                          VDFBackendAppKeySettingKey: self.backendId }];
     
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.serviceToTest = OCMPartialMock([VDFUsersService sharedInstance]);
+    self.mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
+    
+    // stub the sim card checking
+    [[[self.serviceToTest stub] andReturn:nil] checkPotentialHAPResolveError];
+    
 }
 
 - (void)tearDown
 {
     __gcov_flush();
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
+    
     [OHHTTPStubs removeAllStubs];
+    [self.serviceToTest stopMocking];
+    [[VDFUsersService sharedInstance] resetOneInstanceToken];
+    [VDFSettings initialize];
+    
+    [super tearDown];
 }
 
 #pragma mark -
 #pragma mark - helper methods
 - (BOOL)checkStandardRequiredHeaders:(NSURLRequest*)request {
     
-    static NSString *lastTransactionId = @"";
+//    static NSString *lastTransactionId = @"";
     
     NSDictionary *headers = [request allHTTPHeaderFields];
     NSString *mcc = [VDFDeviceUtility simMCC];
@@ -66,6 +86,7 @@ extern void __gcov_flush();
     && [[headers objectForKey:@"x-vf-trace-source"] isEqualToString:[NSString stringWithFormat:@"iOS-%@-%@", self.appId, self.backendId]];
     
 
+    // it is commented because the OHHTPStubs are making a lot of the same requests, so this last transactions id cannot be check that way
 //    if(result) {
 //        // check is transaction id is different on each request
 //        result = ![[headers objectForKey:@"x-vf-trace-transaction-id"] isEqualToString:lastTransactionId];
@@ -163,15 +184,6 @@ extern void __gcov_flush();
     };
 }
 
-- (OHHTTPStubsResponseBlock)responseEmpty200 { return [self responseEmptyWithCode:200]; }
-- (OHHTTPStubsResponseBlock)responseEmpty404 { return [self responseEmptyWithCode:404]; }
-- (OHHTTPStubsResponseBlock)responseEmpty500 { return [self responseEmptyWithCode:500]; }
-- (OHHTTPStubsResponseBlock)responseEmpty400 { return [self responseEmptyWithCode:400]; }
-- (OHHTTPStubsResponseBlock)responseEmpty401 { return [self responseEmptyWithCode:401]; }
-- (OHHTTPStubsResponseBlock)responseEmpty403 { return [self responseEmptyWithCode:403]; }
-- (OHHTTPStubsResponseBlock)responseEmpty409 { return [self responseEmptyWithCode:409]; }
-
-
 - (OHHTTPStubsResponseBlock)responseOAuthSuccessExpireInSeconds:(NSInteger)expireInSeconds {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
         return [OHHTTPStubsResponse responseWithData:
@@ -185,7 +197,7 @@ extern void __gcov_flush();
 - (OHHTTPStubsResponseBlock)responseOAuthTokenExpired {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
         return [OHHTTPStubsResponse responseWithData:
-                [@"{ \"id\": \"POL0002\", \"description\": \"Privacy Verification Failed - Authorization\" }" dataUsingEncoding:NSUTF8StringEncoding]
+                [@"{ \"id\": \"POL0002\", \"description\": \"Privacy Verification Failed -Authorization\" }" dataUsingEncoding:NSUTF8StringEncoding]
                                           statusCode:403
                                              headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON}];
     };

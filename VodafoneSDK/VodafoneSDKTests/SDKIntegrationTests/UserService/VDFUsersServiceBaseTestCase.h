@@ -12,6 +12,8 @@
 @class VDFBaseConfiguration;
 
 @interface VDFUsersServiceBaseTestCase : XCTestCase
+@property id serviceToTest;
+@property id mockDelegate;
 @property NSString *backendId;
 @property NSString *appId;
 @property NSString *appSecret;
@@ -41,13 +43,7 @@
 
 #pragma mark -
 #pragma mark - responses
-- (OHHTTPStubsResponseBlock)responseEmpty200;
-- (OHHTTPStubsResponseBlock)responseEmpty404;
-- (OHHTTPStubsResponseBlock)responseEmpty500;
-- (OHHTTPStubsResponseBlock)responseEmpty400;
-- (OHHTTPStubsResponseBlock)responseEmpty401;
-- (OHHTTPStubsResponseBlock)responseEmpty403;
-- (OHHTTPStubsResponseBlock)responseEmpty409;
+- (OHHTTPStubsResponseBlock)responseEmptyWithCode:(int)statusCode;
 
 - (OHHTTPStubsResponseBlock)responseOAuthSuccessExpireInSeconds:(NSInteger)expireInSeconds;
 - (OHHTTPStubsResponseBlock)responseOAuthTokenExpired;

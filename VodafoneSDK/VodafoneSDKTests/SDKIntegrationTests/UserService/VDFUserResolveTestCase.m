@@ -17,16 +17,9 @@
 #import "VDFError.h"
 #import "VDFSmsValidationResponse.h"
 
-static NSInteger const VERIFY_DELAY = 3;
-
-@interface VDFUsersService ()
-- (NSError*)checkPotentialHAPResolveError;
-- (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
-@end
+static NSInteger const VERIFY_DELAY = 5;
 
 @interface VDFUserResolveTestCase : VDFUsersServiceBaseTestCase
-@property id serviceToTest;
-@property id mockDelegate;
 @end
 
 @implementation VDFUserResolveTestCase
@@ -36,20 +29,18 @@ static NSInteger const VERIFY_DELAY = 3;
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     // mock
-    self.serviceToTest = OCMPartialMock([VDFUsersService sharedInstance]);
-    self.mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
+    
 }
 
 - (void)tearDown
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
-    [self.serviceToTest stopMocking];
 }
 
 
 
-- (void)test_ResolutionIsSuccessful_InFirstStep_With {
+- (void)test_ResolutionIsSuccessful_InFirstStep {
     
     // mock
     super.smsValidation = NO;
@@ -60,9 +51,6 @@ static NSInteger const VERIFY_DELAY = 3;
     // stub success resolve 201
     [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve201]]];
     
-    // stub the sim card checking
-    [[[self.serviceToTest stub] andReturn:nil] checkPotentialHAPResolveError];
-    
     
     // expect that the delegate object will be invoked correctly:
     [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
@@ -70,11 +58,11 @@ static NSInteger const VERIFY_DELAY = 3;
     
     // run
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
-    [self.serviceToTest retrieveUserDetails:options delegate:self.mockDelegate];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
     
     
     // verify
-    [self.mockDelegate verifyWithDelay:VERIFY_DELAY];
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY];
 }
 
 
@@ -88,36 +76,93 @@ static NSInteger const VERIFY_DELAY = 3;
     
     // stub success resolve in sequence like this: 404, 500, 400, 401, 403
     [super stubRequest:[super filterResolveRequestWithSmsValidation]
-     withResponsesList:@[[super responseEmpty404], [super responseEmpty500],
-                         [super responseEmpty400], [super responseEmpty401],
-                         [super responseEmpty403]]];
-    
-    // stub the sim card checking
-    [[[self.serviceToTest stub] andReturn:nil] checkPotentialHAPResolveError];
+     withResponsesList:@[[super responseEmptyWithCode:404], [super responseEmptyWithCode:500],
+                         [super responseEmptyWithCode:400], [super responseEmptyWithCode:401],
+                         [super responseEmptyWithCode:403]]];
     
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
     
     // expect that the delegate object will be invoked correctly:
     [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusFailed]; // for 404
-    [self.serviceToTest retrieveUserDetails:options delegate:self.mockDelegate]; // run
-    [self.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
     
     [self expectDidReceivedUserDetailsWithErrorCode:VDFErrorServerCommunication]; // for 500
-    [self.serviceToTest retrieveUserDetails:options delegate:self.mockDelegate]; // run
-    [self.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
     
     [self expectDidReceivedUserDetailsWithErrorCode:VDFErrorInvalidInput]; // for 400
-    [self.serviceToTest retrieveUserDetails:options delegate:self.mockDelegate]; // run
-    [self.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
 
     [self expectDidReceivedUserDetailsWithErrorCode:VDFErrorServerCommunication]; // for 401
-    [self.serviceToTest retrieveUserDetails:options delegate:self.mockDelegate]; // run
-    [self.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
     
     [self expectDidReceivedUserDetailsWithErrorCode:VDFErrorServerCommunication]; // for 403
-    [self.serviceToTest retrieveUserDetails:options delegate:self.mockDelegate]; // run
-    [self.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
 }
+
+- (void)test_Resolution_WithOAuthErrors {
+    
+    // mock
+    super.smsValidation = NO;
+    
+    // stub http oauth in sequence like this:
+    // 200 - with long expiration time (should be cached)
+    // 403 - invalid scope,
+    // 200 - with success but expired in 3 seconds,
+    // 403 - opco not valid
+    // 200 - with long expiration time (should be cached)
+    // 403 - opco not valid (this response should not be called)
+    [super stubRequest:[super filterOAuthRequest]
+     withResponsesList:@[[super responseOAuthSuccessExpireInSeconds:36000], [super responseOAuthScopeNotValidError],
+                         [super responseOAuthSuccessExpireInSeconds:3], [super responseOAuthOpCoNotValidError],
+                         [super responseOAuthSuccessExpireInSeconds:36000], [super responseOAuthOpCoNotValidError]]];
+    
+    // stub resolve in sequence like this: 403 - expired token, 201
+    [super stubRequest:[super filterResolveRequestWithSmsValidation]
+     withResponsesList:@[[super responseOAuthTokenExpired], [super responseResolve201]]];
+    
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
+    
+    // for 200 - with long expiration time (from oAuth)
+    // 403 - expired token (from resolve) (here the erlier requested oAuthToken need to be removed from cache),
+    // 403 - invalid scope (from oAuth) - after this secuence should be returned error VDFErrorApixAuthorization
+    // because it take place when we try to download new oAuthToken
+    [self expectDidReceivedUserDetailsWithErrorCode:VDFErrorOAuthTokenRetrieval];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY];  // verify
+    
+    
+    // for 200 - with success but expired in 3 seconds (from oAuth) - this should be success
+    [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY];  // verify
+    
+    // wait for 5 seconds to oAuthToken be expired
+    [NSThread sleepForTimeInterval:8];
+    
+    // 403 - opco not valid (from oAuth) - after this secuence should be returned error VDFErrorOAuthTokenRetrieval
+    [self expectDidReceivedUserDetailsWithErrorCode:VDFErrorOAuthTokenRetrieval];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY];  // verify
+    
+    // for 200 - with long expiration time (should be cached) - this should be success
+    [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY];  // verify
+    
+    // this also should be success because oAuth token should be readed from internal cache
+    [self expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY];  // verify
+}
+
+
+
+
 
 /*
  - (void)testWhenResolutionFailedInFirstStep {}

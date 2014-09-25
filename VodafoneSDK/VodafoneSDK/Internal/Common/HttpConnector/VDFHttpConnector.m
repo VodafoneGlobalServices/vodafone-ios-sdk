@@ -132,7 +132,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
     VDFLogD(@"GET %@", url);
-    VDFLogD(@"Headers %@", request.allHTTPHeaderFields);
+    VDFLogD(@"Headers %@", [request allHTTPHeaderFields]);
     
     if(conn) {
         self.isConnectionOpen = YES;
@@ -166,7 +166,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     [request setHTTPBody:body];
     
     VDFLogD(@"POST %@\n------\n%@\n------", url, [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
-    VDFLogD(@"Headers %@", request.allHTTPHeaderFields);
+    VDFLogD(@"Headers %@", [request allHTTPHeaderFields]);
     
     // sending request:
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];

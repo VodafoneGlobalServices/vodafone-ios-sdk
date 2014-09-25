@@ -44,7 +44,7 @@ extern void __gcov_flush();
                                       [[VDFCacheObject alloc] initWithValue:@"someVal4" forKey:@"someKey4" withExpirationDate:expDate],
                                       [[VDFCacheObject alloc] initWithValue:@"someVal5" forKey:@"someKey5" withExpirationDate:expDate],
                                       [[VDFCacheObject alloc] initWithValue:@"someVal6" forKey:@"someKey6" withExpirationDate:expDate]]];
-    self. mockCacheObjectsArray = OCMPartialMock(cacheObjects);
+    self.mockCacheObjectsArray = OCMPartialMock(cacheObjects);
     self.managerToTest.cacheObjects = self.mockCacheObjectsArray;
 }
 

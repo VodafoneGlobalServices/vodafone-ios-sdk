@@ -202,6 +202,12 @@
             self.currentSessionToken = userDetails.token;
         }
     }
+    else if(error != nil) {
+        // resolution has occured error, so clear curent session:
+        self.currentResolveBuilder = nil;
+        self.currentSessionToken = nil;
+        self.currentDelegate = nil;
+    }
 }
 
 - (void)didSMSPinRequested:(NSNumber*)isSuccess withError:(NSError*)error {}

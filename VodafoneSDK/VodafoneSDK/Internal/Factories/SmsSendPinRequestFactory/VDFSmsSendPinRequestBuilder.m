@@ -72,15 +72,4 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
     return [self.sessionToken isEqualToString:smsValidationBuilder.sessionToken];
 }
 
-#pragma mark -
-#pragma mark VDFOAuthTokenRequestDelegate implementation
-
--(void)didReceivedOAuthToken:(VDFOAuthTokenResponse*)oAuthToken withError:(NSError*)error {
-    if(oAuthToken != nil || error == nil) {
-        // everything looks fine:
-        self.oAuthToken = oAuthToken;
-    }
-    // error handling is done in decorator class so here we only expects to store valid token
-}
-
 @end

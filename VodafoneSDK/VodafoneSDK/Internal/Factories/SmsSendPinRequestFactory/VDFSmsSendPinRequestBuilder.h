@@ -8,7 +8,6 @@
 
 #import "VDFRequestBaseBuilder.h"
 #import "VDFEnums.h"
-#import "VDFOAuthTokenRequestDelegate.h"
 #import "VDFUsersServiceDelegate.h"
 
 @class VDFOAuthTokenResponse;
@@ -16,7 +15,7 @@
 /**
  *  Builder class of sms send pin requests.
  */
-@interface VDFSmsSendPinRequestBuilder : VDFRequestBaseBuilder <VDFOAuthTokenRequestDelegate>
+@interface VDFSmsSendPinRequestBuilder : VDFRequestBaseBuilder
 
 /**
  *  Contextual session token.

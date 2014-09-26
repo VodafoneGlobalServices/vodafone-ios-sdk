@@ -9,14 +9,13 @@
 #import "VDFRequestBaseBuilder.h"
 #import "VDFUsersServiceDelegate.h"
 #import "VDFEnums.h"
-#import "VDFOAuthTokenRequestDelegate.h"
 
 @class VDFOAuthTokenResponse;
 
 /**
  *  Builder class of sms validation request.
  */
-@interface VDFSmsValidationRequestBuilder : VDFRequestBaseBuilder <VDFOAuthTokenRequestDelegate>
+@interface VDFSmsValidationRequestBuilder : VDFRequestBaseBuilder
 
 /**
  *  Contextual sessiont token of user resolving process

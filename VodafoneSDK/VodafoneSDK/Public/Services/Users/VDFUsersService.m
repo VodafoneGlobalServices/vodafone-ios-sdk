@@ -88,7 +88,7 @@ static dispatch_once_t * oneInstanceToken;
             // everything looks fine, move forward
             
             VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:delegate];
-            [[builder observersContainer] registerObserver:self];
+            [[builder observersContainer] registerObserver:self withPriority:10]; // i neeed here some higher priority because service object need to be updated first
             self.currentResolveBuilder = builder;
             self.currentDelegate = delegate;
             

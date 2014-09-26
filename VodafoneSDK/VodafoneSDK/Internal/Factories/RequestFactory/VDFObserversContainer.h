@@ -29,12 +29,21 @@
 - (void)setObserversNotifySelector:(SEL)selector;
 
 /**
- *  Register observer object in container.
+ *  Register observer object in container with call priority set to 0.
  *  If observer already is registered in container nothing happends.
  *
  *  @param observer Observer object which will be registered.
  */
 - (void)registerObserver:(id)observer;
+
+/**
+ *  Register observer object in container with specified priority to call.
+ *  If observer already is registered in container nothing happends.
+ *
+ *  @param observer        Observer object which will be registered.
+ *  @param priority Priority to call, highier priority means that observer will be called as first. Lower priority is called later.
+ */
+- (void)registerObserver:(id)observer withPriority:(NSInteger)priority;
 
 /**
  *  Remove observer from container.

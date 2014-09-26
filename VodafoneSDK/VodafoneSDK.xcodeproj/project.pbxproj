@@ -98,6 +98,7 @@
 		4990BFB819923C71005EED39 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4990BFB719923C71005EED39 /* SystemConfiguration.framework */; };
 		4990BFC019923F90005EED39 /* VDFUserResolveResponseParserTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990BFBF19923F90005EED39 /* VDFUserResolveResponseParserTestCase.m */; };
 		4990BFC21992767E005EED39 /* VDFUserResolveRequestStateTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990BFC11992767E005EED39 /* VDFUserResolveRequestStateTestCase.m */; };
+		4997203C19D5957D00568F22 /* VDFResolveWithSmsValidationTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4997203B19D5957D00568F22 /* VDFResolveWithSmsValidationTestCase.m */; };
 		4998786E198A246400023E87 /* VDFLogUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4998786C198A246400023E87 /* VDFLogUtility.h */; };
 		4998786F198A246400023E87 /* VDFLogUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4998786D198A246400023E87 /* VDFLogUtility.m */; };
 		499C3EB619B9E31B00C2EC16 /* VDFRequestCallsCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 499C3EB419B9E31B00C2EC16 /* VDFRequestCallsCounter.h */; };
@@ -311,6 +312,7 @@
 		4990BFB719923C71005EED39 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		4990BFBF19923F90005EED39 /* VDFUserResolveResponseParserTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveResponseParserTestCase.m; path = Factories/UsersResolve/VDFUserResolveResponseParserTestCase.m; sourceTree = "<group>"; };
 		4990BFC11992767E005EED39 /* VDFUserResolveRequestStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUserResolveRequestStateTestCase.m; path = Factories/UsersResolve/VDFUserResolveRequestStateTestCase.m; sourceTree = "<group>"; };
+		4997203B19D5957D00568F22 /* VDFResolveWithSmsValidationTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFResolveWithSmsValidationTestCase.m; path = SDKIntegrationTests/UserService/VDFResolveWithSmsValidationTestCase.m; sourceTree = "<group>"; };
 		4998786C198A246400023E87 /* VDFLogUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFLogUtility.h; path = Internal/Common/Helpers/VDFLogUtility.h; sourceTree = "<group>"; };
 		4998786D198A246400023E87 /* VDFLogUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFLogUtility.m; path = Internal/Common/Helpers/VDFLogUtility.m; sourceTree = "<group>"; };
 		499C3EB419B9E31B00C2EC16 /* VDFRequestCallsCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFRequestCallsCounter.h; path = Internal/Managers/Requests/ManagerComponents/VDFRequestCallsCounter.h; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 				4963487619D1C3E50053F46E /* VDFUsersServiceBaseTestCase.h */,
 				4963487019D1C0320053F46E /* VDFUsersServiceBaseTestCase.m */,
 				4946CBFA19D019CC00C3A4EA /* VDFUserResolveTestCase.m */,
+				4997203B19D5957D00568F22 /* VDFResolveWithSmsValidationTestCase.m */,
 			);
 			name = UserSevice;
 			sourceTree = "<group>";
@@ -1445,6 +1448,7 @@
 				49A5D77919ADEF470095B0E3 /* VDFSmsValidationRequestStateTestCase.m in Sources */,
 				49A3DA2C19ACC763004B8634 /* VDFResponseParserBaseTestCase.m in Sources */,
 				4990BFC019923F90005EED39 /* VDFUserResolveResponseParserTestCase.m in Sources */,
+				4997203C19D5957D00568F22 /* VDFResolveWithSmsValidationTestCase.m in Sources */,
 				498EA2F119823B9800122F05 /* VDFCacheManagerTestCase.m in Sources */,
 				498EA2F819823C4200122F05 /* VDFSettingsTestCase.m in Sources */,
 				49A3DA2819AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m in Sources */,

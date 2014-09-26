@@ -51,6 +51,7 @@ static NSInteger const VERIFY_DELAY = 8;
     // stub success resolve 201
     [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve201]]];
     
+    [super rejectAnyOtherHttpCall];
     
     // expect that the delegate object will be invoked correctly:
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
@@ -79,6 +80,8 @@ static NSInteger const VERIFY_DELAY = 8;
      withResponsesList:@[[super responseEmptyWithCode:404], [super responseEmptyWithCode:500],
                          [super responseEmptyWithCode:400], [super responseEmptyWithCode:401],
                          [super responseEmptyWithCode:403]]];
+    
+    [super rejectAnyOtherHttpCall];
     
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
     
@@ -124,6 +127,8 @@ static NSInteger const VERIFY_DELAY = 8;
     // stub resolve in sequence like this: 403 - expired token, 201
     [super stubRequest:[super filterResolveRequestWithSmsValidation]
      withResponsesList:@[[super responseOAuthTokenExpired], [super responseResolve201]]];
+    
+    [super rejectAnyOtherHttpCall];
     
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
     
@@ -181,6 +186,8 @@ static NSInteger const VERIFY_DELAY = 8;
                          [super responseCheckStatus304NotModifiedAndRetryAfterMs:1000],
                          [super responseCheckStatus200]]];
     
+    [super rejectAnyOtherHttpCall];
+    
     // expect that the delegate object will be invoked correctly:
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
@@ -215,6 +222,8 @@ static NSInteger const VERIFY_DELAY = 8;
      withResponsesList:@[[super responseCheckStatus302NotFinishedAndRetryAfterMs:1000],
                          [super responseCheckStatus304NotModifiedAndRetryAfterMs:1000],
                          [super responseEmptyWithCode:404]]];
+    
+    [super rejectAnyOtherHttpCall];
     
     // expect that the delegate object will be invoked correctly:
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
@@ -259,6 +268,8 @@ static NSInteger const VERIFY_DELAY = 8;
     // stub validate pin request
     [super stubRequest:[super filterValidatePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
     
+    [super rejectAnyOtherHttpCall];
+    
     // expect that the delegate object will be invoked correctly:
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusValidationRequired onSuccessExecution:^(VDFUserTokenDetails *details) {
@@ -277,7 +288,7 @@ static NSInteger const VERIFY_DELAY = 8;
     
     
     // verify
-    [super.mockDelegate verifyWithDelay:8];
+    [super.mockDelegate verifyWithDelay:12];
 }
 
 

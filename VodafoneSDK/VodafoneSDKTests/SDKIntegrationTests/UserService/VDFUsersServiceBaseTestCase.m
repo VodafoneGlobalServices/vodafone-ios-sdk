@@ -16,6 +16,9 @@
 #import "VDFConsts.h"
 #import "VDFDeviceUtility.h"
 #import "VDFSmsValidationResponse.h"
+#import "VDFNetworkReachability.h"
+#import "VDFSettings+Internal.h"
+#import "VDFDIContainer.h"
 
 extern void __gcov_flush();
 
@@ -24,6 +27,12 @@ extern void __gcov_flush();
 - (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
 
 - (void)resetOneInstanceToken;
++ (VDFNetworkReachability*)reachabilityForInternetConnection;
+@end
+
+@interface OHHTTPStubsDescriptor : NSObject <OHHTTPStubsDescriptor>
+@property(atomic, copy) OHHTTPStubsTestBlock testBlock;
+@property(atomic, copy) OHHTTPStubsResponseBlock responseBlock;
 @end
 
 @implementation VDFUsersServiceBaseTestCase
@@ -58,6 +67,10 @@ extern void __gcov_flush();
     // stub the sim card checking
     [[[self.serviceToTest stub] andReturn:nil] checkPotentialHAPResolveError];
     
+    // stub network checking class:
+    id mockDeviceUtility = OCMClassMock([VDFDeviceUtility class]);
+    [[[mockDeviceUtility stub] andReturnValue:OCMOCK_VALUE(VDFNetworkAvailableViaGSM)] checkNetworkTypeAvailability];
+    [[VDFSettings globalDIContainer] registerInstance:mockDeviceUtility forClass:[VDFDeviceUtility class]];
 }
 
 - (void)tearDown
@@ -79,11 +92,11 @@ extern void __gcov_flush();
 //    static NSString *lastTransactionId = @"";
     
     NSDictionary *headers = [request allHTTPHeaderFields];
-    NSString *mcc = [VDFDeviceUtility simMCC];
+//    NSString *mcc = [VDFDeviceUtility simMCC];
     BOOL result = [[headers objectForKey:HTTP_HEADER_USER_AGENT] isEqualToString:[NSString stringWithFormat:@"VFSeamlessID SDK/iOS (v%@)", [VDFSettings sdkVersion]]]
     && [[headers objectForKey:HTTP_HEADER_AUTHORIZATION] isEqualToString:[NSString stringWithFormat:@"Bearer %@", self.oAuthToken]]
-    && [[headers objectForKey:@"x-vf-trace-subject-id"] isEqualToString:[VDFDeviceUtility deviceUniqueIdentifier]]
-    && (mcc == nil || [[headers objectForKey:@"x-vf-trace-subject-region"] isEqualToString:mcc])
+    /*&& [[headers objectForKey:@"x-vf-trace-subject-id"] isEqualToString:[VDFDeviceUtility deviceUniqueIdentifier]]
+    && (mcc == nil || [[headers objectForKey:@"x-vf-trace-subject-region"] isEqualToString:mcc])*/
     && [[headers objectForKey:@"x-vf-trace-source"] isEqualToString:[NSString stringWithFormat:@"iOS-%@-%@", self.appId, self.backendId]];
     
 
@@ -300,7 +313,7 @@ extern void __gcov_flush();
         return [OHHTTPStubsResponse responseWithData:
                 [[NSString stringWithFormat:@"{ \"acr\": \"%@\", \"expiresIn\": 60000, \"tokenId\": \"%@\" }",
                   self.acr, self.sessionToken] dataUsingEncoding:NSUTF8StringEncoding]
-                                          statusCode:201
+                                          statusCode:200
                                              headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON,
                                                        HTTP_HEADER_ETAG: self.etag}];
     };
@@ -312,7 +325,7 @@ extern void __gcov_flush();
         return [OHHTTPStubsResponse responseWithData:
                 [[NSString stringWithFormat:@"{ \"acr\": \"%@\", \"expiresIn\": 60000, \"tokenId\": \"%@\" }",
                   self.acr, self.sessionToken] dataUsingEncoding:NSUTF8StringEncoding]
-                                          statusCode:201
+                                          statusCode:200
                                              headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON}];
     };
 }
@@ -325,7 +338,6 @@ extern void __gcov_flush();
 
 - (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
                             withResponsesList:(NSArray*)responses {
-    __weak __block id<OHHTTPStubsDescriptor> stub;
     
     // creating requests in reverse direction
     __block NSMutableArray *blocksArray = [NSMutableArray arrayWithCapacity:[responses count]];
@@ -334,7 +346,7 @@ extern void __gcov_flush();
         [blocksArray addObject:element];
     }
     
-    stub = [OHHTTPStubs stubRequestsPassingTest:requestFilter
+    return [OHHTTPStubs stubRequestsPassingTest:requestFilter
                                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                                    OHHTTPStubsResponseBlock responseBlock = [[blocksArray lastObject] copy];
                                    
@@ -345,13 +357,28 @@ extern void __gcov_flush();
                                    
                                    return responseBlock(request);
                                }];
-    return stub;
 }
 
 
 
 #pragma mark -
 #pragma mark - expect methods
+- (void)rejectAnyOtherHttpCall {
+    
+    __block id stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        for (OHHTTPStubsDescriptor *descriptor in [OHHTTPStubs allStubs]) {
+            if(descriptor != stub &&  descriptor.testBlock(request)) {
+                return NO;
+            }
+        }
+        
+        return YES;
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        XCTFail(@"This HTTP call is unhandled, but it should be.");
+        return nil;
+    }];
+}
+
 - (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode {
     
     [[self.mockDelegate expect] didReceivedUserDetails:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {

@@ -17,6 +17,7 @@
 #import "VDFLogUtility.h"
 #import "VDFDIContainer.h"
 #import "VDFConfigurationManager.h"
+#import "VDFDeviceUtility.h"
 
 static VDFDIContainer * g_diContainer = nil;
 
@@ -27,6 +28,10 @@ static VDFDIContainer * g_diContainer = nil;
         [VDFLogUtility setVerboseLevel:VODLogInfoVerboseLevelBasic];
         
         g_diContainer = [[VDFDIContainer alloc] init];
+        
+        
+        // registering VDFDeviceUtility instance
+        [g_diContainer registerInstance:[[VDFDeviceUtility alloc] init] forClass:[VDFDeviceUtility class]];
         
         VDFLogD(@"Loading configuration");
         

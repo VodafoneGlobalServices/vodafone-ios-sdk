@@ -9,6 +9,24 @@
 #import <Foundation/Foundation.h>
 
 /**
+ *  Network avaialblity status enum
+ */
+typedef NS_ENUM(NSUInteger, VDFNetworkAvailability) {
+    /**
+     *  Network is not available.
+     */
+    VDFNetworkNotAvailable = 0,
+    /**
+     *  Network is avaiable and it is WiFi.
+     */
+    VDFNetworkAvailableViaWiFi,
+    /**
+     *  Network is avaialble and it is GSM.
+     */
+    VDFNetworkAvailableViaGSM,
+};
+
+/**
  *  Utility class for retireval information about device
  */
 @interface VDFDeviceUtility : NSObject
@@ -54,5 +72,11 @@
  */
 + (NSString*)findMarketForMsisdn:(NSString*)msisdn inMarkets:(NSDictionary*)markets;
 
+/**
+ *  Check type of network with wich device is connected.
+ *
+ *  @return Type of network wich is available.
+ */
+- (VDFNetworkAvailability)checkNetworkTypeAvailability;
 
 @end

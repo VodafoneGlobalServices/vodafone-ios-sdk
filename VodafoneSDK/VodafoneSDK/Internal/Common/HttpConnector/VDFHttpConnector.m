@@ -9,7 +9,6 @@
 #import "VDFHttpConnector.h"
 #import "VDFError.h"
 #import "VDFLogUtility.h"
-#import "VDFNetworkReachability.h"
 #import "VDFStringHelper.h"
 #import "VDFDeviceUtility.h"
 #import "VDFSettings.h"
@@ -18,6 +17,9 @@
 #import "VDFHttpConnectorResponse.h"
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
+#import "VDFSettings.h"
+#import "VDFSettings+Internal.h"
+#import "VDFDeviceUtility.h"
 
 static NSString * const XVF_SUBJECT_ID_HEADER = @"x-vf-trace-subject-id";
 static NSString * const XVF_SUBJECT_REGION_HEADER = @"x-vf-trace-subject-region";
@@ -30,6 +32,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) NSDictionary *responseHeaders;
 @property (nonatomic, assign) BOOL isConnectionOpen;
+@property (nonatomic, strong) VDFDeviceUtility *deviceUtility;
 
 - (void)addHeadersToRequest:(NSMutableURLRequest*)request;
 - (void)get:(NSString*)url;
@@ -48,22 +51,20 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         _lastResponseCode = 0;
         self.isConnectionOpen = NO;
         self.allowRedirects = YES;
+        self.deviceUtility = [[VDFSettings globalDIContainer] resolveForClass:[VDFDeviceUtility class]];
     }
     return self;
 }
 
 - (NSInteger)startCommunication {
     
-    VDFNetworkReachability *reachability = [VDFNetworkReachability reachabilityForInternetConnection];
-    [reachability startNotifier];
+    VDFNetworkAvailability networkAvailability = [self.deviceUtility checkNetworkTypeAvailability];
     
-    NetworkStatus status = [reachability currentReachabilityStatus];
-    
-    if(status == NotReachable) {
+    if(networkAvailability == VDFNetworkNotAvailable) {
         VDFLogD(@"Internet is not avaialble.");
         return 1;
     }
-    else if (status != ReachableViaWWAN && self.isGSMConnectionRequired) {
+    else if (networkAvailability != VDFNetworkAvailableViaGSM && self.isGSMConnectionRequired) {
         VDFLogD(@"Request need 3G connection - there is not available any.");
         // not connected over 3G and request require 3G:
         return 2; // TODO need to make some error codes for this

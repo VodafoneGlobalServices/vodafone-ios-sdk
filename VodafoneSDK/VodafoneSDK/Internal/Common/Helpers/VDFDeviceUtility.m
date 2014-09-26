@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
+#import "VDFNetworkReachability.h"
 
 @implementation VDFDeviceUtility
 
@@ -52,5 +53,18 @@
         }
     }
     return nil;
+}
+
+- (VDFNetworkAvailability)checkNetworkTypeAvailability {
+    VDFNetworkReachability *reachability = [VDFNetworkReachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus currentNetworkStatus = [reachability currentReachabilityStatus];
+    if(currentNetworkStatus == NotReachable) {
+        return VDFNetworkNotAvailable;
+    }
+    if(currentNetworkStatus == ReachableViaWiFi) {
+        return VDFNetworkAvailableViaWiFi;
+    }
+    return VDFNetworkAvailableViaGSM;
 }
 @end

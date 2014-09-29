@@ -9,6 +9,7 @@
 #import "VDFSmsSendPinRequestState.h"
 #import "VDFHttpConnectorResponse.h"
 #import "VDFError.h"
+#import "VDFRequestState.h"
 
 @interface VDFSmsSendPinRequestState ()
 @property (nonatomic, strong) NSError *error;
@@ -27,21 +28,6 @@
         }
         self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     }
-}
-
-- (void)updateWithParsedResponse:(id)parsedResponse {
-}
-
-- (BOOL)isRetryNeeded {
-    return NO; // it never need to retry because this request is not waiting for server side changes
-}
-
-- (NSTimeInterval)retryAfter {
-    return 0;
-}
-
-- (NSDate*)lastResponseExpirationDate {
-    return [NSDate dateWithTimeIntervalSince1970:0];// this is not cached so it expires immediately
 }
 
 - (NSError*)responseError {

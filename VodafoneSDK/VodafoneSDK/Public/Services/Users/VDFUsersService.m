@@ -155,14 +155,7 @@ static dispatch_once_t * oneInstanceToken;
     if(self.currentResolveBuilder != nil) {
         // if there is pending request we need to cancel request by removing all delegates:
         VDFServiceRequestsManager * requestsManager = [self.diContainer resolveForClass:[VDFServiceRequestsManager class]];
-        
-        if(self.currentDelegate != nil) {
-            // inform request manager about removal
-            [requestsManager removeRequestObserver:self.currentDelegate];
-        }
-        
-        // and service class need to be removed
-        [requestsManager removeRequestObserver:self];
+        [requestsManager cancelAllPendingRequests];
         
         self.currentDelegate = nil;
         self.currentResolveBuilder = nil;

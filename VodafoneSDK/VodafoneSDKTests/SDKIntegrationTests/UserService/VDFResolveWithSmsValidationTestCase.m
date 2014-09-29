@@ -96,21 +96,19 @@
     // stub http oauth
     [super stubRequest:[super filterOAuthRequest] withResponsesList:@[[super responseOAuthSuccessExpireInSeconds:3200]]];
     
-    // stub resolve response with 302 - not yet know sms validation
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302SmsRequiredAndRetryAfterMs:1000]]];
+    // stub resolve response with 302 - sms validation required
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302SmsRequiredAndRetryAfterMs:100000]]];
     
     // stub check status response with sequence:
-    // 302 - need sms validation
     // 200 - ok
     [super stubRequest:[super filterCheckStatusRequest]
-     withResponsesList:@[[super responseCheckStatus302SmsRequiredAndRetryAfterMs:1000],
-                         [super responseCheckStatus200]]];
+     withResponsesList:@[[super responseCheckStatus200]]];
     
     // stub send pin request
     [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
     
     // stub validate pin request
-    [super stubRequest:[super filterValidatePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
+    [super stubRequest:[super filterValidatePinRequest] withResponsesList:@[[super responseValidatePin200]]];
     
     [super rejectAnyOtherHttpCall];
     

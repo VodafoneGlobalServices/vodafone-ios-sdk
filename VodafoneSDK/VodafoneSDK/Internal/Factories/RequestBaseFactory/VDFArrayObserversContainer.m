@@ -7,47 +7,13 @@
 //
 
 #import "VDFArrayObserversContainer.h"
-
-// TODO TODO !!!!!!!!! move observer container to another file
-@interface VDFObserverItem : NSObject
-@property (nonatomic, assign) NSInteger invokePriority;
-@property (nonatomic, strong) id observer;
-
-- (instancetype)initWithPriority:(NSInteger)priority observer:(id)observer;
-
-- (NSComparisonResult)compare:(VDFObserverItem*)item;
-@end
-
-@implementation VDFObserverItem
-
-- (instancetype)initWithPriority:(NSInteger)priority observer:(id)observer {
-    self = [super init];
-    if(self) {
-        self.invokePriority = priority;
-        self.observer = observer;
-    }
-    return self;
-}
-
-- (NSComparisonResult)compare:(VDFObserverItem*)item {
-    if(item != nil) {
-        if(self.invokePriority > item.invokePriority) {
-            return NSOrderedAscending;
-        }
-        if(self.invokePriority < item.invokePriority) {
-            return NSOrderedDescending;
-        }
-        return NSOrderedSame;
-    }
-    return NSOrderedAscending;
-}
-@end
+#import "VDFArrayObserverContainerItem.h"
 
 @interface VDFArrayObserversContainer ()
 @property SEL notifySelector;
 @property NSMutableArray *observers;
 
-- (VDFObserverItem*)findItemForObserver:(id)observer;
+- (VDFArrayObserverContainerItem*)findItemForObserver:(id)observer;
 @end
 
 @implementation VDFArrayObserversContainer
@@ -66,7 +32,7 @@
 - (NSArray*)registeredObservers {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:[self.observers count]];
     NSArray *sortedItems = [self.observers sortedArrayUsingSelector:@selector(compare:)];
-    for (VDFObserverItem *item in sortedItems) {
+    for (VDFArrayObserverContainerItem *item in sortedItems) {
         [result addObject:item.observer];
     }
     return result;
@@ -83,12 +49,12 @@
 - (void)registerObserver:(id)observer withPriority:(NSInteger)priority {
     // TODO if observer exisiting, update it position (Ya Aint Need It?)
     if(observer != nil && [self findItemForObserver:observer] == nil) {
-        [self.observers addObject:[[VDFObserverItem alloc] initWithPriority:priority observer:observer]];
+        [self.observers addObject:[[VDFArrayObserverContainerItem alloc] initWithPriority:priority observer:observer]];
     }
 }
 
 - (void)unregisterObserver:(id)observer {
-    VDFObserverItem *item = [self findItemForObserver:observer];
+    VDFArrayObserverContainerItem *item = [self findItemForObserver:observer];
     [self.observers removeObject:item];
 }
 
@@ -120,8 +86,8 @@
 #pragma mark -
 #pragma mark - PRivate methods implementation
 
-- (VDFObserverItem*)findItemForObserver:(id)observer {
-    for (VDFObserverItem *item in self.observers) {
+- (VDFArrayObserverContainerItem*)findItemForObserver:(id)observer {
+    for (VDFArrayObserverContainerItem *item in self.observers) {
         if(item.observer == observer) {
             return item;
         }

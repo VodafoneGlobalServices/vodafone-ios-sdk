@@ -100,6 +100,9 @@
     }
 }
 
+- (BOOL)isDecoratedBuilderKindOfClass:(Class)classType {
+    return [self.activeBuilder isKindOfClass:classType];
+}
 
 #pragma mark -
 #pragma mark VDFOAuthTokenRequestDelegate

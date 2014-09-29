@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VDFRequestState.h"
+#import "VDFRequestBaseState.h"
 
-@interface VDFSmsSendPinRequestState : NSObject <VDFRequestState>
+@interface VDFSmsSendPinRequestState : VDFRequestBaseState
 
 @end

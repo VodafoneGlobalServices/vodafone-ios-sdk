@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VDFRequestState.h"
+#import "VDFRequestBaseState.h"
 
 @class VDFRequestBuilderWithOAuth;
 
 /**
  *  Decorator for request states classes. Adds functionality of handling APIX error concerned to oAuthToken retrieval.
  */
-@interface VDFRequestStateWithOAuth : NSObject <VDFRequestState>
+@interface VDFRequestStateWithOAuth : VDFRequestBaseState
 
 /**
  *  Initialize oAuth request state decorator instance.

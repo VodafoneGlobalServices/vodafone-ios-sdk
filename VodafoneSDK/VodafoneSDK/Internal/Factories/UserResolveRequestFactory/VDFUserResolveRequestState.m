@@ -15,12 +15,16 @@
 #import "VDFDIContainer.h"
 #import "VDFBaseConfiguration.h"
 #import "VDFConsts.h"
+#import "VDFRequestState.h"
+#import "VDFSmsValidationRequestBuilder.h"
+#import "VDFRequestBuilderWithOAuth.h"
 
 @interface VDFUserResolveRequestState ()
 @property BOOL needRetry;
 @property NSTimeInterval retryAfterMiliseconds;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) VDFUserResolveRequestBuilder *builder;
+@property (nonatomic, assign) VDFResolutionStatus currentResolutionStatus;
 
 - (void)readEtagFromResponse:(VDFHttpConnectorResponse*)response;
 - (void)readErrorFromResponse:(VDFHttpConnectorResponse*)response;
@@ -34,6 +38,7 @@
         self.needRetry = YES; // as default this request is waiting on server changes
         self.builder = builder;
         self.retryAfterMiliseconds = -1;
+        self.currentResolutionStatus = VDFResolutionStatusPending;
     }
     return self;
 }
@@ -88,6 +93,8 @@
         if(userTokenDetails.token != nil) {
             self.builder.sessionToken = userTokenDetails.token;
         }
+        
+        self.currentResolutionStatus = userTokenDetails.resolutionStatus;
     }
 }
 
@@ -102,9 +109,38 @@
     return ((VDFBaseConfiguration*)[self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]]).httpRequestRetryTimeSpan;
 }
 
-- (NSDate*)lastResponseExpirationDate {
-    // The user resolve response is never cached, every call schould perform server http request
-    return [NSDate dateWithTimeIntervalSince1970:0];
+- (BOOL)isConnectedRequestResponseNeeded {
+    if(self.currentResolutionStatus == VDFResolutionStatusValidationRequired) {
+        return YES; // when sms validation is needed then we waiting for aproporiate response
+    }
+    return NO;
+}
+
+- (void)onConnectedResponseOfBuilder:(id<VDFRequestBuilder>)builder {
+    BOOL isRequiredBuilder = [builder isKindOfClass:[VDFSmsValidationRequestBuilder class]];
+    if(!isRequiredBuilder) {
+        isRequiredBuilder = ([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]]
+                             && [(VDFRequestBuilderWithOAuth*)builder isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]]);
+    }
+    
+    if(isRequiredBuilder) {
+        if([[builder requestState] responseError] == nil) {
+            // successfully validated with sms
+            // we need to retry request imidettly:
+            self.retryAfterMiliseconds = 0;
+            self.currentResolutionStatus = VDFResolutionStatusPending;
+        }
+    }
+}
+
+- (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder {
+    if([self isConnectedRequestResponseNeeded]) {
+        if([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]]) {
+            return [(VDFRequestBuilderWithOAuth*)builder isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]];
+        }
+        return [builder isKindOfClass:[VDFSmsValidationRequestBuilder class]];
+    }
+    return NO;
 }
 
 - (NSError*)responseError {

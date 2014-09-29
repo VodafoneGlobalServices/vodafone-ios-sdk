@@ -46,4 +46,6 @@
  */
 - (void)removeRequestObserver:(id)requestDelegate;
 
+- (void)cancelAllPendingRequests;
+
 @end

@@ -10,6 +10,7 @@
 #import "VDFOAuthTokenResponse.h"
 #import "VDFHttpConnectorResponse.h"
 #import "VDFError.h"
+#import "VDFRequestState.h"
 
 @interface VDFOAuthTokenRequestState ()
 @property (nonatomic, strong) NSDate *expiresIn;
@@ -43,10 +44,6 @@
 
 - (BOOL)isRetryNeeded {
     return self.needRetry;// not needed
-}
-
-- (NSTimeInterval)retryAfter {
-    return 0;
 }
 
 - (NSDate*)lastResponseExpirationDate {

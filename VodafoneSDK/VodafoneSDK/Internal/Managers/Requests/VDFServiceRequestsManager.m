@@ -126,5 +126,12 @@
     }
 }
 
+- (void)cancelAllPendingRequests {
+    NSArray *pendingRequests = [NSArray arrayWithArray:[self.connectionsQueue allPendingRequests]];
+    for (VDFPendingRequestItem *item in pendingRequests) {
+        [item cancelRequest];
+        [self.connectionsQueue dequeueRequestItem:item];
+    }
+}
 
 @end

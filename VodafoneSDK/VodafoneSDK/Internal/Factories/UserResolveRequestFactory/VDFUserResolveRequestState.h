@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VDFRequestState.h"
+#import "VDFRequestBaseState.h"
 
 @class VDFUserResolveOptions, VDFUserResolveRequestBuilder;
 
 /**
  *  Holder for state of the user resolve SDK request.
  */
-@interface VDFUserResolveRequestState : NSObject <VDFRequestState>
+@interface VDFUserResolveRequestState : VDFRequestBaseState
 
 - (instancetype)initWithBuilder:(VDFUserResolveRequestBuilder*)builder;
 

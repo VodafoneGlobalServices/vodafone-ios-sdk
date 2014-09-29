@@ -11,6 +11,7 @@
 #import "VDFError.h"
 #import "VDFRequestBuilderWithOAuth.h"
 #import "VDFLogUtility.h"
+#import "VDFRequestState.h"
 
 @interface VDFRequestStateWithOAuth ()
 @property (nonatomic, weak) VDFRequestBuilderWithOAuth *parentBuilder;
@@ -88,6 +89,27 @@
     }
     return [self.internalRequestState retryAfter];
 }
+
+- (BOOL)isConnectedRequestResponseNeeded {
+    if(self.needRetryForOAuth) {
+        return NO;
+    }
+    return [self.internalRequestState isConnectedRequestResponseNeeded];
+}
+
+- (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder {
+    if(self.needRetryForOAuth) {
+        return NO;
+    }
+    return [self.internalRequestState isWaitingForResponseOfBuilder:builder];
+}
+
+- (void)onConnectedResponseOfBuilder:(id<VDFRequestBuilder>)builder {
+    if(!self.needRetryForOAuth) {
+        [self.internalRequestState onConnectedResponseOfBuilder:builder];
+    }
+}
+
 
 - (NSDate*)lastResponseExpirationDate {
     if(self.needRetryForOAuth) {

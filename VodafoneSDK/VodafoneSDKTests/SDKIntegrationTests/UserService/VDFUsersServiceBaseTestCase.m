@@ -79,6 +79,7 @@ extern void __gcov_flush();
     
     [OHHTTPStubs removeAllStubs];
     [self.serviceToTest stopMocking];
+    [[VDFUsersService sharedInstance] cancelRetrieveUserDetails];
     [[VDFUsersService sharedInstance] resetOneInstanceToken];
     [VDFSettings initialize];
     

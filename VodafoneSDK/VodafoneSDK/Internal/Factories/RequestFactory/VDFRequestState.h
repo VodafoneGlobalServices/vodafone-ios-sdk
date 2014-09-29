@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol VDFRequestBuilder;
+
 @class VDFHttpConnectorResponse;
 
 /**
@@ -37,6 +39,12 @@
 - (BOOL)isRetryNeeded;
 
 - (NSTimeInterval)retryAfter;
+
+- (BOOL)isConnectedRequestResponseNeeded;
+
+- (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder;
+
+- (void)onConnectedResponseOfBuilder:(id<VDFRequestBuilder>)builder;
 
 /**
  *  Indicates date when last response has to be expired.

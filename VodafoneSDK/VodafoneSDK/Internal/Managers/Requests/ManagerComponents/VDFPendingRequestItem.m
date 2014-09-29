@@ -31,6 +31,7 @@
 - (void)onInternalConnectionError:(VDFErrorCode)errorCode;
 - (void)safeDequeueRequest;
 - (void)parseAndNotifyWithResponse:(VDFHttpConnectorResponse*)response;
+- (void)checkNextStepWithBuilderState;
 @end
 
 @implementation VDFPendingRequestItem
@@ -75,15 +76,7 @@
     
     [self parseAndNotifyWithResponse:response];
     
-    // is it finished ?
-    if([[self.builder requestState] isRetryNeeded]) {
-        [self retryRequest];
-    }
-    else {
-        VDFLogD(@"Request is finished, closing it.");
-        // remove this request from queue
-        [self safeDequeueRequest];
-    }
+    [self checkNextStepWithBuilderState];
 }
 
 #pragma mark -
@@ -137,6 +130,15 @@
 - (void)safeDequeueRequest {
     @synchronized(self.parentQueue) {
         [self.parentQueue dequeueRequestItem:self];
+        
+        // wee need to inform any other request if any is waiting for response of currently finished response:
+        for (VDFPendingRequestItem *pendingItem in [self.parentQueue allPendingRequests]) {
+            if([[pendingItem.builder requestState] isWaitingForResponseOfBuilder:self.builder]) {
+                VDFLogD(@"Informing connected request with response of currently finished request on which is waiting.");
+                [[pendingItem.builder requestState] onConnectedResponseOfBuilder:self.builder];
+                [pendingItem checkNextStepWithBuilderState];
+            }
+        }
     }
 }
 
@@ -168,6 +170,21 @@
         VDFLogD(@"Responding to request delegates started.");
         [[self.builder observersContainer] notifyAllObserversWith:parsedObject error:error];
         VDFLogD(@"Responding to request delegates finished.");
+    }
+}
+
+- (void)checkNextStepWithBuilderState {
+    // if we need to wait for another request to finish we stopping this request and waiting for another request
+    if(![[self.builder requestState] isConnectedRequestResponseNeeded]) {
+        // is it finished ?
+        if([[self.builder requestState] isRetryNeeded]) {
+            [self retryRequest];
+        }
+        else {
+            VDFLogD(@"Request is finished, closing it.");
+            // remove this request from queue
+            [self safeDequeueRequest];
+        }
     }
 }
 

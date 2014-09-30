@@ -37,7 +37,8 @@
     return NO;
 }
 
-- (void)onConnectedResponseOfBuilder:(id<VDFRequestBuilder>)builder {
+- (BOOL)canHandleResponse:(VDFHttpConnectorResponse*)response ofConnectedBuilder:(id<VDFRequestBuilder>)builder {
+    return NO;
 }
 
 - (NSDate*)lastResponseExpirationDate {

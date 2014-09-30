@@ -18,6 +18,7 @@
 #import "VDFRequestState.h"
 #import "VDFSmsValidationRequestBuilder.h"
 #import "VDFRequestBuilderWithOAuth.h"
+#import "VDFSmsSendPinRequestBuilder.h"
 
 @interface VDFUserResolveRequestState ()
 @property BOOL needRetry;
@@ -116,21 +117,29 @@
     return NO;
 }
 
-- (void)onConnectedResponseOfBuilder:(id<VDFRequestBuilder>)builder {
-    BOOL isRequiredBuilder = [builder isKindOfClass:[VDFSmsValidationRequestBuilder class]];
-    if(!isRequiredBuilder) {
-        isRequiredBuilder = ([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]]
-                             && [(VDFRequestBuilderWithOAuth*)builder isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]]);
+- (BOOL)canHandleResponse:(VDFHttpConnectorResponse*)response ofConnectedBuilder:(id<VDFRequestBuilder>)builder {
+    
+    // this response can be handled if it is response of smsValidation and it is success
+    // or in any other cases when sessionToken expire
+    
+    BOOL isExpectedResponse = NO;
+    if([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]] && response != nil) {
+        NSError *errorInResponse = [[builder requestState] responseError];
+        
+        // check of successful validation of sms token
+        isExpectedResponse = [(VDFRequestBuilderWithOAuth*)builder isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]] && errorInResponse == nil && response.httpResponseCode == 200;
+        
+        // check for session token expiration
+        isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorTokenNotFound);
     }
     
-    if(isRequiredBuilder) {
-        if([[builder requestState] responseError] == nil) {
-            // successfully validated with sms
-            // we need to retry request imidettly:
-            self.retryAfterMiliseconds = 0;
-            self.currentResolutionStatus = VDFResolutionStatusPending;
-        }
+    if(isExpectedResponse) {
+        // we need to retry request imidettly:
+        self.retryAfterMiliseconds = 0;
+        self.currentResolutionStatus = VDFResolutionStatusPending;
+        return YES; // YES we can handle this response object
     }
+    return NO;
 }
 
 - (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder {

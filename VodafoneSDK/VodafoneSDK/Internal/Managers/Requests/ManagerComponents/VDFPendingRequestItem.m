@@ -77,6 +77,17 @@
     [self parseAndNotifyWithResponse:response];
     
     [self checkNextStepWithBuilderState];
+    
+    // wee need to inform any other request if any is waiting for response of currently finished response:
+    for (VDFPendingRequestItem *pendingItem in [self.parentQueue allPendingRequests]) {
+        if([[pendingItem.builder requestState] isWaitingForResponseOfBuilder:self.builder]) {
+            VDFLogD(@"Informing connected request with response of currently finished request on which is waiting.");
+            if([[pendingItem.builder requestState] canHandleResponse:response ofConnectedBuilder:self.builder]) {
+                [pendingItem parseAndNotifyWithResponse:response];
+                [pendingItem checkNextStepWithBuilderState];
+            }
+        }
+    }
 }
 
 #pragma mark -
@@ -130,15 +141,6 @@
 - (void)safeDequeueRequest {
     @synchronized(self.parentQueue) {
         [self.parentQueue dequeueRequestItem:self];
-        
-        // wee need to inform any other request if any is waiting for response of currently finished response:
-        for (VDFPendingRequestItem *pendingItem in [self.parentQueue allPendingRequests]) {
-            if([[pendingItem.builder requestState] isWaitingForResponseOfBuilder:self.builder]) {
-                VDFLogD(@"Informing connected request with response of currently finished request on which is waiting.");
-                [[pendingItem.builder requestState] onConnectedResponseOfBuilder:self.builder];
-                [pendingItem checkNextStepWithBuilderState];
-            }
-        }
     }
 }
 

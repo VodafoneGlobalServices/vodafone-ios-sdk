@@ -44,7 +44,7 @@
 
 - (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder;
 
-- (void)onConnectedResponseOfBuilder:(id<VDFRequestBuilder>)builder;
+- (BOOL)canHandleResponse:(VDFHttpConnectorResponse*)response ofConnectedBuilder:(id<VDFRequestBuilder>)builder;
 
 /**
  *  Indicates date when last response has to be expired.

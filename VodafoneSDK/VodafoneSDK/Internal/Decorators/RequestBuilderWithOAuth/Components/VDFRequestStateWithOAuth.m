@@ -104,12 +104,12 @@
     return [self.internalRequestState isWaitingForResponseOfBuilder:builder];
 }
 
-- (void)onConnectedResponseOfBuilder:(id<VDFRequestBuilder>)builder {
-    if(!self.needRetryForOAuth) {
-        [self.internalRequestState onConnectedResponseOfBuilder:builder];
+- (BOOL)canHandleResponse:(VDFHttpConnectorResponse*)response ofConnectedBuilder:(id<VDFRequestBuilder>)builder {
+    if(self.needRetryForOAuth) {
+        return NO;
     }
+    return [self.internalRequestState canHandleResponse:response ofConnectedBuilder:builder];
 }
-
 
 - (NSDate*)lastResponseExpirationDate {
     if(self.needRetryForOAuth) {

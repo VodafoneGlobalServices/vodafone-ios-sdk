@@ -10,8 +10,8 @@
 #import "VDFOAuthTokenRequestOptions.h"
 #import "VDFOAuthTokenRequestFactory.h"
 #import "VDFOAuthTokenRequestDelegate.h"
+#import "VDFConsts.h"
 
-static NSString * const URLEndpointQuery = @"/2/oauth/access-token";
 static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t requestOptions:%@ ";
 
 @interface VDFOAuthTokenRequestBuilder ()
@@ -25,7 +25,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
     if(self) {
         self.internalFactory = [[VDFOAuthTokenRequestFactory alloc] initWithBuilder:self];
         
-        _urlEndpointQuery = URLEndpointQuery;
+        _urlEndpointQuery = SERVICE_URL_SCHEME_OAUTH_ACCESS_TOKEN;
         _httpRequestMethodType = HTTPMethodPOST;
         
         self.requestOptions = options;

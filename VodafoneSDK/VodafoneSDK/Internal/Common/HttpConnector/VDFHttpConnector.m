@@ -117,12 +117,13 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     [request setValue:[VDFStringHelper randomString] forHTTPHeaderField:XVF_TRANSACTION_ID_HEADER];
     [request setValue:[NSString stringWithFormat:@"VFSeamlessID SDK/iOS (v%@)", [VDFSettings sdkVersion]] forHTTPHeaderField:HTTP_HEADER_USER_AGENT];
    
-    
     [request setValue:@"DE" forHTTPHeaderField:@"x-int-opco"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
-    [request setValue:@"seamless_id_user_details_all" forHTTPHeaderField:@"scope"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
-    [request setValue:@"seamless_id_user_details_all" forHTTPHeaderField:@"backendScopes"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
+    [request setValue:@"447880400514" forHTTPHeaderField:@"x-sdp-msisdn"]; // TODO IMPORTANT only for testing purpose, against apix test backend
+    
+//    [request setValue:@"seamless_id_user_details_all" forHTTPHeaderField:@"scope"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
+//    [request setValue:@"seamless_id_user_details_all" forHTTPHeaderField:@"backendScopes"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
 }
-
+ 
 - (void)get:(NSString*)url {
     NSMutableURLRequest *request =
     [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
@@ -197,7 +198,9 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         return request;
     }
 }
-/*
+
+// TODO VERY IMPORTANT - in release for production we need to remove accepting of all ssl certificates !!!!!!
+
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
@@ -210,7 +213,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
-*/
+
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
     [self.receivedData setLength:0];
     _lastResponseCode = [(NSHTTPURLResponse*)response statusCode];

@@ -11,7 +11,6 @@
 #import "VDFHttpConnectorResponse.h"
 
 static NSInteger const SuccessfulResponseCode = 200;
-//static NSInteger const FailureResponseCode = 400;
 
 @interface VDFSmsValidationResponseParser ()
 @property (nonatomic, copy) NSString *smsCode;

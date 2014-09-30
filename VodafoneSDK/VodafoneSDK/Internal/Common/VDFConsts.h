@@ -10,12 +10,13 @@
 #define VodafoneSDK_VDFConsts_h
 
 #pragma mark - Configuration consts:
-static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"SSO_OAUTH2_INPUT";
+static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"SEAMLESS_ID_RESOLVE";
 
 static NSString * const CONFIGURATION_DEFAULT_HAP_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
 //static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 //static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
-static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
+static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"https://mr-4549932930.eu-de1.plex.vodafone.com";
+//static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
 //static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 
 static NSTimeInterval const CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN = 43200; // in secodns, 12 hours
@@ -46,6 +47,8 @@ static NSString * const HTTP_VALUE_CONTENT_TYPE_WWW_FORM = @"application/x-www-f
 
 
 // Service urls
+static NSString * const SERVICE_URL_SCHEME_OAUTH_ACCESS_TOKEN = @"/2/oauth/access-token";
+
 static NSString * const SERVICE_URL_SCHEME_RESOLVE = @"/seamless-id/users/tokens?backendId=%@";
 static NSString * const SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS = @"/seamless-id/users/tokens/%@?backendId=%@";
 static NSString * const SERVICE_URL_SCHEME_SEND_PIN = @"/seamless-id/users/tokens/%@/pins?backendId=%@";

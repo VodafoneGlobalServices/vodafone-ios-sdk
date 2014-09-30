@@ -9,6 +9,7 @@
 #import "VDFMainViewController.h"
 #import <MessageUI/MessageUI.h>
 #import <VodafoneSDK/VodafoneSDK.h>
+//#import <sys/utsname.h>
 
 @interface VDFMainViewController ()
 
@@ -47,6 +48,20 @@
 {
     [super viewDidLoad];
     
+//    
+//    NSString *string = [[UIDevice currentDevice] name];
+//    NSString *string2 = [[UIDevice currentDevice] model];
+//    NSString *string3 = [[UIDevice currentDevice] localizedModel];
+//    NSString *string4 = [[UIDevice currentDevice] systemName];
+//    NSString *string5 = [[UIDevice currentDevice] systemVersion];
+//    
+//    
+//    struct utsname systemInfo;
+//    uname(&systemInfo);
+//    
+//    NSString *string6 = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    
+    
     // register for keyboard handling
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
@@ -64,6 +79,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [self.scrollView setScrollEnabled:YES];
+    
+    self.clientAppKeyTextField.text = @"OliGwlb2dXiQNbFAJpDehfD2K02ywJHG";
+    self.clientAppSecretTextField.text = @"4GJyNlfVqlqgd5TC";
+    self.backendAppKeyTextField.text = @"6V8HQ9JCSeRBGDhLGRApx9GBaXqTKeuY";
+    
+//    self.clientAppKeyTextField.text = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
+//    self.clientAppSecretTextField.text = @"k4l1RXZGqMnw2cD8";
     
     self.imsiTextField.text = @"34678774201";
 //    self.imsiTextField.text = @"491748862966"; //joaquim phone number

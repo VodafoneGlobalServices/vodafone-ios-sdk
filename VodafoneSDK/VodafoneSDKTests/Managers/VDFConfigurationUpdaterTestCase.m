@@ -44,6 +44,8 @@ extern void __gcov_flush();
     __gcov_flush();
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
+    
+    [self.updaterToTestMock stopMocking];
 }
 
 - (void)testStartUpdateIsConnectorCreatedProperly {

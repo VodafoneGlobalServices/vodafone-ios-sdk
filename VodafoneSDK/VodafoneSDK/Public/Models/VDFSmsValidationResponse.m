@@ -31,4 +31,8 @@
     // this class is no cached so it do not need to implement NSCoding properly
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"VDFSmsValidationResponse { isSucceded=%hhd, smsCode=%@ }", self.isSucceded, self.smsCode];
+}
+
 @end

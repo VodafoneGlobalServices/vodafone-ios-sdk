@@ -70,6 +70,11 @@
 		49847C6D19D93FB700BE98F8 /* VDFArrayObserverContainerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49847C6B19D93FB700BE98F8 /* VDFArrayObserverContainerItem.m */; };
 		49847C7019D9569900BE98F8 /* VDFRequestBaseState.h in Headers */ = {isa = PBXBuildFile; fileRef = 49847C6E19D9569900BE98F8 /* VDFRequestBaseState.h */; };
 		49847C7119D9569900BE98F8 /* VDFRequestBaseState.m in Sources */ = {isa = PBXBuildFile; fileRef = 49847C6F19D9569900BE98F8 /* VDFRequestBaseState.m */; };
+		49847C7919D9883900BE98F8 /* VDFSendSmsPinErrorHandlingTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49847C7819D9883900BE98F8 /* VDFSendSmsPinErrorHandlingTestCase.m */; };
+		49847C7C19D9887100BE98F8 /* VDFOAuthErrorHandlingTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49847C7B19D9887100BE98F8 /* VDFOAuthErrorHandlingTestCase.m */; };
+		49847C7E19D9888B00BE98F8 /* VDFResolveErrorHandlingTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49847C7D19D9888B00BE98F8 /* VDFResolveErrorHandlingTestCase.m */; };
+		49847C8019D988A300BE98F8 /* VDFCheckStatusErrorHandlingTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49847C7F19D988A300BE98F8 /* VDFCheckStatusErrorHandlingTestCase.m */; };
+		49847C8219D9891400BE98F8 /* VDFSmsValidationErrorHandlingTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49847C8119D9891400BE98F8 /* VDFSmsValidationErrorHandlingTestCase.m */; };
 		49852BAD198BD7B500D25AC7 /* VDFMessageLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 49852BAC198BC18400D25AC7 /* VDFMessageLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4989A7BE19755418009A6BC5 /* VDFSettings+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C34223196D6BB30079FDF5 /* VDFSettings+Internal.h */; };
 		4989A7BF19755418009A6BC5 /* VDFHttpConnectorDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 49A1588C196C3BD600642677 /* VDFHttpConnectorDelegate.h */; };
@@ -89,6 +94,7 @@
 		498EA3021982735D00122F05 /* VDFNetworkReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 498EA3001982735D00122F05 /* VDFNetworkReachability.h */; };
 		498EA3031982735D00122F05 /* VDFNetworkReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EA3011982735D00122F05 /* VDFNetworkReachability.m */; };
 		498EA3051982745D00122F05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA3041982745D00122F05 /* SystemConfiguration.framework */; };
+		498F6AFF19DAF2630066A61C /* VDFSuccessResolveTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 498F6AFE19DAF2630066A61C /* VDFSuccessResolveTestCase.m */; };
 		4990BFA519921580005EED39 /* VDFSmsValidationRequestFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 4990BFA319921580005EED39 /* VDFSmsValidationRequestFactory.h */; };
 		4990BFA619921580005EED39 /* VDFSmsValidationRequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4990BFA419921580005EED39 /* VDFSmsValidationRequestFactory.m */; };
 		4990BFA9199215CD005EED39 /* VDFSmsValidationRequestBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 4990BFA7199215CD005EED39 /* VDFSmsValidationRequestBuilder.h */; };
@@ -291,6 +297,11 @@
 		49847C6B19D93FB700BE98F8 /* VDFArrayObserverContainerItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFArrayObserverContainerItem.m; path = Internal/Factories/RequestBaseFactory/VDFArrayObserverContainerItem.m; sourceTree = "<group>"; };
 		49847C6E19D9569900BE98F8 /* VDFRequestBaseState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFRequestBaseState.h; path = Internal/Factories/RequestBaseFactory/VDFRequestBaseState.h; sourceTree = "<group>"; };
 		49847C6F19D9569900BE98F8 /* VDFRequestBaseState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFRequestBaseState.m; path = Internal/Factories/RequestBaseFactory/VDFRequestBaseState.m; sourceTree = "<group>"; };
+		49847C7819D9883900BE98F8 /* VDFSendSmsPinErrorHandlingTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSendSmsPinErrorHandlingTestCase.m; path = SDKIntegrationTests/UserService/ErrorHandling/VDFSendSmsPinErrorHandlingTestCase.m; sourceTree = "<group>"; };
+		49847C7B19D9887100BE98F8 /* VDFOAuthErrorHandlingTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthErrorHandlingTestCase.m; path = SDKIntegrationTests/UserService/ErrorHandling/VDFOAuthErrorHandlingTestCase.m; sourceTree = "<group>"; };
+		49847C7D19D9888B00BE98F8 /* VDFResolveErrorHandlingTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFResolveErrorHandlingTestCase.m; path = SDKIntegrationTests/UserService/ErrorHandling/VDFResolveErrorHandlingTestCase.m; sourceTree = "<group>"; };
+		49847C7F19D988A300BE98F8 /* VDFCheckStatusErrorHandlingTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFCheckStatusErrorHandlingTestCase.m; path = SDKIntegrationTests/UserService/ErrorHandling/VDFCheckStatusErrorHandlingTestCase.m; sourceTree = "<group>"; };
+		49847C8119D9891400BE98F8 /* VDFSmsValidationErrorHandlingTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsValidationErrorHandlingTestCase.m; path = SDKIntegrationTests/UserService/ErrorHandling/VDFSmsValidationErrorHandlingTestCase.m; sourceTree = "<group>"; };
 		49852BAC198BC18400D25AC7 /* VDFMessageLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VDFMessageLogger.h; path = Public/Common/Log/VDFMessageLogger.h; sourceTree = "<group>"; };
 		498D9D001990DF010037BDA1 /* VDFRequestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFRequestBuilder.h; path = Internal/Factories/RequestFactory/VDFRequestBuilder.h; sourceTree = "<group>"; };
 		498D9D021990DFD50037BDA1 /* VDFUserResolveRequestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUserResolveRequestBuilder.h; path = Internal/Factories/UserResolveRequestFactory/VDFUserResolveRequestBuilder.h; sourceTree = "<group>"; };
@@ -307,6 +318,7 @@
 		498EA3001982735D00122F05 /* VDFNetworkReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFNetworkReachability.h; path = Internal/Common/NetworkReachability/VDFNetworkReachability.h; sourceTree = "<group>"; };
 		498EA3011982735D00122F05 /* VDFNetworkReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFNetworkReachability.m; path = Internal/Common/NetworkReachability/VDFNetworkReachability.m; sourceTree = "<group>"; };
 		498EA3041982745D00122F05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		498F6AFE19DAF2630066A61C /* VDFSuccessResolveTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSuccessResolveTestCase.m; path = SDKIntegrationTests/UserService/VDFSuccessResolveTestCase.m; sourceTree = "<group>"; };
 		4990BFA319921580005EED39 /* VDFSmsValidationRequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFSmsValidationRequestFactory.h; path = Internal/Factories/SmsValidationRequestFactory/VDFSmsValidationRequestFactory.h; sourceTree = "<group>"; };
 		4990BFA419921580005EED39 /* VDFSmsValidationRequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFSmsValidationRequestFactory.m; path = Internal/Factories/SmsValidationRequestFactory/VDFSmsValidationRequestFactory.m; sourceTree = "<group>"; };
 		4990BFA7199215CD005EED39 /* VDFSmsValidationRequestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFSmsValidationRequestBuilder.h; path = Internal/Factories/SmsValidationRequestFactory/VDFSmsValidationRequestBuilder.h; sourceTree = "<group>"; };
@@ -591,6 +603,8 @@
 				4963487019D1C0320053F46E /* VDFUsersServiceBaseTestCase.m */,
 				4946CBFA19D019CC00C3A4EA /* VDFUserResolveTestCase.m */,
 				4997203B19D5957D00568F22 /* VDFResolveWithSmsValidationTestCase.m */,
+				498F6AFE19DAF2630066A61C /* VDFSuccessResolveTestCase.m */,
+				49847C7A19D9884300BE98F8 /* ErrorHandling */,
 			);
 			name = UserSevice;
 			sourceTree = "<group>";
@@ -604,6 +618,18 @@
 				499C3EB819B9FA7600C2EC16 /* VDFRequestCallsCounterTestCase.m */,
 			);
 			name = Requests;
+			sourceTree = "<group>";
+		};
+		49847C7A19D9884300BE98F8 /* ErrorHandling */ = {
+			isa = PBXGroup;
+			children = (
+				49847C7B19D9887100BE98F8 /* VDFOAuthErrorHandlingTestCase.m */,
+				49847C7D19D9888B00BE98F8 /* VDFResolveErrorHandlingTestCase.m */,
+				49847C7F19D988A300BE98F8 /* VDFCheckStatusErrorHandlingTestCase.m */,
+				49847C7819D9883900BE98F8 /* VDFSendSmsPinErrorHandlingTestCase.m */,
+				49847C8119D9891400BE98F8 /* VDFSmsValidationErrorHandlingTestCase.m */,
+			);
+			name = ErrorHandling;
 			sourceTree = "<group>";
 		};
 		49852BAB198BC14C00D25AC7 /* Log */ = {
@@ -1152,8 +1178,8 @@
 		49E74BCE1962F9D60080EB14 /* VodafoneSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				4946CBF819D0190200C3A4EA /* SDKIntegrationTests */,
 				4946CBF419D0173300C3A4EA /* Libraries */,
+				4946CBF819D0190200C3A4EA /* SDKIntegrationTests */,
 				4990BFBC19923DAA005EED39 /* Factories */,
 				498EA2F419823BCE00122F05 /* Services */,
 				498EA2EF19823B6200122F05 /* Managers */,
@@ -1254,6 +1280,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E74BD81962F9D60080EB14 /* Build configuration list for PBXNativeTarget "VodafoneSDK" */;
 			buildPhases = (
+				4985C76C19DBF79A0064BCB7 /* Cleaning Profiler Information */,
 				49E74BB11962F9D50080EB14 /* Sources */,
 				49E74BB21962F9D50080EB14 /* Frameworks */,
 				49E74BB31962F9D50080EB14 /* CopyFiles */,
@@ -1273,6 +1300,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E74BDB1962F9D60080EB14 /* Build configuration list for PBXNativeTarget "VodafoneSDKTests" */;
 			buildPhases = (
+				4985C76719DBF75D0064BCB7 /* Cleaning Profiler Information */,
 				49E74BC11962F9D60080EB14 /* Sources */,
 				49E74BC21962F9D60080EB14 /* Frameworks */,
 				49E74BC31962F9D60080EB14 /* Resources */,
@@ -1378,6 +1406,34 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers die\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Remove copied framework file if exists\n# /bin/rm -rf \"${SRCROOT}/${PRODUCT_NAME}.framework\"\n\n# Copy created framework file to project directory\n# /bin/cp -a \"${FRAMEWORK_LOCN}\" \"${SRCROOT}/\"\n\n";
 		};
+		4985C76719DBF75D0064BCB7 /* Cleaning Profiler Information */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Cleaning Profiler Information";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Cleaning Profiler Information\"\ncd \"${OBJECT_FILE_DIR_normal}/${CURRENT_ARCH}\"\n# Delete *.gcda files in the current target\nrm -f *.gcda";
+		};
+		4985C76C19DBF79A0064BCB7 /* Cleaning Profiler Information */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Cleaning Profiler Information";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Cleaning Profiler Information\"\ncd \"${OBJECT_FILE_DIR_normal}/${CURRENT_ARCH}\"\n# Delete *.gcda files in the current target\nrm -f *.gcda";
+		};
 		49C244B01976A39600B34512 /* MultiPlatform Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1456,10 +1512,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49847C7C19D9887100BE98F8 /* VDFOAuthErrorHandlingTestCase.m in Sources */,
 				49C0666519B0684200EB8F23 /* VDFDIContainerTestCase.m in Sources */,
+				49847C7919D9883900BE98F8 /* VDFSendSmsPinErrorHandlingTestCase.m in Sources */,
+				498F6AFF19DAF2630066A61C /* VDFSuccessResolveTestCase.m in Sources */,
 				49D9E6F519B5F81500AE6417 /* VDFConfigurationManagerTestCase.m in Sources */,
 				49CDA0C419937D36007E41BA /* VDFUserResolveRequestBuilderTestCase.m in Sources */,
 				49A3DA2219AC693B004B8634 /* VDFSmsValidationRequestFactoryTestCase.m in Sources */,
+				49847C7E19D9888B00BE98F8 /* VDFResolveErrorHandlingTestCase.m in Sources */,
+				49847C8219D9891400BE98F8 /* VDFSmsValidationErrorHandlingTestCase.m in Sources */,
 				49A6E8C719ABCFF0003AEC80 /* VDFSmsSendPinRequestFactoryTestCase.m in Sources */,
 				49A5D77919ADEF470095B0E3 /* VDFSmsValidationRequestStateTestCase.m in Sources */,
 				49A3DA2C19ACC763004B8634 /* VDFResponseParserBaseTestCase.m in Sources */,
@@ -1484,6 +1545,7 @@
 				497A89D4199CF3E5007EC20C /* VDFHttpConnectionsQueueTestCase.m in Sources */,
 				498EA2F619823BF600122F05 /* VDFUsersServiceTestCase.m in Sources */,
 				498EA2FA19823C7600122F05 /* VDFServiceRequestsManagerTestCase.m in Sources */,
+				49847C8019D988A300BE98F8 /* VDFCheckStatusErrorHandlingTestCase.m in Sources */,
 				49B27D7E19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m in Sources */,
 				4949D43519A2320A00E5D524 /* VDFPendingRequestItemTestCase.m in Sources */,
 				498EA2EA19823B1500122F05 /* VDFStringHelperTestCase.m in Sources */,

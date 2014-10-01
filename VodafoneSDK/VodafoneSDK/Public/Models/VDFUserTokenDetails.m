@@ -37,6 +37,22 @@ static NSString * const ACRKey = @"acr";
     [encoder encodeObject:_acr forKey:ACRKey];
 }
 
+- (NSString*)description {
+    return [NSString stringWithFormat:@"VDFUserTokenDetails { resolutionStatus=%@, token=%@, expiresIn=%@, acr=%@ }",
+            [self resolutionStatusString], self.token, self. expiresIn, self.acr];
+}
 
+- (NSString*)resolutionStatusString {
+    switch (self.resolutionStatus) {
+        case VDFResolutionStatusCompleted: return @"VDFResolutionStatusCompleted";
+        case VDFResolutionStatusPending: return @"VDFResolutionStatusPending";
+        case VDFResolutionStatusFailed: return @"VDFResolutionStatusFailed";
+        case VDFResolutionStatusValidationRequired: return @"VDFResolutionStatusValidationRequired";
+            
+        default:
+            break;
+    }
+    return nil;
+}
 
 @end

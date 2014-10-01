@@ -10,10 +10,12 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import "VDFError.h"
 #import "VDFUserTokenDetails.h"
+#import "VDFMessageLogger.h"
 
-@class VDFBaseConfiguration;
+@class VDFBaseConfiguration, VDFUsersService;
 
-@interface VDFUsersServiceBaseTestCase : XCTestCase
+@interface VDFUsersServiceBaseTestCase : XCTestCase <VDFMessageLogger>
+@property VDFUsersService *service;
 @property id serviceToTest;
 @property id mockDelegate;
 @property NSString *backendId;
@@ -72,7 +74,7 @@
 
 #pragma mark -
 #pragma mark - expect methods
-- (void)rejectAnyOtherHttpCall;
+- (void)rejectAnyNotHandledHttpCall;
 
 - (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode;
 - (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus;

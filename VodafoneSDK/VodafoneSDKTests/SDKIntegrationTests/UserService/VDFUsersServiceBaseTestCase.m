@@ -23,6 +23,8 @@
 extern void __gcov_flush();
 
 @interface VDFUsersService ()
+@property (nonatomic, strong) VDFDIContainer *diContainer;
+
 - (NSError*)checkPotentialHAPResolveError;
 - (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
 
@@ -37,12 +39,19 @@ extern void __gcov_flush();
 
 @implementation VDFUsersServiceBaseTestCase
 
+- (void)logMessage:(NSString*)message {
+    NSLog(@"%@", message);
+}
+
 - (void)setUp
 {
     [super setUp];
     
+    NSLog(@"Number of still stubbed requests: %i.", [[OHHTTPStubs allStubs] count]);
+    
     [[VDFUsersService sharedInstance] resetOneInstanceToken];
     [VDFSettings initialize];
+    [VDFSettings subscribeDebugLogger:self];
     
     self.backendId = @"someBackendId";
     self.appId = @"someAppId";
@@ -51,7 +60,7 @@ extern void __gcov_flush();
     self.acr = @"someACRvalue";
     self.sessionToken = @"asfw32wer323eqrwfsw34";
     self.etag = @"someEtag";
-    self.msisdn = @"49123123123";
+    self.msisdn = @"34678774201";
     self.market = @"DE";
     self.smsValidation = YES;
     self.smsCode = @"1234";
@@ -61,7 +70,11 @@ extern void __gcov_flush();
                                          VDFClientAppSecretSettingKey: self.appSecret,
                                          VDFBackendAppKeySettingKey: self.backendId }];
     
-    self.serviceToTest = OCMPartialMock([VDFUsersService sharedInstance]);
+    
+    self.service = [[VDFUsersService alloc] init];
+    self.service.diContainer = [VDFSettings globalDIContainer];
+    
+    self.serviceToTest = OCMPartialMock(self.service);
     self.mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub the sim card checking
@@ -71,16 +84,31 @@ extern void __gcov_flush();
     id mockDeviceUtility = OCMClassMock([VDFDeviceUtility class]);
     [[[mockDeviceUtility stub] andReturnValue:OCMOCK_VALUE(VDFNetworkAvailableViaGSM)] checkNetworkTypeAvailability];
     [[VDFSettings globalDIContainer] registerInstance:mockDeviceUtility forClass:[VDFDeviceUtility class]];
+    
+    [OHHTTPStubs onStubActivation:^(NSURLRequest *request, id<OHHTTPStubsDescriptor> stub) {
+        NSLog(@"OHHTTPStubs onStubActivation for request url: %@, with stub: %@", request.URL.absoluteString, stub.name);
+    }];
 }
 
 - (void)tearDown
 {
     __gcov_flush();
     
+    NSLog(@"Number of still stubbed requests in tearDown: %i.", [[OHHTTPStubs allStubs] count]);
+    
+    if([[OHHTTPStubs allStubs] count] > 1) {
+        // there should be only one stubbed response for any unhandled request
+        // if not then it is an error
+        XCTFail(@"There are still stubbed responses.");
+    }
+    
+    [VDFSettings unsubscribeDebugLogger:self];
     [OHHTTPStubs removeAllStubs];
+    [OHHTTPStubs onStubActivation:nil];
     [self.serviceToTest stopMocking];
-    [[VDFUsersService sharedInstance] cancelRetrieveUserDetails];
-    [[VDFUsersService sharedInstance] resetOneInstanceToken];
+    [self.mockDelegate stopMocking];
+    [self.service cancelRetrieveUserDetails];
+    [self.service resetOneInstanceToken];
     [VDFSettings initialize];
     
     [super tearDown];
@@ -347,7 +375,7 @@ extern void __gcov_flush();
         [blocksArray addObject:element];
     }
     
-    return [OHHTTPStubs stubRequestsPassingTest:requestFilter
+    __block id stub = [OHHTTPStubs stubRequestsPassingTest:requestFilter
                                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                                    OHHTTPStubsResponseBlock responseBlock = [[blocksArray lastObject] copy];
                                    
@@ -355,16 +383,22 @@ extern void __gcov_flush();
                                        // we have more then one waiting responses so we need to move next response:
                                        [blocksArray removeLastObject];
                                    }
+                                   else {
+                                       // it is last response, lets remove it
+                                       [OHHTTPStubs removeStub:stub];
+                                   }
                                    
-                                   return responseBlock(request);
+                                   return [responseBlock(request) requestTime:0 responseTime:0.1]; // tere is not ever eny imidetli response
                                }];
+    [stub setName:[NSString stringWithFormat:@"%@", requestFilter]];
+    return stub;
 }
 
 
 
 #pragma mark -
 #pragma mark - expect methods
-- (void)rejectAnyOtherHttpCall {
+- (void)rejectAnyNotHandledHttpCall {
     
     __block id stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         for (OHHTTPStubsDescriptor *descriptor in [OHHTTPStubs allStubs]) {
@@ -375,7 +409,7 @@ extern void __gcov_flush();
         
         return YES;
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        XCTFail(@"This HTTP call is unhandled, but it should be.");
+        XCTFail(@"This HTTP call is unhandled, but it should be. (%@)", request.URL.absoluteString);
         return nil;
     }];
 }
@@ -384,7 +418,9 @@ extern void __gcov_flush();
     
     [[self.mockDelegate expect] didReceivedUserDetails:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
-        return [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        BOOL isExpected = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        NSLog(@"TEST_CASE_DEBUG expectDidReceivedUserDetailsWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], isExpected);
+        return isExpected;
         
     }]];
 }
@@ -398,6 +434,7 @@ extern void __gcov_flush();
         VDFUserTokenDetails *tokenDetails = (VDFUserTokenDetails*)obj;
         
         if(tokenDetails.resolutionStatus != resolutionStatus) {
+            NSLog(@"TEST_CASE_DEBUG expectDidReceivedUserDetailsWithResolutionStatus: - received object %@ -- is expected=%hhd", tokenDetails, NO);
             return NO;
         }
         
@@ -423,6 +460,8 @@ extern void __gcov_flush();
             onSuccess(tokenDetails);
         }
         
+        NSLog(@"TEST_CASE_DEBUG expectDidReceivedUserDetailsWithResolutionStatus: - received object %@ -- is expected=%hhd", tokenDetails, result);
+        
         return result;
         
     }] withError:[OCMArg isNil]];
@@ -437,6 +476,9 @@ extern void __gcov_flush();
         NSNumber *isSuccessResult = (NSNumber*)obj;
         
         BOOL result = [isSuccessResult boolValue] == isSuccess;
+        
+        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithSuccess: - received object %@ -- is expected=%hhd", isSuccessResult, result);
+        
         if(result && onSuccess != nil) {
             onSuccess();
         }
@@ -447,8 +489,11 @@ extern void __gcov_flush();
 - (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode {
     [[self.mockDelegate expect] didSMSPinRequested:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
-        return [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
         
+        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
+        
+        return result;
     }]];
 }
 
@@ -456,16 +501,22 @@ extern void __gcov_flush();
     [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
         
         VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
-        return [response.smsCode isEqualToString:self.smsCode] && response.isSucceded == isSuccess;
+        BOOL result = [response.smsCode isEqualToString:self.smsCode] && response.isSucceded == isSuccess;
         
+        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithSuccess: - received object %@ -- is expected=%hhd", response, result);
+        
+        return result;
     }] withError:[OCMArg isNil]];
 }
 
 - (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode {
     [[self.mockDelegate expect] didValidatedSMSToken:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
-        return [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
         
+        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
+        
+        return result;
     }]];
 }
 

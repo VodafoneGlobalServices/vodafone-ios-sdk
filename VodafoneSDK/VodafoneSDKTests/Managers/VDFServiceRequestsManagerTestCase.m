@@ -102,6 +102,8 @@ extern void __gcov_flush();
     // verify
     [self.mockBuilder verify];
     [mockManagerToTest verify];
+    
+    [mockManagerToTest stopMocking];
 }
 
 - (void)testPerformRequestIsAddingToQueueAndNotCacheble {

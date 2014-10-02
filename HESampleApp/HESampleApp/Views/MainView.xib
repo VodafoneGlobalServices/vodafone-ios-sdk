@@ -128,7 +128,7 @@
                                 <action selector="onSendSMSPinButtonClick:" destination="-1" eventType="touchUpInside" id="b5N-pY-tgr"/>
                             </connections>
                         </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Imsi" minimumFontSize="17" id="qxB-cZ-plE" userLabel="imsi text">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="MSISDN" minimumFontSize="17" id="qxB-cZ-plE" userLabel="imsi text">
                             <rect key="frame" x="21" y="178" width="280" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>

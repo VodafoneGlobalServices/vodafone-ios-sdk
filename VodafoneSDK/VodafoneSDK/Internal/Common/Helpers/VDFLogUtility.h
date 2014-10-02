@@ -17,21 +17,17 @@
  *
  *  @return void
  */
-#define VDFLogD(format, ...) [VDFLogUtility dLog:format, ##__VA_ARGS__]
+#define VDFLogD(format, ...) [VDFLogUtility logType:VDFLogMessageDebugType message:format, ##__VA_ARGS__]
 
 /**
- *  Verbose level bimap mask
+ *  Log info function
+ *
+ *  @param format String format template
+ *  @param ...    Parameters of format string
+ *
+ *  @return void
  */
-typedef NS_OPTIONS(NSUInteger, VODLogInfoVerboseLevel) {
-    /**
-     *  Basic verbose level. Logs only message.
-     */
-    VODLogInfoVerboseLevelBasic                 = 1 << 0,
-    /**
-     *  Adds top callstack entry.
-     */
-    VODLogInfoVerboseLevelLastCallStackEntry    = 1 << 1
-};
+#define VDFLogI(format, ...) [VDFLogUtility logType:VDFLogMessageInfoType message:format, ##__VA_ARGS__]
 
 /**
  *  Logging helper class
@@ -39,21 +35,15 @@ typedef NS_OPTIONS(NSUInteger, VODLogInfoVerboseLevel) {
 @interface VDFLogUtility : NSObject
 
 /**
- *  Set verbose level in displaying messages
- *
- *  @param level Verbose level
- */
-+ (void)setVerboseLevel:(VODLogInfoVerboseLevel)level;
-
-/**
  *  Send text to logger
  *
- *  @param text String to log
+ *  @param logType Type of message to log
+ *  @param format String to log
  */
-+ (void)dLog:(NSString*)text, ...;
++ (void)logType:(VDFLogMessageType)logType message:(NSString*)format, ...;
 
-+ (void)subscribeDebugLogger:(id<VDFMessageLogger>)logger;
++ (void)subscribeLogger:(id<VDFMessageLogger>)logger;
 
-+ (void)unsubscribeDebugLogger:(id<VDFMessageLogger>)logger;
++ (void)unsubscribeLogger:(id<VDFMessageLogger>)logger;
 
 @end

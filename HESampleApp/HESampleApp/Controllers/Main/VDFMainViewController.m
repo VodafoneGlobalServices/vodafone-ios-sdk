@@ -13,6 +13,8 @@
 
 @interface VDFMainViewController ()
 
+@property (nonatomic, strong) NSMutableString *loggedMessages;
+
 @property (weak, nonatomic) IBOutlet UISwitch *smsValidationSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *smsCodeTextField;
 @property (weak, nonatomic) IBOutlet UITextView *outputTextView;
@@ -47,6 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.loggedMessages = [[NSMutableString alloc] init];
     
 //    
 //    NSString *string = [[UIDevice currentDevice] name];
@@ -171,8 +174,13 @@
 }
 
 - (IBAction)onSendLogsButtonClick:(id)sender {
+    if(![MFMailComposeViewController canSendMail]) {
+        [self logMessage:@"You do not have any email accounts configured on device."];
+        return;
+    }
+    
     NSString *emailTitle = [NSString stringWithFormat: @"Seamless Id Error Report (%@)", [NSDate date]];
-    NSString *messageBody = self.outputTextView.text;
+    NSString *messageBody = self.loggedMessages;
     NSArray *toRecipents = [NSArray arrayWithObject:@"michal.szymanczyk@mobica.com"];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
@@ -235,17 +243,38 @@
     [self recalculateScrollViewContent];
 }
 
-#pragma mark -
-#pragma mark VDFMessageLogger Implementation
-
 - (void)logMessage:(NSString*)message {
+    // append for next use
+    [self.loggedMessages appendString:message];
+    [self.loggedMessages appendString:@"%@"];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if([self.displayLogSwitch isOn]) {
-            self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n Log: %@", message];
+            self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n%@", message];
             [self recalculateScrollViewContent];
         }
         NSLog(@"%@",message);
     });
+}
+
+#pragma mark -
+#pragma mark VDFMessageLogger Implementation
+
+- (void)logMessage:(NSString*)message ofType:(VDFLogMessageType)logType {
+    
+    // append for next use
+    [self.loggedMessages appendString:message];
+    [self.loggedMessages appendString:@"%@"];
+    
+    if(logType == VDFLogMessageInfoType) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if([self.displayLogSwitch isOn]) {
+                self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n%@", message];
+                [self recalculateScrollViewContent];
+            }
+            NSLog(@"%@",message);
+        });
+    }
 }
 
 #pragma mark -
@@ -271,6 +300,7 @@
 
 - (IBAction)onClearOutputButtonClick:(id)sender {
     self.outputTextView.text = @"";
+    [self.loggedMessages setString:@""];
     [self recalculateScrollViewContent];
 }
 

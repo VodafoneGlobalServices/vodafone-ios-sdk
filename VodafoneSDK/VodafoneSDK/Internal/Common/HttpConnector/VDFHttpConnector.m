@@ -61,15 +61,16 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     VDFNetworkAvailability networkAvailability = [self.deviceUtility checkNetworkTypeAvailability];
     
     if(networkAvailability == VDFNetworkNotAvailable) {
-        VDFLogD(@"Internet is not avaialble.");
+        VDFLogI(@"Internet is not avaialble.");
         return 1;
     }
     else if (networkAvailability != VDFNetworkAvailableViaGSM && self.isGSMConnectionRequired) {
-        VDFLogD(@"Request need 3G connection - there is not available any.");
+        VDFLogI(@"Request need 3G connection - there is not available any.");
         // not connected over 3G and request require 3G:
         return 2; // TODO need to make some error codes for this
     }
     else {
+        VDFLogI(@"Performing HTTP request");
         
         // starting the request
         if(self.methodType == HTTPMethodPOST) {
@@ -78,7 +79,6 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         else {
             [self get:self.url];
         }
-        VDFLogD(@"Request started.");
     }
 
     return 0;
@@ -132,8 +132,8 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     
     [self addHeadersToRequest:request];
     
-    VDFLogD(@"GET %@", url);
-    VDFLogD(@"Headers %@", [request allHTTPHeaderFields]);
+    VDFLogI(@"GET %@", url);
+    VDFLogI(@"Headers %@", [request allHTTPHeaderFields]);
     
     self.url = url;
     self.receivedData = [NSMutableData data];
@@ -168,8 +168,9 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     
     [request setHTTPBody:body];
     
-    VDFLogD(@"POST %@\n------\n%@\n------", url, [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
-    VDFLogD(@"Headers %@", [request allHTTPHeaderFields]);
+    VDFLogI(@"POST %@", url);
+    VDFLogI(@"Headers %@", [request allHTTPHeaderFields]);
+    VDFLogI(@"------\n%@\n------", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
     
     self.url = url;
     self.receivedData = [NSMutableData data];
@@ -217,18 +218,18 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     [self.receivedData setLength:0];
     _lastResponseCode = [(NSHTTPURLResponse*)response statusCode];
     self.responseHeaders = [(NSHTTPURLResponse *)response allHeaderFields];
-    VDFLogD(@"didReceiveResponse for url %@, with response code: %i, with headers: %@", self.url, _lastResponseCode, self.responseHeaders);
+//    VDFLogD(@"didReceiveResponse for url %@, with response code: %i, with headers: %@", self.url, _lastResponseCode, self.responseHeaders);
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data {
     [self.receivedData appendData:data];
-    VDFLogD(@"didReceiveData for url %@", self.url);
+//    VDFLogD(@"didReceiveData for url %@", self.url);
 }
 
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
     self.currentConnection = nil;
-    VDFLogD(@"didFailWithError for url %@", self.url);
+//    VDFLogD(@"didFailWithError for url %@", self.url);
     NSError *errorInVDFDomain = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
     if(self.delegate != nil) {
         [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:errorInVDFDomain]];
@@ -239,7 +240,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection {
     self.currentConnection = nil;
-    VDFLogD(@"connectionDidFinishLoading for url %@", self.url);
+//    VDFLogD(@"connectionDidFinishLoading for url %@", self.url);
     if(self.delegate != nil) {
         [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithData:self.receivedData httpCode:self.lastResponseCode headers:self.responseHeaders]];
     }

@@ -19,6 +19,7 @@
 #import "VDFNetworkReachability.h"
 #import "VDFSettings+Internal.h"
 #import "VDFDIContainer.h"
+#import "VDFMessageLogger.h"
 
 extern void __gcov_flush();
 
@@ -39,7 +40,7 @@ extern void __gcov_flush();
 
 @implementation VDFUsersServiceBaseTestCase
 
-- (void)logMessage:(NSString*)message {
+- (void)logMessage:(NSString*)message ofType:(VDFLogMessageType)logType {
     NSLog(@"%@", message);
 }
 

@@ -25,8 +25,6 @@ static VDFDIContainer * g_diContainer = nil;
 
 + (void)initialize {
     if(self == [VDFSettings class]) {
-        [VDFLogUtility setVerboseLevel:VODLogInfoVerboseLevelBasic];
-        
         g_diContainer = [[VDFDIContainer alloc] init];
         
         
@@ -103,11 +101,11 @@ static VDFDIContainer * g_diContainer = nil;
 }
 
 + (void)subscribeDebugLogger:(id<VDFMessageLogger>)logger {
-    [VDFLogUtility subscribeDebugLogger:logger];
+    [VDFLogUtility subscribeLogger:logger];
 }
 
 + (void)unsubscribeDebugLogger:(id<VDFMessageLogger>)logger {
-    [VDFLogUtility unsubscribeDebugLogger:logger];
+    [VDFLogUtility unsubscribeLogger:logger];
 }
 
 #pragma mark -

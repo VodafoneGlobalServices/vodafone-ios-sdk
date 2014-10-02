@@ -79,7 +79,7 @@
 }
 
 - (NSArray*)allPendingRequests {
-    return self.pendingRequests;
+    return [NSArray arrayWithArray:self.pendingRequests];
 }
 
 #pragma mark -

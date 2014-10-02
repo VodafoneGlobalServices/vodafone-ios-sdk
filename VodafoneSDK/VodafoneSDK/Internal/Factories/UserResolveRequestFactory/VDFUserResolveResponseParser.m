@@ -12,6 +12,7 @@
 #import "VDFErrorUtility.h"
 #import "VDFHttpConnectorResponse.h"
 #import "VDFConsts.h"
+#import "VDFUserTokenDetails+Internal.h"
 
 @interface VDFUserResolveResponseParser ()
 @property (nonatomic, strong) NSString *last302LocationHeader;
@@ -80,7 +81,7 @@
                 NSTextCheckingResult *match = [matches objectAtIndex:0];
                 
                 if(match != nil) {
-                    userTokenDetails.token = [locationHeader substringWithRange:NSMakeRange(match.range.location+14, match.range.length-15)];
+                    userTokenDetails.tokenOfPendingResolution = [locationHeader substringWithRange:NSMakeRange(match.range.location+14, match.range.length-15)];
                 }
                 
                 if([locationHeader rangeOfString:@"/pins?backendId="].location != NSNotFound) {

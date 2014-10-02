@@ -25,4 +25,6 @@
  */
 - (instancetype)initWithRequestState:(id<VDFRequestState>)requestState andParentBuilder:(VDFRequestBuilderWithOAuth*)builder;
 
+@property (nonatomic, assign) BOOL needRetryForOAuth;
+
 @end

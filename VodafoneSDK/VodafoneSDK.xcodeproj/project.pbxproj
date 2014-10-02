@@ -292,6 +292,7 @@
 		496559F4196AA838002A30C6 /* VDFUsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFUsersService.h; path = Public/Services/Users/VDFUsersService.h; sourceTree = "<group>"; };
 		496559F5196AA838002A30C6 /* VDFUsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUsersService.m; path = Public/Services/Users/VDFUsersService.m; sourceTree = "<group>"; };
 		49702FB019794BE400425827 /* VDFEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFEnums.h; path = Internal/Common/VDFEnums.h; sourceTree = "<group>"; };
+		4973869119DD37EF00B2F71E /* VDFUserTokenDetails+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VDFUserTokenDetails+Internal.h"; path = "Internal/Models/VDFUserTokenDetails+Internal.h"; sourceTree = "<group>"; };
 		497A89D3199CF3E5007EC20C /* VDFHttpConnectionsQueueTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFHttpConnectionsQueueTestCase.m; path = Managers/VDFHttpConnectionsQueueTestCase.m; sourceTree = "<group>"; };
 		49847C6A19D93FB700BE98F8 /* VDFArrayObserverContainerItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFArrayObserverContainerItem.h; path = Internal/Factories/RequestBaseFactory/VDFArrayObserverContainerItem.h; sourceTree = "<group>"; };
 		49847C6B19D93FB700BE98F8 /* VDFArrayObserverContainerItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFArrayObserverContainerItem.m; path = Internal/Factories/RequestBaseFactory/VDFArrayObserverContainerItem.m; sourceTree = "<group>"; };
@@ -745,6 +746,7 @@
 				494F37BF197E63A700E5D82E /* VDFCacheObject.h */,
 				494F37C0197E63A700E5D82E /* VDFCacheObject.m */,
 				49AA3EF419C9949E0000347B /* VDFUserResolveOptions+Internal.h */,
+				4973869119DD37EF00B2F71E /* VDFUserTokenDetails+Internal.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";

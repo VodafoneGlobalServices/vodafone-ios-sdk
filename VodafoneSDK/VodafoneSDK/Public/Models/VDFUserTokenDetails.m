@@ -7,6 +7,7 @@
 //
 
 #import "VDFUserTokenDetails.h"
+#import "VDFUserTokenDetails+Internal.h"
 
 static NSString * const ResolutionStatusKey = @"resolutionStatus";
 static NSString * const TokenKey = @"tokenId";

@@ -94,5 +94,48 @@ static NSInteger const VERIFY_DELAY = 8;
 }
 
 
+- (void)test_SuccessFullResolution_WithSmsValidation_WithVerifySmsOAuthError {
+    
+    // mock
+    super.smsValidation = YES;
+    
+    // stub http oauth
+    [super stubRequest:[super filterOAuthRequest]
+     withResponsesList:@[[super responseOAuthSuccessExpireInSeconds:3600],
+                         [super responseOAuthSuccessExpireInSeconds:36000]]];
+    
+    // stub resolve response with 302 - sms validation required
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302SmsRequiredAndRetryAfterMs:100000]]];
+    
+    // stub send pin request
+    [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
+    
+    // stub validate pin request
+    // first with oAuthToken expiration
+    // second with 200 OK
+    [super stubRequest:[super filterValidatePinRequest]
+     withResponsesList:@[[super responseOAuthTokenExpired],
+                         [super responseValidatePin200]]];
+    
+    // expect that the delegate object will be invoked correctly:
+    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusValidationRequired onSuccessExecution:^(VDFUserTokenDetails *details) {
+        [super.serviceToTest sendSmsPin];
+    }];
+    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusCompleted];
+    
+    [super expectDidSMSPinRequestedWithSuccess:YES onSuccessExecution:^{
+        [super.serviceToTest validateSmsCode:super.smsCode];
+    }];
+    
+    
+    // run
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:YES];
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
+    
+    
+    // verify
+    [super.mockDelegate verifyWithDelay:10];
+}
+
 
 @end

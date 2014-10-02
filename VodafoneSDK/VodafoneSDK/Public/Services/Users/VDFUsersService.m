@@ -23,6 +23,7 @@
 #import "VDFDIContainer.h"
 #import "VDFUserResolveOptions+Internal.h"
 #import "VDFDeviceUtility.h"
+#import "VDFUserTokenDetails+Internal.h"
 
 static dispatch_once_t * oneInstanceToken;
 
@@ -207,7 +208,7 @@ static dispatch_once_t * oneInstanceToken;
         }
         else {
             // we store session token for next use:
-            self.currentSessionToken = userDetails.token;
+            self.currentSessionToken = userDetails.tokenOfPendingResolution;
         }
     }
     else if(error != nil) {

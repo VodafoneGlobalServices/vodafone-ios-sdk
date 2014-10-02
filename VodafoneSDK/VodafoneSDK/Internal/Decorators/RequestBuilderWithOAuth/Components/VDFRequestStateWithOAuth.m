@@ -16,7 +16,6 @@
 @interface VDFRequestStateWithOAuth ()
 @property (nonatomic, weak) VDFRequestBuilderWithOAuth *parentBuilder;
 @property (nonatomic, strong) id<VDFRequestState> internalRequestState;
-@property (nonatomic, assign) BOOL needRetryForOAuth;
 @property (nonatomic, strong) NSError *apixError;
 @end
 
@@ -48,7 +47,7 @@
             NSString *errorCode = [jsonObject objectForKey:@"id"];
             NSString *errorDescription = [jsonObject objectForKey:@"description"];
             if(errorCode != nil && errorDescription != nil) {
-                BOOL isOAuthExpired = [errorCode isEqualToString:@"POL0002"] && [errorDescription isEqualToString:@"Privacy Verification Failed -Authorization"];
+                BOOL isOAuthExpired = [errorCode isEqualToString:@"POL0002"] && [errorDescription isEqualToString:@"Privacy Verification Failed - Authorization"];
                 
                 if(isOAuthExpired) {
                     self.needRetryForOAuth = YES;

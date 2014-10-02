@@ -19,6 +19,8 @@
 #import "VDFSmsValidationRequestBuilder.h"
 #import "VDFRequestBuilderWithOAuth.h"
 #import "VDFSmsSendPinRequestBuilder.h"
+#import "VDFUserTokenDetails+Internal.h"
+#import "VDFRequestStateWithOAuth.h"
 
 @interface VDFUserResolveRequestState ()
 @property BOOL needRetry;
@@ -91,8 +93,9 @@
     if(parsedResponse != nil && [parsedResponse isKindOfClass:[VDFUserTokenDetails class]]) {
         
         VDFUserTokenDetails *userTokenDetails = (VDFUserTokenDetails*)parsedResponse;
-        if(userTokenDetails.token != nil) {
-            self.builder.sessionToken = userTokenDetails.token;
+        NSString *sessionToken = userTokenDetails.token ?: userTokenDetails.tokenOfPendingResolution;
+        if(sessionToken != nil) {
+            self.builder.sessionToken = sessionToken;
         }
         
         self.currentResolutionStatus = userTokenDetails.resolutionStatus;
@@ -124,13 +127,21 @@
     
     BOOL isExpectedResponse = NO;
     if([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]] && response != nil) {
+        VDFRequestBuilderWithOAuth *builderWithOAuth = (VDFRequestBuilderWithOAuth*)builder;
         NSError *errorInResponse = [[builder requestState] responseError];
         
         // check of successful validation of sms token
-        isExpectedResponse = [(VDFRequestBuilderWithOAuth*)builder isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]] && errorInResponse == nil && response.httpResponseCode == 200;
+        isExpectedResponse = [builderWithOAuth isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]] && errorInResponse == nil && response.httpResponseCode == 200;
         
         // check for session token expiration
         isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorTokenNotFound);
+        
+        // check is this propably not oAuth token response
+        id requestState = [builderWithOAuth requestState];
+        if([requestState isKindOfClass:[VDFRequestStateWithOAuth class]]) {
+            VDFRequestStateWithOAuth *requestStateOAuth = (VDFRequestStateWithOAuth*)requestState;
+            isExpectedResponse = isExpectedResponse && !requestStateOAuth.needRetryForOAuth;
+        }
     }
     
     if(isExpectedResponse) {

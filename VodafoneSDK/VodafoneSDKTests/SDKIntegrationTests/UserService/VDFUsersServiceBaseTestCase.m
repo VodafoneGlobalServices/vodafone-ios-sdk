@@ -236,7 +236,7 @@ extern void __gcov_flush();
 - (OHHTTPStubsResponseBlock)responseOAuthTokenExpired {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
         return [OHHTTPStubsResponse responseWithData:
-                [@"{ \"id\": \"POL0002\", \"description\": \"Privacy Verification Failed -Authorization\" }" dataUsingEncoding:NSUTF8StringEncoding]
+                [@"{ \"id\": \"POL0002\", \"description\": \"Privacy Verification Failed - Authorization\" }" dataUsingEncoding:NSUTF8StringEncoding]
                                           statusCode:403
                                              headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON}];
     };
@@ -254,7 +254,7 @@ extern void __gcov_flush();
 - (OHHTTPStubsResponseBlock)responseOAuthScopeNotValidError {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
         return [OHHTTPStubsResponse responseWithData:
-                [@"{ \"id\": \"POL0002\", \"description\": \"Privacy Verification Failed –Invalid Scope\" }" dataUsingEncoding:NSUTF8StringEncoding]
+                [@"{ \"id\": \"POL0002\", \"description\": \"Privacy Verification Failed – Invalid Scope\" }" dataUsingEncoding:NSUTF8StringEncoding]
                                           statusCode:403
                                              headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON}];
     };
@@ -445,13 +445,8 @@ extern void __gcov_flush();
             && [tokenDetails.acr isEqualToString:self.acr]
             && tokenDetails.expiresIn != nil;
         }
-        else if(resolutionStatus == VDFResolutionStatusFailed) {
-            result = tokenDetails.token == nil
-            && tokenDetails.acr == nil
-            && tokenDetails.expiresIn == nil;
-        }
         else {
-            result = [tokenDetails.token isEqualToString:self.sessionToken] // TODO if we get know that this should not be returned to the 3rd party app in this case
+            result = tokenDetails.token == nil
             && tokenDetails.acr == nil
             && tokenDetails.expiresIn == nil;
         }

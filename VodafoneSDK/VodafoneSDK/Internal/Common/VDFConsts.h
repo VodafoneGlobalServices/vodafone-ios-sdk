@@ -12,10 +12,16 @@
 #pragma mark - Configuration consts:
 static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"SEAMLESS_ID_RESOLVE";
 
+/*
 static NSString * const CONFIGURATION_DEFAULT_HAP_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
+static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"https://mr-4549932930.eu-de1.plex.vodafone.com";
+/*/
+static NSString * const CONFIGURATION_DEFAULT_HAP_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
+static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
+//*/
+
 //static NSString * const g_hapBaseURL = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 //static NSString * const g_apixBaseUrl = @"https://apisit.developer.vodafone.com";
-static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"https://mr-4549932930.eu-de1.plex.vodafone.com";
 //static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
 //static NSString * const g_apixBaseUrl = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com";
 

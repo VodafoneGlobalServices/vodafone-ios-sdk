@@ -68,12 +68,14 @@
 - (void)viewDidAppear:(BOOL)animated {
     [self.scrollView setScrollEnabled:YES];
     
+    self.backendAppKeyTextField.text = @"6V8HQ9JCSeRBGDhLGRApx9GBaXqTKeuY";
+    /*/
     self.clientAppKeyTextField.text = @"OliGwlb2dXiQNbFAJpDehfD2K02ywJHG";
     self.clientAppSecretTextField.text = @"4GJyNlfVqlqgd5TC";
-    self.backendAppKeyTextField.text = @"6V8HQ9JCSeRBGDhLGRApx9GBaXqTKeuY";
-    
-//    self.clientAppKeyTextField.text = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
-//    self.clientAppSecretTextField.text = @"k4l1RXZGqMnw2cD8";
+    /*/
+    self.clientAppKeyTextField.text = @"I1OpZaPfBcI378Bt7PBhQySW5Setb8eb";
+    self.clientAppSecretTextField.text = @"k4l1RXZGqMnw2cD8";
+    //*/
     
     self.imsiTextField.text = @"34678774201";
 //    self.imsiTextField.text = @"491748862966"; //joaquim phone number

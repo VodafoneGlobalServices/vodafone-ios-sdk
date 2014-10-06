@@ -10,12 +10,16 @@
 #define VodafoneSDK_VDFConsts_h
 
 #pragma mark - Configuration consts:
-static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"SEAMLESS_ID_RESOLVE";
 
 /*
+static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"seamless_id_resolve";
+ 
 static NSString * const CONFIGURATION_DEFAULT_HAP_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
 static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"https://mr-4549932930.eu-de1.plex.vodafone.com";
 /*/
+// configuration for direct calls to backend
+static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"SSO_OAUTH2_INPUT";
+
 static NSString * const CONFIGURATION_DEFAULT_HAP_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
 static NSString * const CONFIGURATION_DEFAULT_APIX_BASE_URL = @"http://SeamId-4090514559.eu-de1.plex.vodafone.com";
 //*/

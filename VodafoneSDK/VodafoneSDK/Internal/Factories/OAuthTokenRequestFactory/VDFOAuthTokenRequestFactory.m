@@ -63,8 +63,7 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
 //    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
-//    NSString * requestUrl = [@"https://apisit.developer.vodafone.com" stringByAppendingString:self.builder.urlEndpointQuery];
-    NSString * requestUrl = [@"https://mr-4549932930.eu-de1.plex.vodafone.com" stringByAppendingString:self.builder.urlEndpointQuery];
+    NSString * requestUrl = [@"https://apisit.developer.vodafone.com" stringByAppendingString:self.builder.urlEndpointQuery];
     
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];

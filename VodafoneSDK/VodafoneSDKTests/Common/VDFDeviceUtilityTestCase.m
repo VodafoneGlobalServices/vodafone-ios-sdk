@@ -34,9 +34,12 @@ extern void __gcov_flush();
 
 - (void)testIsDeviceIDGeneratedSameAlways {
     
+    VDFDeviceUtility *utility1 = [[VDFDeviceUtility alloc] init];
+    VDFDeviceUtility *utility2 = [[VDFDeviceUtility alloc] init];
+    
     // run
-    NSString *firstResult = [VDFDeviceUtility deviceUniqueIdentifier];
-    NSString *secondResult = [VDFDeviceUtility deviceUniqueIdentifier];
+    NSString *firstResult = [utility1 deviceUniqueIdentifier];
+    NSString *secondResult = [utility2 deviceUniqueIdentifier];
     
     XCTAssertEqualObjects(firstResult, secondResult, @"Each call to unique device should be the same");
 }

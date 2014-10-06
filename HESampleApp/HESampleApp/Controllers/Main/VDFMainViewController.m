@@ -9,7 +9,6 @@
 #import "VDFMainViewController.h"
 #import <MessageUI/MessageUI.h>
 #import <VodafoneSDK/VodafoneSDK.h>
-//#import <sys/utsname.h>
 
 @interface VDFMainViewController ()
 
@@ -50,20 +49,6 @@
 {
     [super viewDidLoad];
     self.loggedMessages = [[NSMutableString alloc] init];
-    
-//    
-//    NSString *string = [[UIDevice currentDevice] name];
-//    NSString *string2 = [[UIDevice currentDevice] model];
-//    NSString *string3 = [[UIDevice currentDevice] localizedModel];
-//    NSString *string4 = [[UIDevice currentDevice] systemName];
-//    NSString *string5 = [[UIDevice currentDevice] systemVersion];
-//    
-//    
-//    struct utsname systemInfo;
-//    uname(&systemInfo);
-//    
-//    NSString *string6 = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
-    
     
     // register for keyboard handling
     [[NSNotificationCenter defaultCenter] addObserver:self

@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, VDFNetworkAvailability) {
  *
  *  @return NSString describing unique identifier of device.
  */
-+ (NSString*)deviceUniqueIdentifier;
+- (NSString*)deviceUniqueIdentifier;
 
 /**
  *  Reads from sim card, mobile country code.
@@ -78,5 +78,19 @@ typedef NS_ENUM(NSUInteger, VDFNetworkAvailability) {
  *  @return Type of network wich is available.
  */
 - (VDFNetworkAvailability)checkNetworkTypeAvailability;
+
+/**
+ *  OS name.
+ *
+ *  @return String representig installed device OS, e.g. "iOS 8.0".
+ */
+- (NSString*)osName;
+
+/**
+ *  Device hardware name.
+ *
+ *  @return Device hardware name.
+ */
+- (NSString*)deviceHardwareName;
 
 @end

@@ -39,11 +39,14 @@
     
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-    NSString * requestUrl = [configuration.apixHost stringByAppendingString:self.builder.urlEndpointQuery];
+    NSString * requestUrl = [configuration.apixHost stringByAppendingString:
+                             [configuration.serviceBasePath stringByAppendingString:
+                              [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_SEND_PIN,
+                               self.builder.sessionToken, self.builder.backendAppKey]]];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
-    httpRequest.methodType = self.builder.httpRequestMethodType;
+    httpRequest.methodType = HTTPMethodGET;
     httpRequest.url = requestUrl;
     httpRequest.isGSMConnectionRequired = NO;
     

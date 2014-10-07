@@ -28,16 +28,6 @@
 @property (nonatomic, copy) NSString *smsCode;
 
 /**
- *  Url addres to server method.
- */
-@property (nonatomic, readonly) NSString *urlEndpointQuery;
-
-/**
- *  Http request method type of call.
- */
-@property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
-
-/**
  *  OAuth Token details used to authorization o APIX.
  */
 @property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;

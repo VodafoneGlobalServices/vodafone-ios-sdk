@@ -71,19 +71,6 @@ extern void __gcov_flush();
     [super tearDown];
 }
 
-- (void)testSetSessionToken {
-    // mock
-    NSString *newSessionToken = @"newSessionToken";
-    
-    // run
-    self.builderToTest.sessionToken = newSessionToken;
-    
-    // assert
-    NSString *newRetryUrlEndpoint = [self.mockServiceBaseKey stringByAppendingString:[NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS, newSessionToken, self.mockBackendAppKey]];
-    XCTAssertEqualObjects(self.builderToTest.sessionToken, newSessionToken, @"Session token after setting on builder should change.");
-    XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, newRetryUrlEndpoint, @"After session token changing the retry url request should change properly.");
-}
-
 - (void)testCreateCurrentHttpConnectorWithEtag {
     
     // mock

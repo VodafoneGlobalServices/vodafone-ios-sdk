@@ -23,16 +23,6 @@
 @property (nonatomic, copy) NSString *sessionToken;
 
 /**
- *  URL for http call.
- */
-@property (nonatomic, readonly) NSString *urlEndpointQuery;
-
-/**
- *  Http method type of http call.
- */
-@property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
-
-/**
  *  OAuth token details, used to verification on server side.
  */
 @property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;

@@ -19,7 +19,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t initialUrlEndpointQuery:%@ \n\t retryUrlEndpointQuery:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@\n\t backendAppKey:%@ \n\t requestOptions:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t internalFactory:%@ \n\t clientAppKey:%@\n\t backendAppKey:%@ \n\t requestOptions:%@ ";
 
 @interface VDFUserResolveRequestBuilder ()
 @property (nonatomic, strong) VDFUserResolveRequestFactory *internalFactory;
@@ -33,12 +33,6 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     self = [super initWithDIContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFUserResolveRequestFactory alloc] initWithBuilder:self];
-        
-        VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
-        _initialUrlEndpointQuery = [configuration.serviceBasePath stringByAppendingString:
-                                    [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_RESOLVE, configuration.backendAppKey]];
-        _httpRequestMethodType = HTTPMethodPOST;
-        
         self.requestOptions = options;
         self.oAuthToken = nil;
         
@@ -49,20 +43,8 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     return self;
 }
 
-- (NSString*)sessionToken {
-    return _sessionToken;
-}
-
-- (void)setSessionToken:(NSString*)sessionToken {
-    _sessionToken = sessionToken;
-    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-    _retryUrlEndpointQuery = [configuration.serviceBasePath stringByAppendingString:
-                              [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS, sessionToken, self.backendAppKey]];
-}
-
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self initialUrlEndpointQuery],
-            [self retryUrlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST",
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, self.internalFactory,
             self.clientAppKey, self.backendAppKey, self.requestOptions];
 }
 

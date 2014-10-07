@@ -103,10 +103,10 @@
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
     // stubs
-    self.configuration.hapHost = @"http://someUrl.com/";
+    self.configuration.backendAppKey = @"someBackendID";
+    self.configuration.hapHost = @"http://someUrl.com";
     self.configuration.defaultHttpConnectionTimeout = 100;
-    [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] initialUrlEndpointQuery];
-    [[[self.mockBuilder stub] andReturnValue:OCMOCK_VALUE(HTTPMethodPOST)] httpRequestMethodType];
+    self.configuration.serviceBasePath = @"/some/endpoint/method";
     [[[self.factoryToTestMock stub] andReturn:postBodyContent] postBody];
     [[[self.mockBuilder stub] andReturn:mockOAuthToken] oAuthToken];
     [[[mockOAuthToken stub] andReturn:@"Barier"] tokenType];
@@ -125,7 +125,7 @@
     XCTAssertEqualObjects(result.postBody, postBodyContent, @"Post Body was not set proeprly.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_CONTENT_TYPE], @"application/json", @"Content-Type header was not set.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_AUTHORIZATION], @"Barier asd", @"Authorization header was not set.");
-    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
+    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method?backendId=someBackendID", @"Url was not set proeprly.");
     
     // TODO IMPORTANT when it will be attached to production servers (not mockups) then uncomment this
     //    XCTAssertTrue(result.isGSMConnectionRequired, @"GSM Connection is required for this factory.");
@@ -138,9 +138,9 @@
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
     // stubs
-    self.configuration.apixHost = @"http://someUrl.com/";
+    self.configuration.apixHost = @"http://someUrl.com";
     self.configuration.defaultHttpConnectionTimeout = 100;
-    [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] retryUrlEndpointQuery];
+    self.configuration.serviceBasePath = @"/some/endpoint/method";
     [[[self.mockBuilder stub] andReturn:mockOAuthToken] oAuthToken];
     [[[mockOAuthToken stub] andReturn:@"Barier"] tokenType];
     [[[mockOAuthToken stub] andReturn:@"asd"] accessToken];
@@ -148,6 +148,7 @@
     [[[self.mockBuilder stub] andReturn:@"clientAppSecret"] clientAppSecret];
     [[[self.mockBuilder stub] andReturn:@"backendAppKey"] backendAppKey];
     [[[self.mockBuilder stub] andReturn:@"etagtest"] eTag];
+    [[[self.mockBuilder stub] andReturn:@"someSessionToken"] sessionToken];
     
     // run
     VDFHttpConnector *result = [self.factoryToTestMock createRetryHttpConnectorWithDelegate:mockDelegate];
@@ -159,7 +160,7 @@
     XCTAssertNil(result.postBody, @"Post Body need to be nil.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_AUTHORIZATION], @"Barier asd", @"Authorization header was not set.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_IF_NONE_MATCH], @"etagtest", @"ETag header was not set.");
-    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
+    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method/someSessionToken?backendId=backendAppKey", @"Url was not set proeprly.");
     XCTAssertFalse(result.isGSMConnectionRequired, @"GSM Connection is not required for this factory.");
 }
 

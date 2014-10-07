@@ -94,10 +94,10 @@
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
     // stubs
+    self.configuration.backendAppKey = @"someBackendAppKey";
     self.configuration.apixHost = @"http://someUrl.com/";
     self.configuration.defaultHttpConnectionTimeout = 100;
-    [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] urlEndpointQuery];
-    [[[self.mockBuilder stub] andReturnValue:OCMOCK_VALUE(HTTPMethodPOST)] httpRequestMethodType];
+    self.configuration.serviceBasePath = @"some/endpoint/method";
     [[[self.factoryToTestMock stub] andReturn:postBodyContent] postBody];
     [[[self.mockBuilder stub] andReturn:mockOAuthToken] oAuthToken];
     [[[mockOAuthToken stub] andReturn:@"Barier"] tokenType];
@@ -105,6 +105,7 @@
     [[[self.mockBuilder stub] andReturn:@"clientAppKey"] clientAppKey];
     [[[self.mockBuilder stub] andReturn:@"clientAppSecret"] clientAppSecret];
     [[[self.mockBuilder stub] andReturn:@"backendAppKey"] backendAppKey];
+    [[[self.mockBuilder stub] andReturn:@"someSessionToken"] sessionToken];
     
     // run
     VDFHttpConnector *result = [self.factoryToTestMock createHttpConnectorRequestWithDelegate:mockDelegate];
@@ -117,7 +118,7 @@
     XCTAssertEqualObjects(result.postBody, postBodyContent, @"Post Body was not set proeprly.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_CONTENT_TYPE], @"application/json", @"Content-Type header was not set.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_AUTHORIZATION], @"Barier asd", @"Authorization header was not set.");
-    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
+    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method/someSessionToken/pins?backendId=someBackendAppKey", @"Url was not set proeprly.");
 }
 
 - (void)testPostBodyCreation {

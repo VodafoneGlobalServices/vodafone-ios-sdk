@@ -15,7 +15,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t internalFactory:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
 
 @interface VDFSmsValidationRequestBuilder ()
 @property (nonatomic, strong) VDFSmsValidationRequestFactory *internalFactory;
@@ -27,12 +27,6 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     self = [super initWithDIContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFSmsValidationRequestFactory alloc] initWithBuilder:self];
-        
-        VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
-        _urlEndpointQuery = [configuration.serviceBasePath stringByAppendingString:
-                             [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_VALIDATE_PIN,
-                              sessionToken, configuration.backendAppKey]];
-        _httpRequestMethodType = HTTPMethodPOST;
         self.sessionToken = sessionToken;
         self.smsCode = smsCode;
         self.oAuthToken = nil;
@@ -45,7 +39,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.clientAppKey, self.backendAppKey, self.sessionToken, self.smsCode];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, self.internalFactory, self.clientAppKey, self.backendAppKey, self.sessionToken, self.smsCode];
 }
 
 #pragma mark -

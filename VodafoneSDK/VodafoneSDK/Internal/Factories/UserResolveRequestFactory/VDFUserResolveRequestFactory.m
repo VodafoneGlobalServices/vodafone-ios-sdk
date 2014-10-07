@@ -73,7 +73,8 @@
     
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-    NSString * requestUrl = [configuration.apixHost stringByAppendingString:self.builder.retryUrlEndpointQuery];
+    NSString * requestUrl = [configuration.apixHost stringByAppendingString:[configuration.serviceBasePath stringByAppendingString:
+                                                                             [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS, self.builder.sessionToken, self.builder.backendAppKey]]];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
@@ -101,17 +102,18 @@
     httpRequest.postBody = [self postBody];
     httpRequest.allowRedirects = NO;
     
-    
     NSString * requestUrl = nil;
     if(self.builder.requestOptions.market != nil && self.builder.requestOptions.msisdn != nil) {
         // it goes directly throught APIX
-        requestUrl = [configuration.apixHost stringByAppendingString:self.builder.initialUrlEndpointQuery];
+        requestUrl = configuration.apixHost;
     }
     else {
-        requestUrl = [configuration.hapHost stringByAppendingString:self.builder.initialUrlEndpointQuery];
+        requestUrl = configuration.hapHost;
 //      httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
     }
     
+    requestUrl = [requestUrl stringByAppendingString:[configuration.serviceBasePath stringByAppendingString:
+                                                      [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_RESOLVE, configuration.backendAppKey]]];
     httpRequest.url = requestUrl;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];

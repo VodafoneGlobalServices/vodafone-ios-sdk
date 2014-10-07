@@ -25,21 +25,6 @@
 @property (nonatomic, strong) VDFUserResolveOptions *requestOptions;
 
 /**
- *  Url of initial call over hap.
- */
-@property (nonatomic, readonly) NSString *initialUrlEndpointQuery;
-
-/**
- *  Url used to make retry requests for check status.
- */
-@property (nonatomic, readonly) NSString *retryUrlEndpointQuery;
-
-/**
- *  Http method type of requests.
- */
-@property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
-
-/**
  *  OAuthToken details used in authorization over APIX.
  */
 @property (nonatomic, strong) VDFOAuthTokenResponse *oAuthToken;

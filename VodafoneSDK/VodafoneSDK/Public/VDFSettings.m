@@ -61,8 +61,10 @@ static VDFDIContainer * g_diContainer = nil;
         VDFLogD(@"-- clientAppSecret:%@", configuration.clientAppSecret);
         VDFLogD(@"-- backendAppKey:%@", configuration.backendAppKey);
         VDFLogD(@"-- sdkVersion:%@", configuration.sdkVersion);
-        VDFLogD(@"-- hapBaseUrl:%@", configuration.hapBaseUrl);
-        VDFLogD(@"-- apixBaseUrl:%@", configuration.apixBaseUrl);
+        VDFLogD(@"-- hapHost:%@", configuration.hapHost);
+        VDFLogD(@"-- apixHost:%@", configuration.apixHost);
+        VDFLogD(@"-- oAuthTokenUrlPath:%@", configuration.oAuthTokenUrlPath);
+        VDFLogD(@"-- serviceBasePath:%@", configuration.serviceBasePath);
         
         id cacheManager = [[VDFCacheManager alloc] initWithDIContainer:g_diContainer];
         [g_diContainer registerInstance:cacheManager forClass:[VDFCacheManager class]];

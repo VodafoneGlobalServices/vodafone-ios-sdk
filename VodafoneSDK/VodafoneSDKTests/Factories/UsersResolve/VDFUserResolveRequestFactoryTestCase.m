@@ -103,7 +103,7 @@
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
     // stubs
-    self.configuration.hapBaseUrl = @"http://someUrl.com/";
+    self.configuration.hapHost = @"http://someUrl.com/";
     self.configuration.defaultHttpConnectionTimeout = 100;
     [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] initialUrlEndpointQuery];
     [[[self.mockBuilder stub] andReturnValue:OCMOCK_VALUE(HTTPMethodPOST)] httpRequestMethodType];
@@ -138,7 +138,7 @@
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
     // stubs
-    self.configuration.apixBaseUrl = @"http://someUrl.com/";
+    self.configuration.apixHost = @"http://someUrl.com/";
     self.configuration.defaultHttpConnectionTimeout = 100;
     [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] retryUrlEndpointQuery];
     [[[self.mockBuilder stub] andReturn:mockOAuthToken] oAuthToken];

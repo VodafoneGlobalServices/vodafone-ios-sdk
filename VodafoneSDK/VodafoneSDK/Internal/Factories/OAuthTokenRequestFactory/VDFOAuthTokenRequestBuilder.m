@@ -24,12 +24,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
     self = [super initWithDIContainer:diContainer];
     if(self) {
         self.internalFactory = [[VDFOAuthTokenRequestFactory alloc] initWithBuilder:self];
-        
-        _urlEndpointQuery = SERVICE_URL_SCHEME_OAUTH_ACCESS_TOKEN;
-        _httpRequestMethodType = HTTPMethodPOST;
-        
         self.requestOptions = options;
-        
         if(delegate != nil) {
             [[self observersContainer] registerObserver:delegate];
         }
@@ -38,7 +33,8 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.clientAppKey, self.backendAppKey, self.requestOptions];
+    return @""; // TODO description
+//    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.clientAppKey, self.backendAppKey, self.requestOptions];
 }
 
 #pragma mark -

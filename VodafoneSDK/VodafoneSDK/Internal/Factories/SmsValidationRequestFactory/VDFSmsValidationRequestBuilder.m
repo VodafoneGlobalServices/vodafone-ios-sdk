@@ -29,7 +29,9 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
         self.internalFactory = [[VDFSmsValidationRequestFactory alloc] initWithBuilder:self];
         
         VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
-        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_VALIDATE_PIN, sessionToken, configuration.backendAppKey];
+        _urlEndpointQuery = [configuration.serviceBasePath stringByAppendingString:
+                             [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_VALIDATE_PIN,
+                              sessionToken, configuration.backendAppKey]];
         _httpRequestMethodType = HTTPMethodPOST;
         self.sessionToken = sessionToken;
         self.smsCode = smsCode;

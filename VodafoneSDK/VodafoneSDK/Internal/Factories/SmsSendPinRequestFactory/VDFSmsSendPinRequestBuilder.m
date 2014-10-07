@@ -30,7 +30,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
         self.internalFactory = [[VDFSmsSendPinRequestFactory alloc] initWithBuilder:self];
         
         VDFBaseConfiguration *configuration = [diContainer resolveForClass:[VDFBaseConfiguration class]];
-        _urlEndpointQuery = [NSString stringWithFormat:SERVICE_URL_SCHEME_SEND_PIN, sessionToken, configuration.backendAppKey];
+        _urlEndpointQuery = [configuration.serviceBasePath stringByAppendingString:[NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_SEND_PIN, sessionToken, configuration.backendAppKey]];
         _httpRequestMethodType = HTTPMethodGET;
         self.sessionToken = sessionToken;
         self.oAuthToken = nil;

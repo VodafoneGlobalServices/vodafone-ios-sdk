@@ -42,7 +42,7 @@
 @property VDFBaseConfiguration *mockConfiguration;
 @property id mockDIContainer;
 
-- (VDFCacheObject*)createTestCacheObjectWithUrl:(NSString*)url httpMethod:(HTTPMethodType)methodType postBody:(NSData*)body;
+- (VDFCacheObject*)createTestCacheObjectWithUrl:(NSString*)url postBody:(NSData*)body;
 @end
 
 @implementation VDFOAuthTokenRequestFactoryTestCase
@@ -105,8 +105,6 @@
     
     // stub
     [[[self.mockCurrentState stub] andReturn:expirationDate] lastResponseExpirationDate];
-    [[[self.mockBuilder stub] andReturn:@"some/url"] urlEndpointQuery];
-    [[[self.mockBuilder stub] andReturnValue:OCMOCK_VALUE(HTTPMethodGET)] httpRequestMethodType];
     [[[self.factoryToTestMock stub] andReturn:postBodyContent] postBody];
     
     // run
@@ -125,20 +123,16 @@
     NSData *postBodyContent = [NSData data];
     
     // run
-    VDFCacheObject *result1 = [self createTestCacheObjectWithUrl:@"some/url" httpMethod:HTTPMethodGET postBody:postBodyContent];
-    VDFCacheObject *resultDiffUrlEndpoint = [self createTestCacheObjectWithUrl:@"some/url/different" httpMethod:HTTPMethodGET postBody:postBodyContent];
-    VDFCacheObject *resultDiffHttpMethod = [self createTestCacheObjectWithUrl:@"some/url" httpMethod:HTTPMethodPOST postBody:postBodyContent];
-    VDFCacheObject *resultDiffData = [self createTestCacheObjectWithUrl:@"some/url" httpMethod:HTTPMethodGET postBody:[@"some data" dataUsingEncoding:NSUTF8StringEncoding]];
-    VDFCacheObject *result2 = [self createTestCacheObjectWithUrl:@"some/url" httpMethod:HTTPMethodGET postBody:postBodyContent];
+    VDFCacheObject *result1 = [self createTestCacheObjectWithUrl:@"some/url" postBody:postBodyContent];
+    VDFCacheObject *resultDiffUrlEndpoint = [self createTestCacheObjectWithUrl:@"some/url/different" postBody:postBodyContent];
+    VDFCacheObject *resultDiffData = [self createTestCacheObjectWithUrl:@"some/url" postBody:[@"some data" dataUsingEncoding:NSUTF8StringEncoding]];
+    VDFCacheObject *result2 = [self createTestCacheObjectWithUrl:@"some/url" postBody:postBodyContent];
     
     // assert
     XCTAssertEqualObjects(result1.cacheKey, result2.cacheKey, @"Cache key for the same requests should be the same.");
     XCTAssertNotEqualObjects(result1.cacheKey, resultDiffUrlEndpoint.cacheKey, @"Cache Key should be diffrent for different request parameters.");
-    XCTAssertNotEqualObjects(result1.cacheKey, resultDiffHttpMethod.cacheKey, @"Cache Key should be diffrent for different request parameters.");
     XCTAssertNotEqualObjects(result1.cacheKey, resultDiffData.cacheKey, @"Cache Key should be diffrent for different request parameters.");
-    XCTAssertNotEqualObjects(resultDiffUrlEndpoint.cacheKey, resultDiffHttpMethod.cacheKey, @"Cache Key should be diffrent for different request parameters.");
     XCTAssertNotEqualObjects(resultDiffUrlEndpoint.cacheKey, resultDiffData.cacheKey, @"Cache Key should be diffrent for different request parameters.");
-    XCTAssertNotEqualObjects(resultDiffHttpMethod.cacheKey, resultDiffData.cacheKey, @"Cache Key should be diffrent for different request parameters.");
 }
 
 
@@ -149,10 +143,9 @@
     NSData *postBodyContent = [NSData data];
     
     // stubs
-    self.mockConfiguration.apixBaseUrl = @"http://someUrl.com/";
+    self.mockConfiguration.apixHost = @"http://someUrl.com/";
     self.mockConfiguration.defaultHttpConnectionTimeout = 100;
-    [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] urlEndpointQuery];
-    [[[self.mockBuilder stub] andReturnValue:OCMOCK_VALUE(HTTPMethodPOST)] httpRequestMethodType];
+    self.mockConfiguration.oAuthTokenUrlPath = @"some/endpoint/method";
     [[[self.factoryToTestMock stub] andReturn:postBodyContent] postBody];
     
     // run
@@ -176,6 +169,7 @@
     VDFOAuthTokenRequestOptions *requestOptions = [[VDFOAuthTokenRequestOptions alloc] init];
     requestOptions.clientId = @"someClientID";
     requestOptions.clientSecret = @"someClientSecret";
+    self.mockConfiguration.oAuthTokenGrantType = @"SomeGrantType";
     
     // stub
     [[[self.mockBuilder stub] andReturn:requestOptions] requestOptions];
@@ -185,7 +179,7 @@
     
     // assert
     XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding],
-                          @"grant_type=client_credentials&client_id=someClientID&client_secret=someClientSecret",
+                          @"grant_type=SomeGrantType&client_id=someClientID&client_secret=someClientSecret",
                           @"Post body is generated not properly.");
 }
 
@@ -196,6 +190,7 @@
     requestOptions.clientId = @"someClientID";
     requestOptions.clientSecret = @"someClientSecret";
     requestOptions.scopes = @[@"scopeOne", @"scopeTwo"];
+    self.mockConfiguration.oAuthTokenGrantType = @"someGrantType";
     
     // stub
     [[[self.mockBuilder stub] andReturn:requestOptions] requestOptions];
@@ -205,7 +200,7 @@
     
     // assert
     XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding],
-                          @"grant_type=client_credentials&client_id=someClientID&client_secret=someClientSecret&scope=scopeOne&scope=scopeTwo",
+                          @"grant_type=someGrantType&client_id=someClientID&client_secret=someClientSecret&scope=scopeOne&scope=scopeTwo",
                           @"Post body is generated not properly.");
 }
 
@@ -216,6 +211,7 @@
     requestOptions.clientId = @"someClientID";
     requestOptions.clientSecret = @"someClientSecret";
     requestOptions.scopes = @[@"scopeOne"];
+    self.mockConfiguration.oAuthTokenGrantType = @"someGrantType";
     
     // stub
     [[[self.mockBuilder stub] andReturn:requestOptions] requestOptions];
@@ -225,24 +221,28 @@
     
     // assert
     XCTAssertEqualObjects([[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding],
-                          @"grant_type=client_credentials&client_id=someClientID&client_secret=someClientSecret&scope=scopeOne",
+                          @"grant_type=someGrantType&client_id=someClientID&client_secret=someClientSecret&scope=scopeOne",
                           @"Post body is generated not properly.");
 }
 
 
 #pragma mark -
 #pragma mark - helper method
-- (VDFCacheObject*)createTestCacheObjectWithUrl:(NSString*)url httpMethod:(HTTPMethodType)methodType postBody:(NSData*)body {
+- (VDFCacheObject*)createTestCacheObjectWithUrl:(NSString*)url postBody:(NSData*)body {
     
     // mock
+    VDFBaseConfiguration *mockConfiguration = [[VDFBaseConfiguration alloc] init];
+    mockConfiguration.apixHost = @"http://apix.com";
+    mockConfiguration.oAuthTokenUrlPath = url;
+    VDFDIContainer *diContainer = [[VDFDIContainer alloc] init];
     id localMockBuilder = OCMClassMock([VDFOAuthTokenRequestBuilder class]);
     id localFactoryToTest = [[VDFOAuthTokenRequestFactory alloc] initWithBuilder:localMockBuilder];
     id localMockactoryToTest = OCMPartialMock(localFactoryToTest);
     
     // stubs
-    [[[localMockBuilder stub] andReturn:url] urlEndpointQuery];
-    [[[localMockBuilder stub] andReturnValue:OCMOCK_VALUE(((HTTPMethodType)methodType))] httpRequestMethodType];
     [[[localMockactoryToTest stub] andReturn:body] postBody];
+    [diContainer registerInstance:mockConfiguration forClass:[VDFBaseConfiguration class]];
+    [[[localMockBuilder stub] andReturn:diContainer] diContainer];
     
     // run
     return [localMockactoryToTest createCacheObject];

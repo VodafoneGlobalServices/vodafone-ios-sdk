@@ -96,7 +96,7 @@
     id mockOAuthToken = OCMClassMock([VDFOAuthTokenResponse class]);
     
     // stubs
-    self.configuration.apixBaseUrl = @"http://someUrl.com/";
+    self.configuration.apixHost = @"http://someUrl.com/";
     self.configuration.defaultHttpConnectionTimeout = 100;
     [[[self.mockBuilder stub] andReturn:@"some/endpoint/method"] urlEndpointQuery];
     [[[self.mockBuilder stub] andReturnValue:OCMOCK_VALUE(HTTPMethodGET)] httpRequestMethodType];

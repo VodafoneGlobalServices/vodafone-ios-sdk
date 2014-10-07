@@ -29,6 +29,7 @@ extern void __gcov_flush();
 @property NSString *mockClientAppKey;
 @property NSString *mockClientAppSecret;
 @property NSString *mockBackendAppKey;
+@property NSString *mockServiceBaseKey;
 @property id mockOptions;
 @property id mockConfiguration;
 @property id mockDelegate;
@@ -45,6 +46,7 @@ extern void __gcov_flush();
     self.mockClientAppKey = @"fake mock client app key";
     self.mockClientAppSecret = @"fake mock client app secret";
     self.mockBackendAppKey = @"fake mock backend app key";
+    self.mockServiceBaseKey = @"baseSeamlessID/url/path/";
     self.mockConfiguration = OCMClassMock([VDFBaseConfiguration class]);
     self.mockOptions = OCMClassMock([VDFUserResolveOptions class]);
     self.mockFactory = OCMClassMock([VDFUserResolveRequestFactory class]);
@@ -52,6 +54,7 @@ extern void __gcov_flush();
     [[[self.mockConfiguration stub] andReturn:self.mockClientAppKey] clientAppKey];
     [[[self.mockConfiguration stub] andReturn:self.mockClientAppSecret] clientAppSecret];
     [[[self.mockConfiguration stub] andReturn:self.mockBackendAppKey] backendAppKey];
+    [[[self.mockConfiguration stub] andReturn:self.mockServiceBaseKey] serviceBasePath];
     [[[self.mockOptions stub] andReturn:self.mockOptions] copy];
     
     self.mockDIContainer = OCMClassMock([VDFDIContainer class]);
@@ -76,9 +79,9 @@ extern void __gcov_flush();
     self.builderToTest.sessionToken = newSessionToken;
     
     // assert
-    NSString *newRetryUrlEndpoint = [NSString stringWithFormat:SERVICE_URL_SCHEME_CHECK_RESOLVE_STATUS, newSessionToken, self.mockBackendAppKey];
+    NSString *newRetryUrlEndpoint = [self.mockServiceBaseKey stringByAppendingString:[NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS, newSessionToken, self.mockBackendAppKey]];
     XCTAssertEqualObjects(self.builderToTest.sessionToken, newSessionToken, @"Session token after setting on builder should change.");
-    XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, newRetryUrlEndpoint, @"After session token changing the retry rul request should change properly.");
+    XCTAssertEqualObjects(self.builderToTest.retryUrlEndpointQuery, newRetryUrlEndpoint, @"After session token changing the retry url request should change properly.");
 }
 
 - (void)testCreateCurrentHttpConnectorWithEtag {

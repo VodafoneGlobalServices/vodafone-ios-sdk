@@ -38,12 +38,17 @@
 /**
  *  Http BE host.
  */
-@property (nonatomic, copy) NSString *hapBaseUrl;
+@property (nonatomic, copy) NSString *hapHost;
 
 /**
  *  Http APIX host.
  */
-@property (nonatomic, copy) NSString *apixBaseUrl;
+@property (nonatomic, copy) NSString *apixHost;
+
+/**
+ *  Service base url path.
+ */
+@property (nonatomic, copy) NSString *serviceBasePath;
 
 /**
  *  Http connection time out.
@@ -66,14 +71,29 @@
 @property (nonatomic, assign) NSTimeInterval requestsThrottlingPeriod;
 
 /**
+ *  OAuth token retrieval url path.
+ */
+@property (nonatomic, copy) NSString *oAuthTokenUrlPath;
+
+/**
  *  Scope for oAuthToken retrieval.
  */
 @property (nonatomic, strong) NSString *oAuthTokenScope;
 
 /**
+ *  Grant type for oAuthToken retrieval.
+ */
+@property (nonatomic, strong) NSString *oAuthTokenGrantType;
+
+/**
  *  Dictionary of avaialable markets. (e.g. { "DE": 49, "PT": 353, ... } )
  */
 @property (nonatomic, strong) NSDictionary *availableMarkets;
+
+/**
+ *  Regular expression for phone number validation. (Validation without country code e.g. 49)
+ */
+@property (nonatomic, strong) NSString *phoneNumberRegex;
 
 /**
  *  Dictionary of avaialable MCC and MNC combinations, used to validate that you are vodafone user. (e.g. [ "26202", "26204", ... ])

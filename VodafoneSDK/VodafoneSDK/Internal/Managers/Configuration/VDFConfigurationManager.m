@@ -79,8 +79,10 @@
             configuration.configurationUpdateCheckTimeSpan = CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN;
             
             // for other properties
-            configuration.hapBaseUrl = CONFIGURATION_DEFAULT_HAP_BASE_URL;
-            configuration.apixBaseUrl = CONFIGURATION_DEFAULT_APIX_BASE_URL;
+            configuration.hapHost = CONFIGURATION_DEFAULT_HAP_HOST;
+            configuration.apixHost = CONFIGURATION_DEFAULT_APIX_HOST;
+            configuration.serviceBasePath = SERVICE_URL_DEFAULT_BASE_PATH;
+            configuration.oAuthTokenUrlPath = SERVICE_URL_DEFAULT_OAUTH_TOKEN_PATH;
             
             configuration.defaultHttpConnectionTimeout = CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT;
             configuration.httpRequestRetryTimeSpan = CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN;
@@ -89,9 +91,15 @@
         
             // oAuth token retrieval configuration:
             configuration.oAuthTokenScope = CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE;
+            configuration.oAuthTokenGrantType = CONFIGURATION_DEFAULT_OAUTH_TOKEN_GRANT_TYPE;
             
-            configuration.availableMarkets = @{ @"DE": @49, @"PT": @353, @"ES": @34 };
-            configuration.availableMccMnc = @[ @"26202", @"26204" ];
+            configuration.availableMarkets = @{ @"PT": @351, @"IT": @39, @"DE": @49, @"ES": @34,
+                                                @"IE": @353, @"NL": @31, @"GB": @44, @"RO": @40,
+                                                @"HU": @36, @"GR": @30, @"MT": @356, @"AL": @355,
+                                                @"CZ": @420, @"ZA": @27 };
+            configuration.availableMccMnc = @[ @"26801", @"22210", @"26202", @"21401", @"27201",
+                                               @"20404", @"23415", @"22601", @"21670", @"20205",
+                                               @"27801", @"27602", @"23003", @"65501" ];
         }
     }
     return configuration;

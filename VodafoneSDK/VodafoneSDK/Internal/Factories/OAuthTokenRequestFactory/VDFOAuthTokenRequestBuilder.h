@@ -23,16 +23,6 @@
 @property (nonatomic, strong) VDFOAuthTokenRequestOptions *requestOptions;
 
 /**
- *  Url for http calls.
- */
-@property (nonatomic, readonly) NSString *urlEndpointQuery;
-
-/**
- *  Http method type of http call.
- */
-@property (nonatomic, readonly) HTTPMethodType httpRequestMethodType;
-
-/**
  *  Initialize builder object of oAuthToken retrievals request.
  *
  *  @param options     Request options.

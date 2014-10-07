@@ -18,7 +18,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const POST_BODY_FORMAT = @"grant_type=client_credentials&client_id=%@&client_secret=%@"; // TODO move grant type to configuration class
+static NSString * const POST_BODY_FORMAT = @"grant_type=%@&client_id=%@&client_secret=%@";
 static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
 
 @interface VDFOAuthTokenRequestFactory ()
@@ -39,12 +39,14 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
 
 - (NSData*)postBody {
     
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
     // parameters encoding:
     NSString *encodedClientID = [VDFStringHelper urlEncode:self.builder.requestOptions.clientId];
     NSString *encodedClientSecret = [VDFStringHelper urlEncode:self.builder.requestOptions.clientSecret];
 
     // formating scopes:
-    NSMutableString *bodyString = [NSMutableString stringWithFormat:POST_BODY_FORMAT, encodedClientID, encodedClientSecret];
+    NSMutableString *bodyString = [NSMutableString stringWithFormat:POST_BODY_FORMAT, configuration.oAuthTokenGrantType, encodedClientID, encodedClientSecret];
     if(self.builder.requestOptions.scopes != nil)
     {
         for (NSString *scope in self.builder.requestOptions.scopes) {
@@ -63,12 +65,12 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
 //    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
-    NSString * requestUrl = [@"https://apisit.developer.vodafone.com" stringByAppendingString:self.builder.urlEndpointQuery];
+    NSString * requestUrl = [@"https://apisit.developer.vodafone.com" stringByAppendingString:configuration.oAuthTokenUrlPath];
     
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
-    httpRequest.methodType = self.builder.httpRequestMethodType;
+    httpRequest.methodType = HTTPMethodPOST;
     httpRequest.postBody = [self postBody];
     httpRequest.url = requestUrl;
     httpRequest.requestHeaders = @{ HTTP_HEADER_ACCEPT : HTTP_VALUE_CONTENT_TYPE_JSON,
@@ -78,7 +80,9 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
 }
 
 - (VDFCacheObject*)createCacheObject {
-    NSString *stringToHash = [NSString stringWithFormat:@"%@%ul%@", self.builder.urlEndpointQuery, self.builder.httpRequestMethodType, [VDFStringHelper md5FromData:[self postBody]]];
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    NSString *stringToHash = [NSString stringWithFormat:@"%@POST%@", configuration.oAuthTokenUrlPath, [VDFStringHelper md5FromData:[self postBody]]];
     NSString *md5Hash = [VDFStringHelper md5FromString:stringToHash];
     
     id<VDFRequestState> currentState = [self.builder requestState];

@@ -73,7 +73,7 @@
     
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.retryUrlEndpointQuery];
+    NSString * requestUrl = [configuration.apixHost stringByAppendingString:self.builder.retryUrlEndpointQuery];
     
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
@@ -105,10 +105,10 @@
     NSString * requestUrl = nil;
     if(self.builder.requestOptions.market != nil && self.builder.requestOptions.msisdn != nil) {
         // it goes directly throught APIX
-        requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
+        requestUrl = [configuration.apixHost stringByAppendingString:self.builder.initialUrlEndpointQuery];
     }
     else {
-        requestUrl = [configuration.hapBaseUrl stringByAppendingString:self.builder.initialUrlEndpointQuery];
+        requestUrl = [configuration.hapHost stringByAppendingString:self.builder.initialUrlEndpointQuery];
 //      httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
     }
     

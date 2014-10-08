@@ -12,7 +12,7 @@
 #import "VDFOAuthTokenRequestDelegate.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t urlEndpointMethod:%@ \n\t httpMethod:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t requestOptions:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t %@\n\t internalFactory:%@\n\t requestOptions:%@ ";
 
 @interface VDFOAuthTokenRequestBuilder ()
 @property (nonatomic, strong) VDFOAuthTokenRequestFactory *internalFactory;
@@ -33,8 +33,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestBuilder:\n\t 
 }
 
 - (NSString*)description {
-    return @""; // TODO description
-//    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self urlEndpointQuery], ([self httpRequestMethodType] == HTTPMethodGET) ? @"GET":@"POST", self.clientAppKey, self.backendAppKey, self.requestOptions];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [super description], self.internalFactory, self.requestOptions];
 }
 
 #pragma mark -

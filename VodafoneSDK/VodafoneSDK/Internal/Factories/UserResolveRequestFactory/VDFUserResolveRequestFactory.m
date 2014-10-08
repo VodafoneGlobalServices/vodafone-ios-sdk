@@ -24,9 +24,13 @@
 #import "VDFConsts.h"
 #import "VDFUserResolveOptions+Internal.h"
 
+static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactory:\n\t initialURL:%@\n\t retryURL:%@";
+
 @interface VDFUserResolveRequestFactory ()
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *builder;
 
+- (NSString*)createInitialRequestUrlDirectlyToAPIX:(BOOL)directToAPIX;
+- (NSString*)createRetryRequestUrl;
 - (NSData*)postBody;
 @end
 
@@ -38,6 +42,30 @@
         self.builder = builder;
     }
     return self;
+}
+
+- (NSString*)description {
+    BOOL directToAPIX = self.builder.requestOptions.market != nil && self.builder.requestOptions.msisdn != nil;
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self createInitialRequestUrlDirectlyToAPIX:directToAPIX], [self createRetryRequestUrl]];
+}
+
+- (NSString*)createInitialRequestUrlDirectlyToAPIX:(BOOL)directToAPIX {
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    NSString * requestUrl = directToAPIX ? configuration.apixHost : configuration.hapHost;
+    requestUrl = [requestUrl stringByAppendingString:
+                  [configuration.serviceBasePath stringByAppendingString:
+                   [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_RESOLVE, configuration.backendAppKey]]];
+    return requestUrl;
+}
+
+- (NSString*)createRetryRequestUrl {
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    return [configuration.apixHost stringByAppendingString:
+            [configuration.serviceBasePath stringByAppendingString:
+             [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS,
+              self.builder.sessionToken, self.builder.backendAppKey]]];
 }
 
 - (NSData*)postBody {
@@ -73,13 +101,10 @@
     
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-    NSString * requestUrl = [configuration.apixHost stringByAppendingString:[configuration.serviceBasePath stringByAppendingString:
-                                                                             [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS, self.builder.sessionToken, self.builder.backendAppKey]]];
-    
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodGET;
-    httpRequest.url = requestUrl;
+    httpRequest.url = [self createRetryRequestUrl];
     httpRequest.allowRedirects = NO;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
@@ -102,19 +127,12 @@
     httpRequest.postBody = [self postBody];
     httpRequest.allowRedirects = NO;
     
-    NSString * requestUrl = nil;
-    if(self.builder.requestOptions.market != nil && self.builder.requestOptions.msisdn != nil) {
-        // it goes directly throught APIX
-        requestUrl = configuration.apixHost;
-    }
-    else {
-        requestUrl = configuration.hapHost;
+    BOOL directToAPIX = self.builder.requestOptions.market != nil && self.builder.requestOptions.msisdn != nil;
+    httpRequest.url = [self createInitialRequestUrlDirectlyToAPIX:directToAPIX];
+    
+    if(!directToAPIX) {
 //      httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
     }
-    
-    requestUrl = [requestUrl stringByAppendingString:[configuration.serviceBasePath stringByAppendingString:
-                                                      [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_RESOLVE, configuration.backendAppKey]]];
-    httpRequest.url = requestUrl;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];
     httpRequest.requestHeaders = @{HTTP_HEADER_AUTHORIZATION: authorizationHeader,

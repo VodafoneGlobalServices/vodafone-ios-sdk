@@ -15,7 +15,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t internalFactory:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t sessionToken:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t %@\n\t internalFactory:%@\n\t sessionToke:%@ ";
 
 @interface VDFSmsSendPinRequestBuilder ()
 @property (nonatomic, strong) VDFSmsSendPinRequestFactory *internalFactory;
@@ -39,7 +39,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestBuilder:\n\t 
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, self.internalFactory, self.clientAppKey, self.backendAppKey, self.sessionToken];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [super description], self.internalFactory, self.sessionToken];
 }
 
 #pragma mark -

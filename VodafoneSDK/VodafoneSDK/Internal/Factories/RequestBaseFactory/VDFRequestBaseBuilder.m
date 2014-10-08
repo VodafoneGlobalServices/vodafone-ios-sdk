@@ -14,12 +14,13 @@
 #import "VDFBaseConfiguration.h"
 #import "VDFDIContainer.h"
 
+static NSString * const DESCRIPTION_FORMAT = @"clientAppKey:%@\n\t backendAppKey:%@";
+
 @interface VDFRequestBaseBuilder ()
 @property id<VDFResponseParser> internalResponseParser;
 @property id<VDFRequestState> internalRequestState;
 @property id<VDFObserversContainer> internalObserversContainer;
 @end
-
 
 @implementation VDFRequestBaseBuilder
 
@@ -70,5 +71,8 @@
     __builtin_unreachable();
 }
 
+- (NSString*)description {
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, self.clientAppKey, self.backendAppKey];
+}
 
 @end

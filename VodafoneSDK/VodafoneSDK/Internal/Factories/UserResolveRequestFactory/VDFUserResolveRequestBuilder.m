@@ -19,7 +19,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t internalFactory:%@ \n\t clientAppKey:%@\n\t backendAppKey:%@ \n\t requestOptions:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t %@\n\t internalFactory:%@ \n\t requestOptions:%@ ";
 
 @interface VDFUserResolveRequestBuilder ()
 @property (nonatomic, strong) VDFUserResolveRequestFactory *internalFactory;
@@ -44,8 +44,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, self.internalFactory,
-            self.clientAppKey, self.backendAppKey, self.requestOptions];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [super description], self.internalFactory, self.requestOptions];
 }
 
 #pragma mark -

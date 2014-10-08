@@ -20,10 +20,12 @@
 
 static NSString * const POST_BODY_FORMAT = @"grant_type=%@&client_id=%@&client_secret=%@";
 static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
+static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestFactory:\n\t URL:%@\n\t";
 
 @interface VDFOAuthTokenRequestFactory ()
 @property (nonatomic, strong) VDFOAuthTokenRequestBuilder *builder;
 
+- (NSString*)createRequestURL;
 - (NSData*)postBody;
 @end
 
@@ -35,6 +37,17 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
         self.builder = builder;
     }
     return self;
+}
+
+- (NSString*)description {
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self createRequestURL]];
+}
+
+- (NSString*)createRequestURL {
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    //    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
+    return [@"https://apisit.developer.vodafone.com" stringByAppendingString:configuration.oAuthTokenUrlPath];
 }
 
 - (NSData*)postBody {
@@ -64,15 +77,11 @@ static NSString * const POST_BODY_SCOPE_PARAMETER_FORMAT = @"&scope=%@";
     
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-//    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
-    NSString * requestUrl = [@"https://apisit.developer.vodafone.com" stringByAppendingString:configuration.oAuthTokenUrlPath];
-    
-    
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodPOST;
     httpRequest.postBody = [self postBody];
-    httpRequest.url = requestUrl;
+    httpRequest.url = [self createRequestURL];
     httpRequest.requestHeaders = @{ HTTP_HEADER_ACCEPT : HTTP_VALUE_CONTENT_TYPE_JSON,
                                     HTTP_HEADER_CONTENT_TYPE : HTTP_VALUE_CONTENT_TYPE_WWW_FORM };
     

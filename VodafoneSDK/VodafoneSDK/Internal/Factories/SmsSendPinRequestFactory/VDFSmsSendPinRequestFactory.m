@@ -18,8 +18,12 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
+static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestFactory:\n\t URL:%@\n\t";
+
 @interface VDFSmsSendPinRequestFactory ()
 @property (nonatomic, strong) VDFSmsSendPinRequestBuilder *builder;
+
+- (NSString*)createRequestURL;
 @end
 
 @implementation VDFSmsSendPinRequestFactory
@@ -32,6 +36,19 @@
     return self;
 }
 
+- (NSString*)description {
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [self createRequestURL]];
+}
+
+- (NSString*)createRequestURL {
+    VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    return [configuration.apixHost stringByAppendingString:
+            [configuration.serviceBasePath stringByAppendingString:
+             [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_SEND_PIN,
+              self.builder.sessionToken, self.builder.backendAppKey]]];
+}
+
 #pragma mark -
 #pragma mark VDFRequestFactory implementation
 
@@ -39,15 +56,10 @@
     
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
     
-    NSString * requestUrl = [configuration.apixHost stringByAppendingString:
-                             [configuration.serviceBasePath stringByAppendingString:
-                              [NSString stringWithFormat:SERVICE_URL_PATH_SCHEME_SEND_PIN,
-                               self.builder.sessionToken, self.builder.backendAppKey]]];
-    
     VDFHttpConnector * httpRequest = [[VDFHttpConnector alloc] initWithDelegate:delegate];
     httpRequest.connectionTimeout = configuration.defaultHttpConnectionTimeout;
     httpRequest.methodType = HTTPMethodGET;
-    httpRequest.url = requestUrl;
+    httpRequest.url = [self createRequestURL];
     httpRequest.isGSMConnectionRequired = NO;
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];

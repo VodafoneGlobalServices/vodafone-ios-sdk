@@ -15,7 +15,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuilder:\n\t internalFactory:%@ \n\t clientAppKey:%@ \n\t backendAppKey:%@ \n\t sessionToke:%@ \n\t smsCode:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFSmsValidationRequestBuilder:\n\t %@\n\t internalFactory:%@\n\t sessionToke:%@\n\t smsCode:%@ ";
 
 @interface VDFSmsValidationRequestBuilder ()
 @property (nonatomic, strong) VDFSmsValidationRequestFactory *internalFactory;
@@ -38,8 +38,9 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
     return self;
 }
 
+
 - (NSString*)description {
-    return [NSString stringWithFormat: DESCRIPTION_FORMAT, self.internalFactory, self.clientAppKey, self.backendAppKey, self.sessionToken, self.smsCode];
+    return [NSString stringWithFormat: DESCRIPTION_FORMAT, [super description], self.internalFactory, self.sessionToken, self.smsCode];
 }
 
 #pragma mark -

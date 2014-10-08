@@ -415,6 +415,12 @@ extern void __gcov_flush();
     }];
 }
 
+- (void)rejectAnyOtherDelegateCall {
+    [[self.mockDelegate reject] didReceivedUserDetails:[OCMArg any] withError:[OCMArg any]];
+    [[self.mockDelegate reject] didSMSPinRequested:[OCMArg any] withError:[OCMArg any]];
+    [[self.mockDelegate reject] didValidatedSMSToken:[OCMArg any] withError:[OCMArg any]];
+}
+
 - (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode {
     
     [[self.mockDelegate expect] didReceivedUserDetails:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {

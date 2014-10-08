@@ -76,6 +76,8 @@
 #pragma mark - expect methods
 - (void)rejectAnyNotHandledHttpCall;
 
+- (void)rejectAnyOtherDelegateCall;
+
 - (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode;
 - (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus;
 - (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus onSuccessExecution:(void(^)(VDFUserTokenDetails *details))onSuccess;

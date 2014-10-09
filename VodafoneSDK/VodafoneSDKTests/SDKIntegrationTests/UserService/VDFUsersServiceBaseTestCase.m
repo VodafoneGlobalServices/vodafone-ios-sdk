@@ -108,9 +108,10 @@ extern void __gcov_flush();
     [OHHTTPStubs onStubActivation:nil];
     [self.serviceToTest stopMocking];
     [self.mockDelegate stopMocking];
-    [self.service cancelRetrieveUserDetails];
-    [self.service resetOneInstanceToken];
-    [VDFSettings initialize];
+    __block id serviceToStop = self.service;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [serviceToStop cancelRetrieveUserDetails];
+    });
     
     [super tearDown];
 }
@@ -489,7 +490,7 @@ extern void __gcov_flush();
 }
 
 - (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode {
-    [[self.mockDelegate expect] didSMSPinRequested:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
+    [[self.mockDelegate expect] didSMSPinRequested:@0 withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
         BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
         

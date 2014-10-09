@@ -13,7 +13,7 @@
 #import "VDFUsersServiceDelegate.h"
 #import "VDFUsersService.h"
 
-static NSInteger const VERIFY_DELAY = 3;
+static NSInteger const VERIFY_DELAY = 2;
 
 @interface VDFCheckStatusErrorHandlingTestCase : VDFUsersServiceBaseTestCase
 

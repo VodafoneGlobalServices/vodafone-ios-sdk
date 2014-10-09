@@ -17,6 +17,7 @@
 #import "VDFSmsSendPinResponseParser.h"
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
+#import "VDFSmsSendPinObserversContainer.h"
 
 static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestFactory:\n\t URL:%@\n\t";
 
@@ -81,7 +82,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsSendPinRequestFactory:\n\t 
 }
 
 - (id<VDFObserversContainer>)createObserversContainer {
-    id<VDFObserversContainer> observersContainer = [super createObserversContainer];
+    id<VDFObserversContainer> observersContainer = [[VDFSmsSendPinObserversContainer alloc] init];
     [observersContainer setObserversNotifySelector:@selector(didSMSPinRequested:withError:)];
     return observersContainer;
 }

@@ -24,7 +24,7 @@
             errorCode = VDFErrorInvalidInput;
         }
         if(response.httpResponseCode == 404) {
-            errorCode = VDFErrorTokenNotFound;
+            errorCode = VDFErrorResolutionTimeout;
         }
         self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     }

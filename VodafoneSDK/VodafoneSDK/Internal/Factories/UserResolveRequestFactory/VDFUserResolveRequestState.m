@@ -155,7 +155,7 @@
         isExpectedResponse = [builderWithOAuth isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]] && errorInResponse == nil && response.httpResponseCode == 200;
         
         // check for session token expiration
-        isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorTokenNotFound);
+        isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorResolutionTimeout);
         
         // check is this propably not oAuth token response
         id requestState = [builderWithOAuth requestState];

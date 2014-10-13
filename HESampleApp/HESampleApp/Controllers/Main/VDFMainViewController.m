@@ -108,7 +108,7 @@
         case VDFErrorServerCommunication: return @"VDFErrorServerCommunication";
         case VDFErrorThrottlingLimitExceeded: return @"VDFErrorThrottlingLimitExceeded";
         case VDFErrorInvalidInput: return @"VDFErrorInvalidInput";
-        case VDFErrorTokenNotFound: return @"VDFErrorTokenNotFound";
+        case VDFErrorResolutionTimeout: return @"VDFErrorResolutionTimeout";
         case VDFErrorWrongSmsCode: return @"VDFErrorWrongSmsCode";
         case VDFErrorApixAuthorization: return @"VDFErrorApixAuthorization";
         case VDFErrorMsisdnCountryNotSupported: return @"VDFErrorMsisdnCountryNotSupported";

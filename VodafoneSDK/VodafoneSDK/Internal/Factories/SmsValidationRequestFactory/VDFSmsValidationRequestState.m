@@ -27,7 +27,7 @@
             errorCode = VDFErrorInvalidInput;
         }
         else if(response.httpResponseCode == 404) {
-            errorCode = VDFErrorTokenNotFound;
+            errorCode = VDFErrorResolutionTimeout;
         }
         else if(response.httpResponseCode == 409) {
             errorCode = VDFErrorWrongSmsCode;

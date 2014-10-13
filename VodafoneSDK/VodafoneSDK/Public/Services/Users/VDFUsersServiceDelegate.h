@@ -55,7 +55,7 @@
     VDFErrorServerCommunication - when some error occure on server side,
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
-    VDFErrorTokenNotFound - when session token used in the call has expired or was wrong,
+    VDFErrorResolutionTimeout - when session token used in the call has expired or was wrong,
     VDFErrorApixAuthorization - when error in authorization over APIX occures,
     VDFErrorOAuthTokenRetrieval - when unhandled erorr occures in oAuthToken retrieval process over APIX
  */
@@ -82,7 +82,7 @@
     VDFErrorServerCommunication - when some error occure on server side,
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
-    VDFErrorTokenNotFound - when session token used in the call has expired or was wrong,
+    VDFErrorResolutionTimeout - when session token used in the call has expired or was wrong,
     VDFErrorWrongSmsCode - when sms code used in the call was wrong,
     VDFErrorApixAuthorization - when error in authorization over APIX occures,
     VDFErrorOAuthTokenRetrieval - when unhandled erorr occures in oAuthToken retrieval process over APIX

@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
     /*!
      Session token used in the process has expired or was wrong.
      */
-    VDFErrorTokenNotFound,
+    VDFErrorResolutionTimeout,
     /*!
      Wrong sms code provided for Validate PIN.
      */

@@ -50,15 +50,11 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
     /*!
      *  Error in authorization over APIX.
      */
-    VDFErrorApixAuthorization,
+    VDFErrorAuthorizationFailed,
     /**
      *  Mobile country code included in msisdn is not supported by user resolve.
      */
     VDFErrorMsisdnCountryNotSupported,
-    /*!
-     Problems in communication oAuthToken retrieval from APIX.
-     */
-    VDFErrorOAuthTokenRetrieval,
     /*!
      User resolve cannot be continued because device is in another cellurar network than Vodafone.
      */

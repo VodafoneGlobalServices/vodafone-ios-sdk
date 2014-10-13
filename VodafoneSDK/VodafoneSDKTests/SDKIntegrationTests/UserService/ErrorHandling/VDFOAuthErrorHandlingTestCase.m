@@ -62,9 +62,9 @@ static NSInteger const VERIFY_DELAY = 8;
     
     // for 200 - with long expiration time (from oAuth)
     // 403 - expired token (from resolve) (here the erlier requested oAuthToken need to be removed from cache),
-    // 403 - invalid scope (from oAuth) - after this secuence should be returned error VDFErrorApixAuthorization
+    // 403 - invalid scope (from oAuth) - after this secuence should be returned error VDFErrorAuthorizationFailed
     // because it take place when we try to download new oAuthToken
-    [super expectDidReceivedUserDetailsWithErrorCode:VDFErrorOAuthTokenRetrieval];
+    [super expectDidReceivedUserDetailsWithErrorCode:VDFErrorAuthorizationFailed];
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
     [super.mockDelegate verifyWithDelay:VERIFY_DELAY];  // verify
     
@@ -77,8 +77,8 @@ static NSInteger const VERIFY_DELAY = 8;
     // wait for 10 seconds to oAuthToken be expired
     [NSThread sleepForTimeInterval:10];
     
-    // 403 - opco not valid (from oAuth) - after this secuence should be returned error VDFErrorOAuthTokenRetrieval
-    [super expectDidReceivedUserDetailsWithErrorCode:VDFErrorOAuthTokenRetrieval];
+    // 403 - opco not valid (from oAuth) - after this secuence should be returned error VDFErrorAuthorizationFailed
+    [super expectDidReceivedUserDetailsWithErrorCode:VDFErrorAuthorizationFailed];
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
     [super.mockDelegate verifyWithDelay:VERIFY_DELAY];  // verify
     

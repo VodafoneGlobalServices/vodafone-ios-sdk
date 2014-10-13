@@ -29,9 +29,8 @@
     VDFErrorServerCommunication - when some error occure on server side,
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
-    VDFErrorApixAuthorization - when error in authorization over APIX occures,
+    VDFErrorAuthorizationFailed - when error in authorization over APIX occures,
     VDFErrorMsisdnCountryNotSupported - when mobile country code included in msisdn is not supported by user resolve,
-    VDFErrorOAuthTokenRetrieval - when unhandled erorr occures in oAuthToken retrieval process over APIX,
     VDFErrorOutOfVodafoneCellular - when msisdn was not provided in user resolv call and user resolve cannot be continued because device is in another cellurar network than Vodafone
  */
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error;
@@ -56,8 +55,7 @@
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
     VDFErrorResolutionTimeout - when session token used in the call has expired or was wrong,
-    VDFErrorApixAuthorization - when error in authorization over APIX occures,
-    VDFErrorOAuthTokenRetrieval - when unhandled erorr occures in oAuthToken retrieval process over APIX
+    VDFErrorAuthorizationFailed - when error in authorization over APIX occures
  */
 - (void)didSMSPinRequested:(NSNumber*)isSuccess withError:(NSError*)error;
 
@@ -84,8 +82,7 @@
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
     VDFErrorResolutionTimeout - when session token used in the call has expired or was wrong,
     VDFErrorWrongSmsCode - when sms code used in the call was wrong,
-    VDFErrorApixAuthorization - when error in authorization over APIX occures,
-    VDFErrorOAuthTokenRetrieval - when unhandled erorr occures in oAuthToken retrieval process over APIX
+    VDFErrorAuthorizationFailed - when error in authorization over APIX occures
  */
 - (void)didValidatedSMSToken:(VDFSmsValidationResponse*)response withError:(NSError*)error;
 

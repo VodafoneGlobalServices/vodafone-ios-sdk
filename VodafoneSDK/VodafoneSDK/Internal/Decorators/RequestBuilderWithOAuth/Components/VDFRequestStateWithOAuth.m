@@ -56,7 +56,7 @@
                 }
                 else if([errorCode isEqualToString:@"POL0001"] || [errorCode isEqualToString:@"POL0002"]) {
                     // there is some APIX error
-                    self.apixError = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorApixAuthorization userInfo:nil];
+                    self.apixError = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorAuthorizationFailed userInfo:nil];
                     // remove current o Auth token from cache:
                     [self.parentBuilder updateOAuthTokenInCache:nil];
                 }

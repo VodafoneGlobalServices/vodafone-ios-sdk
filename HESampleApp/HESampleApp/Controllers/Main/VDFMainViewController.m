@@ -110,9 +110,8 @@
         case VDFErrorInvalidInput: return @"VDFErrorInvalidInput";
         case VDFErrorResolutionTimeout: return @"VDFErrorResolutionTimeout";
         case VDFErrorWrongSmsCode: return @"VDFErrorWrongSmsCode";
-        case VDFErrorApixAuthorization: return @"VDFErrorApixAuthorization";
+        case VDFErrorAuthorizationFailed: return @"VDFErrorAuthorizationFailed";
         case VDFErrorMsisdnCountryNotSupported: return @"VDFErrorMsisdnCountryNotSupported";
-        case VDFErrorOAuthTokenRetrieval: return @"VDFErrorOAuthTokenRetrieval";
         case VDFErrorOutOfVodafoneCellular: return @"VDFErrorOutOfVodafoneCellular";
         default:
             return [NSString stringWithFormat:@"%i", errorCode];

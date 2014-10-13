@@ -99,19 +99,19 @@ static NSInteger const VERIFY_DELAY = 3;
 - (void)testCheckStatus_OAuth_Success_OpCoNotValid_Success_WithSmsValidationNO {
     [self doTesOfCheckStatusOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                     withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                             expectedOAuthError:VDFErrorApixAuthorization];
+                             expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_OpCoNotValid_Success_WithSmsValidationYES {
     [self doTesOfCheckStatusOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                     withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                             expectedOAuthError:VDFErrorApixAuthorization];
+                             expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_OpCoNotValid_Success_WithMSISDN {
     [self doTesOfCheckStatusOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                     withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                             expectedOAuthError:VDFErrorApixAuthorization];
+                             expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 
@@ -120,19 +120,19 @@ static NSInteger const VERIFY_DELAY = 3;
 - (void)testCheckStatus_OAuth_Success_ScopeNotValid_Success_WithSmsValidationNO {
     [self doTesOfCheckStatusOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                     withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                             expectedOAuthError:VDFErrorApixAuthorization];
+                             expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_ScopeNotValid_Success_WithSmsValidationYES {
     [self doTesOfCheckStatusOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                     withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                             expectedOAuthError:VDFErrorApixAuthorization];
+                             expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_ScopeNotValid_Success_WithMSISDN {
     [self doTesOfCheckStatusOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                     withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                             expectedOAuthError:VDFErrorApixAuthorization];
+                             expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 
@@ -172,21 +172,21 @@ static NSInteger const VERIFY_DELAY = 3;
     [self doTesOfCheckStatusOAuthErrorResponse:[super responseOAuthTokenExpired]
                        withOAuthSecondResponse:[super responseOAuthOpCoNotValidError]
                                    withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                            expectedOAuthError:VDFErrorOAuthTokenRetrieval];
+                            expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_TokenExpired_OpCoNotValid_Success_WithSmsValidationYES {
     [self doTesOfCheckStatusOAuthErrorResponse:[super responseOAuthTokenExpired]
                        withOAuthSecondResponse:[super responseOAuthOpCoNotValidError]
                                    withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                            expectedOAuthError:VDFErrorOAuthTokenRetrieval];
+                            expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_TokenExpired_OpCoNotValid_Success_WithMSISDN {
     [self doTesOfCheckStatusOAuthErrorResponse:[super responseOAuthTokenExpired]
                        withOAuthSecondResponse:[super responseOAuthOpCoNotValidError]
                                    withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                            expectedOAuthError:VDFErrorOAuthTokenRetrieval];
+                            expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 
@@ -196,21 +196,21 @@ static NSInteger const VERIFY_DELAY = 3;
     [self doTesOfCheckStatusOAuthErrorResponse:[super responseOAuthTokenExpired]
                        withOAuthSecondResponse:[super responseOAuthScopeNotValidError]
                                    withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                            expectedOAuthError:VDFErrorOAuthTokenRetrieval];
+                            expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_TokenExpired_ScopeNotValid_Success_WithSmsValidationYES {
     [self doTesOfCheckStatusOAuthErrorResponse:[super responseOAuthTokenExpired]
                        withOAuthSecondResponse:[super responseOAuthScopeNotValidError]
                                    withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                            expectedOAuthError:VDFErrorOAuthTokenRetrieval];
+                            expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)testCheckStatus_OAuth_Success_TokenExpired_ScopeNotValid_Success_WithMSISDN {
     [self doTesOfCheckStatusOAuthErrorResponse:[super responseOAuthTokenExpired]
                        withOAuthSecondResponse:[super responseOAuthScopeNotValidError]
                                    withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                            expectedOAuthError:VDFErrorOAuthTokenRetrieval];
+                            expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 

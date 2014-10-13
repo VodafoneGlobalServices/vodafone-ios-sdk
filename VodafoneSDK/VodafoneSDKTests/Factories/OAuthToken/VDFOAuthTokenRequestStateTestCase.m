@@ -59,7 +59,7 @@ extern void __gcov_flush();
     XCTAssertFalse([self.requestStateToTest isRetryNeeded], @"OAuthToken request will never retry.");
     XCTAssertTrue([[self.requestStateToTest lastResponseExpirationDate] compare:[NSDate date]] == NSOrderedAscending, @"OAuthToken request should have date previus than current because is expired as default.");
     XCTAssertEqualObjects([self.requestStateToTest responseError].domain, VodafoneErrorDomain, @"oAuthToken request has error from wrong domain.");
-    XCTAssertEqual([self.requestStateToTest responseError].code, VDFErrorOAuthTokenRetrieval, @"oAuthToken request has wrong error code.");
+    XCTAssertEqual([self.requestStateToTest responseError].code, VDFErrorAuthorizationFailed, @"oAuthToken request has wrong error code.");
 }
 
 - (void)testUpdateWithInvalidResponse {

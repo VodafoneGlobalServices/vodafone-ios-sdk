@@ -111,19 +111,19 @@ static NSInteger const VERIFY_DELAY = 3;
 - (void)test_HandleSendSms_AsFirstResolveResponse_OAuth_Success_OpCoNotValid_Success_WithSmsValidationNO {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsFirstResolveResponse_OAuth_Success_OpCoNotValid_Success_WithSmsValidationYES {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsFirstResolveResponse_OAuth_Success_OpCoNotValid_Success_WithMSISDN {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 
@@ -132,19 +132,19 @@ static NSInteger const VERIFY_DELAY = 3;
 - (void)test_HandleSendSms_AsFirstResolveResponse_OAuth_Success_ScopeNotValid_Success_WithSmsValidationNO {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsFirstResolveResponse_OAuth_Success_ScopeNotValid_Success_WithSmsValidationYES {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsFirstResolveResponse_OAuth_Success_ScopeNotValid_Success_WithMSISDN {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 
@@ -227,19 +227,19 @@ static NSInteger const VERIFY_DELAY = 3;
 - (void)test_HandleSendSms_AsCheckStatusResponse_OAuth_Success_OpCoNotValid_Success_WithSmsValidationNO {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsCheckStatusResponse_OAuth_Success_OpCoNotValid_Success_WithSmsValidationYES {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsCheckStatusResponse_OAuth_Success_OpCoNotValid_Success_WithMSISDN {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthOpCoNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 
@@ -248,19 +248,19 @@ static NSInteger const VERIFY_DELAY = 3;
 - (void)test_HandleSendSms_AsCheckStatusResponse_OAuth_Success_ScopeNotValid_Success_WithSmsValidationNO {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsCheckStatusResponse_OAuth_Success_ScopeNotValid_Success_WithSmsValidationYES {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 - (void)test_HandleSendSms_AsCheckStatusResponse_OAuth_Success_ScopeNotValid_Success_WithMSISDN {
     [self doTest_HandleSendSms_AsFirstResolveResponse_WithOAuthErrorResponses:@[[super responseOAuthScopeNotValidError]]
                                                                   withOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
-                                                           expectedOAuthError:VDFErrorApixAuthorization];
+                                                           expectedOAuthError:VDFErrorAuthorizationFailed];
 }
 
 

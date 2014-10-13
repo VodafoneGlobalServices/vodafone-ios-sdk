@@ -17,11 +17,6 @@ typedef NS_ENUM(NSInteger, VDFResolutionStatus) {
      */
     VDFResolutionStatusCompleted = 0,
     /**
-     *  Resolution of the user identity is still ongoing. 
-     *  At this stage the backend has no clraity yest if the resolution will be completed by asking for OTP validation or not.
-     */
-    VDFResolutionStatusPending,
-    /**
      *  The resolution of the user indentity has failed because no MSISDN header enrichement or IMSI have been helpful.
      *  The client might try to ask the phone number to the user and proceed with the Resolve API call including it for OTP validation.
      */

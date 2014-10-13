@@ -55,9 +55,6 @@ static NSInteger const VERIFY_DELAY = 3;
     }
     [super stubRequest:[super filterCheckStatusRequest] withResponsesList:responsesList];
     
-    // expect that the delegate object will be invoked with pending status
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
-    
     if(errorCode < 0) {
         // expect that the delegate object will be invoked next with sms validation status
         [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusValidationRequired];
@@ -157,9 +154,6 @@ static NSInteger const VERIFY_DELAY = 3;
     
     // stub check status response with error:
     [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[checkStatusResponse]];
-    
-    // expect that the delegate object will be invoked with pending status
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     
     // expect that the oAuthError will be returned
     [super expectDidReceivedUserDetailsWithErrorCode:errorCode];

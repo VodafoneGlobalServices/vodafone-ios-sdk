@@ -13,7 +13,7 @@
 #import "VDFUsersServiceDelegate.h"
 #import "VDFUsersService.h"
 
-static NSInteger const VERIFY_DELAY = 2;
+static NSInteger const VERIFY_DELAY = 3;
 
 @interface VDFSendSmsPin_OAuthErrorHandling_WithOAuthFailure_TestCase : VDFUsersServiceBaseTestCase
 
@@ -144,9 +144,6 @@ static NSInteger const VERIFY_DELAY = 2;
     
     // stub send sms pin response with error:
     [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[sendSmsPinResponse]];
-    
-    // expect that the pending status will be sent to the delegate object
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     
     // expect that the delegate object will be invoked with validation required status
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusValidationRequired onSuccessExecution:^(VDFUserTokenDetails *details) {

@@ -123,7 +123,6 @@
 - (NSString*)resolutionStatusToString:(VDFResolutionStatus)resolutionStatus {
     switch (resolutionStatus) {
         case VDFResolutionStatusCompleted: return @"VDFResolutionStatusCompleted";
-        case VDFResolutionStatusPending: return @"VDFResolutionStatusPending";
         case VDFResolutionStatusFailed: return @"VDFResolutionStatusFailed";
         case VDFResolutionStatusValidationRequired: return @"VDFResolutionStatusValidationRequired";
         default:

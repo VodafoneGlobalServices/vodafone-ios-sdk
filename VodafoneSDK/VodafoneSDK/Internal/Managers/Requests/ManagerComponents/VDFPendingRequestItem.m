@@ -187,6 +187,7 @@
             VDFLogD(@"Request is finished, closing it.");
             // remove this request from queue
             [self safeDequeueRequest];
+            VDFLogD(@"Request is dequeued finished and closed.");
         }
     }
 }

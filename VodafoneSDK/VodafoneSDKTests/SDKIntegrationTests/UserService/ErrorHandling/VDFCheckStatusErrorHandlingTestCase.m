@@ -13,7 +13,7 @@
 #import "VDFUsersServiceDelegate.h"
 #import "VDFUsersService.h"
 
-static NSInteger const VERIFY_DELAY = 2;
+static NSInteger const VERIFY_DELAY = 3;
 
 @interface VDFCheckStatusErrorHandlingTestCase : VDFUsersServiceBaseTestCase
 
@@ -52,9 +52,6 @@ static NSInteger const VERIFY_DELAY = 2;
     
     // stub check status response with error:
     [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[ [super responseEmptyWithCode:statusCode] ]];
-    
-    // expect that the delegate object will be invoked only with pending status
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     
     // expect that the delegate object will be invoked correctly:
     [super expectDidReceivedUserDetailsWithErrorCode:errorCode];
@@ -122,10 +119,6 @@ static NSInteger const VERIFY_DELAY = 2;
     
     // stub check status response with error:
     [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[[super responseCheckStatus304NotModifiedAndRetryAfterMs:500], [super responseEmptyWithCode:statusCode]]];
-    
-    
-    // expect that the delegate object will be invoked only with pending status
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     
     // expect that the delegate object will be invoked correctly:
     [super expectDidReceivedUserDetailsWithErrorCode:errorCode];

@@ -83,7 +83,6 @@ static NSInteger const VERIFY_DELAY = 8;
     [super rejectAnyNotHandledHttpCall];
     
     // expect that the delegate object will be invoked correctly:
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusFailed];
     
     // run

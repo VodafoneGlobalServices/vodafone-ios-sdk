@@ -41,7 +41,7 @@
         self.needRetry = YES; // as default this request is waiting on server changes
         self.builder = builder;
         self.retryAfterMiliseconds = -1;
-        self.currentResolutionStatus = VDFResolutionStatusPending;
+        self.currentResolutionStatus = VDFResolutionStatusFailed;
     }
     return self;
 }
@@ -68,6 +68,25 @@
     }
 }
 
+- (void)readSessionTokenFromResponse:(VDFHttpConnectorResponse*)response {
+    
+    if(response.httpResponseCode == 302) {
+        
+        NSString *locationHeader = [response.responseHeaders objectForKey:HTTP_HEADER_LOCATION];
+        
+        // try to parse the location header
+        if(locationHeader != nil) {
+            
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"/users/tokens/([^?/]+)[?/]" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSArray *matches = [regex matchesInString:locationHeader options:0 range:NSMakeRange(0, [locationHeader length])];
+            NSTextCheckingResult *match = [matches objectAtIndex:0];
+            if(match != nil) {
+                self.builder.sessionToken = [locationHeader substringWithRange:NSMakeRange(match.range.location+14, match.range.length-15)];
+            }
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark - VDFRequestState Impelemnetation
 
@@ -79,6 +98,8 @@
         self.needRetry = response.httpResponseCode == 302 || response.httpResponseCode == 304;
         
         [self readEtagFromResponse:response];
+        
+        [self readSessionTokenFromResponse:response];
         
         if(response.responseHeaders != nil && [[response.responseHeaders allKeys] containsObject:HTTP_HEADER_RETRY_AFTER]) {
             self.retryAfterMiliseconds = [[response.responseHeaders objectForKey:HTTP_HEADER_RETRY_AFTER] doubleValue];
@@ -147,7 +168,7 @@
     if(isExpectedResponse) {
         // we need to retry request imidettly:
         self.retryAfterMiliseconds = 0;
-        self.currentResolutionStatus = VDFResolutionStatusPending;
+        self.currentResolutionStatus = VDFResolutionStatusFailed;
         return YES; // YES we can handle this response object
     }
     return NO;

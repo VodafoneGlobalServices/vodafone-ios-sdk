@@ -97,9 +97,6 @@ static NSInteger const VERIFY_DELAY = 8;
                          [super responseCheckStatus304NotModifiedAndRetryAfterMs:1000],
                          [super responseCheckStatus200]]];
     
-    // expect that the delegate object will be invoked with pending status only one time
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
-    
     // run
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
     
@@ -147,9 +144,6 @@ static NSInteger const VERIFY_DELAY = 8;
     [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
     // stub validate pin request
     [super stubRequest:[super filterValidatePinRequest] withResponsesList:@[[super responseValidatePin200]]];
-    
-    // expect that the delegate object will be invoked with pending status only one time
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusPending];
     
     [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusValidationRequired onSuccessExecution:^(VDFUserTokenDetails *details) {
         [super.serviceToTest sendSmsPin];

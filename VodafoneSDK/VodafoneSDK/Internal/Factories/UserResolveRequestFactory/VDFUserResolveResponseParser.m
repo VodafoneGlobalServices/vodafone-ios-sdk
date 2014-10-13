@@ -69,12 +69,13 @@
         
         if(parseResponse) {
         
-            userTokenDetails = [[VDFUserTokenDetails alloc] init];
-            
-            userTokenDetails.resolutionStatus = VDFResolutionStatusPending;
-            
             // try to parse the location header
-            if(locationHeader != nil) {
+            if(locationHeader != nil && [locationHeader rangeOfString:@"/pins?backendId="].location != NSNotFound) {
+                
+                // we are parsing only validation required response
+                userTokenDetails = [[VDFUserTokenDetails alloc] init];
+                userTokenDetails.resolutionStatus = VDFResolutionStatusValidationRequired;
+                
                 NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"/users/tokens/([^?/]+)[?/]" options:NSRegularExpressionCaseInsensitive error:nil];
                 
                 NSArray *matches = [regex matchesInString:locationHeader options:0 range:NSMakeRange(0, [locationHeader length])];
@@ -84,9 +85,6 @@
                     userTokenDetails.tokenOfPendingResolution = [locationHeader substringWithRange:NSMakeRange(match.range.location+14, match.range.length-15)];
                 }
                 
-                if([locationHeader rangeOfString:@"/pins?backendId="].location != NSNotFound) {
-                    userTokenDetails.resolutionStatus = VDFResolutionStatusValidationRequired;
-                }
             }
         }
         

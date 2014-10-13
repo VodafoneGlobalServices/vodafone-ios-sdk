@@ -46,7 +46,6 @@ static NSString * const ACRKey = @"acr";
 - (NSString*)resolutionStatusString {
     switch (self.resolutionStatus) {
         case VDFResolutionStatusCompleted: return @"VDFResolutionStatusCompleted";
-        case VDFResolutionStatusPending: return @"VDFResolutionStatusPending";
         case VDFResolutionStatusFailed: return @"VDFResolutionStatusFailed";
         case VDFResolutionStatusValidationRequired: return @"VDFResolutionStatusValidationRequired";
             

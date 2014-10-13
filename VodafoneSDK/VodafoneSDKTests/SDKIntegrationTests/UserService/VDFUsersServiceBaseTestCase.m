@@ -390,7 +390,7 @@ extern void __gcov_flush();
                                        [OHHTTPStubs removeStub:stub];
                                    }
                                    
-                                   return [responseBlock(request) requestTime:0 responseTime:0.1]; // tere is not ever eny imidetli response
+                                   return [responseBlock(request) requestTime:0.01 responseTime:0.01]; // tere is not ever any immidetly response
                                }];
     [stub setName:[NSString stringWithFormat:@"%@", requestFilter]];
     return stub;

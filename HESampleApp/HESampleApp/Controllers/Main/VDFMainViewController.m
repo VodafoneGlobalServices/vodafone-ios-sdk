@@ -13,10 +13,11 @@
 @interface VDFMainViewController ()
 
 @property (nonatomic, strong) NSMutableString *loggedMessages;
+@property (nonatomic, strong) NSMutableString *htmlOutput;
+@property (nonatomic, strong) NSTimer *scrollViewUpdateTimer;
 
 @property (weak, nonatomic) IBOutlet UISwitch *smsValidationSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *smsCodeTextField;
-@property (weak, nonatomic) IBOutlet UITextView *outputTextView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) UITextField *activeField;
 @property (weak, nonatomic) IBOutlet UISwitch *displayLogSwitch;
@@ -24,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *backendAppKeyTextField;
 @property (weak, nonatomic) IBOutlet UITextField *clientAppSecretTextField;
 @property (weak, nonatomic) IBOutlet UITextField *clientAppKeyTextField;
+@property (weak, nonatomic) IBOutlet UIWebView *outpuWebView;
 
 - (IBAction)onAppIdSetButtonClick:(id)sender;
 - (IBAction)onSmsCodeSendButtonClick:(id)sender;
@@ -49,6 +51,7 @@
 {
     [super viewDidLoad];
     self.loggedMessages = [[NSMutableString alloc] init];
+    self.htmlOutput = [[NSMutableString alloc] init];
     
     // register for keyboard handling
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -82,6 +85,15 @@
 //    self.imsiTextField.text = @"204049810027400";
     
     [self recalculateScrollViewContent];
+}
+
+- (void)viewWillLayoutSubviews {
+    [self recalculateScrollViewContent];
+    [super viewWillLayoutSubviews];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
 }
 
 - (void)dealloc {
@@ -121,13 +133,38 @@
 
 
 - (void)recalculateScrollViewContent {
-    CGRect frame = self.outputTextView.frame;
-    CGSize outputContentSize = [self.outputTextView sizeThatFits:CGSizeMake(self.outputTextView.contentSize.width, FLT_MAX)];
-    frame.size.height = outputContentSize.height;
-    self.outputTextView.frame = frame;
     
-    CGSize newSize = CGSizeMake(self.view.frame.size.width,480+outputContentSize.height);
-    [self.scrollView setContentSize:newSize];
+    @synchronized(self.scrollView) {
+        if(self.scrollViewUpdateTimer == nil) {
+            self.scrollViewUpdateTimer =
+            [NSTimer scheduledTimerWithTimeInterval:1
+                                             target:self
+                                           selector:@selector(onScrollViewUpdateTimerInvocation)
+                                           userInfo:nil
+                                            repeats:NO];
+        }
+    }
+}
+
+- (void)onScrollViewUpdateTimerInvocation {
+    
+    @synchronized(self.scrollView) {
+        CGRect frame = self.outpuWebView.frame;
+        CGSize outputContentSize = [self.outpuWebView sizeThatFits:CGSizeMake([self.outpuWebView sizeThatFits:CGSizeZero].width, FLT_MAX)];
+        if(frame.size.height != outputContentSize.height) {
+            NSLog(@"++outputContentSize+++ width = %f, height = %f", outputContentSize.width, outputContentSize.height);
+            frame.size.height = outputContentSize.height;
+            self.outpuWebView.frame = frame;
+        }
+        
+        CGSize newSize = CGSizeMake(self.view.frame.size.width,520+outputContentSize.height);
+        if(self.scrollView.contentSize.height != newSize.height) {
+            NSLog(@"+++++ width = %f, height = %f", newSize.width, newSize.height);
+            [self.scrollView setContentSize:newSize];
+        }
+
+        self.scrollViewUpdateTimer = nil;
+    }
 }
 
 - (IBAction)onAppIdSetButtonClick:(id)sender {
@@ -212,36 +249,50 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn];
+        [self forcedLogMessage:[NSString stringWithFormat:@"didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn]];
     } else {
-        self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]];
+        [self forcedLogMessage:[NSString stringWithFormat:@"didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]]];
     }
-    
-    [self recalculateScrollViewContent];
 }
 
 - (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)error {
-    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didValidatedSMSToken: smsCode=%@, success=%i, errorName=%@", response.smsCode, response.isSucceded, error != nil ? [self vdfErrorCodeToString:[error code]] : @""];
-    [self recalculateScrollViewContent];
+    [self forcedLogMessage:[NSString stringWithFormat:@"didValidatedSMSToken: smsCode=%@, success=%i, errorName=%@", response.smsCode, response.isSucceded, error != nil ? [self vdfErrorCodeToString:[error code]] : @""]];
 }
 
 - (void)didSMSPinRequested:(NSNumber *)isSuccess withError:(NSError *)error {
-    self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n didSMSPinRequested: success=%@, errorName=%@", isSuccess, error != nil ? [self vdfErrorCodeToString:[error code]] : @""];
-    [self recalculateScrollViewContent];
+    [self forcedLogMessage:[NSString stringWithFormat:@"didSMSPinRequested: success=%@, errorName=%@", isSuccess, error != nil ? [self vdfErrorCodeToString:[error code]] : @""]];
+}
+
+- (void)forcedLogMessage:(NSString*)message {
+    // append for next use
+    [self.loggedMessages appendString:message];
+    [self.loggedMessages appendString:@"\n"];
+    
+    [self appendHtmlOutput:message color:@"lightGreen"];
+//    NSLog(@"%@",message);
 }
 
 - (void)logMessage:(NSString*)message {
     // append for next use
     [self.loggedMessages appendString:message];
-    [self.loggedMessages appendString:@"%@"];
+    [self.loggedMessages appendString:@"\n"];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if([self.displayLogSwitch isOn]) {
-            self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n%@", message];
-            [self recalculateScrollViewContent];
+            [self appendHtmlOutput:message color:@"orange"];
         }
-        NSLog(@"%@",message);
+//        NSLog(@"%@",message);
     });
+}
+
+- (void)appendHtmlOutput:(NSString*)message color:(NSString*)color {
+    @synchronized(self.outpuWebView) {
+        if(message != nil) {
+            [self.htmlOutput appendFormat:@"<pre style=\"background-color: %@;\">%@</pre>", color, message];
+        }
+        [self.outpuWebView loadHTMLString:[NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 8px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", self.htmlOutput] baseURL:nil];
+        [self recalculateScrollViewContent];
+    }
 }
 
 #pragma mark -
@@ -249,17 +300,17 @@
 
 - (void)logMessage:(NSString*)message ofType:(VDFLogMessageType)logType {
     
+    
     // append for next use
     [self.loggedMessages appendString:message];
-    [self.loggedMessages appendString:@"%@"];
+    [self.loggedMessages appendString:@"\n"];
     
     if(logType == VDFLogMessageInfoType) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if([self.displayLogSwitch isOn]) {
-                self.outputTextView.text = [self.outputTextView.text stringByAppendingFormat:@"\n%@", message];
-                [self recalculateScrollViewContent];
+                [self appendHtmlOutput:message color:@"lightGray"];
             }
-            NSLog(@"%@",message);
+//            NSLog(@"%@",message);
         });
     }
 }
@@ -286,7 +337,8 @@
 }
 
 - (IBAction)onClearOutputButtonClick:(id)sender {
-    self.outputTextView.text = @"";
+    [self.htmlOutput setString:@""];
+    [self appendHtmlOutput:nil color:nil];
     [self.loggedMessages setString:@""];
     [self recalculateScrollViewContent];
 }

@@ -188,7 +188,8 @@ static dispatch_once_t * oneInstanceToken;
         }
     }
     else {
-        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoGSMConnection userInfo:nil];
+        // in other case when mccMnc cannot be readed we are not connected to the GSM network so we can imidettly return error
+        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
     }
     return nil;
 }

@@ -24,9 +24,8 @@
     An error object which occurred. Error code is from Vodafone SDK domain.
  
     Error codes which may occur:
-    VDFErrorNoConnection - when there is no available connection to the internet,
+    VDFErrorNoConnection - when there is no available connection to the internet or user resolve was invoked without msisdn and there is no available GSM connection,
     VDFErrorConnectionTimeout - when connection to the endpoint has timeouted,
-    VDFErrorNoGSMConnection - when user resolve was invoked without msisdn and there is no available GSM connection,
     VDFErrorServerCommunication - when some error occure on server side,
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
@@ -51,9 +50,8 @@
     An error object which occurred. Error code is from Vodafone SDK domain.
 
     Error codes which may occur:
-    VDFErrorNoConnection - when there is no available connection to the internet,
+    VDFErrorNoConnection - when there is no available connection to the internet or user resolve was invoked without msisdn and there is no available GSM connection,
     VDFErrorConnectionTimeout - when connection to the endpoint has timeouted,
-    VDFErrorNoGSMConnection - when user resolve was invoked without msisdn and there is no available GSM connection,
     VDFErrorServerCommunication - when some error occure on server side,
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
@@ -79,9 +77,8 @@
     An error object which occurred. Error code is from Vodafone SDK domain.
  
     Error codes which may occur:
-    VDFErrorNoConnection - when there is no available connection to the internet,
+    VDFErrorNoConnection - when there is no available connection to the internet or user resolve was invoked without msisdn and there is no available GSM connection,
     VDFErrorConnectionTimeout - when connection to the endpoint has timeouted,
-    VDFErrorNoGSMConnection - when user resolve was invoked without msisdn and there is no available GSM connection,
     VDFErrorServerCommunication - when some error occure on server side,
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,

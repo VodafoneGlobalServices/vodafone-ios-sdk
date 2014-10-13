@@ -28,10 +28,6 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      */
     VDFErrorConnectionTimeout,
     /*!
-     There is no available GSM connection
-     */
-    VDFErrorNoGSMConnection,
-    /*!
      Problems in communication with server.
      */
     VDFErrorServerCommunication,

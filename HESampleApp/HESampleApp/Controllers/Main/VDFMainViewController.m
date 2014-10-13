@@ -105,7 +105,6 @@
     switch (errorCode) {
         case VDFErrorNoConnection: return @"VDFErrorNoConnection";
         case VDFErrorConnectionTimeout: return @"VDFErrorConnectionTimeout";
-        case VDFErrorNoGSMConnection: return @"VDFErrorNoGSMConnection";
         case VDFErrorServerCommunication: return @"VDFErrorServerCommunication";
         case VDFErrorThrottlingLimitExceeded: return @"VDFErrorThrottlingLimitExceeded";
         case VDFErrorInvalidInput: return @"VDFErrorInvalidInput";

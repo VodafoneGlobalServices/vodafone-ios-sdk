@@ -73,15 +73,9 @@ extern void __gcov_flush();
     // mock
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
     
-    // expect that the perform request method will newer will be called after this one call
-    [[self.mockServiceRequestsManager reject] performRequestWithBuilder:[OCMArg any]];
-    
     // run
-    [self.serviceToTest retrieveUserDetails:nil delegate:nil]; // wont happend anything
-    [self.serviceToTest retrieveUserDetails:options delegate:nil]; // wont happend anything too
-    
-    // verify
-    [self.mockServiceRequestsManager verify];
+    XCTAssertThrows([self.serviceToTest retrieveUserDetails:nil delegate:nil], @"start retrieve user details with nil options and nil delegate should throw error");
+    XCTAssertThrows([self.serviceToTest retrieveUserDetails:options delegate:nil], @"start retrieve user details with nil delegate should throw error");
 }
 
 - (void)testRetrieveUserDetailsIsRequestPerformingProperly {

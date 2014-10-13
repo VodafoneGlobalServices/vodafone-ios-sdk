@@ -44,17 +44,6 @@ static VDFDIContainer * g_diContainer = nil;
         configuration.clientAppSecret = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFClientAppSecretSettingKey] copy];
         configuration.backendAppKey = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFBackendAppKeySettingKey] copy];
         
-        // set empty string than nil:
-        if(configuration.clientAppKey == nil) {
-            configuration.clientAppKey = [NSString string];
-        }
-        if(configuration.clientAppSecret == nil) {
-            configuration.clientAppSecret = [NSString string];
-        }
-        if(configuration.backendAppKey == nil) {
-            configuration.backendAppKey = [NSString string];
-        }
-        
         configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
         
         VDFLogD(@"-- clientAppKey:%@", configuration.clientAppKey);
@@ -83,15 +72,20 @@ static VDFDIContainer * g_diContainer = nil;
         id backendAppKey = [settingsDictionary objectForKey:VDFBackendAppKeySettingKey];
         
         VDFBaseConfiguration *configuration = [g_diContainer resolveForClass:[VDFBaseConfiguration class]];
+        
         if(clientAppKey != nil && [clientAppKey isKindOfClass:[NSString class]]) {
+            NSParameterAssert(configuration.clientAppKey == nil);
             configuration.clientAppKey = clientAppKey;
             VDFLogD(@"-- clientAppKey:%@", configuration.clientAppKey);
         }
+        
         if(clientAppSecret != nil && [clientAppSecret isKindOfClass:[NSString class]]) {
+            NSParameterAssert(configuration.clientAppSecret == nil);
             configuration.clientAppSecret = clientAppSecret;
             VDFLogD(@"-- clientAppSecret:%@", configuration.clientAppSecret);
         }
         if(backendAppKey != nil && [backendAppKey isKindOfClass:[NSString class]]) {
+            NSParameterAssert(configuration.backendAppKey == nil);
             configuration.backendAppKey = backendAppKey;
             VDFLogD(@"-- backendAppKey:%@", configuration.backendAppKey);
         }

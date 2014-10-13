@@ -66,11 +66,16 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     
+    NSParameterAssert(options);
+    NSParameterAssert(delegate);
+    
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    NSParameterAssert(configuration.clientAppKey);
+    NSParameterAssert(configuration.clientAppSecret);
+    NSParameterAssert(configuration.backendAppKey);
+    
     if(delegate != nil && self.currentSessionToken == nil && self.currentResolveBuilder == nil) {
-        // create request object
-        if(options == nil) {
-            options = [[VDFUserResolveOptions alloc] init];
-        }
+        
         
         NSError *error = nil;
         if(options.msisdn == nil) {
@@ -102,6 +107,11 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)sendSmsPin {
     
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    NSParameterAssert(configuration.clientAppKey);
+    NSParameterAssert(configuration.clientAppSecret);
+    NSParameterAssert(configuration.backendAppKey);
+    
     if(self.currentSessionToken != nil && self.currentResolveBuilder != nil) {
         // create request object
         id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithSessionToken:self.currentSessionToken diContainer:self.diContainer delegate:self.currentDelegate];
@@ -114,11 +124,14 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)validateSmsCode:(NSString*)smsCode {
     
+    NSParameterAssert(smsCode);
+    
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    NSParameterAssert(configuration.clientAppKey);
+    NSParameterAssert(configuration.clientAppSecret);
+    NSParameterAssert(configuration.backendAppKey);
+    
     if(self.currentSessionToken != nil && self.currentResolveBuilder != nil) {
-        // create request object
-        if(smsCode == nil) {
-            smsCode = [NSString string];
-        }
         
         // create request object
         id builder = [[VDFSmsValidationRequestBuilder alloc] initWithSessionToken:self.currentSessionToken smsCode:smsCode diContainer:self.diContainer delegate:self.currentDelegate];

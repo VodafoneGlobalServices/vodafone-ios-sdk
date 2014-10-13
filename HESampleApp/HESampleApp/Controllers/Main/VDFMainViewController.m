@@ -170,31 +170,51 @@
 - (IBAction)onAppIdSetButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [VDFSettings initializeWithParams:@{ VDFClientAppKeySettingKey: self.clientAppKeyTextField.text,
-                                         VDFClientAppSecretSettingKey: self.clientAppSecretTextField.text,
-                                         VDFBackendAppKeySettingKey: self.backendAppKeyTextField.text }];
+    @try {
+        [VDFSettings initializeWithParams:@{ VDFClientAppKeySettingKey: self.clientAppKeyTextField.text,
+                                             VDFClientAppSecretSettingKey: self.clientAppSecretTextField.text,
+                                             VDFBackendAppKeySettingKey: self.backendAppKeyTextField.text }];
+    }
+    @catch (NSException *exception) {
+        [self logException:exception];
+    }
 }
 
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [[VDFUsersService sharedInstance] validateSmsCode:self.smsCodeTextField.text];
+    @try {
+        [[VDFUsersService sharedInstance] validateSmsCode:self.smsCodeTextField.text];
+    }
+    @catch (NSException *exception) {
+        [self logException:exception];
+    }
 }
 
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender {
     [self hideKeyboard];
     
-    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:self.smsValidationSwitch.isOn];
-    if(self.imsiTextField.text != nil && ![self.imsiTextField.text isEqualToString:@""]) {
-        options.msisdn = self.imsiTextField.text;
+    @try {
+        VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:self.smsValidationSwitch.isOn];
+        if(self.imsiTextField.text != nil && ![self.imsiTextField.text isEqualToString:@""]) {
+            options.msisdn = self.imsiTextField.text;
+        }
+        [[VDFUsersService sharedInstance] retrieveUserDetails:options delegate:self];
     }
-    [[VDFUsersService sharedInstance] retrieveUserDetails:options delegate:self];
+    @catch (NSException *exception) {
+        [self logException:exception];
+    }
 }
 
 - (IBAction)onSendSMSPinButtonClick:(id)sender {
     [self hideKeyboard];
     
-    [[VDFUsersService sharedInstance] sendSmsPin];
+    @try {
+        [[VDFUsersService sharedInstance] sendSmsPin];
+    }
+    @catch (NSException *exception) {
+        [self logException:exception];
+    }
 }
 
 - (IBAction)onSendLogsButtonClick:(id)sender {
@@ -281,8 +301,16 @@
         if([self.displayLogSwitch isOn]) {
             [self appendHtmlOutput:message color:@"orange"];
         }
-//        NSLog(@"%@",message);
+        //        NSLog(@"%@",message);
     });
+}
+
+- (void)logException:(NSException*)exception {
+    // append for next use
+    NSString *message = [NSString stringWithFormat:@"Exception occured: %@\n", exception];
+    [self.loggedMessages appendString:message];
+    [self appendHtmlOutput:message color:@"red"];
+    //        NSLog(@"%@",message);
 }
 
 - (void)appendHtmlOutput:(NSString*)message color:(NSString*)color {

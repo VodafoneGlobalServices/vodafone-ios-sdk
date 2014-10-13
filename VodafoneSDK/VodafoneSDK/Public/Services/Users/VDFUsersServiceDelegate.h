@@ -30,8 +30,7 @@
     VDFErrorThrottlingLimitExceeded - when limit of calls in last time period exceeds,
     VDFErrorInvalidInput - when request has not passed the input validation on server side,
     VDFErrorAuthorizationFailed - when error in authorization over APIX occures,
-    VDFErrorMsisdnCountryNotSupported - when mobile country code included in msisdn is not supported by user resolve,
-    VDFErrorOutOfVodafoneCellular - when msisdn was not provided in user resolv call and user resolve cannot be continued because device is in another cellurar network than Vodafone
+    VDFErrorOperatorNotSupported - when mobile country code included in msisdn is not supported by user resolve or when msisdn was not provided in user resolv call and user resolve cannot be continued because device is in another cellurar network than Vodafone
  */
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error;
 

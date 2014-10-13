@@ -184,7 +184,7 @@ static dispatch_once_t * oneInstanceToken;
     VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
     if(mccMnc != nil) {
         if(![configuration.availableMccMnc containsObject:mccMnc]) {
-            return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOutOfVodafoneCellular userInfo:nil];
+            return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOperatorNotSupported userInfo:nil];
         }
     }
     else {
@@ -202,7 +202,7 @@ static dispatch_once_t * oneInstanceToken;
     
     if(options.market == nil) {
         // this phone number is not available for user resolve:
-        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorMsisdnCountryNotSupported userInfo:nil];
+        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOperatorNotSupported userInfo:nil];
     }
     return nil;
 }

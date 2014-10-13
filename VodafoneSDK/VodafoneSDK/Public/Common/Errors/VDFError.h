@@ -52,13 +52,9 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
      */
     VDFErrorAuthorizationFailed,
     /**
-     *  Mobile country code included in msisdn is not supported by user resolve.
+     *  Mobile country code included in msisdn is not supported by user resolve or user resolve cannot be continued because device is in another cellurar network than Vodafone.
      */
-    VDFErrorMsisdnCountryNotSupported,
-    /*!
-     User resolve cannot be continued because device is in another cellurar network than Vodafone.
-     */
-    VDFErrorOutOfVodafoneCellular,
+    VDFErrorOperatorNotSupported
 };
 
 

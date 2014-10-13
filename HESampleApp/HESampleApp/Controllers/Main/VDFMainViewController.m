@@ -111,8 +111,7 @@
         case VDFErrorResolutionTimeout: return @"VDFErrorResolutionTimeout";
         case VDFErrorWrongSmsCode: return @"VDFErrorWrongSmsCode";
         case VDFErrorAuthorizationFailed: return @"VDFErrorAuthorizationFailed";
-        case VDFErrorMsisdnCountryNotSupported: return @"VDFErrorMsisdnCountryNotSupported";
-        case VDFErrorOutOfVodafoneCellular: return @"VDFErrorOutOfVodafoneCellular";
+        case VDFErrorOperatorNotSupported: return @"VDFErrorOperatorNotSupported";
         default:
             return [NSString stringWithFormat:@"%i", errorCode];
     }

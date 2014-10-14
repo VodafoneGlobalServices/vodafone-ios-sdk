@@ -452,7 +452,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "11a75bcf-e404-4b03-98be-2f03cfaef345";
-				SDKROOT = iphoneos6.0;
+				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
@@ -495,7 +495,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
 				PROVISIONING_PROFILE = "11a75bcf-e404-4b03-98be-2f03cfaef345";
-				SDKROOT = iphoneos6.0;
+				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -523,7 +523,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos6.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -551,7 +551,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos6.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

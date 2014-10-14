@@ -148,14 +148,12 @@
         CGRect frame = self.outpuWebView.frame;
         CGSize outputContentSize = [self.outpuWebView sizeThatFits:CGSizeMake([self.outpuWebView sizeThatFits:CGSizeZero].width, FLT_MAX)];
         if(frame.size.height != outputContentSize.height) {
-            NSLog(@"++outputContentSize+++ width = %f, height = %f", outputContentSize.width, outputContentSize.height);
             frame.size.height = outputContentSize.height;
             self.outpuWebView.frame = frame;
         }
         
         CGSize newSize = CGSizeMake(self.view.frame.size.width,520+outputContentSize.height);
         if(self.scrollView.contentSize.height != newSize.height) {
-            NSLog(@"+++++ width = %f, height = %f", newSize.width, newSize.height);
             [self.scrollView setContentSize:newSize];
         }
 
@@ -170,6 +168,7 @@
         [VDFSettings initializeWithParams:@{ VDFClientAppKeySettingKey: self.clientAppKeyTextField.text,
                                              VDFClientAppSecretSettingKey: self.clientAppSecretTextField.text,
                                              VDFBackendAppKeySettingKey: self.backendAppKeyTextField.text }];
+        [self logSDKInvocationMessage:@"SDK initialized"];
     }
     @catch (NSException *exception) {
         [self logException:exception];
@@ -215,7 +214,7 @@
 
 - (IBAction)onSendLogsButtonClick:(id)sender {
     if(![MFMailComposeViewController canSendMail]) {
-        [self logMessage:@"You do not have any email accounts configured on device."];
+        [self logInternalMessage:@"You do not have any email accounts configured on device."];
         return;
     }
     
@@ -242,16 +241,16 @@
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     switch (result) {
         case MFMailComposeResultCancelled:
-            [self logMessage:@"Mail cancelled"];
+            [self logInternalMessage:@"Mail cancelled"];
             break;
         case MFMailComposeResultSaved:
-            [self logMessage:@"Mail saved"];
+            [self logInternalMessage:@"Mail saved"];
             break;
         case MFMailComposeResultSent:
-            [self logMessage:@"Mail sent"];
+            [self logInternalMessage:@"Mail sent"];
             break;
         case MFMailComposeResultFailed:
-            [self logMessage:[NSString stringWithFormat:@"Mail sent failure: %@", [error localizedDescription]]];
+            [self logInternalMessage:[NSString stringWithFormat:@"Mail sent failure: %@", [error localizedDescription]]];
             break;
         default:
             break;
@@ -265,21 +264,21 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        [self forcedLogMessage:[NSString stringWithFormat:@"didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn]];
+        [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn]];
     } else {
-        [self forcedLogMessage:[NSString stringWithFormat:@"didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]]];
+        [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]]];
     }
 }
 
 - (void)didValidatedSMSToken:(VDFSmsValidationResponse *)response withError:(NSError *)error {
-    [self forcedLogMessage:[NSString stringWithFormat:@"didValidatedSMSToken: smsCode=%@, success=%i, errorName=%@", response.smsCode, response.isSucceded, error != nil ? [self vdfErrorCodeToString:[error code]] : @""]];
+    [self logSDKInvocationMessage:[NSString stringWithFormat:@"didValidatedSMSToken: smsCode=%@, success=%i, errorName=%@", response.smsCode, response.isSucceded, error != nil ? [self vdfErrorCodeToString:[error code]] : @""]];
 }
 
 - (void)didSMSPinRequested:(NSNumber *)isSuccess withError:(NSError *)error {
-    [self forcedLogMessage:[NSString stringWithFormat:@"didSMSPinRequested: success=%@, errorName=%@", isSuccess, error != nil ? [self vdfErrorCodeToString:[error code]] : @""]];
+    [self logSDKInvocationMessage:[NSString stringWithFormat:@"didSMSPinRequested: success=%@, errorName=%@", isSuccess, error != nil ? [self vdfErrorCodeToString:[error code]] : @""]];
 }
 
-- (void)forcedLogMessage:(NSString*)message {
+- (void)logSDKInvocationMessage:(NSString*)message {
     // append for next use
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
@@ -288,15 +287,13 @@
 //    NSLog(@"%@",message);
 }
 
-- (void)logMessage:(NSString*)message {
+- (void)logInternalMessage:(NSString*)message {
     // append for next use
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if([self.displayLogSwitch isOn]) {
             [self appendHtmlOutput:message color:@"orange"];
-        }
         //        NSLog(@"%@",message);
     });
 }
@@ -323,7 +320,6 @@
 #pragma mark VDFMessageLogger Implementation
 
 - (void)logMessage:(NSString*)message ofType:(VDFLogMessageType)logType {
-    
     
     // append for next use
     [self.loggedMessages appendString:message];

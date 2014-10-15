@@ -20,6 +20,7 @@
 #import "VDFSettings+Internal.h"
 #import "VDFDIContainer.h"
 #import "VDFMessageLogger.h"
+#import <objc/runtime.h>
 
 extern void __gcov_flush();
 
@@ -89,6 +90,55 @@ extern void __gcov_flush();
     [OHHTTPStubs onStubActivation:^(NSURLRequest *request, id<OHHTTPStubsDescriptor> stub) {
         NSLog(@"OHHTTPStubs onStubActivation for request url: %@, with stub: %@", request.URL.absoluteString, stub.name);
     }];
+    
+    
+    // stubbing verify with delay from ocmock framework
+    // because ocmock if has any registered rejects
+    // waits whole specified time, so we need to change this flow
+    // so it will wait for all expectation has occure and after that wait some steps to make sure that any reject has not invoked
+    
+    static dispatch_once_t swizzle_token;
+    dispatch_once(&swizzle_token, ^{
+        SEL originalSelector = @selector(verifyWithDelay:);
+        SEL swizzledSelector = @selector(fake_verifyWithDelay:);
+        
+        Method originalMethod = class_getInstanceMethod([OCMockObject class], originalSelector);
+        Method swizzledMethod = class_getInstanceMethod([VDFUsersServiceBaseTestCase class], swizzledSelector);
+        
+        BOOL didAddMethod =
+        class_addMethod([OCMockObject class],
+                        originalSelector,
+                        method_getImplementation(swizzledMethod),
+                        method_getTypeEncoding(swizzledMethod));
+        
+        if (didAddMethod) {
+            class_replaceMethod([OCMockObject class],
+                                swizzledSelector,
+                                method_getImplementation(originalMethod),
+                                method_getTypeEncoding(originalMethod));
+        } else {
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+    });
+
+}
+
+-(void)verify {}
+
+- (void)fake_verifyWithDelay:(NSTimeInterval)delay {
+    
+    NSTimeInterval step = 0.1;
+    while (delay > 0) {
+        @try {
+            [self verify];
+            break;
+        }
+        @catch (NSException *e) {}
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:step]];
+        delay -= step;
+        step += 0.1;
+    }
+    [self verify];
 }
 
 - (void)tearDown
@@ -513,7 +563,13 @@ extern void __gcov_flush();
 }
 
 - (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode {
-    [[self.mockDelegate expect] didValidatedSMSToken:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
+    [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
+        
+        VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
+        BOOL result = [response.smsCode isEqualToString:self.smsCode] && !response.isSucceded;
+        
+        return result;
+    }] withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
         BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
         

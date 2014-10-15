@@ -19,6 +19,7 @@
 #import "VDFSettings+Internal.h"
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
+#import "VDFValidatePinObserversContainer.h"
 
 static NSString * const JSONPayloadBodyFormat = @"{ \"code\" : \"%@\" }";
 static NSString * const DESCRIPTION_FORMAT = @"VDFSmsValidationRequestFactory:\n\t URL:%@\n\t";
@@ -54,7 +55,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsValidationRequestFactory:\n
 }
 
 - (NSData*)postBody {
-    // faster and sipler will be to format the string
+    // faster and simpler will be to format the string
     return [[NSString stringWithFormat:JSONPayloadBodyFormat, [VDFStringHelper urlEncode:self.builder.smsCode]] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
@@ -92,7 +93,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFSmsValidationRequestFactory:\n
 }
 
 - (id<VDFObserversContainer>)createObserversContainer {
-    id<VDFObserversContainer> observersContainer = [super createObserversContainer];
+    id<VDFObserversContainer> observersContainer = [[VDFValidatePinObserversContainer alloc] initWithSmsCode:self.builder.smsCode];
     [observersContainer setObserversNotifySelector:@selector(didValidatedSMSToken:withError:)];
     return observersContainer;
 }

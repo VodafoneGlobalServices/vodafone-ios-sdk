@@ -20,6 +20,7 @@
 #import "VDFSettings.h"
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
+#import "VDFValidatePinObserversContainer.h"
 
 @interface VDFSmsValidationRequestFactory ()
 - (NSData*)postBody;
@@ -74,7 +75,7 @@
 - (void)testCreateObserversContainer {
     VDFArrayObserversContainer *result = [super runAndAssertSimpleCreateMethodOnTarget: self.factoryToTest
                                                                               selector: @selector(createObserversContainer)
-                                                                   expectedResultClass: [VDFArrayObserversContainer class]];
+                                                                   expectedResultClass: [VDFValidatePinObserversContainer class]];
     
     XCTAssertEqual(result.notifySelector, @selector(didValidatedSMSToken:withError:), @"Selector set to observers container is invalid");
 }

@@ -84,6 +84,8 @@
 //    self.imsiTextField.text = @"491748862966"; //joaquim phone number
 //    self.imsiTextField.text = @"204049810027400";
     
+    self.displayLogSwitch.on = YES;
+    
     [self recalculateScrollViewContent];
 }
 

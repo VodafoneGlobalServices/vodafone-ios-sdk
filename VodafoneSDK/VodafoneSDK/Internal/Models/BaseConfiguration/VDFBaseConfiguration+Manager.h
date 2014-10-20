@@ -16,12 +16,7 @@
 /**
  *  Date of last configuration update
  */
-@property (nonatomic, strong) NSDate *configurationLastModifiedDate;
-
-/**
- *  Time interval (in seconds) - time to wait until next configuration update can run
- */
-@property (nonatomic, assign) NSTimeInterval configurationUpdateCheckTimeSpan;
+@property (nonatomic, strong) NSString *configurationUpdateLastModified;
 
 /**
  *  Etag returned from last configuration update

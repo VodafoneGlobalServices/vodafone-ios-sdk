@@ -121,6 +121,12 @@ extern void __gcov_flush();
         }
     });
 
+    if(self.stubConfigUpdate == nil /*as default we stubbing it*/ || [self.stubConfigUpdate boolValue]) {
+        // as default we need to handle configuration update calls:
+        self.defaultConfigUpdateStub = [OHHTTPStubs stubRequestsPassingTest:[self filterUpdateConfigurationRequest]
+                                                       withStubResponse:[self responseEmptyWithCode:304]];
+    }
+
 }
 
 -(void)verify {}
@@ -144,6 +150,8 @@ extern void __gcov_flush();
 - (void)tearDown
 {
     __gcov_flush();
+    
+    [OHHTTPStubs removeStub:self.defaultConfigUpdateStub];
     
     NSLog(@"Number of still stubbed requests in tearDown: %i.", [[OHHTTPStubs allStubs] count]);
     
@@ -260,6 +268,17 @@ extern void __gcov_flush();
                 id jsonObject = [NSJSONSerialization JSONObjectWithData:[request HTTPBody] options:kNilOptions error:nil];
                 return [[jsonObject objectForKey:@"code"] isEqualToString:self.smsCode];
             }
+        }
+        return NO;
+    };
+}
+
+- (OHHTTPStubsTestBlock)filterUpdateConfigurationRequest {
+    return ^BOOL(NSURLRequest *request) {
+
+        if([request.URL.absoluteString isEqualToString:[NSString stringWithFormat:SERVICE_URL_SCHEME_CONFIGURATION_UPDATE, 1]]
+           && [[request HTTPMethod] isEqualToString:@"GET"]) {
+            return YES;//[self checkStandardRequiredHeaders:request];
         }
         return NO;
     };
@@ -408,6 +427,17 @@ extern void __gcov_flush();
                   self.acr, self.sessionToken] dataUsingEncoding:NSUTF8StringEncoding]
                                           statusCode:200
                                              headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON}];
+    };
+}
+
+- (OHHTTPStubsResponseBlock)responseUpdateConfiguration200WithMaxAge:(int)maxAge {
+    return ^OHHTTPStubsResponse*(NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithFileAtPath:OHPathForFileInBundle(@"validConfigurationUpdate.json", nil)
+                                          statusCode:200
+                                             headers:@{HTTP_HEADER_CONTENT_TYPE: HTTP_VALUE_CONTENT_TYPE_JSON,
+                                                       HTTP_HEADER_ETAG: @"asdasd123123",
+                                                       HTTP_HEADER_LAST_MODIFIED: @"Thu, 09 Oct 2014 16:35:35 GMT",
+                                                       @"Cache-Control": [NSString stringWithFormat:@"max-age=%i, must-revalidate", maxAge]}];
     };
 }
 

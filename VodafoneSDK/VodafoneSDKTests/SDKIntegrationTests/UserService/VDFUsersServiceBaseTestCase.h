@@ -29,6 +29,8 @@
 @property NSString *market;
 @property BOOL smsValidation;
 @property NSString *smsCode;
+@property id<OHHTTPStubsDescriptor> defaultConfigUpdateStub;
+@property NSNumber *stubConfigUpdate;
 
 
 #pragma mark -
@@ -43,6 +45,8 @@
 - (OHHTTPStubsTestBlock)filterGeneratePinRequest;
 
 - (OHHTTPStubsTestBlock)filterValidatePinRequest;
+
+- (OHHTTPStubsTestBlock)filterUpdateConfigurationRequest;
 
 
 #pragma mark -
@@ -65,6 +69,8 @@
 - (OHHTTPStubsResponseBlock)responseCheckStatus200;
 
 - (OHHTTPStubsResponseBlock)responseValidatePin200;
+
+- (OHHTTPStubsResponseBlock)responseUpdateConfiguration200WithMaxAge:(int)maxAge;
 
 #pragma mark -
 #pragma mark - stub

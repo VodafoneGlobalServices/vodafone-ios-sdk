@@ -53,8 +53,7 @@ extern void __gcov_flush();
     // mock
     UpdateCompletionHandler handler = ^(VDFConfigurationUpdater *updater, BOOL isSucceeded) { };
     self.configurationToUpdate.configurationUpdateEtag = @"some Etag";
-    self.configurationToUpdate.configurationLastModifiedDate = [NSDate date];
-    NSString *stringDate = [NSString stringWithFormat:@"%@", self.configurationToUpdate.configurationLastModifiedDate];
+    self.configurationToUpdate.configurationUpdateLastModified = [NSString stringWithFormat:@"%@", [NSDate date]];
     
     // run
     [self.updaterToTest startUpdateWithCompletionHandler:handler];
@@ -64,7 +63,7 @@ extern void __gcov_flush();
     XCTAssertEqual(self.updaterToTest.httpConnector.methodType, HTTPMethodGET, @"Http connector method type is not set properly.");
     XCTAssertNotNil(self.updaterToTest.httpConnector.url, @"Http connector url is not set properly.");
     XCTAssertEqualObjects([self.updaterToTest.httpConnector.requestHeaders objectForKey:HTTP_HEADER_IF_NONE_MATCH], self.configurationToUpdate.configurationUpdateEtag, @"Etag was not set.");
-    XCTAssertEqualObjects([self.updaterToTest.httpConnector.requestHeaders objectForKey:HTTP_HEADER_IF_MODIFIED_SINCE], stringDate, @"If-Modified-Since header was not set.");
+    XCTAssertEqualObjects([self.updaterToTest.httpConnector.requestHeaders objectForKey:HTTP_HEADER_IF_MODIFIED_SINCE], self.configurationToUpdate.configurationUpdateLastModified, @"If-Modified-Since header was not set.");
 }
 
 - (void)testIsHttpConnectorStoppedOnDealloc {
@@ -131,7 +130,7 @@ extern void __gcov_flush();
     [[mockConfiguration reject] setConfigurationUpdateEtag:[OCMArg isNotNil]];
     
     // expect that the configuration last modification wont be updated
-    [[mockConfiguration reject] setConfigurationLastModifiedDate:[OCMArg isNotNil]];
+    [[mockConfiguration reject] setConfigurationUpdateLastModified:[OCMArg isNotNil]];
     
     // run
     [self.updaterToTest httpRequest:mockConnector onResponse:mockResponse];

@@ -131,7 +131,7 @@
     if(self.retryAfterMiliseconds > 0) {
         return self.retryAfterMiliseconds;
     }
-    return ((VDFBaseConfiguration*)[self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]]).httpRequestRetryTimeSpan;
+    return 0;
 }
 
 - (BOOL)isConnectedRequestResponseNeeded {

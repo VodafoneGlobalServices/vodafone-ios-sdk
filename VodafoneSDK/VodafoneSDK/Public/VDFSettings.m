@@ -44,22 +44,23 @@ static VDFDIContainer * g_diContainer = nil;
         configuration.clientAppSecret = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFClientAppSecretSettingKey] copy];
         configuration.backendAppKey = [[[NSBundle mainBundle] objectForInfoDictionaryKey:VDFBackendAppKeySettingKey] copy];
         
-        configuration.sdkVersion = VDF_IOS_SDK_VERSION_STRING;
-        
         VDFLogD(@"-- clientAppKey:%@", configuration.clientAppKey);
         VDFLogD(@"-- clientAppSecret:%@", configuration.clientAppSecret);
         VDFLogD(@"-- backendAppKey:%@", configuration.backendAppKey);
-        VDFLogD(@"-- sdkVersion:%@", configuration.sdkVersion);
         VDFLogD(@"-- hapHost:%@", configuration.hapHost);
         VDFLogD(@"-- apixHost:%@", configuration.apixHost);
         VDFLogD(@"-- oAuthTokenUrlPath:%@", configuration.oAuthTokenUrlPath);
         VDFLogD(@"-- serviceBasePath:%@", configuration.serviceBasePath);
+        VDFLogD(@"-- sdkVersion:%@", VDF_IOS_SDK_VERSION_STRING);
         
         id cacheManager = [[VDFCacheManager alloc] initWithDIContainer:g_diContainer];
         [g_diContainer registerInstance:cacheManager forClass:[VDFCacheManager class]];
         
         id requestsManager = [[VDFServiceRequestsManager alloc] initWithDIContainer:g_diContainer cacheManager:cacheManager];
         [g_diContainer registerInstance:requestsManager forClass:[VDFServiceRequestsManager class]];
+        
+        // initial check for updates:
+        [configurationManager checkForUpdate];
     }
 }
 

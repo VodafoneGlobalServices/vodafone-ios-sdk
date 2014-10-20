@@ -31,11 +31,6 @@
 @property (nonatomic, copy) NSString *backendAppKey;
 
 /**
- *  Current version of SDK.
- */
-@property (nonatomic, copy) NSString *sdkVersion;
-
-/**
  *  Http BE host.
  */
 @property (nonatomic, copy) NSString *hapHost;
@@ -54,11 +49,6 @@
  *  Http connection time out.
  */
 @property (nonatomic, assign) NSTimeInterval defaultHttpConnectionTimeout;
-
-/**
- *  Time in miliseconds beatween retry requests.
- */
-@property (nonatomic, assign) NSTimeInterval httpRequestRetryTimeSpan;
 
 /**
  *  Number of maximum requests which can be performed in specified time period.

@@ -72,37 +72,16 @@ extern void __gcov_flush();
     [self.managerToTestsMock verify];
 }
 
-- (void)testCheckForUpdateWhenUpdateNeeded {
+- (void)testCheckForUpdateIsPerformingUpdateCall {
     
     // mock
     VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
-    configuration.configurationUpdateCheckTimeSpan = 3600;
     
     // stub
     [[[self.mockDIContainer stub] andReturn:configuration] resolveForClass:[VDFBaseConfiguration class]];
     
     // expect that the configuration updater will be started:
     [[self.managerToTestsMock expect] startUpdaterForConfiguration:configuration];
-    
-    // run
-    [self.managerToTestsMock checkForUpdate];
-    
-    // verify
-    [self.managerToTestsMock verifyWithDelay:2];
-}
-
-- (void)testCheckForUpdateWhenUpdatedNotNeeded {
-    
-    // mock
-    VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
-    configuration.configurationUpdateCheckTimeSpan = 3600;
-    
-    // stub
-    [[[self.mockDIContainer stub] andReturn:configuration] resolveForClass:[VDFBaseConfiguration class]];
-    [[[self.managerToTestsMock stub] andReturn:[NSDate date]] lastCheckDate];
-    
-    // expect that the configuration updater wont be started:
-    [[self.managerToTestsMock reject] startUpdaterForConfiguration:configuration];
     
     // run
     [self.managerToTestsMock checkForUpdate];
@@ -119,11 +98,8 @@ extern void __gcov_flush();
     NSString *filePath = [basePath stringByAppendingPathComponent:@"someFile.dat"];
     VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
     configuration.defaultHttpConnectionTimeout = 123;
-    configuration.httpRequestRetryTimeSpan = 234;
     configuration.requestsThrottlingLimit = 345;
     configuration.requestsThrottlingPeriod = 345;
-    configuration.configurationLastModifiedDate = [NSDate date];
-    configuration.configurationUpdateCheckTimeSpan = 456;
     [NSKeyedArchiver archiveRootObject:configuration toFile:filePath];
     
     // stub
@@ -134,11 +110,8 @@ extern void __gcov_flush();
     
     // assert
     XCTAssertEqual(readedConfiguration.defaultHttpConnectionTimeout, configuration.defaultHttpConnectionTimeout, @"Configuration object is not properly readed.");
-    XCTAssertEqual(readedConfiguration.httpRequestRetryTimeSpan, configuration.httpRequestRetryTimeSpan, @"Configuration object is not properly readed.");
     XCTAssertEqual(readedConfiguration.requestsThrottlingLimit, configuration.requestsThrottlingLimit, @"Configuration object is not properly readed.");
     XCTAssertEqual(readedConfiguration.requestsThrottlingPeriod, configuration.requestsThrottlingPeriod, @"Configuration object is not properly readed.");
-    XCTAssertEqualObjects(readedConfiguration.configurationLastModifiedDate, configuration.configurationLastModifiedDate, @"Configuration object is not properly readed.");
-    XCTAssertEqual(readedConfiguration.configurationUpdateCheckTimeSpan, configuration.configurationUpdateCheckTimeSpan, @"Configuration object is not properly readed.");
 }
 
 - (void)testReadConfigurationWithException {
@@ -269,11 +242,8 @@ extern void __gcov_flush();
     NSString *filePath = [basePath stringByAppendingPathComponent:@"someFile.dat"];
     VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
     configuration.defaultHttpConnectionTimeout = 123;
-    configuration.httpRequestRetryTimeSpan = 234;
     configuration.requestsThrottlingLimit = 345;
     configuration.requestsThrottlingPeriod = 345;
-    configuration.configurationLastModifiedDate = [NSDate date];
-    configuration.configurationUpdateCheckTimeSpan = 456;
     
     // stub
     [[[self.managerToTestsMock stub] andReturn:filePath] configurationFilePath];
@@ -285,11 +255,8 @@ extern void __gcov_flush();
     // assert
     XCTAssertNoThrow(readedConfiguration = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath], @"Configuration file was not created properly.");
     XCTAssertEqual(readedConfiguration.defaultHttpConnectionTimeout, configuration.defaultHttpConnectionTimeout, @"Configuration object is not properly written.");
-    XCTAssertEqual(readedConfiguration.httpRequestRetryTimeSpan, configuration.httpRequestRetryTimeSpan, @"Configuration object is not properly written.");
     XCTAssertEqual(readedConfiguration.requestsThrottlingLimit, configuration.requestsThrottlingLimit, @"Configuration object is not properly readed.");
     XCTAssertEqual(readedConfiguration.requestsThrottlingPeriod, configuration.requestsThrottlingPeriod, @"Configuration object is not properly readed.");
-    XCTAssertEqualObjects(readedConfiguration.configurationLastModifiedDate, configuration.configurationLastModifiedDate, @"Configuration object is not properly written.");
-    XCTAssertEqual(readedConfiguration.configurationUpdateCheckTimeSpan, configuration.configurationUpdateCheckTimeSpan, @"Configuration object is not properly written.");
 }
 
 - (void)testWriteConfigurationIsRemovedProperly {

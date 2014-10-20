@@ -51,6 +51,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         _lastResponseCode = 0;
         self.currentConnection = nil;
         self.allowRedirects = YES;
+        self.useCachePolicy = NO;
         self.deviceUtility = [[VDFSettings globalDIContainer] resolveForClass:[VDFDeviceUtility class]];
     }
     return self;
@@ -73,11 +74,22 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         VDFLogI(@"Performing HTTP request");
         
         // starting the request
-        if(self.methodType == HTTPMethodPOST) {
-            [self post:self.url withBody:self.postBody];
-        }
-        else {
-            [self get:self.url];
+        if([NSThread isMainThread]) {
+            if(self.methodType == HTTPMethodPOST) {
+                [self post:self.url withBody:self.postBody];
+            }
+            else {
+                [self get:self.url];
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(self.methodType == HTTPMethodPOST) {
+                    [self post:self.url withBody:self.postBody];
+                }
+                else {
+                    [self get:self.url];
+                }
+            });
         }
     }
 
@@ -132,7 +144,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 - (void)get:(NSString*)url {
     NSMutableURLRequest *request =
     [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
-                     cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                            cachePolicy:self.useCachePolicy ? NSURLRequestReturnCacheDataElseLoad:NSURLRequestReloadIgnoringLocalCacheData
                  timeoutInterval:self.connectionTimeout];
     
     [self addHeadersToRequest:request];
@@ -145,7 +157,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     self.responseHeaders = [NSDictionary dictionary];
     
     // sending request:
-    self.currentConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    self.currentConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
     
     if(self.currentConnection == nil) {
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
@@ -160,7 +172,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 {
     NSMutableURLRequest *request =
     [NSMutableURLRequest requestWithURL:[NSURL URLWithString: url]
-                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                            cachePolicy:self.useCachePolicy ? NSURLRequestReturnCacheDataElseLoad:NSURLRequestReloadIgnoringLocalCacheData
                         timeoutInterval:self.connectionTimeout];
     
     request.HTTPMethod = @"POST";

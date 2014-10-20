@@ -56,10 +56,6 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactoryBuild
         return [self.internalFactory createRetryHttpConnectorWithDelegate:delegate];
     }
     else {
-        // on creation of first connection object we need to perform update of configuration
-        VDFConfigurationManager *configurationManager = [self.diContainer resolveForClass:[VDFConfigurationManager class]];
-        [configurationManager checkForUpdate];
-        
         return [super createCurrentHttpConnectorWithDelegate:delegate];
     }
 }

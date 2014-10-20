@@ -24,6 +24,7 @@
 #import "VDFUserResolveOptions+Internal.h"
 #import "VDFDeviceUtility.h"
 #import "VDFUserTokenDetails+Internal.h"
+#import "VDFConfigurationManager.h"
 
 static dispatch_once_t * oneInstanceToken;
 
@@ -101,6 +102,10 @@ static dispatch_once_t * oneInstanceToken;
             id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
             
             [[self.diContainer resolveForClass:[VDFServiceRequestsManager class]] performRequestWithBuilder:builderWithOAuth];
+            
+            // on starting user resolve process we need to perform update of configuration
+            VDFConfigurationManager *configurationManager = [self.diContainer resolveForClass:[VDFConfigurationManager class]];
+            [configurationManager checkForUpdate];
         }
     }
 }

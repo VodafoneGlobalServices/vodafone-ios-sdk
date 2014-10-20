@@ -47,18 +47,14 @@
         configuration = [self readConfiguration];
     }
     
-    BOOL isUpdateNeeded = self.lastCheckDate == nil || [[self.lastCheckDate dateByAddingTimeInterval:configuration.configurationUpdateCheckTimeSpan] compare:[NSDate date]] == NSOrderedAscending;
-    
-    if(isUpdateNeeded) {
-        // start update process
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            @synchronized(self.updateLock) {
-                if(self.runningUpdater == nil) {
-                    [self startUpdaterForConfiguration:configuration];
-                }
+    // start update process
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        @synchronized(self.updateLock) {
+            if(self.runningUpdater == nil) {
+                [self startUpdaterForConfiguration:configuration];
             }
-        });
-    }
+        }
+    });
 }
 
 - (VDFBaseConfiguration*)readConfiguration {
@@ -75,9 +71,6 @@
             // configuration defaults:
             configuration = [[VDFBaseConfiguration alloc] init];
             
-            // for manager usage
-            configuration.configurationUpdateCheckTimeSpan = CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN;
-            
             // for other properties
             configuration.hapHost = CONFIGURATION_DEFAULT_HAP_HOST;
             configuration.apixHost = CONFIGURATION_DEFAULT_APIX_HOST;
@@ -85,7 +78,6 @@
             configuration.oAuthTokenUrlPath = SERVICE_URL_DEFAULT_OAUTH_TOKEN_PATH;
             
             configuration.defaultHttpConnectionTimeout = CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT;
-            configuration.httpRequestRetryTimeSpan = CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN;
             configuration.requestsThrottlingLimit = CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT;
             configuration.requestsThrottlingPeriod = CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD;
         
@@ -100,6 +92,10 @@
             configuration.availableMccMnc = @[ @"26801", @"22210", @"26202", @"21401", @"27201",
                                                @"20404", @"23415", @"22601", @"21670", @"20205",
                                                @"27801", @"27602", @"23003", @"65501" ];
+            
+            // TODO do usuniecia:
+            configuration.configurationUpdateEtag = @"\"2fd-504fcab45d048\"";
+            configuration.configurationUpdateLastModified = @"Thu, 09 Oct 2014 12:35:35 GMT";
         }
     }
     return configuration;

@@ -30,7 +30,6 @@ static NSString * const CONFIGURATION_DEFAULT_APIX_HOST = @"http://SeamId-409051
 
 static NSTimeInterval const CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN = 43200; // in seconds, 12 hours
 static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT = 60.0; // default 60 seconds timeout
-static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_REQUEST_RETRY_TIME_SPAN = 5000; // default time span for retry request is 5 second
 static NSInteger const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT = 100;
 static NSTimeInterval const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD = 60.0; // 60 seconds
 static NSString * const CONFIGURATION_DEFAULT_PHONE_NUMBER_REGEX = @"^[0-9]{7,12}$"; // default phone number validation regex
@@ -65,7 +64,10 @@ static NSString * const SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS = @"/%@?bac
 static NSString * const SERVICE_URL_PATH_SCHEME_SEND_PIN = @"/%@/pins?backendId=%@";
 static NSString * const SERVICE_URL_PATH_SCHEME_VALIDATE_PIN = @"/%@/pins?backendId=%@";
 
+// TODO when the configuration server will be working then we need to change this
 static NSString * const SERVICE_URL_SCHEME_CONFIGURATION_UPDATE = @"http://hebemock-4953648878.eu-de1.plex.vodafone.com/v%i/sdk-config-ios/config.json";
+//static NSString * const SERVICE_URL_SCHEME_CONFIGURATION_UPDATE = @"https://preprod.appconfig.shared.sp.vodafone.com/seamless-id/v%i/sdk-config-ios/config.json";
+//static NSString * const SERVICE_URL_SCHEME_CONFIGURATION_UPDATE = @"http://127.0.0.1/~misy/v%i/conf.php";
 
 
 

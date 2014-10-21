@@ -126,9 +126,7 @@
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_CONTENT_TYPE], @"application/json", @"Content-Type header was not set.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:HTTP_HEADER_AUTHORIZATION], @"Barier asd", @"Authorization header was not set.");
     XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method?backendId=someBackendID", @"Url was not set proeprly.");
-    
-    // TODO IMPORTANT when it will be attached to production servers (not mockups) then uncomment this
-    //    XCTAssertTrue(result.isGSMConnectionRequired, @"GSM Connection is required for this factory.");
+    XCTAssertTrue(result.isGSMConnectionRequired, @"GSM Connection is required for this factory.");
 }
 
 - (void)testCreateHttpConnectorRetryRequest {

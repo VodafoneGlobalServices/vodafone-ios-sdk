@@ -148,7 +148,6 @@ extern void __gcov_flush();
     NSString *lastModification = [NSString stringWithFormat:@"%@", [NSDate date]];
     NSString *etag = @"some new etag";
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"validConfigurationUpdate" ofType:@"json"]];
-    //[@"{ \"this_object_is_not_yest_described\" : true }" dataUsingEncoding:NSUTF8StringEncoding]; // TODO when we get know how this response will looks like than do this
     id mockConfiguration = OCMClassMock([VDFBaseConfiguration class]);
     id mockConnector = OCMClassMock([VDFHttpConnector class]);
     id mockResponse = OCMClassMock([VDFHttpConnectorResponse class]);

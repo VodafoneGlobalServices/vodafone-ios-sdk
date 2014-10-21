@@ -158,9 +158,8 @@
     XCTAssertEqualObjects(result.postBody, postBodyContent, @"Post Body was not set proeprly.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Accept"], @"application/json", @"Accept header was not set.");
     XCTAssertEqualObjects([result.requestHeaders objectForKey:@"Content-Type"], @"application/x-www-form-urlencoded", @"Content-Type header was not set.");
-    // TODO IMPORTANT when it will be attached to production servers (not mockups) then uncomment this
-//    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
-//    XCTAssertTrue(result.isGSMConnectionRequired, @"GSM Connection is required for this factory.");
+    XCTAssertEqualObjects(result.url, @"http://someUrl.com/some/endpoint/method", @"Url was not set proeprly.");
+    XCTAssertFalse(result.isGSMConnectionRequired, @"GSM Connection is not required for this factory.");
 }
 
 - (void)testPostBodyCreationWithoutScopes {

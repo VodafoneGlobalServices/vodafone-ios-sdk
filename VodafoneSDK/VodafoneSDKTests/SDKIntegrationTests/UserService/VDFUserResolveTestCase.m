@@ -54,7 +54,7 @@ static NSInteger const VERIFY_DELAY = 8;
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
     
     // expect that the delegate object will be invoked correctly:
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusFailed]; // for 404
+    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusUnableToResolve]; // for 404
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate]; // run
     [super.mockDelegate verifyWithDelay:VERIFY_DELAY]; // verify
 }
@@ -83,7 +83,7 @@ static NSInteger const VERIFY_DELAY = 8;
     [super rejectAnyNotHandledHttpCall];
     
     // expect that the delegate object will be invoked correctly:
-    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusFailed];
+    [super expectDidReceivedUserDetailsWithResolutionStatus:VDFResolutionStatusUnableToResolve];
     
     // run
     VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];

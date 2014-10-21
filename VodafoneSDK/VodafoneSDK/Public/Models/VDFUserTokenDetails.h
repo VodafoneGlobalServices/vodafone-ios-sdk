@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, VDFResolutionStatus) {
      *  The resolution of the user indentity has failed because no MSISDN header enrichement or IMSI have been helpful.
      *  The client might try to ask the phone number to the user and proceed with the Resolve API call including it for OTP validation.
      */
-    VDFResolutionStatusFailed,
+    VDFResolutionStatusUnableToResolve,
     /**
      *  Resolution of the user identity requires OTP validation.
      *  The client SDK should proceed by calling the Generate PIN API.

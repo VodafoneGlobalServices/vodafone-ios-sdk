@@ -41,7 +41,7 @@
         self.needRetry = YES; // as default this request is waiting on server changes
         self.builder = builder;
         self.retryAfterMiliseconds = -1;
-        self.currentResolutionStatus = VDFResolutionStatusFailed;
+        self.currentResolutionStatus = VDFResolutionStatusUnableToResolve;
     }
     return self;
 }
@@ -168,7 +168,7 @@
     if(isExpectedResponse) {
         // we need to retry request imidettly:
         self.retryAfterMiliseconds = 0;
-        self.currentResolutionStatus = VDFResolutionStatusFailed;
+        self.currentResolutionStatus = VDFResolutionStatusUnableToResolve;
         return YES; // YES we can handle this response object
     }
     return NO;

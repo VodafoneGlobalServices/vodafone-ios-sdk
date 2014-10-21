@@ -218,7 +218,7 @@ static dispatch_once_t * oneInstanceToken;
 - (void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(userDetails != nil) {
         if(userDetails.resolutionStatus == VDFResolutionStatusCompleted
-           || userDetails.resolutionStatus == VDFResolutionStatusFailed) {
+           || userDetails.resolutionStatus == VDFResolutionStatusUnableToResolve) {
             // resolution has finished
             // current session has finished, so clear it:
             self.currentResolveBuilder = nil;

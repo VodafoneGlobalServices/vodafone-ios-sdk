@@ -51,7 +51,7 @@
     }
     else if(response.httpResponseCode == 404) {
         userTokenDetails = [[VDFUserTokenDetails alloc] init];
-        userTokenDetails.resolutionStatus = VDFResolutionStatusFailed;
+        userTokenDetails.resolutionStatus = VDFResolutionStatusUnableToResolve;
     }
     else if(response.httpResponseCode == 302) {
         

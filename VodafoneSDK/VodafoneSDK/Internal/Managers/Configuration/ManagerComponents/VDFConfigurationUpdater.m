@@ -68,10 +68,8 @@ static NSInteger const VersionNumber = 1;
 
 - (void)httpRequest:(VDFHttpConnector*)request onResponse:(VDFHttpConnectorResponse*)response {
     
-    VDFLogI(@"On configuration update http response");
-    VDFLogI(@"Http response code: \n%i", request.lastResponseCode);
-    VDFLogI(@"Http response headers: \n%@", response.responseHeaders);
-    VDFLogI(@"Http response data string: \n--->%@<---", [[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding]);
+    VDFLogI(@"On configuration update http response\nHttp response code: %i\nHttp response headers: \n%@\nHttp response data string: \n--->%@<---",
+            request.lastResponseCode, response.responseHeaders, [[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding]);
     
     if(response.httpResponseCode == SuccessHttpCode) {
         NSError *error = nil;
@@ -94,13 +92,15 @@ static NSInteger const VersionNumber = 1;
                 
                 // object parsed correctly
                 // and update it:
-                [self.configurationToUpdate updateWithJson:jsonObject];
-                self.completionHandler(self, YES);
-                return;
-
+                if([self.configurationToUpdate updateWithJson:jsonObject]) {
+                    VDFLogI(@"SDK Configuration was updated.");
+                    self.completionHandler(self, YES);
+                    return;
+                }
             }
         }
     }
+    VDFLogI(@"SDK Configuration was not updated, beacause new configuration was invaild or readed from http cache.");
     self.completionHandler(self, NO);
 }
 

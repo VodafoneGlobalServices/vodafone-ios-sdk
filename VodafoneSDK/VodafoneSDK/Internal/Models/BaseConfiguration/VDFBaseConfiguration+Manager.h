@@ -27,7 +27,9 @@
  *  Updates current configuration object with parsed json object.
  *
  *  @param jsonObjectDictionary Json object dictionary containing parameters to update.
+ *
+ *  @return YES - if new configuration is valid, NO - when configuration was not updated because of invalid json object
  */
-- (void)updateWithJson:(NSDictionary*)jsonObjectDictionary;
+- (BOOL)updateWithJson:(NSDictionary*)jsonObjectDictionary;
 
 @end

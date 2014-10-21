@@ -45,9 +45,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFOAuthTokenRequestFactory:\n\t 
 
 - (NSString*)createRequestURL {
     VDFBaseConfiguration *configuration = [self.builder.diContainer resolveForClass:[VDFBaseConfiguration class]];
-    
-    //    NSString * requestUrl = [configuration.apixBaseUrl stringByAppendingString:self.builder.urlEndpointQuery];
-    return [@"https://apisit.developer.vodafone.com" stringByAppendingString:configuration.oAuthTokenUrlPath];
+    return [configuration.apixHost stringByAppendingString:configuration.oAuthTokenUrlPath];
 }
 
 - (NSData*)postBody {

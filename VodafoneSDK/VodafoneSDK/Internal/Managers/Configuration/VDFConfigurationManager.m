@@ -92,10 +92,6 @@
             configuration.availableMccMnc = @[ @"26801", @"22210", @"26202", @"21401", @"27201",
                                                @"20404", @"23415", @"22601", @"21670", @"20205",
                                                @"27801", @"27602", @"23003", @"65501" ];
-            
-            // TODO do usuniecia:
-            configuration.configurationUpdateEtag = @"\"2fd-504fcab45d048\"";
-            configuration.configurationUpdateLastModified = @"Thu, 09 Oct 2014 12:35:35 GMT";
         }
     }
     return configuration;

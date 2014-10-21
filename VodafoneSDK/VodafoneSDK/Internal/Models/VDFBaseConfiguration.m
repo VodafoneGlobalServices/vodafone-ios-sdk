@@ -69,7 +69,7 @@ static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
 
 
 
-- (void)updateWithJson:(NSDictionary*)jsonObjectDictionary {
+- (BOOL)updateWithJson:(NSDictionary*)jsonObjectDictionary {
     /*
     {
         "hap": {
@@ -180,6 +180,7 @@ static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
         self.availableMarkets = json_availableMarkets;
         self.availableMccMnc = json_availableMccMnc;
     }
+    return isValid;
 }
 
 @end

@@ -131,7 +131,7 @@ static NSString * const DESCRIPTION_FORMAT = @"VDFUserResolveRequestFactory:\n\t
     httpRequest.url = [self createInitialRequestUrlDirectlyToAPIX:directToAPIX];
     
     if(!directToAPIX) {
-//      httpRequest.isGSMConnectionRequired = YES; // TODO !!! uncomment this // commented only for test purposes
+        httpRequest.isGSMConnectionRequired = YES;
     }
     
     NSString *authorizationHeader = [NSString stringWithFormat:@"%@ %@", self.builder.oAuthToken.tokenType, self.builder.oAuthToken.accessToken];

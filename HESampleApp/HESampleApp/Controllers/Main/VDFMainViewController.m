@@ -311,9 +311,9 @@
 - (void)appendHtmlOutput:(NSString*)message color:(NSString*)color {
     @synchronized(self.outpuWebView) {
         if(message != nil) {
-            [self.htmlOutput appendFormat:@"<pre style=\"background-color: %@;\">%@</pre>", color, message];
+            [self.htmlOutput appendFormat:@"<pre style=\"background-color: %@; margin-top: 5px;\">%@</pre>", color, message];
         }
-        [self.outpuWebView loadHTMLString:[NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 8px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", self.htmlOutput] baseURL:nil];
+        [self.outpuWebView loadHTMLString:[NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 10px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", self.htmlOutput] baseURL:nil];
         [self recalculateScrollViewContent];
     }
 }

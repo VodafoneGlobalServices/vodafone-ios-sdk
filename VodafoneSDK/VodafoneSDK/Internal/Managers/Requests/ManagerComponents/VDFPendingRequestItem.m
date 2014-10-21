@@ -67,13 +67,9 @@
 #pragma mark VDFHttpRequestDelegate implementation
 - (void)httpRequest:(VDFHttpConnector*)request onResponse:(VDFHttpConnectorResponse*)response {
     
-    VDFLogI(@"On http response");
-    VDFLogI(@"For request url: \n%@", request.url);
+    VDFLogI(@"On http response\nFor request url: \n%@\nHttp response code: %i\nHttp response headers: \n%@\nHttp response data string: \n--->%@<---\n",
+            request.url, request.lastResponseCode, response.responseHeaders, [[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding]);
     VDFLogD(@"For request: \n%@", self.builder);
-    VDFLogI(@"Http response code: \n%i", request.lastResponseCode);
-    VDFLogD(@"Http response data: \n%@", response.data);
-    VDFLogI(@"Http response headers: \n%@", response.responseHeaders);
-    VDFLogI(@"Http response data string: \n--->%@<---", [[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding]);
     
     [self parseAndNotifyWithResponse:response];
     

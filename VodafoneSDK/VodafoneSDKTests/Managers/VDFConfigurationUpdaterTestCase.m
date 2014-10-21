@@ -145,9 +145,10 @@ extern void __gcov_flush();
 - (void)testHttpOnResponseWithSuccessAndValidData {
     
     // mock
-    NSDate *lastModification = [NSDate date];
+    NSString *lastModification = [NSString stringWithFormat:@"%@", [NSDate date]];
     NSString *etag = @"some new etag";
-    NSData *data = [@"{ \"this_object_is_not_yest_described\" : true }" dataUsingEncoding:NSUTF8StringEncoding]; // TODO when we get know how this response will looks like than do this
+    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"validConfigurationUpdate" ofType:@"json"]];
+    //[@"{ \"this_object_is_not_yest_described\" : true }" dataUsingEncoding:NSUTF8StringEncoding]; // TODO when we get know how this response will looks like than do this
     id mockConfiguration = OCMClassMock([VDFBaseConfiguration class]);
     id mockConnector = OCMClassMock([VDFHttpConnector class]);
     id mockResponse = OCMClassMock([VDFHttpConnectorResponse class]);
@@ -159,16 +160,16 @@ extern void __gcov_flush();
     self.updaterToTest.completionHandler = handler;
     [[[mockResponse stub] andReturnValue:OCMOCK_VALUE(200)] httpResponseCode];
     [[[mockResponse stub] andReturn:data] data];
-    [[[mockResponse stub] andReturn:@{HTTP_HEADER_ETAG: etag, HTTP_HEADER_LAST_MODIFIED : [NSString stringWithFormat:@"%@", lastModification]}] responseHeaders];
+    [[[mockResponse stub] andReturn:@{HTTP_HEADER_ETAG: etag, HTTP_HEADER_LAST_MODIFIED : lastModification}] responseHeaders];
     
     // expect that the configuration will be invoked to update
-    [[mockConfiguration expect] updateWithJson:[OCMArg isNotNil]];
+    [[[mockConfiguration expect] andReturnValue:@YES] updateWithJson:[OCMArg isNotNil]];
     
     // expect that the configuration etag will be updated
     [[mockConfiguration expect] setConfigurationUpdateEtag:etag];
     
     // expect that the configuration last modification will be updated
-//    [[mockConfiguration expect] setConfigurationLastModifiedDate:lastModification];// TODO when we get know how this will looks like
+    [[mockConfiguration expect] setConfigurationUpdateLastModified:lastModification];
     
     // run
     [self.updaterToTest httpRequest:mockConnector onResponse:mockResponse];

@@ -8,6 +8,7 @@
 
 #import "VDFUsersServiceBaseTestCase.h"
 #import <OCMock/OCMock.h>
+#import <objc/runtime.h>
 #import "VDFUsersService.h"
 #import "VDFUserResolveOptions.h"
 #import "VDFUsersServiceDelegate.h"
@@ -20,7 +21,6 @@
 #import "VDFSettings+Internal.h"
 #import "VDFDIContainer.h"
 #import "VDFMessageLogger.h"
-#import <objc/runtime.h>
 
 extern void __gcov_flush();
 
@@ -49,11 +49,18 @@ extern void __gcov_flush();
 {
     [super setUp];
     
+    // before each test we should remove stored configuration file:
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : [NSString string];
+    [[NSFileManager defaultManager] removeItemAtPath:[basePath stringByAppendingPathComponent:CONFIGURATION_CACHE_FILE_NAME] error:nil];
+    
+    
     NSLog(@"Number of still stubbed requests: %i.", [[OHHTTPStubs allStubs] count]);
     
     [[VDFUsersService sharedInstance] resetOneInstanceToken];
     [VDFSettings initialize];
     [VDFSettings subscribeDebugLogger:self];
+    
     
     self.backendId = @"someBackendId";
     self.appId = @"someAppId";

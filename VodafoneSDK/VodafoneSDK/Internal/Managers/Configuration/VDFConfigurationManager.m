@@ -20,7 +20,6 @@
 @property (nonatomic, strong) id configurationFileLock;
 @property (nonatomic, strong) id updateLock;
 @property (nonatomic, strong) VDFConfigurationUpdater *runningUpdater;
-@property (nonatomic, strong) NSDate *lastCheckDate;
 
 - (void)startUpdaterForConfiguration:(VDFBaseConfiguration*)configuration;
 - (void)writeConfiguration:(VDFBaseConfiguration*)configuration;
@@ -103,7 +102,6 @@
 - (void)startUpdaterForConfiguration:(VDFBaseConfiguration*)configuration {
     self.runningUpdater = [[VDFConfigurationUpdater alloc] initWithConfiguration:configuration];
     [self.runningUpdater startUpdateWithCompletionHandler:^(VDFConfigurationUpdater *updater, BOOL isSucceeded) {
-        self.lastCheckDate = [NSDate date];
         if(isSucceeded) {
             [self writeConfiguration:updater.configurationToUpdate];
             [self.diContainer registerInstance:updater.configurationToUpdate forClass:[VDFBaseConfiguration class]];

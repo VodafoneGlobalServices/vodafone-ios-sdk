@@ -23,7 +23,6 @@ extern void __gcov_flush();
 
 @interface VDFConfigurationManager ()
 @property (nonatomic, strong) VDFConfigurationUpdater *runningUpdater;
-@property (nonatomic, strong) NSDate *lastCheckDate;
 
 - (void)startUpdaterForConfiguration:(VDFBaseConfiguration*)configuration;
 - (void)writeConfiguration:(VDFBaseConfiguration*)configuration;
@@ -129,7 +128,6 @@ extern void __gcov_flush();
 - (void)testStartUpdateConfigurationWithCompletionHandlerOnSuccess {
     
     // mock
-    self.managerToTests.lastCheckDate = nil;
     VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
     __block id mockUpdater = nil;
     
@@ -175,15 +173,11 @@ extern void __gcov_flush();
     [self.managerToTestsMock verify];
     [self.mockDIContainer verify];
     [mockUpdater verify];
-    
-    // assert:
-    XCTAssertNotNil(self.managerToTests.lastCheckDate, @"Last check date should be set");
 }
 
 - (void)testStartUpdateConfigurationWithCompletionHandlerOnFailure {
     
     // mock
-    self.managerToTests.lastCheckDate = nil;
     VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
     __block id mockUpdater = nil;
     
@@ -229,9 +223,6 @@ extern void __gcov_flush();
     [self.managerToTestsMock verify];
     [self.mockDIContainer verify];
     [mockUpdater verify];
-    
-    // assert:
-    XCTAssertNotNil(self.managerToTests.lastCheckDate, @"Last check date should be set");
 }
 
 - (void)testWriteConfigurationIsWrittenProperly {

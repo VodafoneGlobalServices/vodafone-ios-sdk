@@ -21,6 +21,7 @@
 #import "VDFSettings+Internal.h"
 #import "VDFDIContainer.h"
 #import "VDFMessageLogger.h"
+#import "VDFConfigurationManager.h"
 
 extern void __gcov_flush();
 
@@ -57,8 +58,19 @@ extern void __gcov_flush();
     
     NSLog(@"Number of still stubbed requests: %i.", [[OHHTTPStubs allStubs] count]);
     
-    [[VDFUsersService sharedInstance] resetOneInstanceToken];
+    [OHHTTPStubs onStubActivation:^(NSURLRequest *request, id<OHHTTPStubsDescriptor> stub) {
+        NSLog(@"OHHTTPStubs onStubActivation for request url: %@, with stub: %@", request.URL.absoluteString, stub.name);
+    }];
+    
+    
+    if(self.stubConfigUpdate == nil /*as default we stubbing it*/ || [self.stubConfigUpdate boolValue]) {
+        // as default we need to handle configuration update calls:
+        self.defaultConfigUpdateStub = [OHHTTPStubs stubRequestsPassingTest:[self filterUpdateConfigurationRequest]
+                                                           withStubResponse:[self responseEmptyWithCode:304]];
+    }
+    
     [VDFSettings initialize];
+    [[VDFUsersService sharedInstance] resetOneInstanceToken];
     [VDFSettings subscribeDebugLogger:self];
     
     
@@ -94,11 +106,6 @@ extern void __gcov_flush();
     [[[mockDeviceUtility stub] andReturnValue:OCMOCK_VALUE(VDFNetworkAvailableViaGSM)] checkNetworkTypeAvailability];
     [[VDFSettings globalDIContainer] registerInstance:mockDeviceUtility forClass:[VDFDeviceUtility class]];
     
-    [OHHTTPStubs onStubActivation:^(NSURLRequest *request, id<OHHTTPStubsDescriptor> stub) {
-        NSLog(@"OHHTTPStubs onStubActivation for request url: %@, with stub: %@", request.URL.absoluteString, stub.name);
-    }];
-    
-    
     // stubbing verify with delay from ocmock framework
     // because ocmock if has any registered rejects
     // waits whole specified time, so we need to change this flow
@@ -127,13 +134,6 @@ extern void __gcov_flush();
             method_exchangeImplementations(originalMethod, swizzledMethod);
         }
     });
-
-    if(self.stubConfigUpdate == nil /*as default we stubbing it*/ || [self.stubConfigUpdate boolValue]) {
-        // as default we need to handle configuration update calls:
-        self.defaultConfigUpdateStub = [OHHTTPStubs stubRequestsPassingTest:[self filterUpdateConfigurationRequest]
-                                                       withStubResponse:[self responseEmptyWithCode:304]];
-    }
-
 }
 
 -(void)verify {}

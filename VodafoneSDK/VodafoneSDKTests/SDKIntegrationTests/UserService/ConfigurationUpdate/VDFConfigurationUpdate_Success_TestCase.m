@@ -28,14 +28,13 @@ static NSInteger const VERIFY_DELAY = 8;
 
 - (void)setUp
 {
-//    [self stubRequest:[self filterUpdateConfigurationRequest] withResponsesList:@[[super responseUpdateConfiguration200WithMaxAge:1800]]];
-    
-    self.stubConfigUpdate = [NSNumber numberWithBool:NO];// we do not stub as default configuration update
-    
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     
     [super rejectAnyNotHandledHttpCall];
+    
+    // wait 2 seconds that the configuration will perform update in SDK initialization
+    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 }
 
 - (void)tearDown
@@ -55,47 +54,54 @@ static NSInteger const VERIFY_DELAY = 8;
 
 - (void)test_isConfigurationUpdating_OnSDKInitialization {
     
-    // mock DI container:
-    id mockDIContainer = OCMPartialMock([VDFSettings globalDIContainer]);
-    
     // stub only one response of configuration update
     [super stubRequest:[self filterUpdateConfigurationRequest] withResponsesList:@[[super responseUpdateConfiguration200WithMaxAge:1800]]];
-    
-    // expect that the new configuration will be propagated over di container:
-    [[mockDIContainer expect] registerInstance:[OCMArg checkWithBlock:^BOOL(id obj) {
-        if(obj) {
-            VDFBaseConfiguration *newConf = (VDFBaseConfiguration*)obj;
-            
-            return [newConf.hapHost isEqualToString:@"http_test://ihap-pre.sp.vodafone.com_test"]
-            && [newConf.apixHost isEqualToString:@"https_test://apisit.developer.vodafone.com_test"]
-            && [newConf.oAuthTokenUrlPath isEqualToString:@"/2/oauth/access-token_test"]
-            && [newConf.oAuthTokenScope isEqualToString:@"seamless_id_resolve_test"]
-            && [newConf.oAuthTokenGrantType isEqualToString:@"client_credentials_test"]
-            && [newConf.serviceBasePath isEqualToString:@"/seamless-id/users/tokens_test"]
-            && newConf.defaultHttpConnectionTimeout == 56
-            && newConf.requestsThrottlingLimit == 23
-            && newConf.requestsThrottlingPeriod == 45
-            && [[newConf.availableMarkets allKeys] count] == 1 && [[newConf.availableMarkets valueForKey:@"PT_test"] intValue] == 123333
-            && [newConf.phoneNumberRegex isEqualToString:@"^[0-9]{7,12}$_test"]
-            && [newConf.availableMccMnc count] == 1 && [[newConf.availableMccMnc objectAtIndex:0] isEqualToString:@"26801_test"];
-        }
-        return NO;
-    }] forClass:[VDFBaseConfiguration class]];
     
     // run
     [VDFSettings initialize];
     
     // verify
-    [mockDIContainer verifyWithDelay:VERIFY_DELAY];
+    
+    NSTimeInterval delay = VERIFY_DELAY;
+    NSTimeInterval step = 0.1;
+    BOOL isConfigurationUpdated = NO;
+    
+    // expect that the new configuration will be propagated over di container:
+    while (delay > 0) {
+        VDFBaseConfiguration *newConf = [[VDFSettings globalDIContainer] resolveForClass:[VDFBaseConfiguration class]];
+        
+        isConfigurationUpdated = [newConf.hapHost isEqualToString:@"http_test://ihap-pre.sp.vodafone.com_test"]
+        && [newConf.apixHost isEqualToString:@"https_test://apisit.developer.vodafone.com_test"]
+        && [newConf.oAuthTokenUrlPath isEqualToString:@"/2/oauth/access-token_test"]
+        && [newConf.oAuthTokenScope isEqualToString:@"seamless_id_resolve_test"]
+        && [newConf.oAuthTokenGrantType isEqualToString:@"client_credentials_test"]
+        && [newConf.serviceBasePath isEqualToString:@"/seamless-id/users/tokens_test"]
+        && newConf.defaultHttpConnectionTimeout == 56
+        && newConf.requestsThrottlingLimit == 23
+        && newConf.requestsThrottlingPeriod == 45
+        && [[newConf.availableMarkets allKeys] count] == 1 && [[newConf.availableMarkets valueForKey:@"PT_test"] intValue] == 123333
+        && [newConf.phoneNumberRegex isEqualToString:@"^[0-9]{7,12}$_test"]
+        && [newConf.availableMccMnc count] == 1 && [[newConf.availableMccMnc objectAtIndex:0] isEqualToString:@"26801_test"];
+        
+        if(isConfigurationUpdated) {
+            break;
+        }
+        
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:step]];
+        delay -= step;
+        step += 0.1;
+    }
+    
+    XCTAssertTrue(isConfigurationUpdated, @"Configuration should update");
 }
 
 - (void)test_isConfigurationUpdating_OnUserResolve {
     
-    // mock DI container:
-    id mockDIContainer = OCMPartialMock([VDFSettings globalDIContainer]);
+    // mock
+    super.smsValidation = YES;
     
     // stub only one response of configuration update
-    [super stubRequest:[self filterUpdateConfigurationRequest] withResponsesList:@[[super responseUpdateConfiguration200WithMaxAge:1800]]];
+    [super stubRequest:[self filterUpdateConfigurationRequest] withResponsesList:@[ [super responseUpdateConfiguration200WithMaxAge:1800]]];
     
     // stub for o auth:
     [super stubRequest:[self filterOAuthRequest] withResponsesList:@[ [super responseOAuthSuccessExpireInSeconds:18000] ]];
@@ -103,33 +109,42 @@ static NSInteger const VERIFY_DELAY = 8;
     // stub for user resolve:
     [super stubRequest:[self filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve201] ]];
     
-    // expect that the new configuration will be propagated over di container:
-    [[mockDIContainer expect] registerInstance:[OCMArg checkWithBlock:^BOOL(id obj) {
-        if(obj) {
-            VDFBaseConfiguration *newConf = (VDFBaseConfiguration*)obj;
-            
-            return [newConf.hapHost isEqualToString:@"http_test://ihap-pre.sp.vodafone.com_test"]
-            && [newConf.apixHost isEqualToString:@"https_test://apisit.developer.vodafone.com_test"]
-            && [newConf.oAuthTokenUrlPath isEqualToString:@"/2/oauth/access-token_test"]
-            && [newConf.oAuthTokenScope isEqualToString:@"seamless_id_resolve_test"]
-            && [newConf.oAuthTokenGrantType isEqualToString:@"client_credentials_test"]
-            && [newConf.serviceBasePath isEqualToString:@"/seamless-id/users/tokens_test"]
-            && newConf.defaultHttpConnectionTimeout == 56
-            && newConf.requestsThrottlingLimit == 23
-            && newConf.requestsThrottlingPeriod == 45
-            && [[newConf.availableMarkets allKeys] count] == 1 && [[newConf.availableMarkets valueForKey:@"PT_test"] intValue] == 123333
-            && [newConf.phoneNumberRegex isEqualToString:@"^[0-9]{7,12}$_test"]
-            && [newConf.availableMccMnc count] == 1 && [[newConf.availableMccMnc objectAtIndex:0] isEqualToString:@"26801_test"];
-        }
-        return NO;
-    }] forClass:[VDFBaseConfiguration class]];
-    
     // run
-    [self.serviceToTest retrieveUserDetails:[[VDFUserResolveOptions alloc] initWithMSISDN:@"49123123123"]
-                                   delegate:self.mockDelegate];
+    [super.serviceToTest retrieveUserDetails:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]
+                                    delegate:super.mockDelegate];
     
     // verify
-    [mockDIContainer verifyWithDelay:VERIFY_DELAY];
+    NSTimeInterval delay = VERIFY_DELAY;
+    NSTimeInterval step = 0.1;
+    BOOL isConfigurationUpdated = NO;
+    
+    // expect that the new configuration will be propagated over di container:
+    while (delay > 0) {
+        VDFBaseConfiguration *newConf = [[VDFSettings globalDIContainer] resolveForClass:[VDFBaseConfiguration class]];
+        
+        isConfigurationUpdated = [newConf.hapHost isEqualToString:@"http_test://ihap-pre.sp.vodafone.com_test"]
+        && [newConf.apixHost isEqualToString:@"https_test://apisit.developer.vodafone.com_test"]
+        && [newConf.oAuthTokenUrlPath isEqualToString:@"/2/oauth/access-token_test"]
+        && [newConf.oAuthTokenScope isEqualToString:@"seamless_id_resolve_test"]
+        && [newConf.oAuthTokenGrantType isEqualToString:@"client_credentials_test"]
+        && [newConf.serviceBasePath isEqualToString:@"/seamless-id/users/tokens_test"]
+        && newConf.defaultHttpConnectionTimeout == 56
+        && newConf.requestsThrottlingLimit == 23
+        && newConf.requestsThrottlingPeriod == 45
+        && [[newConf.availableMarkets allKeys] count] == 1 && [[newConf.availableMarkets valueForKey:@"PT_test"] intValue] == 123333
+        && [newConf.phoneNumberRegex isEqualToString:@"^[0-9]{7,12}$_test"]
+        && [newConf.availableMccMnc count] == 1 && [[newConf.availableMccMnc objectAtIndex:0] isEqualToString:@"26801_test"];
+        
+        if(isConfigurationUpdated) {
+            break;
+        }
+        
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:step]];
+        delay -= step;
+        step += 0.1;
+    }
+    
+    XCTAssertTrue(isConfigurationUpdated, @"Configuration should update");
 }
 
 @end

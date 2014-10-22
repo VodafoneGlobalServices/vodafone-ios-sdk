@@ -34,8 +34,6 @@ static dispatch_once_t * oneInstanceToken;
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *currentResolveBuilder;
 @property (nonatomic, assign) id<VDFUsersServiceDelegate> currentDelegate;
 
-- (NSError*)checkPotentialHAPResolveError;
-
 - (void)retrieveUserDetailsOverHAP:(VDFUserResolveOptions*)options;
 - (void)retrieveUserDetailsOverAPIX:(VDFUserResolveOptions*)options;
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options;
@@ -203,6 +201,7 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)retrieveUserDetailsOverAPIX:(VDFUserResolveOptions*)options {
     
+    NSError *error = nil;
     // msisdn is provided so we need to read market code from msisdn
     VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
     VDFDeviceUtility *deviceUtility = [self.diContainer resolveForClass:[VDFDeviceUtility class]];
@@ -210,8 +209,27 @@ static dispatch_once_t * oneInstanceToken;
     options.market = [deviceUtility findMarketForMsisdn:options.msisdn inMarkets:configuration.availableMarkets];
     
     if(options.market == nil) {
-        // this phone number is not available for user resolve so cannot proceed next
-        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
+        // this phone number is not available for user resolve
+        error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
+    }
+    else {
+        // need to check msisdn validity
+        NSString *marketCode = [NSString stringWithFormat:@"%@", [configuration.availableMarkets valueForKey:options.market]];
+        
+        // let's remove market code from msisdn
+        NSString *phoneNumber = [options.msisdn stringByReplacingCharactersInRange:NSMakeRange(0, [marketCode length]) withString:[NSString string]];
+        
+        // validate the rest of msisdn
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:configuration.phoneNumberRegex options:NSRegularExpressionCaseInsensitive error:nil];
+        NSRange phoneNumberRange = NSMakeRange(0, [phoneNumber length]);
+        if(!NSEqualRanges([regex rangeOfFirstMatchInString:options.msisdn options:0 range:phoneNumberRange], phoneNumberRange)) {
+            // the msisdn is not valid
+            error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
+        }
+    }
+    
+    if(error != nil) {
+        // we have an error
         [self.currentDelegate didReceivedUserDetails:nil withError:error];
         self.currentDelegate = nil;
     }

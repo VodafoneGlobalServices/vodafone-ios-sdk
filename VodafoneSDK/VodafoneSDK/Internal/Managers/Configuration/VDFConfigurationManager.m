@@ -91,6 +91,8 @@
             configuration.availableMccMnc = @[ @"26801", @"22210", @"26202", @"21401", @"27201",
                                                @"20404", @"23415", @"22601", @"21670", @"20205",
                                                @"27801", @"27602", @"23003", @"65501" ];
+            
+            configuration.phoneNumberRegex = CONFIGURATION_DEFAULT_PHONE_NUMBER_REGEX;
         }
     }
     return configuration;

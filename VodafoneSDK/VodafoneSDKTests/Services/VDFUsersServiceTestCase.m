@@ -24,6 +24,7 @@
 #import "VDFSmsValidationRequestBuilder.h"
 #import "VDFUserResolveOptions.h"
 #import "VDFUserResolveOptions+Internal.h"
+#import "VDFDeviceUtility.h"
 
 extern void __gcov_flush();
 
@@ -40,6 +41,7 @@ extern void __gcov_flush();
 @property VDFUsersService *serviceToTest;
 @property VDFBaseConfiguration *configuration;
 @property id mockServiceRequestsManager;
+@property id mockDeviceUtility;
 @end
 
 @implementation VDFUsersServiceTestCase
@@ -53,9 +55,13 @@ extern void __gcov_flush();
     self.configuration = [[VDFBaseConfiguration alloc] init];
     self.mockServiceRequestsManager = OCMClassMock([VDFServiceRequestsManager class]);
     
+    self.mockDeviceUtility = OCMPartialMock([[VDFDeviceUtility alloc] init]);
+    [[[self.mockDeviceUtility stub] andReturnValue:OCMOCK_VALUE(VDFNetworkAvailableViaWiFi)] checkNetworkTypeAvailability];
+    
     id mockDIContainer = OCMClassMock([VDFDIContainer class]);
     [[[mockDIContainer stub] andReturn:self.configuration] resolveForClass:[VDFBaseConfiguration class]];
     [[[mockDIContainer stub] andReturn:self.mockServiceRequestsManager] resolveForClass:[VDFServiceRequestsManager class]];
+    [[[mockDIContainer stub] andReturn:self.mockDeviceUtility] resolveForClass:[VDFDeviceUtility class]];
     
     self.serviceToTest.diContainer = mockDIContainer;
 }
@@ -85,13 +91,14 @@ extern void __gcov_flush();
     id mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub
-    [[[options stub] andReturn:@"somethig stub"] msisdn];
-    [[[options stub] andReturn:@"somethig stub"] market];
+    [[[options stub] andReturn:@"12333444555"] msisdn];
     self.configuration.clientAppKey = @"some client app key";
     self.configuration.clientAppSecret = @"some client app secret";
     self.configuration.backendAppKey = @"some backend app key";
+    self.configuration.phoneNumberRegex = @"^[0-9]{9}$";
+    self.configuration.availableMarkets = @{@"AA": @12};
     
-    // expect that the perform request will be ivoked
+    // expect that the perform request will be invoked
     [[self.mockServiceRequestsManager expect] performRequestWithBuilder:[OCMArg checkWithBlock:^BOOL(id obj) {
         if(![obj isKindOfClass:[VDFRequestBuilderWithOAuth class]]) {
             return NO;
@@ -107,6 +114,7 @@ extern void __gcov_flush();
         &&[innerBuilder.clientAppSecret isEqualToString:self.configuration.clientAppSecret]
         &&[innerBuilder.backendAppKey isEqualToString:self.configuration.backendAppKey]
         && innerBuilder.requestOptions.smsValidation
+        && [innerBuilder.requestOptions.market isEqualToString:@"AA"]
         && [[[innerBuilder observersContainer] registeredObservers] containsObject:mockDelegate];
     }]];
     

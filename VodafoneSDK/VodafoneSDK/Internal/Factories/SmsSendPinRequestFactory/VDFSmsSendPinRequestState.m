@@ -24,8 +24,9 @@
             errorCode = VDFErrorInvalidInput;
         }
         if(response.httpResponseCode == 404) {
-            errorCode = VDFErrorResolutionTimeout;
+            errorCode = VDFErrorResolutionTimeout; // TODO move to parser
         }
+        // TODO obslugcy 403
         self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     }
 }

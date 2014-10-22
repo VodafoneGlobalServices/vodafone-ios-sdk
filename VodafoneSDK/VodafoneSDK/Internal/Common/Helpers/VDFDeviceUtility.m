@@ -27,7 +27,7 @@
     return [carrier mobileCountryCode];
 }
 
-+ (NSString*)simMccMnc {
+- (NSString*)simMccMnc {
     CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [networkInfo subscriberCellularProvider];
     NSString *mcc = [carrier mobileCountryCode];
@@ -38,7 +38,7 @@
     return nil;
 }
 
-+ (NSString*)findMarketForMsisdn:(NSString*)msisdn inMarkets:(NSDictionary*)markets {
+- (NSString*)findMarketForMsisdn:(NSString*)msisdn inMarkets:(NSDictionary*)markets {
 
     NSArray *sortedKeys = [markets keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         if([obj1 intValue] == [obj2 intValue]) {

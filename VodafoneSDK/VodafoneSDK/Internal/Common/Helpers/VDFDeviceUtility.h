@@ -60,7 +60,7 @@ typedef NS_ENUM(NSUInteger, VDFNetworkAvailability) {
  *      The device is outside of cellular service range.
  *      The value may be nil on hardware prior to iPhone 4S when in Airplane mode.
  */
-+ (NSString*)simMccMnc;
+- (NSString*)simMccMnc;
 
 /**
  *  Compare mcc included in msisdn to available market codes.
@@ -70,7 +70,7 @@ typedef NS_ENUM(NSUInteger, VDFNetworkAvailability) {
  *
  *  @return Market code (e.g. "DE") or nil if msisdn is wrong or mcc from msisdn is not avaialble in markets dictionary
  */
-+ (NSString*)findMarketForMsisdn:(NSString*)msisdn inMarkets:(NSDictionary*)markets;
+- (NSString*)findMarketForMsisdn:(NSString*)msisdn inMarkets:(NSDictionary*)markets;
 
 /**
  *  Check type of network with wich device is connected.

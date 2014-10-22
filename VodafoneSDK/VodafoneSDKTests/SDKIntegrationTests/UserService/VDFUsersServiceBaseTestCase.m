@@ -28,9 +28,6 @@ extern void __gcov_flush();
 @interface VDFUsersService ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
 
-- (NSError*)checkPotentialHAPResolveError;
-- (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
-
 - (void)resetOneInstanceToken;
 + (VDFNetworkReachability*)reachabilityForInternetConnection;
 @end
@@ -98,12 +95,12 @@ extern void __gcov_flush();
     self.serviceToTest = OCMPartialMock(self.service);
     self.mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
-    // stub the sim card checking
-    [[[self.serviceToTest stub] andReturn:nil] checkPotentialHAPResolveError];
-    
     // stub network checking class:
-    id mockDeviceUtility = OCMClassMock([VDFDeviceUtility class]);
+    VDFDeviceUtility *deviceUtility = [[VDFDeviceUtility alloc] init];
+    id mockDeviceUtility = OCMPartialMock(deviceUtility);
     [[[mockDeviceUtility stub] andReturnValue:OCMOCK_VALUE(VDFNetworkAvailableViaGSM)] checkNetworkTypeAvailability];
+    // stub the sim card checking
+    [[[mockDeviceUtility stub] andReturn:@"26801"] simMccMnc];
     [[VDFSettings globalDIContainer] registerInstance:mockDeviceUtility forClass:[VDFDeviceUtility class]];
     
     // stubbing verify with delay from ocmock framework

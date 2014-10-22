@@ -35,7 +35,10 @@ static dispatch_once_t * oneInstanceToken;
 @property (nonatomic, assign) id<VDFUsersServiceDelegate> currentDelegate;
 
 - (NSError*)checkPotentialHAPResolveError;
-- (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options;
+
+- (void)retrieveUserDetailsOverHAP:(VDFUserResolveOptions*)options;
+- (void)retrieveUserDetailsOverAPIX:(VDFUserResolveOptions*)options;
+- (void)retrieveUserDetails:(VDFUserResolveOptions*)options;
 
 #ifdef DEBUG
 - (void)resetOneInstanceToken;
@@ -77,35 +80,12 @@ static dispatch_once_t * oneInstanceToken;
     
     if(delegate != nil && self.currentSessionToken == nil && self.currentResolveBuilder == nil) {
         
-        
-        NSError *error = nil;
+        self.currentDelegate = delegate;
         if(options.msisdn == nil) {
-            error = [self checkPotentialHAPResolveError];
+            [self retrieveUserDetailsOverHAP:options];
         }
         else {
-            // msisdn is provided
-            error = [self updateResolveOptionsAndCheckMSISDNForError:options];
-        }
-        
-        if(error != nil) {
-            // there is error so we cannot start the request
-            [delegate didReceivedUserDetails:nil withError:error];
-        }
-        else {
-            // everything looks fine, move forward
-            
-            VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:delegate];
-            [[builder observersContainer] registerObserver:self withPriority:10]; // i neeed here some higher priority because service object need to be updated first
-            self.currentResolveBuilder = builder;
-            self.currentDelegate = delegate;
-            
-            id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
-            
-            [[self.diContainer resolveForClass:[VDFServiceRequestsManager class]] performRequestWithBuilder:builderWithOAuth];
-            
-            // on starting user resolve process we need to perform update of configuration
-            VDFConfigurationManager *configurationManager = [self.diContainer resolveForClass:[VDFConfigurationManager class]];
-            [configurationManager checkForUpdate];
+            [self retrieveUserDetailsOverAPIX:options];
         }
     }
 }
@@ -184,32 +164,76 @@ static dispatch_once_t * oneInstanceToken;
 
 #pragma mark -
 #pragma mark - Private Implementation
-- (NSError*)checkPotentialHAPResolveError {
-    NSString *mccMnc = [VDFDeviceUtility simMccMnc];
+
+- (void)retrieveUserDetailsOverHAP:(VDFUserResolveOptions*)options {
+    // check potential HAP resolve error
+    NSError *error = nil;
+    VDFUserTokenDetails *errorUserDetails = nil;
+    VDFDeviceUtility *deviceUtility = [self.diContainer resolveForClass:[VDFDeviceUtility class]];
+    
+    NSString *mccMnc = [deviceUtility simMccMnc];
     VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
     if(mccMnc != nil) {
         if(![configuration.availableMccMnc containsObject:mccMnc]) {
-            return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOperatorNotSupported userInfo:nil];
+            error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOperatorNotSupported userInfo:nil];
         }
     }
     else {
-        // in other case when mccMnc cannot be readed we are not connected to the GSM network so we can imidettly return error
-        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
+        if([deviceUtility checkNetworkTypeAvailability] == VDFNetworkNotAvailable) {
+            // in other case when mccMnc cannot be readed we are not connected to the GSM network so we can imidettly return error
+            error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
+        }
+        else {
+            // no GSM connection so we cannot perform resolve
+            errorUserDetails = [[VDFUserTokenDetails alloc] init];
+            errorUserDetails.resolutionStatus = VDFResolutionStatusUnableToResolve;
+        }
     }
-    return nil;
+    
+    if(error != nil || errorUserDetails != nil) {
+        // there is error so we cannot start the request
+        [self.currentDelegate didReceivedUserDetails:errorUserDetails withError:error];
+        self.currentDelegate = nil;
+    }
+    else {
+        // we can move forward
+        [self retrieveUserDetails:options];
+    }
 }
 
-- (NSError*)updateResolveOptionsAndCheckMSISDNForError:(VDFUserResolveOptions*)options {
-    // we need to read market code from msisdn
-    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+- (void)retrieveUserDetailsOverAPIX:(VDFUserResolveOptions*)options {
     
-    options.market = [VDFDeviceUtility findMarketForMsisdn:options.msisdn inMarkets:configuration.availableMarkets];
+    // msisdn is provided so we need to read market code from msisdn
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    VDFDeviceUtility *deviceUtility = [self.diContainer resolveForClass:[VDFDeviceUtility class]];
+    
+    options.market = [deviceUtility findMarketForMsisdn:options.msisdn inMarkets:configuration.availableMarkets];
     
     if(options.market == nil) {
-        // this phone number is not available for user resolve:
-        return [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorOperatorNotSupported userInfo:nil];
+        // this phone number is not available for user resolve so cannot proceed next
+        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
+        [self.currentDelegate didReceivedUserDetails:nil withError:error];
+        self.currentDelegate = nil;
     }
-    return nil;
+    else {
+        // we can move forward
+        [self retrieveUserDetails:options];
+    }
+}
+
+- (void)retrieveUserDetails:(VDFUserResolveOptions*)options {
+    
+    VDFUserResolveRequestBuilder *builder = [[VDFUserResolveRequestBuilder alloc] initWithOptions:options diContainer:self.diContainer delegate:self.currentDelegate];
+    [[builder observersContainer] registerObserver:self withPriority:10]; // i neeed here some higher priority because service object need to be updated first
+    self.currentResolveBuilder = builder;
+    
+    id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
+    
+    [[self.diContainer resolveForClass:[VDFServiceRequestsManager class]] performRequestWithBuilder:builderWithOAuth];
+    
+    // on starting user resolve process we need to perform update of configuration
+    VDFConfigurationManager *configurationManager = [self.diContainer resolveForClass:[VDFConfigurationManager class]];
+    [configurationManager checkForUpdate];
 }
 
 #pragma mark -

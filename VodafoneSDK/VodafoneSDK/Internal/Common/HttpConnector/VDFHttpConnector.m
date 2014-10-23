@@ -130,15 +130,6 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     [request setValue:[NSString stringWithFormat:@"VFSeamlessID SDK/iOS (v%@)-%@-%@", [VDFSettings sdkVersion], configuration.clientAppKey, configuration.backendAppKey] forHTTPHeaderField:XVF_SOURCE_HEADER];
     [request setValue:[VDFStringHelper randomString] forHTTPHeaderField:XVF_TRANSACTION_ID_HEADER];
     [request setValue:[NSString stringWithFormat:@"VFSeamlessID SDK/iOS (v%@)", [VDFSettings sdkVersion]] forHTTPHeaderField:HTTP_HEADER_USER_AGENT];
-//   
-//    [request setValue:@"DE" forHTTPHeaderField:@"x-int-opco"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
-//    [request setValue:@"447880400514" forHTTPHeaderField:@"x-sdp-msisdn"]; // TODO IMPORTANT only for testing purpose, against apix test backend
-//    
-//    
-//    
-//    [request setValue:@"seamless_id_user_details_all" forHTTPHeaderField:@"scope"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
-//    [request setValue:@"seamless_id_user_details_all" forHTTPHeaderField:@"backendScopes"]; // TODO IMPORTANT only for testing purpose, against http://SeamId-4090514559.eu-de1.plex.vodafone.com backend
-//
 }
  
 - (void)get:(NSString*)url {

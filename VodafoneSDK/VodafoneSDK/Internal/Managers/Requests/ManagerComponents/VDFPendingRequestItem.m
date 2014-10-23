@@ -77,12 +77,10 @@
     
     // wee need to inform any other request if any is waiting for response of currently finished response:
     for (VDFPendingRequestItem *pendingItem in [self.parentQueue allPendingRequests]) {
-        if([[pendingItem.builder requestState] isWaitingForResponseOfBuilder:self.builder]) {
+        if([[pendingItem.builder requestState] canHandleResponse:response ofConnectedBuilder:self.builder]) {
             VDFLogD(@"Informing connected request with response of currently finished request on which is waiting.");
-            if([[pendingItem.builder requestState] canHandleResponse:response ofConnectedBuilder:self.builder]) {
-                [pendingItem parseAndNotifyWithResponse:response];
-                [pendingItem checkNextStepWithBuilderState];
-            }
+            [pendingItem parseAndNotifyWithResponse:response];
+            [pendingItem checkNextStepWithBuilderState];
         }
     }
 }

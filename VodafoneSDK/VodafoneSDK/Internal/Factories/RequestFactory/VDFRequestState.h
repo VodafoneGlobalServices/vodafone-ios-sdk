@@ -42,8 +42,6 @@
 
 - (BOOL)isConnectedRequestResponseNeeded;
 
-- (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder;
-
 - (BOOL)canHandleResponse:(VDFHttpConnectorResponse*)response ofConnectedBuilder:(id<VDFRequestBuilder>)builder;
 
 /**

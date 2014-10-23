@@ -33,10 +33,6 @@
     return NO;
 }
 
-- (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder {
-    return NO;
-}
-
 - (BOOL)canHandleResponse:(VDFHttpConnectorResponse*)response ofConnectedBuilder:(id<VDFRequestBuilder>)builder {
     return NO;
 }

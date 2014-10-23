@@ -147,7 +147,7 @@
     // or in any other cases when sessionToken expire
     
     BOOL isExpectedResponse = NO;
-    if([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]] && response != nil) {
+    if([self isConnectedRequestResponseNeeded] && [builder isKindOfClass:[VDFRequestBuilderWithOAuth class]] && response != nil) {
         VDFRequestBuilderWithOAuth *builderWithOAuth = (VDFRequestBuilderWithOAuth*)builder;
         NSError *errorInResponse = [[builder requestState] responseError];
         
@@ -157,7 +157,7 @@
         // check for session token expiration
         isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorResolutionTimeout);
         
-        // check is this propably not oAuth token response
+        // check is this oAuth token response, if it is from oAuth then we cannot handle this:
         id requestState = [builderWithOAuth requestState];
         if([requestState isKindOfClass:[VDFRequestStateWithOAuth class]]) {
             VDFRequestStateWithOAuth *requestStateOAuth = (VDFRequestStateWithOAuth*)requestState;
@@ -169,19 +169,9 @@
         // we need to retry request imidettly:
         self.retryAfterMiliseconds = 0;
         self.currentResolutionStatus = VDFResolutionStatusUnableToResolve;
-        return YES; // YES we can handle this response object
     }
-    return NO;
-}
-
-- (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder {
-    if([self isConnectedRequestResponseNeeded]) {
-        if([builder isKindOfClass:[VDFRequestBuilderWithOAuth class]]) {
-            return [(VDFRequestBuilderWithOAuth*)builder isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]];
-        }
-        return [builder isKindOfClass:[VDFSmsValidationRequestBuilder class]];
-    }
-    return NO;
+    
+    return isExpectedResponse;
 }
 
 - (NSError*)responseError {

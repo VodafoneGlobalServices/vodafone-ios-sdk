@@ -96,13 +96,6 @@
     return [self.internalRequestState isConnectedRequestResponseNeeded];
 }
 
-- (BOOL)isWaitingForResponseOfBuilder:(id<VDFRequestBuilder>)builder {
-    if(self.needRetryForOAuth) {
-        return NO;
-    }
-    return [self.internalRequestState isWaitingForResponseOfBuilder:builder];
-}
-
 - (BOOL)canHandleResponse:(VDFHttpConnectorResponse*)response ofConnectedBuilder:(id<VDFRequestBuilder>)builder {
     if(self.needRetryForOAuth) {
         return NO;

@@ -95,15 +95,15 @@ static NSInteger const VERIFY_DELAY = 3;
 #pragma mark for 403 response
 
 - (void)test_FirstCheckStatusWithSmsValidationNO_403_Error {
-    [self doTestForFirstCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
+    [self doTestForFirstCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
 }
 
 - (void)test_FirstCheckStatusWithSmsValidationYES_403_Error {
-    [self doTestForFirstCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
+    [self doTestForFirstCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
 }
 
 - (void)test_FirstCheckStatusWithMSISDN_403_Error {
-    [self doTestForFirstCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
+    [self doTestForFirstCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
 }
 
 
@@ -162,15 +162,15 @@ static NSInteger const VERIFY_DELAY = 3;
 #pragma mark for 403 response
 
 - (void)test_CheckStatusWithSmsValidationNO_403_Error {
-    [self doTestCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
+    [self doTestCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
 }
 
 - (void)test_CheckStatusWithSmsValidationYES_403_Error {
-    [self doTestCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
+    [self doTestCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
 }
 
 - (void)test_CheckStatusWithMSISDN_403_Error {
-    [self doTestCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
+    [self doTestCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
 }
 
 

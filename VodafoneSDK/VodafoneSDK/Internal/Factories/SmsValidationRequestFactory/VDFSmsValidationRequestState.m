@@ -29,6 +29,9 @@
         else if(response.httpResponseCode == 404) {
             errorCode = VDFErrorResolutionTimeout;
         }
+        if(response.httpResponseCode == 403) {
+            errorCode = VDFErrorOfResolution;
+        }
         else if(response.httpResponseCode == 409) {
             errorCode = VDFErrorWrongSmsCode;
         }

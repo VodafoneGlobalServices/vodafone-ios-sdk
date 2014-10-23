@@ -26,7 +26,9 @@
         if(response.httpResponseCode == 404) {
             errorCode = VDFErrorResolutionTimeout;
         }
-        // TODO obslugcy 403
+        if(response.httpResponseCode == 403) {
+            errorCode = VDFErrorOfResolution;
+        }
         self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     }
 }

@@ -64,6 +64,9 @@
         if(response.httpResponseCode == 400) {
             errorCode = VDFErrorInvalidInput;
         }
+        if(response.httpResponseCode == 403) {
+            errorCode = VDFErrorOfResolution;
+        }
         self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     }
 }

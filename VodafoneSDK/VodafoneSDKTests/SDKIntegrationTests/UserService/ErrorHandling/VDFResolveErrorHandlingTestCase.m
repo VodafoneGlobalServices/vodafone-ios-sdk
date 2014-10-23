@@ -97,15 +97,15 @@ static NSInteger const VERIFY_DELAY = 8;
 
 
 - (void)test_ResolveWithSmsValidationNO_403_Error {
-    [self doTestForEmptyHttpResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
+    [self doTestForEmptyHttpResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
 }
 
 - (void)test_ResolveWithSmsValidationYES_403_Error {
-    [self doTestForEmptyHttpResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
+    [self doTestForEmptyHttpResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
 }
 
 - (void)test_ResolveWithMSISDN_403_Error {
-    [self doTestForEmptyHttpResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
+    [self doTestForEmptyHttpResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
 }
 
 

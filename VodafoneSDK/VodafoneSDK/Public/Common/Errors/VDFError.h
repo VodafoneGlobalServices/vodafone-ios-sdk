@@ -54,7 +54,11 @@ typedef NS_ENUM(NSInteger, VDFErrorCode) {
     /**
      *  Mobile country code included in msisdn is not supported by user resolve or user resolve cannot be continued because device is in another cellurar network than Vodafone.
      */
-    VDFErrorOperatorNotSupported
+    VDFErrorOperatorNotSupported,
+    /**
+     *  Any other error scenario
+     */
+    VDFErrorOfResolution,
 };
 
 

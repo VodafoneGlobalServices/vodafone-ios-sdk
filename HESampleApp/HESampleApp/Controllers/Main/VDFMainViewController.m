@@ -109,6 +109,7 @@
         case VDFErrorWrongSmsCode: return @"VDFErrorWrongSmsCode";
         case VDFErrorAuthorizationFailed: return @"VDFErrorAuthorizationFailed";
         case VDFErrorOperatorNotSupported: return @"VDFErrorOperatorNotSupported";
+        case VDFErrorOfResolution: return @"VDFErrorOfResolution";
         default:
             return [NSString stringWithFormat:@"%i", errorCode];
     }

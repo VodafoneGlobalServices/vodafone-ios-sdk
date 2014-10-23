@@ -111,15 +111,15 @@ static NSInteger const VERIFY_DELAY = 3;
 #pragma mark for 403 response
 
 - (void)test_ForValidatePin_InFirst_ResolveResponse_WithSmsValidationNO_403_Error {
-    [self doTest_ForValidatePin_InFirst_ResolveResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
+    [self doTest_ForValidatePin_InFirst_ResolveResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
 }
 
 - (void)test_ForValidatePin_InFirst_ResolveResponse_WithSmsValidationYES_403_Error {
-    [self doTest_ForValidatePin_InFirst_ResolveResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
+    [self doTest_ForValidatePin_InFirst_ResolveResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
 }
 
 - (void)test_ForValidatePin_InFirst_ResolveResponse_WithMSISDN_403_Error {
-    [self doTest_ForValidatePin_InFirst_ResolveResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
+    [self doTest_ForValidatePin_InFirst_ResolveResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
 }
 
 
@@ -198,15 +198,15 @@ static NSInteger const VERIFY_DELAY = 3;
 #pragma mark for 403 response
 
 - (void)test_ForSendPin_InNextCheckStatusResponse_WithSmsValidationNO_403_Error {
-    [self doTest_ForValidatePin_InNextCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
+    [self doTest_ForValidatePin_InNextCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
 }
 
 - (void)test_ForSendPin_InNextCheckStatusResponse_WithSmsValidationYES_403_Error {
-    [self doTest_ForValidatePin_InNextCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
+    [self doTest_ForValidatePin_InNextCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
 }
 
 - (void)test_ForSendPin_InNextCheckStatusResponse_WithMSISDN_403_Error {
-    [self doTest_ForValidatePin_InNextCheckStatusResponse:403 errorCode:VDFErrorServerCommunication options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
+    [self doTest_ForValidatePin_InNextCheckStatusResponse:403 errorCode:VDFErrorOfResolution options:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
 }
 
 

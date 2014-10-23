@@ -48,4 +48,13 @@
     return [VDFStringHelper md5FromString:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]]];
 }
 
++ (BOOL)isStringValid:(NSString*)stringToCheck withRegularExpression:(NSString*)regexString {
+    NSParameterAssert(stringToCheck);
+    NSParameterAssert(regexString);
+    
+    NSRange range = NSMakeRange(0, [stringToCheck length]);
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:NSRegularExpressionCaseInsensitive error:nil];
+    return NSEqualRanges([regex rangeOfFirstMatchInString:stringToCheck options:0 range:range], range);
+}
+
 @end

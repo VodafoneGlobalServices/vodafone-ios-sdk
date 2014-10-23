@@ -33,6 +33,7 @@ static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT = 60.0
 static NSInteger const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT = 100;
 static NSTimeInterval const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD = 60.0; // 60 seconds
 static NSString * const CONFIGURATION_DEFAULT_PHONE_NUMBER_REGEX = @"^[0-9]{7,12}$"; // default phone number validation regex
+static NSString * const CONFIGURATION_DEFAULT_SMS_CODE_REGEX = @"^[0-9]{4}$"; // default sms code validation regex
 
 static NSString * const CONFIGURATION_CACHE_FILE_NAME = @"baseConfig.dat";
 

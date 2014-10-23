@@ -21,6 +21,7 @@ static NSString * const RequestsThrottlingPeriodKey = @"requestsThrottlingPeriod
 static NSString * const AvailableMarketsKey = @"availableMarkets";
 static NSString * const PhoneNumberRegexKey = @"phoneNumberRegex";
 static NSString * const AvailableMccMncKey = @"availableMccMnc";
+static NSString * const SmsCodeValidationRegexKey = @"smsCodeValidationRegex";
 static NSString * const ConfigurationUpdateLastModifiedKey = @"configurationUpdateLastModified";
 static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
 
@@ -44,6 +45,7 @@ static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
         self.availableMarkets = [decoder decodeObjectForKey:AvailableMarketsKey];
         self.phoneNumberRegex = [decoder decodeObjectForKey:PhoneNumberRegexKey];
         self.availableMccMnc = [decoder decodeObjectForKey:AvailableMccMncKey];
+        self.smsCodeValidationRegex = [decoder decodeObjectForKey:SmsCodeValidationRegexKey];
         self.configurationUpdateLastModified = [decoder decodeObjectForKey:ConfigurationUpdateLastModifiedKey];
         self.configurationUpdateEtag = [decoder decodeObjectForKey:ConfigurationUpdateEtagKey];
     }
@@ -63,6 +65,7 @@ static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
     [encoder encodeObject:self.availableMarkets forKey:AvailableMarketsKey];
     [encoder encodeObject:self.phoneNumberRegex forKey:PhoneNumberRegexKey];
     [encoder encodeObject:self.availableMccMnc forKey:AvailableMccMncKey];
+    [encoder encodeObject:self.smsCodeValidationRegex forKey:SmsCodeValidationRegexKey];
     [encoder encodeObject:self.configurationUpdateLastModified forKey:ConfigurationUpdateLastModifiedKey];
     [encoder encodeObject:self.configurationUpdateEtag forKey:ConfigurationUpdateEtagKey];
 }

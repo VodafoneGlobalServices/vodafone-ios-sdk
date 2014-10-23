@@ -44,4 +44,14 @@
  */
 + (NSString*)randomString;
 
+/**
+ *  Validates string with regular expression.
+ *
+ *  @param stringToCheck String to validate.
+ *  @param regexString   Regular expression of string validation.
+ *
+ *  @return YES - if string pass regular expression validation, NO - if string not pass regular expression check.
+ */
++ (BOOL)isStringValid:(NSString*)stringToCheck withRegularExpression:(NSString*)regexString;
+
 @end

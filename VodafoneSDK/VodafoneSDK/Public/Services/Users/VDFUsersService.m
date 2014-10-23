@@ -25,6 +25,7 @@
 #import "VDFDeviceUtility.h"
 #import "VDFUserTokenDetails+Internal.h"
 #import "VDFConfigurationManager.h"
+#import "VDFStringHelper.h"
 
 static dispatch_once_t * oneInstanceToken;
 
@@ -98,10 +99,14 @@ static dispatch_once_t * oneInstanceToken;
     if(self.currentSessionToken != nil && self.currentResolveBuilder != nil) {
         // create request object
         id builder = [[VDFSmsSendPinRequestBuilder alloc] initWithSessionToken:self.currentSessionToken diContainer:self.diContainer delegate:self.currentDelegate];
-        
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
-        
         [[self.diContainer resolveForClass:[VDFServiceRequestsManager class]] performRequestWithBuilder:builderWithOAuth];
+    }
+    else {
+        // return invalid input because we do not have started session
+        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
+        [self.currentDelegate didSMSPinRequested:@NO withError:error];
+        self.currentDelegate = nil;
     }
 }
 
@@ -114,13 +119,18 @@ static dispatch_once_t * oneInstanceToken;
     NSParameterAssert(configuration.clientAppSecret);
     NSParameterAssert(configuration.backendAppKey);
     
-    if(self.currentSessionToken != nil && self.currentResolveBuilder != nil) {
+    
+    if(self.currentSessionToken == nil || self.currentResolveBuilder == nil
+       || ![VDFStringHelper isStringValid:smsCode withRegularExpression:configuration.smsCodeValidationRegex]) {
         
+        // return invalid input because we do not have started session or pin is invalid
+        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
+        [self.currentDelegate didSMSPinRequested:@NO withError:error];
+    }
+    else {
         // create request object
         id builder = [[VDFSmsValidationRequestBuilder alloc] initWithSessionToken:self.currentSessionToken smsCode:smsCode diContainer:self.diContainer delegate:self.currentDelegate];
-        
         id builderWithOAuth = [[VDFRequestBuilderWithOAuth alloc] initWithBuilder:builder oAuthTokenSetSelector:@selector(setOAuthToken:)];
-        
         [[self.diContainer resolveForClass:[VDFServiceRequestsManager class]] performRequestWithBuilder:builderWithOAuth];
     }
 }
@@ -220,9 +230,7 @@ static dispatch_once_t * oneInstanceToken;
         NSString *phoneNumber = [options.msisdn stringByReplacingCharactersInRange:NSMakeRange(0, [marketCode length]) withString:[NSString string]];
         
         // validate the rest of msisdn
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:configuration.phoneNumberRegex options:NSRegularExpressionCaseInsensitive error:nil];
-        NSRange phoneNumberRange = NSMakeRange(0, [phoneNumber length]);
-        if(!NSEqualRanges([regex rangeOfFirstMatchInString:options.msisdn options:0 range:phoneNumberRange], phoneNumberRange)) {
+        if(![VDFStringHelper isStringValid:phoneNumber withRegularExpression:configuration.phoneNumberRegex]) {
             // the msisdn is not valid
             error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
         }

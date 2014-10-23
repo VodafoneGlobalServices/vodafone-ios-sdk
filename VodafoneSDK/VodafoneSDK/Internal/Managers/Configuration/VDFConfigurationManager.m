@@ -93,6 +93,7 @@
                                                @"27801", @"27602", @"23003", @"65501" ];
             
             configuration.phoneNumberRegex = CONFIGURATION_DEFAULT_PHONE_NUMBER_REGEX;
+            configuration.smsCodeValidationRegex = CONFIGURATION_DEFAULT_SMS_CODE_REGEX;
         }
     }
     return configuration;

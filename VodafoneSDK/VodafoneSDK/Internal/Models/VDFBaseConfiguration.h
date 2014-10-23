@@ -90,4 +90,9 @@
  */
 @property (nonatomic, strong) NSArray *availableMccMnc;
 
+/**
+ *  Regular expression used to validate sms pin used to validate in resolution process
+ */
+@property (nonatomic, strong) NSString *smsCodeValidationRegex;
+
 @end

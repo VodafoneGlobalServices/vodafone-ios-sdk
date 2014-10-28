@@ -204,21 +204,6 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     }
 }
 
-// TODO VERY IMPORTANT - in release for production we need to remove accepting of all ssl certificates !!!!!!
-
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
-    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-        // accepting all ssl certificates
-        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-    }
-    
-    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-}
-
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
     [self.receivedData setLength:0];
     _lastResponseCode = [(NSHTTPURLResponse*)response statusCode];

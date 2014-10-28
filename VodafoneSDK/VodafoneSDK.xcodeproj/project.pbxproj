@@ -1354,7 +1354,6 @@
 				49E74BB21962F9D50080EB14 /* Frameworks */,
 				49E74BB31962F9D50080EB14 /* CopyFiles */,
 				49F1B5141963F45800D9F6AB /* Headers */,
-				49139DEE1965F3C9004EE1D6 /* Build Framework */,
 			);
 			buildRules = (
 			);
@@ -1462,20 +1461,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		49139DEE1965F3C9004EE1D6 /* Build Framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Build Framework";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#set -e\n\n#export FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers dir\n#mkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n#/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n#/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n#/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n #\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n#/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Remove copied framework file if exists\n#/bin/rm -rf \"${SRCROOT}/${PRODUCT_NAME}.framework\"\n\n# Copy created framework file to project directory\n#/bin/cp -a \"${FRAMEWORK_LOCN}\" \"${WORKSPACE}/\"\n\n";
-		};
 		4985C76719DBF75D0064BCB7 /* Cleaning Profiler Information */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1516,7 +1501,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -ex\n\n# If we're already inside this script then die\nif [ -n \"$VOD_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport VOD_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\n\nPROJ_NAME=VodafoneSDK\n\nINSTALL_PATH=$WORKSPACE/artifacts\n[ -z $INSTALL_PATH ] || INSTALL_PATH=$PWD/artifacts\n\nrm -rf $INSTALL_PATH\nmkdir -p $INSTALL_PATH\n\nPROJ=VodafoneSDK.xcodeproj\n\nDEVICE_OUTPUT=$INSTALL_PATH/device\nSIMULATOR_OUTPUT=$INSTALL_PATH/simulator\n\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphoneos \\\nINSTALL_ROOT=$DEVICE_OUTPUT \\\nBUILT_PRODUCTS_DIR=$DEVICE_OUTPUT \\\nARCHS=\"armv7 armv7s arm64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$DEVICE_OUTPUT \\\nOBJROOT=$DEVICE_OUTPUT \\\nBUILD_ROOT=$DEVICE_OUTPUT \\\nSYMROOT=$DEVICE_OUTPUT \\\nTARGET_BUILD_DIR=$DEVICE_OUTPUT \\\ninstall\n\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphonesimulator \\\nINSTALL_ROOT=$SIMULATOR_OUTPUT \\\nBUILT_PRODUCTS_DIR=$SIMULATOR_OUTPUT \\\nARCHS=\"i386 x86_64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$SIMULATOR_OUTPUT \\\nOBJROOT=$SIMULATOR_OUTPUT \\\nBUILD_ROOT=$SIMULATOR_OUTPUT \\\nSYMROOT=$SIMULATOR_OUTPUT \\\nTARGET_BUILD_DIR=$SIMULATOR_OUTPUT \\\ninstall\n\n\n# create .framework file\nexport FRAMEWORK_LOCN=\"${INSTALL_PATH}/${PROJ_NAME}.framework\"\n\n# Create the path to the real Headers dir\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PROJ_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PROJ_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a $INSTALL_PATH/device/usr/local/lib/include/VodafoneSDK/ \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n\n# Join the 2 static libs into 1 and push into the .framework\nlipo -create \\\n$INSTALL_PATH/device/usr/local/lib/lib$PROJ_NAME.a \\\n$INSTALL_PATH/simulator/usr/local/lib/lib$PROJ_NAME.a \\\n-output $FRAMEWORK_LOCN/Versions/Current/$PROJ_NAME\n\n\n\n# remove files from install path's\nrm -rf $INSTALL_PATH/device $INSTALL_PATH/simulator\n\n\n";
+			shellScript = "set -ex\n\n# If we're already inside this script then die\nif [ -n \"$VOD_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport VOD_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\n\nPROJ_NAME=VodafoneSDK\n\nINSTALL_PATH=$WORKSPACE/../artifacts\n[ -z $INSTALL_PATH ] || INSTALL_PATH=$PWD/../artifacts\n\nrm -rf $INSTALL_PATH\nmkdir -p $INSTALL_PATH\n\nPROJ=VodafoneSDK.xcodeproj\n\nDEVICE_OUTPUT=$INSTALL_PATH/device\nSIMULATOR_OUTPUT=$INSTALL_PATH/simulator\n\n# make build for iphone device\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphoneos \\\nINSTALL_ROOT=$DEVICE_OUTPUT \\\nBUILT_PRODUCTS_DIR=$DEVICE_OUTPUT \\\nARCHS=\"armv7 armv7s arm64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$DEVICE_OUTPUT \\\nOBJROOT=$DEVICE_OUTPUT \\\nBUILD_ROOT=$DEVICE_OUTPUT \\\nSYMROOT=$DEVICE_OUTPUT \\\nTARGET_BUILD_DIR=$DEVICE_OUTPUT \\\ninstall\n\n# make build for iphone simulator\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphonesimulator \\\nINSTALL_ROOT=$SIMULATOR_OUTPUT \\\nBUILT_PRODUCTS_DIR=$SIMULATOR_OUTPUT \\\nARCHS=\"i386 x86_64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$SIMULATOR_OUTPUT \\\nOBJROOT=$SIMULATOR_OUTPUT \\\nBUILD_ROOT=$SIMULATOR_OUTPUT \\\nSYMROOT=$SIMULATOR_OUTPUT \\\nTARGET_BUILD_DIR=$SIMULATOR_OUTPUT \\\ninstall\n\n\n# create .framework file\nexport FRAMEWORK_LOCN=\"${INSTALL_PATH}/${PROJ_NAME}.framework\"\n\n# Create the path to the real Headers dir\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PROJ_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PROJ_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a $INSTALL_PATH/device/usr/local/lib/include/VodafoneSDK/ \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n\n# Join the 2 static libs into 1 and push into the .framework\nlipo -create \\\n$INSTALL_PATH/device/usr/local/lib/lib$PROJ_NAME.a \\\n$INSTALL_PATH/simulator/usr/local/lib/lib$PROJ_NAME.a \\\n-output $FRAMEWORK_LOCN/Versions/Current/$PROJ_NAME\n\n\n\n# remove files from install path's\nrm -rf $INSTALL_PATH/device $INSTALL_PATH/simulator\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

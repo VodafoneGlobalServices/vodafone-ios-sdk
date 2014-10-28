@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		496883F919FEA1B9002C3479 /* Framework-jenkins */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 496883FD19FEA1B9002C3479 /* Build configuration list for PBXAggregateTarget "Framework-jenkins" */;
-			buildPhases = (
-				496883FC19FEA1B9002C3479 /* MultiPlatform Script */,
-			);
-			dependencies = (
-			);
-			name = "Framework-jenkins";
-			productName = Framework;
-		};
 		49C244AA1976A2CE00B34512 /* Framework */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 49C244AB1976A2CE00B34512 /* Build configuration list for PBXAggregateTarget "Framework" */;
@@ -25,7 +14,6 @@
 				49C244B01976A39600B34512 /* MultiPlatform Script */,
 			);
 			dependencies = (
-				49C244B21976AFDD00B34512 /* PBXTargetDependency */,
 			);
 			name = Framework;
 			productName = Framework;
@@ -239,13 +227,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 095981D219806A7900807DBE;
 			remoteInfo = "OHHTTPStubs Mac Tests";
-		};
-		49C244B11976AFDD00B34512 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49E74BAD1962F9D50080EB14 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 49E74BB41962F9D50080EB14;
-			remoteInfo = VodafoneSDK;
 		};
 		49E74BCB1962F9D60080EB14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1433,7 +1414,6 @@
 				49E74BB41962F9D50080EB14 /* VodafoneSDK */,
 				49E74BC41962F9D60080EB14 /* VodafoneSDKTests */,
 				49C244AA1976A2CE00B34512 /* Framework */,
-				496883F919FEA1B9002C3479 /* Framework-jenkins */,
 			);
 		};
 /* End PBXProject section */
@@ -1494,21 +1474,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers dir\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n \"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Remove copied framework file if exists\n#/bin/rm -rf \"${SRCROOT}/${PRODUCT_NAME}.framework\"\n\n# Copy created framework file to project directory\n#/bin/cp -a \"${FRAMEWORK_LOCN}\" \"${WORKSPACE}/\"\n\n";
-		};
-		496883FC19FEA1B9002C3479 /* MultiPlatform Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "MultiPlatform Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nset -ex\n\n# If we're already inside this script then die\nif [ -n \"$VOD_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport VOD_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\n\nPROJ_NAME=VodafoneSDK\n\nINSTALL_PATH=$WORKSPACE/artifacts\n[ -z $INSTALL_PATH ] || INSTALL_PATH=$PWD/artifacts\n\nrm -rf $INSTALL_PATH\nmkdir -p $INSTALL_PATH\n\nPROJ=VodafoneSDK.xcodeproj\n\nDEVICE_OUTPUT=$INSTALL_PATH/device\nSIMULATOR_OUTPUT=$INSTALL_PATH/simulator\n\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphoneos \\\nINSTALL_ROOT=$DEVICE_OUTPUT \\\nBUILT_PRODUCTS_DIR=$DEVICE_OUTPUT \\\nARCHS=\"armv7 armv7s arm64 i386 x86_64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$DEVICE_OUTPUT \\\nOBJROOT=$DEVICE_OUTPUT \\\nBUILD_ROOT=$DEVICE_OUTPUT \\\nSYMROOT=$DEVICE_OUTPUT \\\nTARGET_BUILD_DIR=$DEVICE_OUTPUT \\\ninstall\n\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphonesimulator \\\nINSTALL_ROOT=$SIMULATOR_OUTPUT \\\nBUILT_PRODUCTS_DIR=$SIMULATOR_OUTPUT \\\nARCHS=\"armv7 armv7s arm64 i386 x86_64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$SIMULATOR_OUTPUT \\\nOBJROOT=$SIMULATOR_OUTPUT \\\nBUILD_ROOT=$SIMULATOR_OUTPUT \\\nSYMROOT=$SIMULATOR_OUTPUT \\\nTARGET_BUILD_DIR=$SIMULATOR_OUTPUT \\\ninstall\n\n\n# create .framework file\nexport FRAMEWORK_LOCN=\"${INSTALL_PATH}/${PROJ_NAME}.framework\"\n\n# Create the path to the real Headers dir\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PROJ_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PROJ_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a $INSTALL_PATH/device/usr/local/lib/include/VodafoneSDK/ \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n\n# Join the 2 static libs into 1 and push into the .framework\nlipo -create \\\n$INSTALL_PATH/device/usr/local/lib/lib$PROJ_NAME.a \\\n$INSTALL_PATH/simulator/usr/local/lib/lib$PROJ_NAME.a \\\n-output $FRAMEWORK_LOCN/Versions/Current/$PROJ_NAME\n\n\n\n# remove files from install path's\nrm -rf $INSTALL_PATH/device $INSTALL_PATH/simulator\n\n\n";
+			shellScript = "#set -e\n\n#export FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework\"\n\n# Create the path to the real Headers dir\n#mkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n#/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n#/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n#/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n #\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n#/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Remove copied framework file if exists\n#/bin/rm -rf \"${SRCROOT}/${PRODUCT_NAME}.framework\"\n\n# Copy created framework file to project directory\n#/bin/cp -a \"${FRAMEWORK_LOCN}\" \"${WORKSPACE}/\"\n\n";
 		};
 		4985C76719DBF75D0064BCB7 /* Cleaning Profiler Information */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1550,7 +1516,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\n# If we're already inside this script then die\nif [ -n \"$VOD_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport VOD_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nVOD_FRAMEWORK_NAME=${PROJECT_NAME}\nVOD_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nVOD_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${VOD_FRAMEWORK_NAME}.framework\"\n\n\nfunction build_static_library {\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    # BUILD_DIR=\"${BUILD_DIR}\"\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\necho \"SCRIPT_OUTPUT= 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\"\necho \"SDK_NAME:$SDK_NAME\"\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nVOD_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n\n\n# 2 - Extract the version from the SDK\necho \"SCRIPT_OUTPUT= 2 - Extract the version from the SDK\"\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nVOD_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n\n# 3 - Determine the other platform\necho \"SCRIPT_OUTPUT= 3 - Determine the other platform\"\nif [ \"$VOD_SDK_PLATFORM\" == \"iphoneos\" ]; then\nVOD_OTHER_PLATFORM=iphonesimulator\nelse\nVOD_OTHER_PLATFORM=iphoneos\nfi\n\n# Build the other platform.\necho \"SCRIPT_OUTPUT= Build the other platform.\"\nbuild_static_library \"${VOD_OTHER_PLATFORM}${VOD_SDK_VERSION}\"\n\n\n# 4 - Find the build directory\necho \"SCRIPT_OUTPUT= 4 - Find the build directory\"\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$VOD_SDK_PLATFORM$ ]]; then\nVOD_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${VOD_OTHER_PLATFORM}\"\nelif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)/-framework$ ]]; then\n# it is from jenkins so other platform dir is the same:\nVOD_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\necho \"SCRIPT_OUTPUT= If we're currently building for iphonesimulator, then need to rebuild, to ensure that we get both i386 and x86_64\"\nif [ \"$VOD_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n\n# Join the 2 static libs into 1 and push into the .framework\necho \"SCRIPT_OUTPUT= Join the 2 static libs into 1 and push into the .framework\"\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${VOD_INPUT_STATIC_LIB}\" \\\n\"${VOD_OTHER_BUILT_PRODUCTS_DIR}/${VOD_INPUT_STATIC_LIB}\" \\\n\"${VOD_FRAMEWORK_LOCATION}/Versions/A/${VOD_FRAMEWORK_NAME}\"\n\n\n# Ensure that the framework is present in both platform's build directories\necho \"SCRIPT_OUTPUT= Ensure that the framework is present in both platform's build directories\"\ncp -a \"${VOD_FRAMEWORK_LOCATION}/Versions/A/${VOD_FRAMEWORK_NAME}\" \\\n\"${VOD_OTHER_BUILT_PRODUCTS_DIR}/${VOD_FRAMEWORK_NAME}.framework/Versions/A/${VOD_FRAMEWORK_NAME}\"\n\n\n# Copy the framework to the user's desktop\necho \"SCRIPT_OUTPUT= Copy the framework to the user's desktop\"\nditto \"${VOD_FRAMEWORK_LOCATION}\" \"${HOME}/Desktop/${VOD_FRAMEWORK_NAME}.framework\"";
+			shellScript = "set -ex\n\n# If we're already inside this script then die\nif [ -n \"$VOD_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\nexit 0\nfi\nexport VOD_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\n\nPROJ_NAME=VodafoneSDK\n\nINSTALL_PATH=$WORKSPACE/artifacts\n[ -z $INSTALL_PATH ] || INSTALL_PATH=$PWD/artifacts\n\nrm -rf $INSTALL_PATH\nmkdir -p $INSTALL_PATH\n\nPROJ=VodafoneSDK.xcodeproj\n\nDEVICE_OUTPUT=$INSTALL_PATH/device\nSIMULATOR_OUTPUT=$INSTALL_PATH/simulator\n\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphoneos \\\nINSTALL_ROOT=$DEVICE_OUTPUT \\\nBUILT_PRODUCTS_DIR=$DEVICE_OUTPUT \\\nARCHS=\"armv7 armv7s arm64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$DEVICE_OUTPUT \\\nOBJROOT=$DEVICE_OUTPUT \\\nBUILD_ROOT=$DEVICE_OUTPUT \\\nSYMROOT=$DEVICE_OUTPUT \\\nTARGET_BUILD_DIR=$DEVICE_OUTPUT \\\ninstall\n\nxcodebuild -project $PROJ \\\n-scheme VodafoneSDK \\\n-configuration Release \\\n-sdk iphonesimulator \\\nINSTALL_ROOT=$SIMULATOR_OUTPUT \\\nBUILT_PRODUCTS_DIR=$SIMULATOR_OUTPUT \\\nARCHS=\"i386 x86_64\" \\\nONLY_ACTIVE_ARCH=NO \\\nBUILD_DIR=$SIMULATOR_OUTPUT \\\nOBJROOT=$SIMULATOR_OUTPUT \\\nBUILD_ROOT=$SIMULATOR_OUTPUT \\\nSYMROOT=$SIMULATOR_OUTPUT \\\nTARGET_BUILD_DIR=$SIMULATOR_OUTPUT \\\ninstall\n\n\n# create .framework file\nexport FRAMEWORK_LOCN=\"${INSTALL_PATH}/${PROJ_NAME}.framework\"\n\n# Create the path to the real Headers dir\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PROJ_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PROJ_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a $INSTALL_PATH/device/usr/local/lib/include/VodafoneSDK/ \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n\n# Join the 2 static libs into 1 and push into the .framework\nlipo -create \\\n$INSTALL_PATH/device/usr/local/lib/lib$PROJ_NAME.a \\\n$INSTALL_PATH/simulator/usr/local/lib/lib$PROJ_NAME.a \\\n-output $FRAMEWORK_LOCN/Versions/Current/$PROJ_NAME\n\n\n\n# remove files from install path's\nrm -rf $INSTALL_PATH/device $INSTALL_PATH/simulator\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1669,11 +1635,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		49C244B21976AFDD00B34512 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 49E74BB41962F9D50080EB14 /* VodafoneSDK */;
-			targetProxy = 49C244B11976AFDD00B34512 /* PBXContainerItemProxy */;
-		};
 		49E74BCC1962F9D60080EB14 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49E74BB41962F9D50080EB14 /* VodafoneSDK */;
@@ -1693,33 +1654,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		496883FE19FEA1B9002C3479 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					armv7,
-					armv7s,
-				);
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "Framework copy";
-				SDKROOT = iphoneos6.0;
-				VALID_ARCHS = "armv7 armv7s arm64 i386 x86_64";
-			};
-			name = Debug;
-		};
-		496883FF19FEA1B9002C3479 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					armv7,
-					armv7s,
-				);
-				PRODUCT_NAME = "Framework copy";
-				SDKROOT = iphoneos6.0;
-				VALID_ARCHS = "armv7 armv7s arm64 i386 x86_64";
-			};
-			name = Release;
-		};
 		49C244AC1976A2CE00B34512 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1959,15 +1893,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		496883FD19FEA1B9002C3479 /* Build configuration list for PBXAggregateTarget "Framework-jenkins" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				496883FE19FEA1B9002C3479 /* Debug */,
-				496883FF19FEA1B9002C3479 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		49C244AB1976A2CE00B34512 /* Build configuration list for PBXAggregateTarget "Framework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

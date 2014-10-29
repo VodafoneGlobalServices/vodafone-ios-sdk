@@ -19,6 +19,7 @@
 #import "VDFSmsValidationResponse.h"
 
 static NSInteger const VERIFY_DELAY = 8;
+static NSInteger const DEFAULT_RETRY_AFTER_MS = 250; // in miliseconds
 
 @interface VDFSuccessResolveTestCase : VDFUsersServiceBaseTestCase
 
@@ -57,6 +58,8 @@ static NSInteger const VERIFY_DELAY = 8;
     // stub success resolve 201
     [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve201]]];
     
+    [super rejectAnyOtherDelegateCall];
+    
     // run
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
     
@@ -86,16 +89,18 @@ static NSInteger const VERIFY_DELAY = 8;
     super.msisdn = options.msisdn;
     
     // stub resolve response with 302 - not yet know sms validation
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302NotFinishedAndRetryAfterMs:500]]]; // retry after half of second
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS]]];
     
     // stub check status response with sequence:
     // 302 - not finished
     // 304 - not modified
     // 200 - ok
     [super stubRequest:[super filterCheckStatusRequest]
-     withResponsesList:@[[super responseCheckStatus302NotFinishedAndRetryAfterMs:1000],
-                         [super responseCheckStatus304NotModifiedAndRetryAfterMs:1000],
+     withResponsesList:@[[super responseCheckStatus302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS],
+                         [super responseCheckStatus304NotModifiedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS],
                          [super responseCheckStatus200]]];
+    
+    [super rejectAnyOtherDelegateCall];
     
     // run
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
@@ -107,15 +112,15 @@ static NSInteger const VERIFY_DELAY = 8;
 
 
 - (void)test_ResolutionIsSuccessful_AfterCheckStatus_WithSmsValidationSetToNO {
-    [self performTestFor_ResolutionIsSuccessful_InFirstStep_WithOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
+    [self performTestFor_ResolutionIsSuccessful_AfterCheckStatus_WithOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:NO]];
 }
 
 - (void)test_ResolutionIsSuccessful_AfterCheckStatus_WithSmsValidationSetToYES {
-    [self performTestFor_ResolutionIsSuccessful_InFirstStep_WithOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
+    [self performTestFor_ResolutionIsSuccessful_AfterCheckStatus_WithOptions:[[VDFUserResolveOptions alloc] initWithSmsValidation:YES]];
 }
 
 - (void)test_ResolutionIsSuccessful_AfterCheckStatus_WithMSISDN {
-    [self performTestFor_ResolutionIsSuccessful_InFirstStep_WithOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
+    [self performTestFor_ResolutionIsSuccessful_AfterCheckStatus_WithOptions:[[VDFUserResolveOptions alloc] initWithMSISDN:super.msisdn]];
 }
 
 
@@ -129,16 +134,16 @@ static NSInteger const VERIFY_DELAY = 8;
     super.msisdn = options.msisdn;
     
     // stub resolve response with 302 - not yet know sms validation
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302NotFinishedAndRetryAfterMs:500]]]; // retry after half of second
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS]]];
     
     // stub check status response with sequence:
     // 302 - not finished
     // 304 - not modified
     // 302 - need sms validation
     [super stubRequest:[super filterCheckStatusRequest]
-     withResponsesList:@[[super responseCheckStatus302NotFinishedAndRetryAfterMs:1000],
-                         [super responseCheckStatus304NotModifiedAndRetryAfterMs:1000],
-                         [super responseCheckStatus302SmsRequiredAndRetryAfterMs:1000]]];
+     withResponsesList:@[[super responseCheckStatus302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS],
+                         [super responseCheckStatus304NotModifiedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS],
+                         [super responseCheckStatus302SmsRequiredAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS]]];
     
     // stub send pin request
     [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
@@ -153,6 +158,9 @@ static NSInteger const VERIFY_DELAY = 8;
         [super.serviceToTest validateSmsCode:super.smsCode];
     }];
     
+    [super expectDidValidatedSMSWithSuccess:YES];
+    
+    [super rejectAnyOtherDelegateCall];
     
     // run
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
@@ -179,7 +187,7 @@ static NSInteger const VERIFY_DELAY = 8;
 
 
 #pragma mark -
-#pragma mark - tests for ResolutionIsSuccessful_NeedSmsValidation
+#pragma mark - tests for ResolutionIsSuccessful_NeedSmsValidation_WithMSISDN
 
 - (void)performTestFor_ResolutionIsSuccessful_NeedSMSValidation_WithMSISDN:(NSString*)msisdn {
     // mock
@@ -194,7 +202,7 @@ static NSInteger const VERIFY_DELAY = 8;
     }
     
     // stub resolve response with 302 - not yet know sms validation
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302SmsRequiredAndRetryAfterMs:1000]]];
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[[super responseResolve302SmsRequiredAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS]]];
     
     // check status should be never be called in this case
     
@@ -212,6 +220,9 @@ static NSInteger const VERIFY_DELAY = 8;
         [super.serviceToTest validateSmsCode:super.smsCode];
     }];
     
+    [super expectDidValidatedSMSWithSuccess:YES];
+    
+    [super rejectAnyOtherDelegateCall];
     
     // run
     [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];

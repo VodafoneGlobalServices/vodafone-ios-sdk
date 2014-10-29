@@ -57,18 +57,18 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     return self;
 }
 
-- (NSInteger)startCommunication {
+- (BOOL)startCommunication {
     
     VDFNetworkAvailability networkAvailability = [self.deviceUtility checkNetworkTypeAvailability];
     
     if(networkAvailability == VDFNetworkNotAvailable) {
         VDFLogI(@"Internet is not available.");
-        return 1;
+        return NO;
     }
     else if (networkAvailability != VDFNetworkAvailableViaGSM && self.isGSMConnectionRequired) {
         VDFLogI(@"Request need 3G connection - there is not available any.");
         // not connected over 3G and request require 3G:
-        return 2; // TODO need to make some error codes for this
+        return NO;
     }
     else {
         VDFLogI(@"Performing HTTP request");
@@ -93,7 +93,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         }
     }
 
-    return 0;
+    return YES;
 }
 
 - (void)cancelCommunication {

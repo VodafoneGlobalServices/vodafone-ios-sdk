@@ -93,9 +93,8 @@
     
     // starting the request
     self.currentHttpRequest = [self.builder createCurrentHttpConnectorWithDelegate:self];
-    NSInteger errorCode = [self.currentHttpRequest startCommunication];
     
-    if(errorCode > 0) {
+    if(![self.currentHttpRequest startCommunication]) {
         [self onInternalConnectionError:VDFErrorNoConnection];
     }
 }

@@ -154,11 +154,14 @@
 - (void)setResumeTarget:(id)target selector:(SEL)selector {
     self.restorePointObject = target;
     self.restorePointSelector = selector;
-}
+} 
 
 #pragma mark -
 #pragma mark VDFRequestBuilder implementation as proxy
 
+-(NSString*)keyType {
+    return [self.activeBuilder keyType];
+}
 
 - (id<VDFRequestFactory>)factory { return [self.activeBuilder factory]; }
 

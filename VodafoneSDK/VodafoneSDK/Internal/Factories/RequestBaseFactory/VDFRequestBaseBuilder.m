@@ -36,6 +36,10 @@ static NSString * const DESCRIPTION_FORMAT = @"clientAppKey:%@\n\t backendAppKey
     return self;
 }
 
+-(NSString*)keyType {
+    return NSStringFromClass([self class]);
+}
+
 - (id<VDFRequestFactory>)factory {
     [self doesNotRecognizeSelector:_cmd];
     __builtin_unreachable();

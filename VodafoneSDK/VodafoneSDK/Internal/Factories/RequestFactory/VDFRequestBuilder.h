@@ -16,6 +16,18 @@
  */
 @protocol VDFRequestBuilder <NSObject>
 
+/**
+ *  Key of this type of request.
+ *
+ *  @return String representing type of the request.
+ */
+-(NSString*)keyType;
+
+/**
+ *  Factory of request.
+ *
+ *  @return Factory object.
+ */
 - (id<VDFRequestFactory>)factory;
 
 /**

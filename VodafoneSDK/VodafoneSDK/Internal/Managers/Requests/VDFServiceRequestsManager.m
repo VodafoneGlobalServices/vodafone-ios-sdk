@@ -78,9 +78,9 @@
             }
             else {
                 // check for throttling:
-                if([self.callsCounter canPerformRequestOfType:[builder class]]) {
+                if([self.callsCounter canPerformRequestOfType:[builder keyType]]) {
                     // add this to queue:
-                    [self.callsCounter incrementCallType:[builder class]];
+                    [self.callsCounter incrementCallType:[builder keyType]];
                     [self.connectionsQueue enqueueRequestBuilder:builder];
                 }
                 else {

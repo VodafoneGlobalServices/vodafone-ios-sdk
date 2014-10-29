@@ -11,7 +11,7 @@
 /**
  *  Basic cache unit object
  */
-@interface VDFCacheObject : NSObject <NSCoding>
+@interface VDFCacheObject : NSObject
 
 /**
  *  Key of the cache entry.
@@ -20,7 +20,7 @@
 /**
  *  Cached value.
  */
-@property (nonatomic, strong) id<NSCoding> cacheValue;
+@property (nonatomic, strong) id cacheValue;
 /**
  *  Expiration date of cache entry.
  */
@@ -35,7 +35,7 @@
  *
  *  @return An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
  */
-- (instancetype)initWithValue:(id<NSCoding>)value forKey:(NSString*)key withExpirationDate:(NSDate*)expirationDate;
+- (instancetype)initWithValue:(id)value forKey:(NSString*)key withExpirationDate:(NSDate*)expirationDate;
 
 /*!
  @abstract

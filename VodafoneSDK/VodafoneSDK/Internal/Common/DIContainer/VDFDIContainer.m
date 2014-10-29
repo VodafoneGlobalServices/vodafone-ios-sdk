@@ -29,7 +29,7 @@
         [self.instancesByClassType removeObjectForKey:NSStringFromClass(classType)];
     }
     else {
-        [self.instancesByClassType setValue:instance forKey:NSStringFromClass(classType)]; // we can cast be cause Class has implemented copyWithZoneMethod
+        [self.instancesByClassType setValue:instance forKey:NSStringFromClass(classType)];
     }
 }
 

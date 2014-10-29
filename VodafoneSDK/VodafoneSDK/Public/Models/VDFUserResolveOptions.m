@@ -59,14 +59,4 @@
     return result;
 }
 
-#pragma mark -
-#pragma mark - NSCopying Implementation
-- (id)copyWithZone:(NSZone *)zone {
-    VDFUserResolveOptions *newOptions = [[VDFUserResolveOptions allocWithZone:zone] init];
-    newOptions.smsValidation = self.smsValidation;
-    newOptions.msisdn = self.msisdn;
-    newOptions.market = self.market;
-    return newOptions;
-}
-
 @end

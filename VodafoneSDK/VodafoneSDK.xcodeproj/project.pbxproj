@@ -1522,7 +1522,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Cleaning Profiler Information\"\nCOMPILE_PATH = \"${OBJECT_FILE_DIR_normal}/${CURRENT_ARCH}\"\nif [ -d \"$COMPILE_PATH\" ]; then\ncd \"$COMPILE_PATH\"\n# Delete *.gcda files in the current target\nrm -f *.gcda\nfi";
+			shellScript = "echo \"Cleaning Profiler Information\"\nif [ -d \"${OBJECT_FILE_DIR_normal}/${CURRENT_ARCH}\" ]; then\ncd \"${OBJECT_FILE_DIR_normal}/${CURRENT_ARCH}\"\n# Delete *.gcda files in the current target\nrm -f *.gcda\nfi";
 		};
 		49C244B01976A39600B34512 /* MultiPlatform Script */ = {
 			isa = PBXShellScriptBuildPhase;

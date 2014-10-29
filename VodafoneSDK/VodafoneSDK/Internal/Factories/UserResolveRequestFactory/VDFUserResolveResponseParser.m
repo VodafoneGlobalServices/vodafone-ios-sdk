@@ -21,7 +21,7 @@
 
 @implementation VDFUserResolveResponseParser
 
-- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
+- (id)parseResponse:(VDFHttpConnectorResponse*)response {
     
     if(response == nil) {
         return nil;

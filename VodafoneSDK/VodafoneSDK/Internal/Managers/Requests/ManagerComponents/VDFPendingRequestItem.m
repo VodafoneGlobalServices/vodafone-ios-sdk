@@ -141,7 +141,7 @@
 
 - (void)parseAndNotifyWithResponse:(VDFHttpConnectorResponse*)response {
     
-    id<NSCoding> parsedObject = nil;
+    id parsedObject = nil;
     id<VDFRequestState> requestState = [self.builder requestState];
     
     @synchronized(self.parentQueue) {

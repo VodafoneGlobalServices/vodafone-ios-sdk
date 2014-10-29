@@ -92,7 +92,7 @@
     
     VDFCacheObject *cacheObject = [[self oAuthRequestBuilder].factory createCacheObject];
     if(cacheObject != nil) {
-        cacheObject.cacheValue = (id<NSCoding>)oAuthTokenDetails;
+        cacheObject.cacheValue = oAuthTokenDetails;
         if(oAuthTokenDetails == nil) {
             cacheObject.expirationDate = [NSDate distantPast];
         }

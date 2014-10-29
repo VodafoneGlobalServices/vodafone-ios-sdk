@@ -67,7 +67,7 @@
         
     }
     else {
-        id<NSCoding> responseCachedObject = nil;
+        id responseCachedObject = nil;
         @synchronized(self.connectionsQueue) {
             // check cache:
             VDFCacheObject *cacheObject = [[builder factory] createCacheObject];

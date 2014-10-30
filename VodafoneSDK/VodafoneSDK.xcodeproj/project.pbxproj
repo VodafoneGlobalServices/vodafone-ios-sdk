@@ -192,6 +192,7 @@
 		49E100A619A5F44700BFD4A9 /* VDFHttpConnectorResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E100A419A5F44700BFD4A9 /* VDFHttpConnectorResponse.h */; };
 		49E100A719A5F44700BFD4A9 /* VDFHttpConnectorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E100A519A5F44700BFD4A9 /* VDFHttpConnectorResponse.m */; };
 		49E1F1751A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E1F1741A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m */; };
+		49E1F17C1A026FB6003E604A /* VDFUsersServiceInvalidParametersTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E1F17B1A026FB6003E604A /* VDFUsersServiceInvalidParametersTestCase.m */; };
 		49E74BB91962F9D50080EB14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB81962F9D50080EB14 /* Foundation.framework */; };
 		49E74BC71962F9D60080EB14 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BC61962F9D60080EB14 /* XCTest.framework */; };
 		49E74BC81962F9D60080EB14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E74BB81962F9D50080EB14 /* Foundation.framework */; };
@@ -432,6 +433,7 @@
 		49E100A419A5F44700BFD4A9 /* VDFHttpConnectorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFHttpConnectorResponse.h; path = Internal/Models/HttpConnectorResponse/VDFHttpConnectorResponse.h; sourceTree = "<group>"; };
 		49E100A519A5F44700BFD4A9 /* VDFHttpConnectorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFHttpConnectorResponse.m; path = Internal/Models/HttpConnectorResponse/VDFHttpConnectorResponse.m; sourceTree = "<group>"; };
 		49E1F1741A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFCallsFromDifferentThreadsStressTestCase.m; path = SDKIntegrationTests/UserService/StressTests/VDFCallsFromDifferentThreadsStressTestCase.m; sourceTree = "<group>"; };
+		49E1F17B1A026FB6003E604A /* VDFUsersServiceInvalidParametersTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUsersServiceInvalidParametersTestCase.m; path = SDKIntegrationTests/UserService/VDFUsersServiceInvalidParametersTestCase.m; sourceTree = "<group>"; };
 		49E74BB51962F9D50080EB14 /* libVodafoneSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVodafoneSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E74BB81962F9D50080EB14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49E74BBC1962F9D50080EB14 /* VodafoneSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VodafoneSDK-Prefix.pch"; sourceTree = "<group>"; };
@@ -629,6 +631,7 @@
 				4963487019D1C0320053F46E /* VDFUsersServiceBaseTestCase.m */,
 				498F6AFE19DAF2630066A61C /* VDFSuccessResolveTestCase.m */,
 				4965BF691A0128DE00C7A7E9 /* VDFFailedResolveTestCase.m */,
+				49E1F17B1A026FB6003E604A /* VDFUsersServiceInvalidParametersTestCase.m */,
 				49847C7A19D9884300BE98F8 /* ErrorHandling */,
 				496C5FC719FFE52200582CB3 /* ThrottlingLimit */,
 				49A934F919F15823004FE8D3 /* ConfigurationUpdate */,
@@ -1636,6 +1639,7 @@
 				49A3DA2819AC9F3D004B8634 /* VDFOAuthTokenResponseParserTestCase.m in Sources */,
 				49A5D77719ADE27F0095B0E3 /* VDFSmsSendPinRequestStateTestCase.m in Sources */,
 				4990BFC21992767E005EED39 /* VDFUserResolveRequestStateTestCase.m in Sources */,
+				49E1F17C1A026FB6003E604A /* VDFUsersServiceInvalidParametersTestCase.m in Sources */,
 				49D9E6F719B5F87700AE6417 /* VDFConfigurationUpdaterTestCase.m in Sources */,
 				49ECFA5419E6942E006C4527 /* VDFSendSmsPin_OAuthErrorHandling_WithSuccess_TestCase.m in Sources */,
 				49A5D77519ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m in Sources */,

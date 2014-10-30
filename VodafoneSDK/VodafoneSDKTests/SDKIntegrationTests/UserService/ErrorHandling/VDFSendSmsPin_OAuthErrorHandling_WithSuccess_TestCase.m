@@ -52,7 +52,7 @@ static NSInteger const VERIFY_DELAY = 3;
     [super stubRequest:[super filterOAuthRequest] withResponsesList:responsesList];
     
     // stub resolve with 302 - sms validation required
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterDefaultMs] ]];
     
     // stub send sms pin response with error:
     responsesList = oAuthResponsesList;
@@ -164,10 +164,10 @@ static NSInteger const VERIFY_DELAY = 3;
     [super stubRequest:[super filterOAuthRequest] withResponsesList:responsesList];
     
     // stub resolve with 302 - not finished
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterDefaultMs] ]];
     
     // stub check status with 302 - sms validation required
-    [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterDefaultMs] ]];
     
     // stub send sms pin response with error:
     responsesList = oAuthResponsesList;

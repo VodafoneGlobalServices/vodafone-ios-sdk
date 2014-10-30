@@ -25,7 +25,7 @@ static NSInteger const VERIFY_DELAY = 3;
 {
     [super setUp];
     // stub resolve with 302 - not finished
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterDefaultMs] ]];
     
     // reject any unexpected response
     [super rejectAnyNotHandledHttpCall];
@@ -51,7 +51,7 @@ static NSInteger const VERIFY_DELAY = 3;
     // stub check status response with error:
     responsesList = oAuthResponsesList;
     if(errorCode < 0) {
-        responsesList = [responsesList arrayByAddingObject: [super responseCheckStatus302SmsRequiredAndRetryAfterMs:500]];
+        responsesList = [responsesList arrayByAddingObject: [super responseCheckStatus302SmsRequiredAndRetryAfterDefaultMs]];
     }
     [super stubRequest:[super filterCheckStatusRequest] withResponsesList:responsesList];
     

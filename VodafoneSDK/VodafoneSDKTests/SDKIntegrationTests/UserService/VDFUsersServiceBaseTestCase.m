@@ -22,6 +22,10 @@
 #import "VDFDIContainer.h"
 #import "VDFMessageLogger.h"
 #import "VDFConfigurationManager.h"
+#import "VDFBaseConfiguration.h"
+
+static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
+
 
 @interface VDFUsersService ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
@@ -167,9 +171,10 @@
     [self.serviceToTest stopMocking];
     [self.mockDelegate stopMocking];
     __block id serviceToStop = self.service;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [serviceToStop cancelRetrieveUserDetails];
-    });
+//    });
+    [[VDFSettings globalDIContainer] registerInstance:nil forClass:[VDFBaseConfiguration class]];
     
     [super tearDown];
 }
@@ -346,6 +351,13 @@
     };
 }
 
+- (OHHTTPStubsResponseBlock)responseResolve302NotFinishedAndRetryAfterDefaultMs {
+    return [self responseResolve302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
+
+- (OHHTTPStubsResponseBlock)responseResolve302SmsRequiredAndRetryAfterDefaultMs {
+    return [self responseResolve302SmsRequiredAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
 
 - (OHHTTPStubsResponseBlock)responseResolve302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
@@ -373,6 +385,19 @@
     };
 }
 
+
+
+- (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinishedAndRetryAfterDefaultMs {
+    return [self responseCheckStatus302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
+
+- (OHHTTPStubsResponseBlock)responseCheckStatus302SmsRequiredAndRetryAfterDefaultMs {
+    return [self responseCheckStatus302SmsRequiredAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
+
+- (OHHTTPStubsResponseBlock)responseCheckStatus304NotModifiedAndRetryAfterDefaultMs {
+    return [self responseCheckStatus304NotModifiedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
 
 - (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {

@@ -21,7 +21,6 @@
 #import "VDFSettings+Internal.h"
 
 static NSInteger const VERIFY_DELAY = 8;
-static NSInteger const DEFAULT_RETRY_AFTER_MS = 250; // in miliseconds
 
 @interface VDFMockServiceDelegate : NSObject <VDFUsersServiceDelegate>
 @property (nonatomic, weak) VDFUsersService *serviceToRespond;
@@ -85,7 +84,7 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 250; // in miliseconds
     
     // stub resolve with 302 need sms validation
     [super stubRequest:[super filterResolveRequestWithSmsValidation]
-     withResponsesList:@[[super responseResolve302SmsRequiredAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS]]];
+     withResponsesList:@[[super responseResolve302SmsRequiredAndRetryAfterDefaultMs]]];
     
     // stub generate pin with success
     [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];

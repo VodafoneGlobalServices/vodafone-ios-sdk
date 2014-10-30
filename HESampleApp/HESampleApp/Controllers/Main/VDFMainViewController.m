@@ -262,7 +262,11 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn]];
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+        [dateFormatter setDateFormat:@"H:m:s dd-MM-yyyy"];
+
+        [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, [dateFormatter stringFromDate:userDetails.expiresIn]]];
     } else {
         [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]]];
     }

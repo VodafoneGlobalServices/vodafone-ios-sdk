@@ -75,18 +75,27 @@ static VDFDIContainer * g_diContainer = nil;
         VDFBaseConfiguration *configuration = [g_diContainer resolveForClass:[VDFBaseConfiguration class]];
         
         if(clientAppKey != nil && [clientAppKey isKindOfClass:[NSString class]]) {
-            NSParameterAssert(configuration.clientAppKey == nil);
+            if(configuration.clientAppKey != nil) {
+                [NSException raise:NSInvalidArgumentException format:@"Client Application Key is already set in SDK."];
+            }
+            
             configuration.clientAppKey = clientAppKey;
             VDFLogD(@"-- clientAppKey:%@", configuration.clientAppKey);
         }
         
         if(clientAppSecret != nil && [clientAppSecret isKindOfClass:[NSString class]]) {
-            NSParameterAssert(configuration.clientAppSecret == nil);
+            if(configuration.clientAppSecret != nil) {
+                [NSException raise:NSInvalidArgumentException format:@"Client Application Secret is already set in SDK."];
+            }
+            
             configuration.clientAppSecret = clientAppSecret;
             VDFLogD(@"-- clientAppSecret:%@", configuration.clientAppSecret);
         }
         if(backendAppKey != nil && [backendAppKey isKindOfClass:[NSString class]]) {
-            NSParameterAssert(configuration.backendAppKey == nil);
+            if(configuration.backendAppKey != nil) {
+                [NSException raise:NSInvalidArgumentException format:@"Client Backend Application Key is already set in SDK."];
+            }
+            
             configuration.backendAppKey = backendAppKey;
             VDFLogD(@"-- backendAppKey:%@", configuration.backendAppKey);
         }

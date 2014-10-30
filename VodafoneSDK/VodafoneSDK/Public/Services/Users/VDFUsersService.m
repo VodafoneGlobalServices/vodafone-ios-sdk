@@ -71,8 +71,12 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     
-    NSParameterAssert(options);
-    NSParameterAssert(delegate);
+    if(options == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Options parameter is invalid."];
+    }
+    if(delegate == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Delegate parameter is invalid."];
+    }
     
     [self assertSDKInitialization];
     
@@ -107,7 +111,10 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)validateSmsCode:(NSString*)smsCode {
     
-    NSParameterAssert(smsCode);
+    if(smsCode == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Sms code is invalid"];
+    }
+    
     [self assertSDKInitialization];
     
     VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
@@ -170,10 +177,10 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)assertSDKInitialization {
     VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-
-    NSAssert((configuration.clientAppKey), @"SDK is not initialized with Client Application Key");
-    NSAssert((configuration.clientAppSecret), @"SDK is not initialized with Client Application Secret");
-    NSAssert((configuration.backendAppKey), @"SDK is not initialized with Backend Application Key");
+    
+    if(configuration.clientAppKey == nil || configuration.clientAppSecret == nil || configuration.backendAppKey == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"SDK is not properly initialized."];
+    }
 }
 
 - (void)retrieveUserDetailsOverHAP:(VDFUserResolveOptions*)options {

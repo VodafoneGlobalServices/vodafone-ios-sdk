@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 VOD. All rights reserved.
 //
 
+#import "VDFTestCase.h"
 #import <XCTest/XCTest.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import "VDFError.h"
@@ -14,7 +15,7 @@
 
 @class VDFBaseConfiguration, VDFUsersService;
 
-@interface VDFUsersServiceBaseTestCase : XCTestCase <VDFMessageLogger>
+@interface VDFUsersServiceBaseTestCase : VDFTestCase <VDFMessageLogger>
 @property VDFUsersService *service;
 @property id serviceToTest;
 @property id mockDelegate;
@@ -45,6 +46,7 @@
 - (OHHTTPStubsTestBlock)filterGeneratePinRequest;
 
 - (OHHTTPStubsTestBlock)filterValidatePinRequest;
+- (OHHTTPStubsTestBlock)filterValidatePinRequestWithCode:(NSString*)code;
 
 - (OHHTTPStubsTestBlock)filterUpdateConfigurationRequest;
 
@@ -76,6 +78,10 @@
 #pragma mark - stub
 - (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
                        withResponsesList:(NSArray*)responses;
+- (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
+                       withResponsesList:(NSArray*)responses
+                             requestTime:(NSTimeInterval)requestTime
+                            responseTime:(NSTimeInterval)responseTime;
 
 
 #pragma mark -
@@ -94,6 +100,7 @@
 
 - (void)expectDidValidatedSMSWithSuccess:(BOOL)isSuccess;
 - (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode;
+- (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode;
 
 
 @end

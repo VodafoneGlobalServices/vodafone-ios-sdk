@@ -23,8 +23,6 @@
 #import "VDFMessageLogger.h"
 #import "VDFConfigurationManager.h"
 
-extern void __gcov_flush();
-
 @interface VDFUsersService ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
 
@@ -153,8 +151,6 @@ extern void __gcov_flush();
 
 - (void)tearDown
 {
-    __gcov_flush();
-    
     [OHHTTPStubs removeStub:self.defaultConfigUpdateStub];
     
     NSLog(@"Number of still stubbed requests in tearDown: %i.", [[OHHTTPStubs allStubs] count]);
@@ -264,13 +260,17 @@ extern void __gcov_flush();
 }
 
 - (OHHTTPStubsTestBlock)filterValidatePinRequest {
+    return [self filterValidatePinRequestWithCode:self.smsCode];
+}
+
+- (OHHTTPStubsTestBlock)filterValidatePinRequestWithCode:(NSString*)code {
     return ^BOOL(NSURLRequest *request) {
         if([request.URL.absoluteString hasSuffix:[NSString stringWithFormat:@"seamless-id/users/tokens/%@/pins?backendId=%@", self.sessionToken, self.backendId]]
            && [[request HTTPMethod] isEqualToString:@"POST"]) {
             if([self checkStandardRequiredHeaders:request]) {
                 // check body
                 id jsonObject = [NSJSONSerialization JSONObjectWithData:[request HTTPBody] options:kNilOptions error:nil];
-                return [[jsonObject objectForKey:@"code"] isEqualToString:self.smsCode];
+                return [[jsonObject objectForKey:@"code"] isEqualToString:code];
             }
         }
         return NO;
@@ -452,7 +452,14 @@ extern void __gcov_flush();
 
 
 - (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
-                            withResponsesList:(NSArray*)responses {
+                       withResponsesList:(NSArray*)responses {
+    return [self stubRequest:requestFilter withResponsesList:responses requestTime:0.01 responseTime:0.01]; // tere is not ever any immidetly response
+}
+
+- (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
+                       withResponsesList:(NSArray*)responses
+                             requestTime:(NSTimeInterval)requestTime
+                            responseTime:(NSTimeInterval)responseTime {
     
     // creating requests in reverse direction
     __block NSMutableArray *blocksArray = [NSMutableArray arrayWithCapacity:[responses count]];
@@ -462,23 +469,24 @@ extern void __gcov_flush();
     }
     
     __block id stub = [OHHTTPStubs stubRequestsPassingTest:requestFilter
-                               withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                                   OHHTTPStubsResponseBlock responseBlock = [[blocksArray lastObject] copy];
-                                   
-                                   if([blocksArray count] > 1) {
-                                       // we have more then one waiting responses so we need to move next response:
-                                       [blocksArray removeLastObject];
-                                   }
-                                   else {
-                                       // it is last response, lets remove it
-                                       [OHHTTPStubs removeStub:stub];
-                                   }
-                                   
-                                   return [responseBlock(request) requestTime:0.01 responseTime:0.01]; // tere is not ever any immidetly response
-                               }];
+                                          withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                                              OHHTTPStubsResponseBlock responseBlock = [[blocksArray lastObject] copy];
+                                              
+                                              if([blocksArray count] > 1) {
+                                                  // we have more then one waiting responses so we need to move next response:
+                                                  [blocksArray removeLastObject];
+                                              }
+                                              else {
+                                                  // it is last response, lets remove it
+                                                  [OHHTTPStubs removeStub:stub];
+                                              }
+                                              
+                                              return [responseBlock(request) requestTime:requestTime responseTime:responseTime];
+                                          }];
     [stub setName:[NSString stringWithFormat:@"%@", requestFilter]];
     return stub;
 }
+
 
 
 
@@ -597,10 +605,14 @@ extern void __gcov_flush();
 }
 
 - (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidValidatedSMSCode:self.smsCode withErrorCode:errorCode];
+}
+
+- (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode {
     [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
         
         VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
-        BOOL result = [response.smsCode isEqualToString:self.smsCode] && !response.isSucceded;
+        BOOL result = [response.smsCode isEqualToString:code] && !response.isSucceded;
         
         return result;
     }] withError:[OCMArg checkWithBlock:^BOOL(id obj) {

@@ -100,8 +100,8 @@
     }
 }
 
-- (BOOL)isDecoratedBuilderKindOfClass:(Class)classType {
-    return [self.activeBuilder isKindOfClass:classType];
+- (id<VDFRequestBuilder>)currentlyDecoratedBuilder {
+    return self.activeBuilder;
 }
 
 #pragma mark -

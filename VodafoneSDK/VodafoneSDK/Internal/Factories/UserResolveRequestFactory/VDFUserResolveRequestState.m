@@ -154,11 +154,28 @@
         VDFRequestBuilderWithOAuth *builderWithOAuth = (VDFRequestBuilderWithOAuth*)builder;
         NSError *errorInResponse = [[builder requestState] responseError];
         
-        // check of successful validation of sms token
-        isExpectedResponse = [builderWithOAuth isDecoratedBuilderKindOfClass:[VDFSmsValidationRequestBuilder class]] && errorInResponse == nil && response.httpResponseCode == 200;
+        // read session token of buulder from parameter:
+        NSString *responseSessionToken = nil;
+        if([builderWithOAuth.currentlyDecoratedBuilder isKindOfClass:[VDFSmsValidationRequestBuilder class]]) {
+            responseSessionToken = ((VDFSmsValidationRequestBuilder*)builderWithOAuth.currentlyDecoratedBuilder).sessionToken;
+            
+            // check of successful validation of sms token
+            isExpectedResponse = errorInResponse == nil && response.httpResponseCode == 200;
+            
+            // check for session token expiration
+            isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorResolutionTimeout);
+            
+        } else if([builderWithOAuth.currentlyDecoratedBuilder isKindOfClass:[VDFSmsSendPinRequestBuilder class]]) {
+            responseSessionToken = ((VDFSmsSendPinRequestBuilder*)builderWithOAuth.currentlyDecoratedBuilder).sessionToken;
+            
+            // check for session token expiration
+            isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorResolutionTimeout);
+        }
         
-        // check for session token expiration
-        isExpectedResponse = isExpectedResponse || (errorInResponse != nil && [errorInResponse code] == VDFErrorResolutionTimeout);
+        // be sure is this part of the same resolution process:
+        isExpectedResponse = isExpectedResponse && responseSessionToken != nil && self.builder.sessionToken != nil
+                            && [responseSessionToken isEqualToString:self.builder.sessionToken];
+        
         
         // check is this oAuth token response, if it is from oAuth then we cannot handle this:
         id requestState = [builderWithOAuth requestState];

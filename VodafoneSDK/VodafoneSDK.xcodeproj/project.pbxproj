@@ -189,6 +189,7 @@
 		49D9E6F219B5D78A00AE6417 /* VDFConfigurationUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D9E6F019B5D78A00AE6417 /* VDFConfigurationUpdater.m */; };
 		49D9E6F519B5F81500AE6417 /* VDFConfigurationManagerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D9E6F419B5F81500AE6417 /* VDFConfigurationManagerTestCase.m */; };
 		49D9E6F719B5F87700AE6417 /* VDFConfigurationUpdaterTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D9E6F619B5F87700AE6417 /* VDFConfigurationUpdaterTestCase.m */; };
+		49DD37EA1A038E7400C8A230 /* VDFInterlacingResolutionsStressTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DD37E91A038E7400C8A230 /* VDFInterlacingResolutionsStressTestCase.m */; };
 		49E100A619A5F44700BFD4A9 /* VDFHttpConnectorResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E100A419A5F44700BFD4A9 /* VDFHttpConnectorResponse.h */; };
 		49E100A719A5F44700BFD4A9 /* VDFHttpConnectorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E100A519A5F44700BFD4A9 /* VDFHttpConnectorResponse.m */; };
 		49E1F1751A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E1F1741A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m */; };
@@ -430,6 +431,7 @@
 		49D9E6F019B5D78A00AE6417 /* VDFConfigurationUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFConfigurationUpdater.m; path = Internal/Managers/Configuration/ManagerComponents/VDFConfigurationUpdater.m; sourceTree = "<group>"; };
 		49D9E6F419B5F81500AE6417 /* VDFConfigurationManagerTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFConfigurationManagerTestCase.m; path = Managers/VDFConfigurationManagerTestCase.m; sourceTree = "<group>"; };
 		49D9E6F619B5F87700AE6417 /* VDFConfigurationUpdaterTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFConfigurationUpdaterTestCase.m; path = Managers/VDFConfigurationUpdaterTestCase.m; sourceTree = "<group>"; };
+		49DD37E91A038E7400C8A230 /* VDFInterlacingResolutionsStressTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFInterlacingResolutionsStressTestCase.m; path = SDKIntegrationTests/UserService/StressTests/VDFInterlacingResolutionsStressTestCase.m; sourceTree = "<group>"; };
 		49E100A419A5F44700BFD4A9 /* VDFHttpConnectorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFHttpConnectorResponse.h; path = Internal/Models/HttpConnectorResponse/VDFHttpConnectorResponse.h; sourceTree = "<group>"; };
 		49E100A519A5F44700BFD4A9 /* VDFHttpConnectorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFHttpConnectorResponse.m; path = Internal/Models/HttpConnectorResponse/VDFHttpConnectorResponse.m; sourceTree = "<group>"; };
 		49E1F1741A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFCallsFromDifferentThreadsStressTestCase.m; path = SDKIntegrationTests/UserService/StressTests/VDFCallsFromDifferentThreadsStressTestCase.m; sourceTree = "<group>"; };
@@ -645,6 +647,7 @@
 			children = (
 				4965BF6C1A01434600C7A7E9 /* VDFManySameCallsStressTestCase.m */,
 				49E1F1741A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m */,
+				49DD37E91A038E7400C8A230 /* VDFInterlacingResolutionsStressTestCase.m */,
 			);
 			name = StressTests;
 			sourceTree = "<group>";
@@ -1642,6 +1645,7 @@
 				49E1F17C1A026FB6003E604A /* VDFUsersServiceInvalidParametersTestCase.m in Sources */,
 				49D9E6F719B5F87700AE6417 /* VDFConfigurationUpdaterTestCase.m in Sources */,
 				49ECFA5419E6942E006C4527 /* VDFSendSmsPin_OAuthErrorHandling_WithSuccess_TestCase.m in Sources */,
+				49DD37EA1A038E7400C8A230 /* VDFInterlacingResolutionsStressTestCase.m in Sources */,
 				49A5D77519ADB8EA0095B0E3 /* VDFSmsValidationResponseParserTestCase.m in Sources */,
 				498EA2EC19823B2F00122F05 /* VDFErrorUtilityTestCase.m in Sources */,
 				49A5D77B19AE199C0095B0E3 /* VDFDeviceUtilityTestCase.m in Sources */,

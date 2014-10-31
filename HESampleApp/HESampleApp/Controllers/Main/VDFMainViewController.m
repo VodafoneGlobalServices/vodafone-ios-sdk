@@ -161,6 +161,7 @@
 
 - (IBAction)onAppIdSetButtonClick:(id)sender {
     [self hideKeyboard];
+    [self logInternalMessage:@"\"Set\" button clicked"];
     
     @try {
         [VDFSettings initializeWithParams:@{ VDFClientAppKeySettingKey: self.clientAppKeyTextField.text,
@@ -175,6 +176,7 @@
 
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {
     [self hideKeyboard];
+    [self logInternalMessage:@"\"Send code\" button clicked"];
     
     @try {
         [[VDFUsersService sharedInstance] validateSmsCode:self.smsCodeTextField.text];
@@ -186,6 +188,7 @@
 
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender {
     [self hideKeyboard];
+    [self logInternalMessage:@"\"Retrieve\" button clicked"];
     
     @try {
         VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:self.smsValidationSwitch.isOn];
@@ -200,6 +203,7 @@
 }
 
 - (IBAction)onSendSMSPinButtonClick:(id)sender {
+    [self logInternalMessage:@"\"Send SMS PIN\" button clicked"];
     [self hideKeyboard];
     
     @try {
@@ -230,6 +234,8 @@
 }
 
 - (IBAction)onCancelRetrieveButtonClick:(id)sender {
+    [self logInternalMessage:@"\"Cancel retrieve\" button clicked"];
+    
     [[VDFUsersService sharedInstance] cancelRetrieveUserDetails];
 }
 

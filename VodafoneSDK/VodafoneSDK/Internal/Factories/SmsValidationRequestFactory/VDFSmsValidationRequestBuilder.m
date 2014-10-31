@@ -15,7 +15,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConsts.h"
 
-static NSString * const DESCRIPTION_FORMAT = @"VDFSmsValidationRequestBuilder:\n\t %@\n\t internalFactory:%@\n\t sessionToke:%@\n\t smsCode:%@ ";
+static NSString * const DESCRIPTION_FORMAT = @"VDFSmsValidationRequestBuilder:\n\t %@\n\t internalFactory:%@\n\t sessionToken:%@\n\t smsCode:%@ ";
 
 @interface VDFSmsValidationRequestBuilder ()
 @property (nonatomic, strong) VDFSmsValidationRequestFactory *internalFactory;

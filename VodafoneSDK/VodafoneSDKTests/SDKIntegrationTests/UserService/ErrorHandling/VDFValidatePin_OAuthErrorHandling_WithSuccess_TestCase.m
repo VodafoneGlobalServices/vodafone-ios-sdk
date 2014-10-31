@@ -76,7 +76,7 @@ static NSInteger const VERIFY_DELAY = 3;
     
     if(errorCode < 0) {
         // expect that the delegate object will be invoked next with sms validation status
-        [super expectDidValidatedSMSWithSuccess:YES];
+        [super expectDidValidatedSMSWithSuccess];
     }
     else {
         // expect that the oAuthError will be returned
@@ -200,7 +200,7 @@ static NSInteger const VERIFY_DELAY = 3;
     
     if(errorCode < 0) {
         // expect that the delegate object will be invoked next with sms validation status
-        [super expectDidValidatedSMSWithSuccess:YES];
+        [super expectDidValidatedSMSWithSuccess];
     }
     else {
         // expect that the oAuthError will be returned

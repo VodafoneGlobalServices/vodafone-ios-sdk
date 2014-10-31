@@ -617,16 +617,8 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
     }]];
 }
 
-- (void)expectDidValidatedSMSWithSuccess:(BOOL)isSuccess {
-    [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
-        
-        VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
-        BOOL result = [response.smsCode isEqualToString:self.smsCode] && response.isSucceded == isSuccess;
-        
-        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithSuccess: - received object %@ -- is expected=%hhd", response, result);
-        
-        return result;
-    }] withError:[OCMArg isNil]];
+- (void)expectDidValidatedSMSWithSuccess {
+    [self expectDidValidatedSuccessfulSMSCode:self.smsCode];
 }
 
 - (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode {
@@ -648,6 +640,18 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
         
         return result;
     }]];
+}
+
+- (void)expectDidValidatedSuccessfulSMSCode:(NSString*)code {
+    [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
+        
+        VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
+        BOOL result = [response.smsCode isEqualToString:code] && response.isSucceded;
+        
+        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithSuccess: - received object %@ -- is expected=%hhd", response, result);
+        
+        return result;
+    }] withError:[OCMArg isNil]];
 }
 
 

@@ -181,7 +181,7 @@ static NSInteger const VERIFY_DELAY = 8;
     }];
     
     // expect validate pin success
-    [super expectDidValidatedSMSWithSuccess:YES];
+    [super expectDidValidatedSMSWithSuccess];
     
     // expect also validate pin with invalid sms code:
     [super expectDidValidatedSMSCode:otherInvalidSmsCode withErrorCode:VDFErrorWrongSmsCode];

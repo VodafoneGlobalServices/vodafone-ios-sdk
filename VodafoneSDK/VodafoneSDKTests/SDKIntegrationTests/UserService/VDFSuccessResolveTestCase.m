@@ -157,7 +157,7 @@ static NSInteger const VERIFY_DELAY = 8;
         [super.serviceToTest validateSmsCode:super.smsCode];
     }];
     
-    [super expectDidValidatedSMSWithSuccess:YES];
+    [super expectDidValidatedSMSWithSuccess];
     
     [super rejectAnyOtherDelegateCall];
     
@@ -219,7 +219,7 @@ static NSInteger const VERIFY_DELAY = 8;
         [super.serviceToTest validateSmsCode:super.smsCode];
     }];
     
-    [super expectDidValidatedSMSWithSuccess:YES];
+    [super expectDidValidatedSMSWithSuccess];
     
     [super rejectAnyOtherDelegateCall];
     

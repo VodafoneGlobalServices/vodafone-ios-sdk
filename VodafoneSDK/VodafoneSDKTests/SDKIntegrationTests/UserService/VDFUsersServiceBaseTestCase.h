@@ -103,9 +103,10 @@
 - (void)expectDidSMSPinRequestedWithSuccess:(BOOL)isSuccess onSuccessExecution:(void(^)())onSuccess;
 - (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode;
 
-- (void)expectDidValidatedSMSWithSuccess:(BOOL)isSuccess;
+- (void)expectDidValidatedSMSWithSuccess;
 - (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode;
 - (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode;
+- (void)expectDidValidatedSuccessfulSMSCode:(NSString*)code;
 
 
 @end

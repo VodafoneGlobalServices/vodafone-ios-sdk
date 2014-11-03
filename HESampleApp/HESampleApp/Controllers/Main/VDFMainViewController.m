@@ -66,6 +66,8 @@
     
     [self.scrollView addGestureRecognizer:yourTap];
     [self.view addSubview:self.scrollView];
+    
+    [self logInternalMessage:[NSString stringWithFormat:@"App version: %@", [self versionBuild]]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -221,7 +223,7 @@
     }
     
     NSString *emailTitle = [NSString stringWithFormat: @"Seamless Id Error Report (%@)", [NSDate date]];
-    NSString *messageBody = self.loggedMessages;
+    NSString *messageBody = [NSString stringWithFormat:@"App version: %@\n\n%@", [self versionBuild], self.loggedMessages];
     NSArray *toRecipents = [NSArray arrayWithObject:@"michal.szymanczyk@mobica.com"];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
@@ -398,5 +400,18 @@
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
 
+
+- (NSString*)versionBuild {
+    NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *build = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+    
+    NSString *versionBuild = [NSString stringWithFormat:@"v%@", version];
+    
+    if (![version isEqualToString:build]) {
+        versionBuild = [NSString stringWithFormat:@"%@(%@)", versionBuild, build];
+    }
+    
+    return versionBuild;
+}
 
 @end

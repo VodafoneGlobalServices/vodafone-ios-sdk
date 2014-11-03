@@ -152,6 +152,7 @@
 		49B27D7919AB2E540009C9C0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B27D7819AB2E540009C9C0 /* UIKit.framework */; };
 		49B27D7E19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B27D7D19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m */; };
 		49B27D8019AB49F80009C9C0 /* VDFFactoryBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B27D7F19AB49F80009C9C0 /* VDFFactoryBaseTestCase.m */; };
+		49B729851A07D8C100672B11 /* VDFUsersServiceIncorrectMethodCallSequenceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B729841A07D8C100672B11 /* VDFUsersServiceIncorrectMethodCallSequenceTestCase.m */; };
 		49BC3CBE1998B174008C2108 /* VDFOAuthTokenRequestFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 49BC3CBC1998B174008C2108 /* VDFOAuthTokenRequestFactory.h */; };
 		49BC3CBF1998B174008C2108 /* VDFOAuthTokenRequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BC3CBD1998B174008C2108 /* VDFOAuthTokenRequestFactory.m */; };
 		49BC3CC21998B1BD008C2108 /* VDFOAuthTokenRequestBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 49BC3CC01998B1BD008C2108 /* VDFOAuthTokenRequestBuilder.h */; };
@@ -393,6 +394,7 @@
 		49B27D7D19AB394A0009C9C0 /* VDFOAuthTokenRequestFactoryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthTokenRequestFactoryTestCase.m; path = Factories/OAuthToken/VDFOAuthTokenRequestFactoryTestCase.m; sourceTree = "<group>"; };
 		49B27D7F19AB49F80009C9C0 /* VDFFactoryBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFFactoryBaseTestCase.m; path = Factories/VDFFactoryBaseTestCase.m; sourceTree = "<group>"; };
 		49B27D8119AB4A880009C9C0 /* VDFFactoryBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFFactoryBaseTestCase.h; path = Factories/VDFFactoryBaseTestCase.h; sourceTree = "<group>"; };
+		49B729841A07D8C100672B11 /* VDFUsersServiceIncorrectMethodCallSequenceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFUsersServiceIncorrectMethodCallSequenceTestCase.m; path = SDKIntegrationTests/UserService/VDFUsersServiceIncorrectMethodCallSequenceTestCase.m; sourceTree = "<group>"; };
 		49BC3CBC1998B174008C2108 /* VDFOAuthTokenRequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFOAuthTokenRequestFactory.h; path = Internal/Factories/OAuthTokenRequestFactory/VDFOAuthTokenRequestFactory.h; sourceTree = "<group>"; };
 		49BC3CBD1998B174008C2108 /* VDFOAuthTokenRequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDFOAuthTokenRequestFactory.m; path = Internal/Factories/OAuthTokenRequestFactory/VDFOAuthTokenRequestFactory.m; sourceTree = "<group>"; };
 		49BC3CC01998B1BD008C2108 /* VDFOAuthTokenRequestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDFOAuthTokenRequestBuilder.h; path = Internal/Factories/OAuthTokenRequestFactory/VDFOAuthTokenRequestBuilder.h; sourceTree = "<group>"; };
@@ -636,6 +638,7 @@
 				498F6AFE19DAF2630066A61C /* VDFSuccessResolveTestCase.m */,
 				4965BF691A0128DE00C7A7E9 /* VDFFailedResolveTestCase.m */,
 				49E1F17B1A026FB6003E604A /* VDFUsersServiceInvalidStateTestCase.m */,
+				49B729841A07D8C100672B11 /* VDFUsersServiceIncorrectMethodCallSequenceTestCase.m */,
 				49847C7A19D9884300BE98F8 /* ErrorHandling */,
 				496C5FC719FFE52200582CB3 /* ThrottlingLimit */,
 				49A934F919F15823004FE8D3 /* ConfigurationUpdate */,
@@ -1673,6 +1676,7 @@
 				49E1F1751A02479D003E604A /* VDFCallsFromDifferentThreadsStressTestCase.m in Sources */,
 				49DD383C1A03CFCE00C8A230 /* VDFNetworkStressTestCase.m in Sources */,
 				496C5FC319FFD2A100582CB3 /* VDFOAuthRequestOptionsEqualityTestCase.m in Sources */,
+				49B729851A07D8C100672B11 /* VDFUsersServiceIncorrectMethodCallSequenceTestCase.m in Sources */,
 				4965BF6A1A0128DE00C7A7E9 /* VDFFailedResolveTestCase.m in Sources */,
 				496C5FCA19FFE60400582CB3 /* VDFThrottlingTestCase.m in Sources */,
 				49A3DA2A19ACB9D6004B8634 /* VDFOAuthTokenRequestStateTestCase.m in Sources */,

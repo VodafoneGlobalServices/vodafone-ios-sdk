@@ -103,7 +103,7 @@ static dispatch_once_t * oneInstanceToken;
     }
     else {
         // return invalid input because we do not have started session
-        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
+        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
         [self.currentDelegate didSMSPinRequested:@NO withError:error];
         self.currentDelegate = nil;
     }
@@ -122,8 +122,9 @@ static dispatch_once_t * oneInstanceToken;
        || ![VDFStringHelper isStringValid:smsCode withRegularExpression:configuration.smsCodeValidationRegex]) {
         
         // return invalid input because we do not have started session or pin is invalid
+        VDFSmsValidationResponse *errorResponse = [[VDFSmsValidationResponse alloc] initWithSmsCode:smsCode isSucceded:NO];
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
-        [self.currentDelegate didSMSPinRequested:@NO withError:error];
+        [self.currentDelegate didValidatedSMSToken:errorResponse withError:error];
     }
     else {
         // create request object

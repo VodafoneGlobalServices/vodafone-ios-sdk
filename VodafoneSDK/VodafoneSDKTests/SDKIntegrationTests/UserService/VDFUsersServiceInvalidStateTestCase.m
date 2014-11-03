@@ -29,12 +29,12 @@
 @end
 
 
-@interface VDFUsersServiceInvalidParametersTestCase : VDFTestCase
+@interface VDFUsersServiceInvalidStateTestCase : VDFTestCase
 @property VDFUsersService *serviceToTest;
 @property id mockDelegate;
 @end
 
-@implementation VDFUsersServiceInvalidParametersTestCase
+@implementation VDFUsersServiceInvalidStateTestCase
 
 - (void)setUp
 {

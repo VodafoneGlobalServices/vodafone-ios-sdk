@@ -96,16 +96,19 @@
 - (void)rejectAnyOtherDelegateCall;
 
 - (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode;
+- (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode onMatchingExecution:(void(^)())onMatch;
 - (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus;
 - (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus onSuccessExecution:(void(^)(VDFUserTokenDetails *details))onSuccess;
 
 - (void)expectDidSMSPinRequestedWithSuccess:(BOOL)isSuccess;
 - (void)expectDidSMSPinRequestedWithSuccess:(BOOL)isSuccess onSuccessExecution:(void(^)())onSuccess;
 - (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode;
+- (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode onSuccessExecution:(void(^)())onSuccess;
 
 - (void)expectDidValidatedSMSWithSuccess;
 - (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode;
 - (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode;
+- (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode onSuccessExecution:(void(^)())onSuccess;
 - (void)expectDidValidatedSuccessfulSMSCode:(NSString*)code;
 
 

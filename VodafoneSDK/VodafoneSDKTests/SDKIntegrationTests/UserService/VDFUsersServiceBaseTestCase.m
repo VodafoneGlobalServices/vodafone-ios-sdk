@@ -540,15 +540,24 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
 }
 
 - (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidReceivedUserDetailsWithErrorCode:errorCode onMatchingExecution:nil];
+}
+- (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode onMatchingExecution:(void(^)())onMatch {
     
     [[self.mockDelegate expect] didReceivedUserDetails:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
         BOOL isExpected = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        
+        if(isExpected && onMatch != nil) {
+            onMatch();
+        }
+        
         NSLog(@"TEST_CASE_DEBUG expectDidReceivedUserDetailsWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], isExpected);
         return isExpected;
         
     }]];
 }
+
 - (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus {
     [self expectDidReceivedUserDetailsWithResolutionStatus:resolutionStatus onSuccessExecution:nil];
 }
@@ -607,12 +616,19 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
 }
 
 - (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidSMSPinRequestedWithErrorCode:errorCode onSuccessExecution:nil];
+}
+
+- (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode onSuccessExecution:(void(^)())onSuccess {
     [[self.mockDelegate expect] didSMSPinRequested:@0 withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
         BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
         
         NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
         
+        if(result && onSuccess != nil) {
+            onSuccess();
+        }
         return result;
     }]];
 }
@@ -626,18 +642,32 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
 }
 
 - (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidValidatedSMSCode:code withErrorCode:errorCode onSuccessExecution:nil];
+}
+
+- (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode onSuccessExecution:(void(^)())onSuccess {
+    __block BOOL isSmsCodeValid = NO;
+    __block BOOL isErrorCodeValid = NO;
     [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
         
         VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
         BOOL result = [response.smsCode isEqualToString:code] && !response.isSucceded;
+        isSmsCodeValid = result;
         
+        if(isSmsCodeValid && isErrorCodeValid && onSuccess != nil) {
+            onSuccess();
+        }
         return result;
     }] withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
         BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        isErrorCodeValid = result;
         
-        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
         
+        if(isSmsCodeValid && isErrorCodeValid && onSuccess != nil) {
+            NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
+            onSuccess();
+        }
         return result;
     }]];
 }

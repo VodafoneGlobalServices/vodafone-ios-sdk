@@ -408,7 +408,7 @@
     NSString *versionBuild = [NSString stringWithFormat:@"v%@", version];
     
     if (![version isEqualToString:build]) {
-        versionBuild = [NSString stringWithFormat:@"%@(%@)", versionBuild, build];
+        versionBuild = [NSString stringWithFormat:@"%@ (%@)", versionBuild, build];
     }
     
     return versionBuild;

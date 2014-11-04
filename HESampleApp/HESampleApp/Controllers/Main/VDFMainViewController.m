@@ -13,6 +13,7 @@
 @interface VDFMainViewController ()
 
 @property (nonatomic, strong) NSMutableString *loggedMessages;
+@property (nonatomic, strong) NSMutableString *loggedMessagesHTML;
 @property (nonatomic, strong) NSMutableString *htmlOutput;
 @property (nonatomic, strong) NSTimer *scrollViewUpdateTimer;
 
@@ -51,6 +52,7 @@
 {
     [super viewDidLoad];
     self.loggedMessages = [[NSMutableString alloc] init];
+    self.loggedMessagesHTML = [[NSMutableString alloc] init];
     self.htmlOutput = [[NSMutableString alloc] init];
     
     // register for keyboard handling
@@ -231,7 +233,7 @@
     [mc setSubject:emailTitle];
     [mc setMessageBody:messageBody isHTML:NO];
     [mc setToRecipients:toRecipents];
-    NSString *html = [self.outpuWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
+    NSString *html = [self htmlPageWithMessages:self.loggedMessagesHTML];
     [mc addAttachmentData:[html dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/html" fileName:@"formatedLog.html"];
     
     [self presentViewController:mc animated:YES completion:NULL];
@@ -291,40 +293,54 @@
 }
 
 - (void)logSDKInvocationMessage:(NSString*)message {
+    
+    NSString *htmlEntry = [self coloredHTMLMessageEntry:message color:@"lightGreen"];
+    
     // append for next use
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
+    [self.loggedMessagesHTML appendString:htmlEntry];
     
-    [self appendHtmlOutput:message color:@"lightGreen"];
+    [self appendHtmlOutput:htmlEntry];
 //    NSLog(@"%@",message);
 }
 
 - (void)logInternalMessage:(NSString*)message {
+    
+    NSString *htmlEntry = [self coloredHTMLMessageEntry:message color:@"orange"];
+    
     // append for next use
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
+    [self.loggedMessagesHTML appendString:htmlEntry];
     
-    [self appendHtmlOutput:message color:@"orange"];
+    [self appendHtmlOutput:htmlEntry];
 //   NSLog(@"%@",message);
 }
 
 - (void)logException:(NSException*)exception {
-    // append for next use
+    
     NSString *message = [NSString stringWithFormat:@"Exception occured: %@\n", exception];
+    NSString *htmlEntry = [self coloredHTMLMessageEntry:message color:@"red"];
+    
+    // append for next use
     [self.loggedMessages appendString:message];
-    [self appendHtmlOutput:message color:@"red"];
+    [self.loggedMessages appendString:@"\n"];
+    [self.loggedMessagesHTML appendString:htmlEntry];
+    
+    [self appendHtmlOutput:htmlEntry];
 //   NSLog(@"%@",message);
 }
 
-- (void)appendHtmlOutput:(NSString*)message color:(NSString*)color {
+- (void)appendHtmlOutput:(NSString*)message {
     @synchronized(self.htmlOutput) {
         
         if(message != nil) {
-//            [self.htmlOutput insertString:[NSString stringWithFormat:@"<pre style=\"background-color: %@; margin-top: 5px;\">%@</pre>", color, message] atIndex:0];
-            [self.htmlOutput appendFormat:@"<pre style=\"background-color: %@; margin-top: 5px;\">%@</pre>", color, message];
+//            [self.htmlOutput insertString:message atIndex:0];
+            [self.htmlOutput appendString:message];
         }
         void (^setHTMLBlock)(void) = ^{
-            [self.outpuWebView loadHTMLString:[NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 10px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", self.htmlOutput] baseURL:nil];
+            [self.outpuWebView loadHTMLString:[self htmlPageWithMessages:self.htmlOutput] baseURL:nil];
             [self recalculateScrollViewContent];
         };
         
@@ -338,19 +354,30 @@
     }
 }
 
+- (NSString*)coloredHTMLMessageEntry:(NSString*)message color:(NSString*)color {
+    return [NSString stringWithFormat:@"<pre style=\"background-color: %@; margin-top: 5px;\">%@</pre>", color, message];
+}
+
+- (NSString*)htmlPageWithMessages:(NSString*)htmlEntries {
+    return [NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 10px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", htmlEntries];
+}
+
 #pragma mark -
 #pragma mark VDFMessageLogger Implementation
 
 - (void)logMessage:(NSString*)message ofType:(VDFLogType)logType {
     
+    NSString *htmlEntry = [self coloredHTMLMessageEntry:message color:@"lightGray"];
+    
     // append for next use
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
+    [self.loggedMessagesHTML appendString:htmlEntry];
     
     if(logType == VDFLogInfoType) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if([self.displayLogSwitch isOn]) {
-                [self appendHtmlOutput:message color:@"lightGray"];
+                [self appendHtmlOutput:htmlEntry];
             }
             NSLog(@"%@",message);
         });
@@ -380,8 +407,9 @@
 
 - (IBAction)onClearOutputButtonClick:(id)sender {
     [self.htmlOutput setString:@""];
-    [self appendHtmlOutput:nil color:nil];
+    [self appendHtmlOutput:nil];
     [self.loggedMessages setString:@""];
+    [self.loggedMessagesHTML setString:@""];
     [self recalculateScrollViewContent];
 }
 

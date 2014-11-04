@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VDFBaseService.h"
 #import "VDFUsersServiceDelegate.h"
 
 @class VDFUserResolveOptions, VDFUserTokenDetails;
@@ -19,7 +18,7 @@
     Objective-C singleton class representing service for obtaining and 
     maintaining user authentication token.
  */
-@interface VDFUsersService : VDFBaseService
+@interface VDFUsersService : NSObject
 
 /*!
  @abstract

@@ -251,4 +251,33 @@ static NSInteger const VERIFY_DELAY = 8;
     [super.mockDelegate verifyWithDelay:VERIFY_DELAY];
 }
 
+- (void)test_networkTimeOut_isHandledProperly {
+    
+    // mock
+    VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:NO];
+    super.smsValidation = options.smsValidation;
+    
+    // stub http oauth
+    [super stubRequest:[super filterOAuthRequest] withResponsesList:@[[super responseOAuthSuccessExpireInSeconds:3200]]];
+    
+    // stub resolve with internet connection error and next success response
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ ^OHHTTPStubsResponse*(NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                                                          code:kCFURLErrorTimedOut
+                                                                      userInfo:nil]];
+    } ]];
+    
+    // expect that the delegate object will be invoked with http timeout error
+    [super expectDidReceivedUserDetailsWithErrorCode:VDFErrorConnectionTimeout];
+    
+    [super rejectAnyOtherDelegateCall];
+    
+    // run
+    [super.serviceToTest retrieveUserDetails:options delegate:super.mockDelegate];
+    
+    // verify
+    [super.mockDelegate verifyWithDelay:VERIFY_DELAY];
+
+}
+
 @end

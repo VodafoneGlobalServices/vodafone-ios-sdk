@@ -13,7 +13,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    VDFMainViewController *vc = 
+    
+    NSDictionary *userDefaultsDefaults = @{ BACKEND_APP_KEY_DEFAULTS_KEY: @"l8d0ESc5vk5vHlOosrPaAxqYANKR2KSH",
+                                            CLIENT_APP_KEY_DEFAULTS_KEY: @"WCejf6WmXCw7fK07HzWMbTtJyYuEfQwc",
+                                            CLIENT_APP_SECRET_DEFAULTS_KEY: @"eatguVG1CTeCvsST",
+                                            PHONE_NUMBER_DEFAULTS_KEY: @"34678774201",
+                                            SMS_VALIDATION_DEFAULTS_KEY: [NSNumber numberWithBool:YES],
+                                            DISPLAY_LOGS_DEFAULTS_KEY: [NSNumber numberWithBool:YES] };
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
     
     VDFMainViewController *viewController = [[VDFMainViewController alloc] initWithNibName:@"MainView" bundle:nil];
     

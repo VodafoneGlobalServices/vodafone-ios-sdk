@@ -9,6 +9,7 @@
 #import "VDFMainViewController.h"
 #import <MessageUI/MessageUI.h>
 #import <VodafoneSDK/VodafoneSDK.h>
+#import "VDFAppDelegate.h"
 
 @interface VDFMainViewController ()
 
@@ -73,19 +74,46 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     [self.scrollView setScrollEnabled:YES];
     
-    self.backendAppKeyTextField.text = @"l8d0ESc5vk5vHlOosrPaAxqYANKR2KSH";
-    self.clientAppKeyTextField.text = @"WCejf6WmXCw7fK07HzWMbTtJyYuEfQwc";
-    self.clientAppSecretTextField.text = @"eatguVG1CTeCvsST";
+    // read NSDefaults
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *backendId = [defaults objectForKey:BACKEND_APP_KEY_DEFAULTS_KEY];
+    NSString *clientId = [defaults objectForKey:CLIENT_APP_KEY_DEFAULTS_KEY];
+    NSString *clientSecret = [defaults objectForKey:CLIENT_APP_SECRET_DEFAULTS_KEY];
+    NSString *phoneNumber = [defaults objectForKey:PHONE_NUMBER_DEFAULTS_KEY];
+
+    self.smsValidationSwitch.on = [defaults boolForKey:SMS_VALIDATION_DEFAULTS_KEY];
+    self.displayLogSwitch.on = [defaults boolForKey:DISPLAY_LOGS_DEFAULTS_KEY];
     
-    self.imsiTextField.text = @"34678774201";
+    self.backendAppKeyTextField.text = backendId ?: @"l8d0ESc5vk5vHlOosrPaAxqYANKR2KSH";
+    self.clientAppKeyTextField.text = clientId ?: @"WCejf6WmXCw7fK07HzWMbTtJyYuEfQwc";
+    self.clientAppSecretTextField.text = clientSecret ?: @"eatguVG1CTeCvsST";
+    
+    self.imsiTextField.text = phoneNumber ?: @"34678774201";
 //    self.imsiTextField.text = @"491748862966"; //joaquim phone number
 //    self.imsiTextField.text = @"204049810027400";
     
-    self.displayLogSwitch.on = YES;
     
     [self recalculateScrollViewContent];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    // store NSDefaults
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.backendAppKeyTextField.text forKey:BACKEND_APP_KEY_DEFAULTS_KEY];
+    [defaults setObject:self.clientAppKeyTextField.text forKey:CLIENT_APP_KEY_DEFAULTS_KEY];
+    [defaults setObject:self.clientAppSecretTextField.text forKey:CLIENT_APP_SECRET_DEFAULTS_KEY];
+    [defaults setObject:self.imsiTextField.text forKey:PHONE_NUMBER_DEFAULTS_KEY];
+    [defaults setBool:self.smsValidationSwitch.on forKey:SMS_VALIDATION_DEFAULTS_KEY];
+    [defaults setBool:self.displayLogSwitch.on forKey:DISPLAY_LOGS_DEFAULTS_KEY];
+    
+    [defaults synchronize];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewWillLayoutSubviews {

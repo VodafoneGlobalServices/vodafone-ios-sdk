@@ -107,13 +107,14 @@ static VDFDIContainer * g_diContainer = nil;
     return VDF_IOS_SDK_VERSION_STRING;
 }
 
-+ (void)subscribeDebugLogger:(id<VDFMessageLogger>)logger {
+#ifdef DEBUG
++ (void)subscribeDebugLogger:(id)logger {
     [VDFLogUtility subscribeLogger:logger];
 }
-
-+ (void)unsubscribeDebugLogger:(id<VDFMessageLogger>)logger {
++ (void)unsubscribeDebugLogger:(id)logger {
     [VDFLogUtility unsubscribeLogger:logger];
 }
+#endif
 
 #pragma mark -
 #pragma mark internal implementation

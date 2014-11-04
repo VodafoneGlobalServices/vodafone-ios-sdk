@@ -12,6 +12,5 @@
 #import "VDFUserResolveOptions.h"
 #import "VDFUserTokenDetails.h"
 #import "VDFError.h"
-#import "VDFMessageLogger.h"
 #import "VDFSmsValidationResponse.h"
 

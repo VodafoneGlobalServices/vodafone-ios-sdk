@@ -60,7 +60,12 @@ NSString *kReachabilityChangedNotification = @"kNetworkReachabilityChangedNotifi
 
 #pragma mark - Supporting functions
 
-#define kShouldPrintReachabilityFlags 1
+#ifdef DEBUG
+    #define kShouldPrintReachabilityFlags 1
+#else
+    #define kShouldPrintReachabilityFlags 0
+#endif
+
 
 static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char* comment)
 {

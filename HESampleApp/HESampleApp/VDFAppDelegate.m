@@ -16,7 +16,10 @@
 //    VDFMainViewController *vc = 
     
     VDFMainViewController *viewController = [[VDFMainViewController alloc] initWithNibName:@"MainView" bundle:nil];
+    
+#ifdef DEBUG
     [VDFSettings subscribeDebugLogger:viewController];
+#endif
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = viewController;

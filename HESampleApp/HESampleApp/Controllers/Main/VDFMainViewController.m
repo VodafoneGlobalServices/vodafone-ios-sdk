@@ -329,13 +329,13 @@
 #pragma mark -
 #pragma mark VDFMessageLogger Implementation
 
-- (void)logMessage:(NSString*)message ofType:(VDFLogMessageType)logType {
+- (void)logMessage:(NSString*)message ofType:(VDFLogType)logType {
     
     // append for next use
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
     
-    if(logType == VDFLogMessageInfoType) {
+    if(logType == VDFLogInfoType) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if([self.displayLogSwitch isOn]) {
                 [self appendHtmlOutput:message color:@"lightGray"];

@@ -10,6 +10,22 @@
 #import <MessageUI/MessageUI.h>
 #import <VodafoneSDK/VodafoneSDK.h>
 
-@interface VDFMainViewController : UIViewController <VDFUsersServiceDelegate, VDFMessageLogger, MFMailComposeViewControllerDelegate>
+
+/**
+ *  Log message type
+ */
+typedef NS_ENUM(NSUInteger, VDFLogType) {
+    /**
+     *  Message is used for debug.
+     */
+    VDFLogDebugType = 0,
+    /**
+     *  Message is used for information.
+     */
+    VDFLogInfoType,
+};
+
+
+@interface VDFMainViewController : UIViewController <VDFUsersServiceDelegate, MFMailComposeViewControllerDelegate>
 
 @end

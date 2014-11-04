@@ -70,7 +70,9 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
     
     [VDFSettings initialize];
     [[VDFUsersService sharedInstance] resetOneInstanceToken];
+#ifdef DEBUG
     [VDFSettings subscribeDebugLogger:self];
+#endif
     
     
     self.backendId = @"someBackendId";
@@ -164,8 +166,11 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
         // if not then it is an error
         XCTFail(@"There are still stubbed responses.");
     }
-    
+
+#ifdef DEBUG
     [VDFSettings unsubscribeDebugLogger:self];
+#endif
+    
     [OHHTTPStubs removeAllStubs];
     [OHHTTPStubs onStubActivation:nil];
     [self.serviceToTest stopMocking];

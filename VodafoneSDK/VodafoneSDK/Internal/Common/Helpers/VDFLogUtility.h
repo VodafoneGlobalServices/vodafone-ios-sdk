@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "VDFMessageLogger.h"
 
+
+#ifdef DEBUG
+
 /**
  *  Log debug function
  *
@@ -28,6 +31,14 @@
  *  @return void
  */
 #define VDFLogI(format, ...) [VDFLogUtility logType:VDFLogMessageInfoType message:format, ##__VA_ARGS__]
+
+#else
+
+#define VDFLogD(format, ...)
+
+#define VDFLogI(format, ...)
+
+#endif
 
 /**
  *  Logging helper class

@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VDFMessageLogger.h"
 
 
 static NSString * const VDFClientAppKeySettingKey = @"VodafoneClientAppKey";
@@ -35,8 +34,11 @@ static NSString * const VDFBackendAppKeySettingKey = @"VodafoneBackendAppKey";
  */
 + (NSString *)sdkVersion;
 
-+ (void)subscribeDebugLogger:(id<VDFMessageLogger>)logger;
 
-+ (void)unsubscribeDebugLogger:(id<VDFMessageLogger>)logger;
+#ifdef DEBUG
++ (void)subscribeDebugLogger:(id)logger;
++ (void)unsubscribeDebugLogger:(id)logger;
+#endif
+
 
 @end

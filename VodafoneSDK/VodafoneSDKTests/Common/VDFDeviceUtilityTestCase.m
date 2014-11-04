@@ -53,4 +53,18 @@ extern void __gcov_flush();
     XCTAssertEqualObjects(firstResult, secondResult, @"Each call to simMCC should be the same");
 }
 
+- (void)testIsDeviceHardwareNameNotNilAndAlwaysTheSame {
+    
+    VDFDeviceUtility *utility1 = [[VDFDeviceUtility alloc] init];
+    VDFDeviceUtility *utility2 = [[VDFDeviceUtility alloc] init];
+    
+    // run
+    NSString *name1 = [utility1 deviceHardwareName];
+    NSString *name2 = [utility2 deviceHardwareName];
+    
+    // assert
+    XCTAssertNotNil(name1, @"Hardware name should not be nil");
+    XCTAssertEqualObjects(name1, name2, @"Hardware name should be the same for different instances of Device Utility class.");
+}
+
 @end

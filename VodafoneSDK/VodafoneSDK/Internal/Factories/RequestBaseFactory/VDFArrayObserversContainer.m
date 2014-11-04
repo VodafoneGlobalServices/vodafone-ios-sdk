@@ -67,12 +67,12 @@
         if([observer respondsToSelector:self.notifySelector]) {
             // invoke delegate with response on the main thread:
             if([NSThread isMainThread]) {
-                [observer performSelector:self.notifySelector withObject:object withObject:error];
+                ((void (*)(id, SEL, id, id))[observer methodForSelector:self.notifySelector])(observer, self.notifySelector, object, error);
             }
             else {
                 // we are on some different thread
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [observer performSelector:self.notifySelector withObject:object withObject:error];
+                    ((void (*)(id, SEL, id, id))[observer methodForSelector:self.notifySelector])(observer, self.notifySelector, object, error);
                 });
             }
         }

@@ -16,7 +16,7 @@
     
     // run & assert:
     id result;
-    XCTAssertNoThrow(result = [target performSelector:selector], @"Create method (of %@ object) should not throw exceptions.", expectedResultClass);
+    XCTAssertNoThrow(result = ((id (*)(id, SEL))[target methodForSelector:selector])(target, selector), @"Create method (of %@ object) should not throw exceptions.", expectedResultClass);
     XCTAssertNotNil(result, @"Create method (of %@ object) should not return nil.", expectedResultClass);
     XCTAssertEqual([result class], expectedResultClass, @"Create method (of %@ object) not returned expected type of object..", expectedResultClass);
     

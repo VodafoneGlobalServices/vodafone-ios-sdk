@@ -304,10 +304,8 @@
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-            [self appendHtmlOutput:message color:@"orange"];
-        //        NSLog(@"%@",message);
-    });
+    [self appendHtmlOutput:message color:@"orange"];
+//   NSLog(@"%@",message);
 }
 
 - (void)logException:(NSException*)exception {
@@ -315,16 +313,28 @@
     NSString *message = [NSString stringWithFormat:@"Exception occured: %@\n", exception];
     [self.loggedMessages appendString:message];
     [self appendHtmlOutput:message color:@"red"];
-    //        NSLog(@"%@",message);
+//   NSLog(@"%@",message);
 }
 
 - (void)appendHtmlOutput:(NSString*)message color:(NSString*)color {
-    @synchronized(self.outpuWebView) {
+    @synchronized(self.htmlOutput) {
+        
         if(message != nil) {
+//            [self.htmlOutput insertString:[NSString stringWithFormat:@"<pre style=\"background-color: %@; margin-top: 5px;\">%@</pre>", color, message] atIndex:0];
             [self.htmlOutput appendFormat:@"<pre style=\"background-color: %@; margin-top: 5px;\">%@</pre>", color, message];
         }
-        [self.outpuWebView loadHTMLString:[NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 10px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", self.htmlOutput] baseURL:nil];
-        [self recalculateScrollViewContent];
+        void (^setHTMLBlock)(void) = ^{
+            [self.outpuWebView loadHTMLString:[NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 10px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", self.htmlOutput] baseURL:nil];
+            [self recalculateScrollViewContent];
+        };
+        
+        if([NSThread isMainThread]) {
+            setHTMLBlock();
+        }
+        else {
+            // we are on some different thread
+            dispatch_async(dispatch_get_main_queue(), setHTMLBlock);
+        }
     }
 }
 

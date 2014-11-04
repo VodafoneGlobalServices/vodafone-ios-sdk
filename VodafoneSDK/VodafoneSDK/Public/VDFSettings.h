@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VDFMessageLogger.h"
 
 
 static NSString * const VDFClientAppKeySettingKey = @"VodafoneClientAppKey";

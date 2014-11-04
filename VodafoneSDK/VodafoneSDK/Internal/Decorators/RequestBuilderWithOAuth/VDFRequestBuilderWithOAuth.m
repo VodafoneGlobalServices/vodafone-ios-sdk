@@ -118,11 +118,11 @@
     else {
         // everything looks fine:
         self.oAuthToken = oAuthToken;
-        [self.initiallyDecoratedBuilder performSelector:self.selector withObject:self.oAuthToken];
+        ((void (*)(id, SEL, id))[self.initiallyDecoratedBuilder methodForSelector:self.selector])(self.initiallyDecoratedBuilder, self.selector, self.oAuthToken);
         
         // lets move one with this request:
         if(self.restorePointObject != nil) {
-            [self.restorePointObject performSelector:self.restorePointSelector withObject:self];
+            ((void (*)(id, SEL, id))[self.restorePointObject methodForSelector:self.restorePointSelector])(self.restorePointObject, self.restorePointSelector, self);
         }
         else {
             // if restore point is not set, then this response is for expired oAuthToken

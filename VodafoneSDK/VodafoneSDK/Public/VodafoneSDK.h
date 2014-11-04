@@ -15,5 +15,3 @@
 #import "VDFMessageLogger.h"
 #import "VDFSmsValidationResponse.h"
 
-
-#define VDF_IOS_SDK_VERSION_STRING @"0.0.2"

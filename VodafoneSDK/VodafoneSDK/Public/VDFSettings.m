@@ -18,6 +18,7 @@
 #import "VDFDIContainer.h"
 #import "VDFConfigurationManager.h"
 #import "VDFDeviceUtility.h"
+#import "VDFConsts.h"
 
 static VDFDIContainer * g_diContainer = nil;
 

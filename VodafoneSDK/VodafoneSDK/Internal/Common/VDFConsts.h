@@ -9,6 +9,9 @@
 #ifndef VodafoneSDK_VDFConsts_h
 #define VodafoneSDK_VDFConsts_h
 
+// current version of SDK
+#define VDF_IOS_SDK_VERSION_STRING @"0.0.2"
+
 #pragma mark - Configuration consts:
 
 static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_GRANT_TYPE = @"client_credentials";

@@ -233,7 +233,12 @@
     [mc setSubject:emailTitle];
     [mc setMessageBody:messageBody isHTML:NO];
     [mc setToRecipients:toRecipents];
-    NSString *html = [self htmlPageWithMessages:self.loggedMessagesHTML];
+    NSString *html = [self htmlPageWithMessages:[NSString stringWithFormat:@"<p><input type=\"checkbox\" id=\"displayDebug\" \
+                                                 onclick=\"\
+                                                 var elements = document.getElementsByClassName('debugLog'); \
+                                                 var displayStyle = document.getElementById('displayDebug').checked ? 'block':'none'; \
+                                                 for(var i = 0; i < elements.length; i++) { elements[i].style.display = displayStyle; }\
+                                                 \" \>Display debug logs ?</p> %@", self.loggedMessagesHTML]];
     [mc addAttachmentData:[html dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/html" fileName:@"formatedLog.html"];
     
     [self presentViewController:mc animated:YES completion:NULL];
@@ -358,6 +363,10 @@
     return [NSString stringWithFormat:@"<pre style=\"background-color: %@; margin-top: 5px;\">%@</pre>", color, message];
 }
 
+- (NSString*)coloredHTMLMessageEntry:(NSString*)message color:(NSString*)color withClass:(NSString*)className {
+    return [NSString stringWithFormat:@"<pre class=\"%@\" style=\"background-color: %@; margin-top: 5px;\">%@</pre>", className, color, message];
+}
+
 - (NSString*)htmlPageWithMessages:(NSString*)htmlEntries {
     return [NSString stringWithFormat:@"<html><style type=\"text/css\">body pre { word-break: break-all; font-size: 10px; white-space: pre-wrap; padding: 5px; margin: 0px; border: 0px}</style><body>%@</body></html>", htmlEntries];
 }
@@ -372,7 +381,7 @@
     // append for next use
     [self.loggedMessages appendString:message];
     [self.loggedMessages appendString:@"\n"];
-    [self.loggedMessagesHTML appendString:htmlEntry];
+    [self.loggedMessagesHTML appendString:logType == VDFLogInfoType ? htmlEntry:[self coloredHTMLMessageEntry:message color:@"lightGray" withClass:@"debugLog"]];
     
     if(logType == VDFLogInfoType) {
         dispatch_async(dispatch_get_main_queue(), ^{

@@ -59,7 +59,7 @@
 
 - (void)readErrorFromResponse:(VDFHttpConnectorResponse*)response {
     if(response.httpResponseCode != 201 && response.httpResponseCode != 200 && response.httpResponseCode != 302
-       && response.httpResponseCode != 404 && response.httpResponseCode != 304) {
+       && response.httpResponseCode != 404 && response.httpResponseCode != 304 && response.error == nil) {
         NSInteger errorCode = VDFErrorServerCommunication;
         if(response.httpResponseCode == 400) {
             errorCode = VDFErrorInvalidInput;

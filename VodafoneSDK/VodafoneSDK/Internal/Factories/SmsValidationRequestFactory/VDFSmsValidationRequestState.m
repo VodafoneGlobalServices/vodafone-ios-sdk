@@ -21,7 +21,7 @@
 #pragma mark - VDFRequestState Impelemnetation
 
 - (void)updateWithHttpResponse:(VDFHttpConnectorResponse*)response {
-    if(response != nil && response.httpResponseCode != 200) {
+    if(response != nil && response.httpResponseCode != 200 && response.error == nil) {
         NSInteger errorCode = VDFErrorServerCommunication;
         if(response.httpResponseCode == 400) {
             errorCode = VDFErrorInvalidInput;

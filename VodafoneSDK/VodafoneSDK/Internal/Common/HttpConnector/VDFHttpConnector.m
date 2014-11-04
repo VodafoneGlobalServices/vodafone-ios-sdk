@@ -220,7 +220,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
     self.currentConnection = nil;
 //    VDFLogD(@"didFailWithError for url %@", self.url);
-    NSInteger errorCodeInDomain = (error.code == NSURLErrorTimedOut) ? VDFErrorConnectionTimeout:VDFErrorNoConnection;
+    NSInteger errorCodeInDomain = (error.code == NSURLErrorTimedOut) ? VDFErrorConnectionTimeout:VDFErrorServerCommunication;
     NSError *errorInVDFDomain = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCodeInDomain userInfo:nil];
     if(self.delegate != nil) {
         [self.delegate httpRequest:self onResponse:[[VDFHttpConnectorResponse alloc] initWithError:errorInVDFDomain]];

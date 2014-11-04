@@ -81,4 +81,16 @@ extern void __gcov_flush();
     XCTAssertNotEqualObjects(randomString1, randomString2, @"Random string is not generating properly.");
 }
 
+
+- (void)testIsStringValidatedProperlyWithRegularExpression {
+    
+    // run
+    BOOL resultTrue = [VDFStringHelper isStringValid:@"sometext1234SOME_OTHER_TEXT_123" withRegularExpression:@"[a-z]+[0-9]+[A-Z_]+[0-9]+"];
+    BOOL resultFalse = [VDFStringHelper isStringValid:@"sometext1234SOME_OTHER_TEXT_123asd" withRegularExpression:@"[a-z]+[0-9]+[A-Z_]+[0-9]+"];
+    
+    // assert
+    XCTAssertTrue(resultTrue, @"String passing valid regular expression should be validated proprely.");
+    XCTAssertFalse(resultFalse, @"String not passing valid regular expression should not be validated proprely.");
+}
+
 @end

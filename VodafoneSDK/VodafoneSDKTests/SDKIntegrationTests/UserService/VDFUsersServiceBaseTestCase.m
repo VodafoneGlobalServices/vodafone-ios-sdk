@@ -26,6 +26,14 @@
 
 static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
 
+@interface VDFSampleMockServiceDelegate : NSObject <VDFUsersServiceDelegate>
+@end
+
+@implementation VDFSampleMockServiceDelegate
+- (void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {}
+- (void)didSMSPinRequested:(NSNumber*)isSuccess withError:(NSError*)error {}
+- (void)didValidatedSMSToken:(VDFSmsValidationResponse*)response withError:(NSError*)error {}
+@end
 
 @interface VDFUsersService ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
@@ -97,7 +105,8 @@ static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
     self.service.diContainer = [VDFSettings globalDIContainer];
     
     self.serviceToTest = OCMPartialMock(self.service);
-    self.mockDelegate = OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
+    id mockDelegateInstance = [[VDFSampleMockServiceDelegate alloc] init];
+    self.mockDelegate = OCMPartialMock(mockDelegateInstance);//OCMProtocolMock(@protocol(VDFUsersServiceDelegate));
     
     // stub network checking class:
     VDFDeviceUtility *deviceUtility = [[VDFDeviceUtility alloc] init];

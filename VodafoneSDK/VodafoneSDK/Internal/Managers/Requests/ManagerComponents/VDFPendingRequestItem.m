@@ -77,7 +77,7 @@
     
     // wee need to inform any other request if any is waiting for response of currently finished response:
     for (VDFPendingRequestItem *pendingItem in [self.parentQueue allPendingRequests]) {
-        if([[pendingItem.builder requestState] canHandleResponse:response ofConnectedBuilder:self.builder]) {
+        if(self != pendingItem && [[pendingItem.builder requestState] canHandleResponse:response ofConnectedBuilder:self.builder]) {
             VDFLogD(@"Informing connected request with response of currently finished request on which is waiting.");
             [pendingItem parseAndNotifyWithResponse:response];
             [pendingItem checkNextStepWithBuilderState];
@@ -93,9 +93,8 @@
     
     // starting the request
     self.currentHttpRequest = [self.builder createCurrentHttpConnectorWithDelegate:self];
-    NSInteger errorCode = [self.currentHttpRequest startCommunication];
     
-    if(errorCode > 0) {
+    if(![self.currentHttpRequest startCommunication]) {
         [self onInternalConnectionError:VDFErrorNoConnection];
     }
 }
@@ -141,7 +140,7 @@
 
 - (void)parseAndNotifyWithResponse:(VDFHttpConnectorResponse*)response {
     
-    id<NSCoding> parsedObject = nil;
+    id parsedObject = nil;
     id<VDFRequestState> requestState = [self.builder requestState];
     
     @synchronized(self.parentQueue) {

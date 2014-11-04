@@ -22,6 +22,6 @@
  *
  *  @return Parsed object or nil if parsing error occured.
  */
-- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response;
+- (id)parseResponse:(VDFHttpConnectorResponse*)response;
 
 @end

@@ -19,18 +19,6 @@
     return self;
 }
 
-#pragma mark -
-#pragma mark - NSCoding implementation
-
-- (id)initWithCoder:(NSCoder*)decoder {
-    return [super init];
-    // this class is no cached so it do not need to implement NSCoding properly
-}
-
-- (void)encodeWithCoder:(NSCoder*)encoder {
-    // this class is no cached so it do not need to implement NSCoding properly
-}
-
 - (NSString *)description {
     return [NSString stringWithFormat:@"VDFSmsValidationResponse { isSucceded=%hhd, smsCode=%@ }", self.isSucceded, self.smsCode];
 }

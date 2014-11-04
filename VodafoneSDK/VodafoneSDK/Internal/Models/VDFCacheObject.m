@@ -18,7 +18,7 @@ static NSString * const ExpirationDateKey = @"expirationDate";
 #pragma mark -
 #pragma mark Instance Properties/Methods
 
-- (instancetype)initWithValue:(id<NSCoding>)value forKey:(NSString*)key withExpirationDate:(NSDate*)expirationDate {
+- (instancetype)initWithValue:(id)value forKey:(NSString*)key withExpirationDate:(NSDate*)expirationDate {
     self = [super init];
     if(self) {
         self.cacheKey = key;
@@ -32,24 +32,5 @@ static NSString * const ExpirationDateKey = @"expirationDate";
 - (BOOL)isExpired {
     return [self.expirationDate compare:[NSDate date]] == NSOrderedAscending;
 }
-
-#pragma mark -
-#pragma mark - NSCoding implementation
-
-- (id)initWithCoder:(NSCoder*)decoder {
-    self = [super init];
-    if(self) {
-        self.cacheKey = [decoder decodeObjectForKey:CacheKeyKey];
-        self.expirationDate = [decoder decodeObjectForKey:ExpirationDateKey];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder*)encoder {
-    [encoder encodeObject:self.cacheKey forKey:CacheKeyKey];
-    [encoder encodeObject:self.expirationDate forKey:ExpirationDateKey];
-}
-
 
 @end

@@ -22,8 +22,10 @@
 #import "VDFDIContainer.h"
 #import "VDFMessageLogger.h"
 #import "VDFConfigurationManager.h"
+#import "VDFBaseConfiguration.h"
 
-extern void __gcov_flush();
+static NSInteger const DEFAULT_RETRY_AFTER_MS = 50;
+
 
 @interface VDFUsersService ()
 @property (nonatomic, strong) VDFDIContainer *diContainer;
@@ -153,8 +155,6 @@ extern void __gcov_flush();
 
 - (void)tearDown
 {
-    __gcov_flush();
-    
     [OHHTTPStubs removeStub:self.defaultConfigUpdateStub];
     
     NSLog(@"Number of still stubbed requests in tearDown: %i.", [[OHHTTPStubs allStubs] count]);
@@ -171,9 +171,10 @@ extern void __gcov_flush();
     [self.serviceToTest stopMocking];
     [self.mockDelegate stopMocking];
     __block id serviceToStop = self.service;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [serviceToStop cancelRetrieveUserDetails];
-    });
+//    });
+    [[VDFSettings globalDIContainer] registerInstance:nil forClass:[VDFBaseConfiguration class]];
     
     [super tearDown];
 }
@@ -264,13 +265,17 @@ extern void __gcov_flush();
 }
 
 - (OHHTTPStubsTestBlock)filterValidatePinRequest {
+    return [self filterValidatePinRequestWithCode:self.smsCode];
+}
+
+- (OHHTTPStubsTestBlock)filterValidatePinRequestWithCode:(NSString*)code {
     return ^BOOL(NSURLRequest *request) {
         if([request.URL.absoluteString hasSuffix:[NSString stringWithFormat:@"seamless-id/users/tokens/%@/pins?backendId=%@", self.sessionToken, self.backendId]]
            && [[request HTTPMethod] isEqualToString:@"POST"]) {
             if([self checkStandardRequiredHeaders:request]) {
                 // check body
                 id jsonObject = [NSJSONSerialization JSONObjectWithData:[request HTTPBody] options:kNilOptions error:nil];
-                return [[jsonObject objectForKey:@"code"] isEqualToString:self.smsCode];
+                return [[jsonObject objectForKey:@"code"] isEqualToString:code];
             }
         }
         return NO;
@@ -346,6 +351,13 @@ extern void __gcov_flush();
     };
 }
 
+- (OHHTTPStubsResponseBlock)responseResolve302NotFinishedAndRetryAfterDefaultMs {
+    return [self responseResolve302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
+
+- (OHHTTPStubsResponseBlock)responseResolve302SmsRequiredAndRetryAfterDefaultMs {
+    return [self responseResolve302SmsRequiredAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
 
 - (OHHTTPStubsResponseBlock)responseResolve302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
@@ -373,6 +385,19 @@ extern void __gcov_flush();
     };
 }
 
+
+
+- (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinishedAndRetryAfterDefaultMs {
+    return [self responseCheckStatus302NotFinishedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
+
+- (OHHTTPStubsResponseBlock)responseCheckStatus302SmsRequiredAndRetryAfterDefaultMs {
+    return [self responseCheckStatus302SmsRequiredAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
+
+- (OHHTTPStubsResponseBlock)responseCheckStatus304NotModifiedAndRetryAfterDefaultMs {
+    return [self responseCheckStatus304NotModifiedAndRetryAfterMs:DEFAULT_RETRY_AFTER_MS];
+}
 
 - (OHHTTPStubsResponseBlock)responseCheckStatus302NotFinishedAndRetryAfterMs:(NSInteger)retryAfterMs {
     return ^OHHTTPStubsResponse*(NSURLRequest *request) {
@@ -452,7 +477,14 @@ extern void __gcov_flush();
 
 
 - (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
-                            withResponsesList:(NSArray*)responses {
+                       withResponsesList:(NSArray*)responses {
+    return [self stubRequest:requestFilter withResponsesList:responses requestTime:0.01 responseTime:0.01]; // tere is not ever any immidetly response
+}
+
+- (id<OHHTTPStubsDescriptor>)stubRequest:(OHHTTPStubsTestBlock)requestFilter
+                       withResponsesList:(NSArray*)responses
+                             requestTime:(NSTimeInterval)requestTime
+                            responseTime:(NSTimeInterval)responseTime {
     
     // creating requests in reverse direction
     __block NSMutableArray *blocksArray = [NSMutableArray arrayWithCapacity:[responses count]];
@@ -462,23 +494,24 @@ extern void __gcov_flush();
     }
     
     __block id stub = [OHHTTPStubs stubRequestsPassingTest:requestFilter
-                               withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                                   OHHTTPStubsResponseBlock responseBlock = [[blocksArray lastObject] copy];
-                                   
-                                   if([blocksArray count] > 1) {
-                                       // we have more then one waiting responses so we need to move next response:
-                                       [blocksArray removeLastObject];
-                                   }
-                                   else {
-                                       // it is last response, lets remove it
-                                       [OHHTTPStubs removeStub:stub];
-                                   }
-                                   
-                                   return [responseBlock(request) requestTime:0.01 responseTime:0.01]; // tere is not ever any immidetly response
-                               }];
+                                          withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                                              OHHTTPStubsResponseBlock responseBlock = [[blocksArray lastObject] copy];
+                                              
+                                              if([blocksArray count] > 1) {
+                                                  // we have more then one waiting responses so we need to move next response:
+                                                  [blocksArray removeLastObject];
+                                              }
+                                              else {
+                                                  // it is last response, lets remove it
+                                                  [OHHTTPStubs removeStub:stub];
+                                              }
+                                              
+                                              return [responseBlock(request) requestTime:requestTime responseTime:responseTime];
+                                          }];
     [stub setName:[NSString stringWithFormat:@"%@", requestFilter]];
     return stub;
 }
+
 
 
 
@@ -507,15 +540,24 @@ extern void __gcov_flush();
 }
 
 - (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidReceivedUserDetailsWithErrorCode:errorCode onMatchingExecution:nil];
+}
+- (void)expectDidReceivedUserDetailsWithErrorCode:(VDFErrorCode)errorCode onMatchingExecution:(void(^)())onMatch {
     
     [[self.mockDelegate expect] didReceivedUserDetails:nil withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
         BOOL isExpected = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        
+        if(isExpected && onMatch != nil) {
+            onMatch();
+        }
+        
         NSLog(@"TEST_CASE_DEBUG expectDidReceivedUserDetailsWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], isExpected);
         return isExpected;
         
     }]];
 }
+
 - (void)expectDidReceivedUserDetailsWithResolutionStatus:(VDFResolutionStatus)resolutionStatus {
     [self expectDidReceivedUserDetailsWithResolutionStatus:resolutionStatus onSuccessExecution:nil];
 }
@@ -574,43 +616,72 @@ extern void __gcov_flush();
 }
 
 - (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidSMSPinRequestedWithErrorCode:errorCode onSuccessExecution:nil];
+}
+
+- (void)expectDidSMSPinRequestedWithErrorCode:(VDFErrorCode)errorCode onSuccessExecution:(void(^)())onSuccess {
     [[self.mockDelegate expect] didSMSPinRequested:@0 withError:[OCMArg checkWithBlock:^BOOL(id obj) {
         NSError *error = (NSError*)obj;
         BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
         
         NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
         
+        if(result && onSuccess != nil) {
+            onSuccess();
+        }
         return result;
     }]];
 }
 
-- (void)expectDidValidatedSMSWithSuccess:(BOOL)isSuccess {
+- (void)expectDidValidatedSMSWithSuccess {
+    [self expectDidValidatedSuccessfulSMSCode:self.smsCode];
+}
+
+- (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidValidatedSMSCode:self.smsCode withErrorCode:errorCode];
+}
+
+- (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode {
+    [self expectDidValidatedSMSCode:code withErrorCode:errorCode onSuccessExecution:nil];
+}
+
+- (void)expectDidValidatedSMSCode:(NSString*)code withErrorCode:(VDFErrorCode)errorCode onSuccessExecution:(void(^)())onSuccess {
+    __block BOOL isSmsCodeValid = NO;
+    __block BOOL isErrorCodeValid = NO;
     [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
         
         VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
-        BOOL result = [response.smsCode isEqualToString:self.smsCode] && response.isSucceded == isSuccess;
+        BOOL result = [response.smsCode isEqualToString:code] && !response.isSucceded;
+        isSmsCodeValid = result;
+        
+        if(isSmsCodeValid && isErrorCodeValid && onSuccess != nil) {
+            onSuccess();
+        }
+        return result;
+    }] withError:[OCMArg checkWithBlock:^BOOL(id obj) {
+        NSError *error = (NSError*)obj;
+        BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
+        isErrorCodeValid = result;
+        
+        
+        if(isSmsCodeValid && isErrorCodeValid && onSuccess != nil) {
+            NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
+            onSuccess();
+        }
+        return result;
+    }]];
+}
+
+- (void)expectDidValidatedSuccessfulSMSCode:(NSString*)code {
+    [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
+        
+        VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
+        BOOL result = [response.smsCode isEqualToString:code] && response.isSucceded;
         
         NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithSuccess: - received object %@ -- is expected=%hhd", response, result);
         
         return result;
     }] withError:[OCMArg isNil]];
-}
-
-- (void)expectDidValidatedSMSWithErrorCode:(VDFErrorCode)errorCode {
-    [[self.mockDelegate expect] didValidatedSMSToken:[OCMArg checkWithBlock:^BOOL(id obj) {
-        
-        VDFSmsValidationResponse *response = (VDFSmsValidationResponse*)obj;
-        BOOL result = [response.smsCode isEqualToString:self.smsCode] && !response.isSucceded;
-        
-        return result;
-    }] withError:[OCMArg checkWithBlock:^BOOL(id obj) {
-        NSError *error = (NSError*)obj;
-        BOOL result = [[error domain] isEqualToString:VodafoneErrorDomain] && [error code] == errorCode;
-        
-        NSLog(@"TEST_CASE_DEBUG expectDidSMSPinRequestedWithErrorCode: - received error %@, %i -- is expected=%hhd", [error domain], [error code], result);
-        
-        return result;
-    }]];
 }
 
 

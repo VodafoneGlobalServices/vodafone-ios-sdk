@@ -51,7 +51,7 @@ static NSInteger const VERIFY_DELAY = 3;
     [super stubRequest:[super filterOAuthRequest] withResponsesList:responsesList];
     
     // stub resolve with 302 - sms validation required
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterDefaultMs] ]];
     
     // stub send sms pin response:
     [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
@@ -76,7 +76,7 @@ static NSInteger const VERIFY_DELAY = 3;
     
     if(errorCode < 0) {
         // expect that the delegate object will be invoked next with sms validation status
-        [super expectDidValidatedSMSWithSuccess:YES];
+        [super expectDidValidatedSMSWithSuccess];
     }
     else {
         // expect that the oAuthError will be returned
@@ -171,10 +171,10 @@ static NSInteger const VERIFY_DELAY = 3;
     [super stubRequest:[super filterOAuthRequest] withResponsesList:responsesList];
     
     // stub resolve with 302 - not finished
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterDefaultMs] ]];
     
     // stub check status with 302 - sms validation required
-    [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[ [super responseResolve302SmsRequiredAndRetryAfterDefaultMs] ]];
     
     // stub send sms pin response:
     [super stubRequest:[super filterGeneratePinRequest] withResponsesList:@[[super responseEmptyWithCode:200]]];
@@ -200,7 +200,7 @@ static NSInteger const VERIFY_DELAY = 3;
     
     if(errorCode < 0) {
         // expect that the delegate object will be invoked next with sms validation status
-        [super expectDidValidatedSMSWithSuccess:YES];
+        [super expectDidValidatedSMSWithSuccess];
     }
     else {
         // expect that the oAuthError will be returned

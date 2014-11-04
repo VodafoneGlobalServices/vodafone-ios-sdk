@@ -14,8 +14,8 @@
 
 - (instancetype)initWithDIContainer:(VDFDIContainer*)diContainer;
 
-- (void)incrementCallType:(Class)classType;
+- (void)incrementCallType:(NSString*)typeKey;
 
-- (BOOL)canPerformRequestOfType:(Class)classType;
+- (BOOL)canPerformRequestOfType:(NSString*)typeKey;
 
 @end

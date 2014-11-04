@@ -26,27 +26,28 @@
     return self;
 }
 
-- (void)incrementCallType:(Class)classType {
-    NSMutableArray *callDates = [self.callsListPerClassType objectForKey:NSStringFromClass(classType)];
+- (void)incrementCallType:(NSString*)typeKey {
+    NSMutableArray *callDates = [self.callsListPerClassType objectForKey:typeKey];
     if(callDates == nil) {
         // create new list for this request type
         callDates = [[NSMutableArray alloc] init];
-        [self.callsListPerClassType setValue:callDates forKey:NSStringFromClass(classType)];
+        [self.callsListPerClassType setValue:callDates forKey:typeKey];
     }
     
     [callDates addObject:[NSDate date]];
 }
 
-- (BOOL)canPerformRequestOfType:(Class)classType {
+- (BOOL)canPerformRequestOfType:(NSString*)typeKey {
     
     BOOL result = YES;
-    NSMutableArray *callDates = [self.callsListPerClassType objectForKey:NSStringFromClass(classType)];
+    NSMutableArray *callDates = [self.callsListPerClassType objectForKey:typeKey];
     if(callDates != nil) {
         VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
         // iterate over all dates from list and remove this expired:
         NSMutableArray *datesToRemove = [[NSMutableArray alloc] init];
         for (NSDate *date in callDates) {
-            if([date timeIntervalSinceNow] > configuration.requestsThrottlingPeriod) {
+            // -[date timeIntervalSinceNow] : because this is date from past so interval will be <0
+            if((-[date timeIntervalSinceNow]) > configuration.requestsThrottlingPeriod) {
                 [datesToRemove addObject:date];
             }
         }

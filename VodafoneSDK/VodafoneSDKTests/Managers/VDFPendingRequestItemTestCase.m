@@ -192,7 +192,7 @@ extern void __gcov_flush();
 - (void)testStartHttpRequestWithoutError {
     
     // expect that the http request will be started
-    [[[self.mockHttpRequest expect] andReturnValue:@0] startCommunication];
+    [[[self.mockHttpRequest expect] andReturnValue:@YES] startCommunication];
     
     // expect that the stop request wont be fired
     [[[self.itemToTestPartialMock reject] ignoringNonObjectArgs] onInternalConnectionError:0];
@@ -208,7 +208,7 @@ extern void __gcov_flush();
 - (void)testStartHttpRequestWithError {
     
     // expect that the http request will be started
-    [[[self.mockHttpRequest expect] andReturnValue:@3] startCommunication];
+    [[[self.mockHttpRequest expect] andReturnValue:@NO] startCommunication];
     
     // expect that the request will be stopped with error code
     [[self.itemToTestPartialMock expect] onInternalConnectionError:VDFErrorNoConnection];

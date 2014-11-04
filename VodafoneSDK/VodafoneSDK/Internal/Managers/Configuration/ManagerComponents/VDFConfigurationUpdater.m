@@ -58,7 +58,7 @@ static NSInteger const VersionNumber = 1;
     }
     
     self.httpConnector.requestHeaders = headers;
-    if([self.httpConnector startCommunication] != 0) {
+    if(![self.httpConnector startCommunication]) {
         self.completionHandler(self, NO);
     }
 }

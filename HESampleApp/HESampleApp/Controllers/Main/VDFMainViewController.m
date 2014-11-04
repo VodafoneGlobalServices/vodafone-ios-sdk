@@ -66,6 +66,8 @@
     
     [self.scrollView addGestureRecognizer:yourTap];
     [self.view addSubview:self.scrollView];
+    
+    [self logInternalMessage:[NSString stringWithFormat:@"App version: %@", [self versionBuild]]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -161,6 +163,7 @@
 
 - (IBAction)onAppIdSetButtonClick:(id)sender {
     [self hideKeyboard];
+    [self logInternalMessage:@"\"Set\" button clicked"];
     
     @try {
         [VDFSettings initializeWithParams:@{ VDFClientAppKeySettingKey: self.clientAppKeyTextField.text,
@@ -175,6 +178,7 @@
 
 - (IBAction)onSmsCodeSendButtonClick:(id)sender {
     [self hideKeyboard];
+    [self logInternalMessage:@"\"Send code\" button clicked"];
     
     @try {
         [[VDFUsersService sharedInstance] validateSmsCode:self.smsCodeTextField.text];
@@ -186,6 +190,7 @@
 
 - (IBAction)onRetrieveUserDetailsButtonClick:(id)sender {
     [self hideKeyboard];
+    [self logInternalMessage:@"\"Retrieve\" button clicked"];
     
     @try {
         VDFUserResolveOptions *options = [[VDFUserResolveOptions alloc] initWithSmsValidation:self.smsValidationSwitch.isOn];
@@ -200,6 +205,7 @@
 }
 
 - (IBAction)onSendSMSPinButtonClick:(id)sender {
+    [self logInternalMessage:@"\"Send SMS PIN\" button clicked"];
     [self hideKeyboard];
     
     @try {
@@ -217,7 +223,7 @@
     }
     
     NSString *emailTitle = [NSString stringWithFormat: @"Seamless Id Error Report (%@)", [NSDate date]];
-    NSString *messageBody = self.loggedMessages;
+    NSString *messageBody = [NSString stringWithFormat:@"App version: %@\n\n%@", [self versionBuild], self.loggedMessages];
     NSArray *toRecipents = [NSArray arrayWithObject:@"michal.szymanczyk@mobica.com"];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
@@ -230,6 +236,8 @@
 }
 
 - (IBAction)onCancelRetrieveButtonClick:(id)sender {
+    [self logInternalMessage:@"\"Cancel retrieve\" button clicked"];
+    
     [[VDFUsersService sharedInstance] cancelRetrieveUserDetails];
 }
 
@@ -262,7 +270,11 @@
 
 -(void)didReceivedUserDetails:(VDFUserTokenDetails*)userDetails withError:(NSError*)error {
     if(error == nil) {
-        [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, userDetails.expiresIn]];
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+        [dateFormatter setDateFormat:@"H:m:s dd-MM-yyyy"];
+
+        [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: resolutionStatus=%@, token=%@, expiresIn=%@", [self resolutionStatusToString:userDetails.resolutionStatus], userDetails.token, [dateFormatter stringFromDate:userDetails.expiresIn]]];
     } else {
         [self logSDKInvocationMessage:[NSString stringWithFormat:@"didReceivedUserDetails: errorName=%@", [self vdfErrorCodeToString:[error code]]]];
     }
@@ -388,5 +400,18 @@
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
 
+
+- (NSString*)versionBuild {
+    NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *build = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+    
+    NSString *versionBuild = [NSString stringWithFormat:@"v%@", version];
+    
+    if (![version isEqualToString:build]) {
+        versionBuild = [NSString stringWithFormat:@"%@ (%@)", versionBuild, build];
+    }
+    
+    return versionBuild;
+}
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VDFOAuthTokenResponse : NSObject <NSCoding>
+@interface VDFOAuthTokenResponse : NSObject
 
 /**
  *  Initializes model class with json object.

@@ -47,7 +47,7 @@ extern void __gcov_flush();
     
     // mock
     NSDate *startDate = [NSDate date];
-    Class classType = [NSObject class];
+    NSString *classType = NSStringFromClass([NSObject class]);
     
     // run
     [self.counterToTest incrementCallType:classType];
@@ -55,7 +55,7 @@ extern void __gcov_flush();
     
     // assert
     NSDate *endDate = [NSDate date];
-    NSArray *callsDates = [self.counterToTest.callsListPerClassType valueForKey:NSStringFromClass([NSObject class])];
+    NSArray *callsDates = [self.counterToTest.callsListPerClassType valueForKey:classType];
     NSDate *call1Date = [callsDates objectAtIndex:0];
     NSDate *call2Date = [callsDates objectAtIndex:1];
     XCTAssertTrue([startDate compare:call1Date] != NSOrderedDescending && [endDate compare:call1Date] != NSOrderedAscending, @"First call has wrong date");
@@ -66,7 +66,7 @@ extern void __gcov_flush();
 - (void)testCanPerformRequest {
     
     // mock
-    Class classType = [NSObject class];
+    NSString *classType = NSStringFromClass([NSObject class]);
     VDFBaseConfiguration *configuration = [[VDFBaseConfiguration alloc] init];
     configuration.requestsThrottlingLimit = 3;
     configuration.requestsThrottlingPeriod = 100;

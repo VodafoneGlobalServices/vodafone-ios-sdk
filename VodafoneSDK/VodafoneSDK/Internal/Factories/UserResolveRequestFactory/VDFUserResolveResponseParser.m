@@ -21,7 +21,7 @@
 
 @implementation VDFUserResolveResponseParser
 
-- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
+- (id)parseResponse:(VDFHttpConnectorResponse*)response {
     
     if(response == nil) {
         return nil;
@@ -43,7 +43,7 @@
                 userTokenDetails.token = [jsonObject objectForKey:@"tokenId"];
                 id expiresInObject = [jsonObject objectForKey:@"expiresIn"];
                 if(expiresInObject != nil) {
-                    userTokenDetails.expiresIn = [NSDate dateWithTimeIntervalSinceNow:[expiresInObject intValue]/1000.0];
+                    userTokenDetails.expiresIn = [NSDate dateWithTimeIntervalSinceNow:[expiresInObject intValue]];
                 }
             }
             VDFLogD(@"Parsed object: \n%@", userTokenDetails);

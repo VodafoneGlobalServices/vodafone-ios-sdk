@@ -29,7 +29,7 @@ static NSInteger const VERIFY_DELAY = 3;
     [super stubRequest:[super filterOAuthRequest] withResponsesList:@[[super responseOAuthSuccessExpireInSeconds:3200]]];
     
     // stub resolve with 302 - not finished
-    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterMs:500] ]];
+    [super stubRequest:[super filterResolveRequestWithSmsValidation] withResponsesList:@[ [super responseResolve302NotFinishedAndRetryAfterDefaultMs] ]];
     
     // reject any unexpected response
     [super rejectAnyNotHandledHttpCall];
@@ -118,7 +118,7 @@ static NSInteger const VERIFY_DELAY = 3;
     super.smsValidation = options.smsValidation;
     
     // stub check status response with error:
-    [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[[super responseCheckStatus304NotModifiedAndRetryAfterMs:500], [super responseEmptyWithCode:statusCode]]];
+    [super stubRequest:[super filterCheckStatusRequest] withResponsesList:@[[super responseCheckStatus304NotModifiedAndRetryAfterDefaultMs], [super responseEmptyWithCode:statusCode]]];
     
     // expect that the delegate object will be invoked correctly:
     [super expectDidReceivedUserDetailsWithErrorCode:errorCode];

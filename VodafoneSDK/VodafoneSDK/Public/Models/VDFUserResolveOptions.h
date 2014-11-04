@@ -14,7 +14,7 @@
  @abstract
     Representation of arguments passed to the getUserDetails: method of VDFUsersService class.
  */
-@interface VDFUserResolveOptions : NSObject <NSCopying>
+@interface VDFUserResolveOptions : NSObject
 
 /*! @abstract If set to YES, the server will send an SMS with code. */
 @property (nonatomic, assign) BOOL smsValidation;

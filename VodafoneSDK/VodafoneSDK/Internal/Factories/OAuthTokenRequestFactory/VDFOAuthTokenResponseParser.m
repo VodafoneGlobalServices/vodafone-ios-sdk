@@ -14,7 +14,7 @@
 
 @implementation VDFOAuthTokenResponseParser
 
-- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
+- (id)parseResponse:(VDFHttpConnectorResponse*)response {
     
     VDFOAuthTokenResponse *oAuthToken = nil;
     if(response !=nil && response.data != nil && response.httpResponseCode == 200) {

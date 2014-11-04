@@ -26,7 +26,7 @@ static NSInteger const SuccessfulResponseCode = 200;
     return self;
 }
 
-- (id<NSCoding>)parseResponse:(VDFHttpConnectorResponse*)response {
+- (id)parseResponse:(VDFHttpConnectorResponse*)response {
     
     if(response != nil) {
         BOOL isSucceded = response.httpResponseCode == SuccessfulResponseCode;

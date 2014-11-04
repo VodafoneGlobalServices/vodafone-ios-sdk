@@ -16,6 +16,23 @@ static NSString * const ACRKey = @"acr";
 
 @implementation VDFUserTokenDetails
 
+- (NSString*)description {
+    return [NSString stringWithFormat:@"VDFUserTokenDetails { resolutionStatus=%@, token=%@, expiresIn=%@, acr=%@ }",
+            [self resolutionStatusString], self.token, self. expiresIn, self.acr];
+}
+
+- (NSString*)resolutionStatusString {
+    switch (self.resolutionStatus) {
+        case VDFResolutionStatusCompleted: return @"VDFResolutionStatusCompleted";
+        case VDFResolutionStatusUnableToResolve: return @"VDFResolutionStatusUnableToResolve";
+        case VDFResolutionStatusValidationRequired: return @"VDFResolutionStatusValidationRequired";
+            
+        default:
+            break;
+    }
+    return nil;
+}
+
 #pragma mark -
 #pragma mark - NSCoding implementation
 
@@ -36,23 +53,6 @@ static NSString * const ACRKey = @"acr";
     [encoder encodeObject:_token forKey:TokenKey];
     [encoder encodeObject:_expiresIn forKey:ExpiresInKey];
     [encoder encodeObject:_acr forKey:ACRKey];
-}
-
-- (NSString*)description {
-    return [NSString stringWithFormat:@"VDFUserTokenDetails { resolutionStatus=%@, token=%@, expiresIn=%@, acr=%@ }",
-            [self resolutionStatusString], self.token, self. expiresIn, self.acr];
-}
-
-- (NSString*)resolutionStatusString {
-    switch (self.resolutionStatus) {
-        case VDFResolutionStatusCompleted: return @"VDFResolutionStatusCompleted";
-        case VDFResolutionStatusUnableToResolve: return @"VDFResolutionStatusUnableToResolve";
-        case VDFResolutionStatusValidationRequired: return @"VDFResolutionStatusValidationRequired";
-            
-        default:
-            break;
-    }
-    return nil;
 }
 
 @end

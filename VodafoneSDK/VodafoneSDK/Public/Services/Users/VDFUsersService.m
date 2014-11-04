@@ -35,6 +35,8 @@ static dispatch_once_t * oneInstanceToken;
 @property (nonatomic, strong) VDFUserResolveRequestBuilder *currentResolveBuilder;
 @property (nonatomic, assign) id<VDFUsersServiceDelegate> currentDelegate;
 
+- (void)assertSDKInitialization;
+
 - (void)retrieveUserDetailsOverHAP:(VDFUserResolveOptions*)options;
 - (void)retrieveUserDetailsOverAPIX:(VDFUserResolveOptions*)options;
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options;
@@ -69,13 +71,14 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)retrieveUserDetails:(VDFUserResolveOptions*)options delegate:(id<VDFUsersServiceDelegate>)delegate {
     
-    NSParameterAssert(options);
-    NSParameterAssert(delegate);
+    if(options == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Options parameter is invalid."];
+    }
+    if(delegate == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Delegate parameter is invalid."];
+    }
     
-    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-    NSParameterAssert(configuration.clientAppKey);
-    NSParameterAssert(configuration.clientAppSecret);
-    NSParameterAssert(configuration.backendAppKey);
+    [self assertSDKInitialization];
     
     if(delegate != nil && self.currentSessionToken == nil && self.currentResolveBuilder == nil) {
         
@@ -90,11 +93,7 @@ static dispatch_once_t * oneInstanceToken;
 }
 
 - (void)sendSmsPin {
-    
-    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-    NSParameterAssert(configuration.clientAppKey);
-    NSParameterAssert(configuration.clientAppSecret);
-    NSParameterAssert(configuration.backendAppKey);
+    [self assertSDKInitialization];
     
     if(self.currentSessionToken != nil && self.currentResolveBuilder != nil) {
         // create request object
@@ -104,7 +103,7 @@ static dispatch_once_t * oneInstanceToken;
     }
     else {
         // return invalid input because we do not have started session
-        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorNoConnection userInfo:nil];
+        NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
         [self.currentDelegate didSMSPinRequested:@NO withError:error];
         self.currentDelegate = nil;
     }
@@ -112,20 +111,20 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)validateSmsCode:(NSString*)smsCode {
     
-    NSParameterAssert(smsCode);
+    if(smsCode == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Sms code is invalid"];
+    }
+    
+    [self assertSDKInitialization];
     
     VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
-    NSParameterAssert(configuration.clientAppKey);
-    NSParameterAssert(configuration.clientAppSecret);
-    NSParameterAssert(configuration.backendAppKey);
-    
-    
     if(self.currentSessionToken == nil || self.currentResolveBuilder == nil
        || ![VDFStringHelper isStringValid:smsCode withRegularExpression:configuration.smsCodeValidationRegex]) {
         
         // return invalid input because we do not have started session or pin is invalid
+        VDFSmsValidationResponse *errorResponse = [[VDFSmsValidationResponse alloc] initWithSmsCode:smsCode isSucceded:NO];
         NSError *error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:VDFErrorInvalidInput userInfo:nil];
-        [self.currentDelegate didSMSPinRequested:@NO withError:error];
+        [self.currentDelegate didValidatedSMSToken:errorResponse withError:error];
     }
     else {
         // create request object
@@ -136,6 +135,8 @@ static dispatch_once_t * oneInstanceToken;
 }
 
 - (void)setDelegate:(id<VDFUsersServiceDelegate>)delegate {
+    
+    [self assertSDKInitialization];
     
     if(self.currentResolveBuilder != nil) {
         // first step is to register new delegate:
@@ -159,6 +160,8 @@ static dispatch_once_t * oneInstanceToken;
 
 - (void)cancelRetrieveUserDetails {
     
+    [self assertSDKInitialization];
+    
     if(self.currentResolveBuilder != nil) {
         // if there is pending request we need to cancel request by removing all delegates:
         VDFServiceRequestsManager * requestsManager = [self.diContainer resolveForClass:[VDFServiceRequestsManager class]];
@@ -172,6 +175,14 @@ static dispatch_once_t * oneInstanceToken;
 
 #pragma mark -
 #pragma mark - Private Implementation
+
+- (void)assertSDKInitialization {
+    VDFBaseConfiguration *configuration = [self.diContainer resolveForClass:[VDFBaseConfiguration class]];
+    
+    if(configuration.clientAppKey == nil || configuration.clientAppSecret == nil || configuration.backendAppKey == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"SDK is not properly initialized."];
+    }
+}
 
 - (void)retrieveUserDetailsOverHAP:(VDFUserResolveOptions*)options {
     // check potential HAP resolve error

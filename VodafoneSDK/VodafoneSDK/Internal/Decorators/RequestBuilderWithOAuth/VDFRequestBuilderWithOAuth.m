@@ -92,7 +92,7 @@
     
     VDFCacheObject *cacheObject = [[self oAuthRequestBuilder].factory createCacheObject];
     if(cacheObject != nil) {
-        cacheObject.cacheValue = (id<NSCoding>)oAuthTokenDetails;
+        cacheObject.cacheValue = oAuthTokenDetails;
         if(oAuthTokenDetails == nil) {
             cacheObject.expirationDate = [NSDate distantPast];
         }
@@ -100,8 +100,8 @@
     }
 }
 
-- (BOOL)isDecoratedBuilderKindOfClass:(Class)classType {
-    return [self.activeBuilder isKindOfClass:classType];
+- (id<VDFRequestBuilder>)currentlyDecoratedBuilder {
+    return self.activeBuilder;
 }
 
 #pragma mark -
@@ -154,11 +154,14 @@
 - (void)setResumeTarget:(id)target selector:(SEL)selector {
     self.restorePointObject = target;
     self.restorePointSelector = selector;
-}
+} 
 
 #pragma mark -
 #pragma mark VDFRequestBuilder implementation as proxy
 
+-(NSString*)keyType {
+    return [self.activeBuilder keyType];
+}
 
 - (id<VDFRequestFactory>)factory { return [self.activeBuilder factory]; }
 

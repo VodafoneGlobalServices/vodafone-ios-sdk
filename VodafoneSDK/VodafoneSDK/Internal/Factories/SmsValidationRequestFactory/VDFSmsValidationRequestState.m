@@ -35,7 +35,6 @@
         else if(response.httpResponseCode == 409) {
             errorCode = VDFErrorWrongSmsCode;
         }
-        // TODO obslugcy 403
         self.error = [[NSError alloc] initWithDomain:VodafoneErrorDomain code:errorCode userInfo:nil];
     }
 }

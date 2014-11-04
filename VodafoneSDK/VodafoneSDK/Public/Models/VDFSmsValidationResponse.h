@@ -11,7 +11,7 @@
 /**
  *  Response object of validateSMSCode: method in VDFUsersService class.
  */
-@interface VDFSmsValidationResponse : NSObject <NSCoding>
+@interface VDFSmsValidationResponse : NSObject
 
 /**
  *  Initialize sms validation repsonse model instance.

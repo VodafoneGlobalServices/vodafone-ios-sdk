@@ -64,9 +64,9 @@
 /**
  *  Start http request depending on properties.
  *
- *  @return Error code (>0) if occures or 0 indicating success.
+ *  @return NO if error occures or YES indicating successful starting http session.
  */
-- (NSInteger)startCommunication;
+- (BOOL)startCommunication;
 
 /**
  *  Cacnel pending http request, if request has ended or not started this method have no impact on connection.

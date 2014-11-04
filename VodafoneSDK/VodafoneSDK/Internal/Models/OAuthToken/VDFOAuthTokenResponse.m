@@ -34,17 +34,4 @@ static NSString * const ExpiresInKey = @"expires_in";
     return self;
 }
 
-
-#pragma mark -
-#pragma mark - NSCoding implementation
-
-- (id)initWithCoder:(NSCoder*)decoder {
-    return [super init];
-    // this class is no cached in files so it do not need to implement NSCoding properly
-}
-
-- (void)encodeWithCoder:(NSCoder*)encoder {
-    // this class is no cached  in files so it do not need to implement NSCoding properly
-}
-
 @end

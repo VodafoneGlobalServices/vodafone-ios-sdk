@@ -31,6 +31,6 @@
 
 - (void)updateOAuthTokenInCache:(VDFOAuthTokenResponse*)oAuthTokenDetails;
 
-- (BOOL)isDecoratedBuilderKindOfClass:(Class)classType;
+- (id<VDFRequestBuilder>)currentlyDecoratedBuilder;
 
 @end

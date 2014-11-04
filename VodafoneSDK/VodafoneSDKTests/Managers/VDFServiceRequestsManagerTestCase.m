@@ -109,10 +109,10 @@ extern void __gcov_flush();
 - (void)testPerformRequestIsAddingToQueueAndNotCacheble {
     
     // stub:
-    [[[self.mockCallsCounter stub] andReturnValue:@YES] canPerformRequestOfType:[self.mockBuilder class]];
+    [[[self.mockCallsCounter stub] andReturnValue:@YES] canPerformRequestOfType:[self.mockBuilder keyType]];
     
     // expect that the call counter will be incremented
-    [[self.mockCallsCounter expect] incrementCallType:[self.mockBuilder class]];
+    [[self.mockCallsCounter expect] incrementCallType:[self.mockBuilder keyType]];
     
     // expect that the request would be added to queue:
     [[self.mockConnectionsQueue expect] enqueueRequestBuilder:self.mockBuilder];
@@ -142,7 +142,7 @@ extern void __gcov_flush();
     
     
     // expect that the call counter wont be incremented
-    [[self.mockCallsCounter reject] incrementCallType:[self.mockBuilder class]];
+    [[self.mockCallsCounter reject] incrementCallType:[self.mockBuilder keyType]];
     
     // expect that the request would not be added to queue:
     [[self.mockConnectionsQueue reject] enqueueRequestBuilder:self.mockBuilder];
@@ -188,11 +188,11 @@ extern void __gcov_flush();
     [[[self.mockBuilder stub] andReturn:self.mockObserversContainer] observersContainer];
     
     // stub calls counter call
-    [[[self.mockCallsCounter stub] andReturnValue:@YES] canPerformRequestOfType:[self.mockBuilder class]];
+    [[[self.mockCallsCounter stub] andReturnValue:@YES] canPerformRequestOfType:[self.mockBuilder keyType]];
     
     
     // expect that the call counter will be incremented
-    [[self.mockCallsCounter expect] incrementCallType:[self.mockBuilder class]];
+    [[self.mockCallsCounter expect] incrementCallType:[self.mockBuilder keyType]];
     
     // expect that the request would be added to queue:
     [[self.mockConnectionsQueue expect] enqueueRequestBuilder:self.mockBuilder];
@@ -238,11 +238,11 @@ extern void __gcov_flush();
 - (void)testPerformRequestWhenCallIsThrottled {
     
     // stub:
-    [[[self.mockCallsCounter stub] andReturnValue:@NO] canPerformRequestOfType:[self.mockBuilder class]];
+    [[[self.mockCallsCounter stub] andReturnValue:@NO] canPerformRequestOfType:[self.mockBuilder keyType]];
     
     
     // expect that the call counter wont be incremented
-    [[self.mockCallsCounter reject] incrementCallType:[self.mockBuilder class]];
+    [[self.mockCallsCounter reject] incrementCallType:[self.mockBuilder keyType]];
     
     // expect that the request wont be added to queue:
     [[self.mockConnectionsQueue reject] enqueueRequestBuilder:self.mockBuilder];

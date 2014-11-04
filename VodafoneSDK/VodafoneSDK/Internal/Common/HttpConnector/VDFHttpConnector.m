@@ -57,18 +57,18 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     return self;
 }
 
-- (NSInteger)startCommunication {
+- (BOOL)startCommunication {
     
     VDFNetworkAvailability networkAvailability = [self.deviceUtility checkNetworkTypeAvailability];
     
     if(networkAvailability == VDFNetworkNotAvailable) {
         VDFLogI(@"Internet is not available.");
-        return 1;
+        return NO;
     }
     else if (networkAvailability != VDFNetworkAvailableViaGSM && self.isGSMConnectionRequired) {
         VDFLogI(@"Request need 3G connection - there is not available any.");
         // not connected over 3G and request require 3G:
-        return 2; // TODO need to make some error codes for this
+        return NO;
     }
     else {
         VDFLogI(@"Performing HTTP request");
@@ -93,7 +93,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
         }
     }
 
-    return 0;
+    return YES;
 }
 
 - (void)cancelCommunication {
@@ -202,21 +202,6 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     else {
         return request;
     }
-}
-
-// TODO VERY IMPORTANT - in release for production we need to remove accepting of all ssl certificates !!!!!!
-
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
-    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-        // accepting all ssl certificates
-        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-    }
-    
-    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {

@@ -13,7 +13,6 @@
 		49809CDD197E55CB003F5C66 /* libVodafoneSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 491C2C0719790D1C00C7FB54 /* libVodafoneSDK.a */; };
 		4983375F19CC716A0093D457 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4983375E19CC716A0093D457 /* MessageUI.framework */; };
 		498EA30719829A8600122F05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA30619829A8600122F05 /* SystemConfiguration.framework */; };
-		4990BFB919923C83005EED39 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EA30619829A8600122F05 /* SystemConfiguration.framework */; };
 		49A157FF196BFC7800642677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A157FE196BFC7800642677 /* Foundation.framework */; };
 		49A15801196BFC7800642677 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15800196BFC7800642677 /* CoreGraphics.framework */; };
 		49A15803196BFC7800642677 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15802196BFC7800642677 /* UIKit.framework */; };
@@ -21,9 +20,6 @@
 		49A1580B196BFC7800642677 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1580A196BFC7800642677 /* main.m */; };
 		49A1580F196BFC7800642677 /* VDFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A1580E196BFC7800642677 /* VDFAppDelegate.m */; };
 		49A15811196BFC7800642677 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49A15810196BFC7800642677 /* Images.xcassets */; };
-		49A15819196BFC7800642677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A157FE196BFC7800642677 /* Foundation.framework */; };
-		49A1581A196BFC7800642677 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A15802196BFC7800642677 /* UIKit.framework */; };
-		49A15822196BFC7800642677 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49A15820196BFC7800642677 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,13 +44,6 @@
 			remoteGlobalIDString = 49E74BB41962F9D50080EB14;
 			remoteInfo = VodafoneSDK;
 		};
-		49A1581B196BFC7800642677 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49A157F3196BFC7800642677 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 49A157FA196BFC7800642677;
-			remoteInfo = HESampleApp;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -76,10 +65,7 @@
 		49A1580D196BFC7800642677 /* VDFAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VDFAppDelegate.h; sourceTree = "<group>"; };
 		49A1580E196BFC7800642677 /* VDFAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VDFAppDelegate.m; sourceTree = "<group>"; };
 		49A15810196BFC7800642677 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		49A15816196BFC7800642677 /* HESampleAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HESampleAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49A15817196BFC7800642677 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		49A1581F196BFC7800642677 /* HESampleAppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HESampleAppTests-Info.plist"; sourceTree = "<group>"; };
-		49A15821196BFC7800642677 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,16 +80,6 @@
 				49A15801196BFC7800642677 /* CoreGraphics.framework in Frameworks */,
 				49A15803196BFC7800642677 /* UIKit.framework in Frameworks */,
 				49A157FF196BFC7800642677 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		49A15813196BFC7800642677 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4990BFB919923C83005EED39 /* SystemConfiguration.framework in Frameworks */,
-				49A1581A196BFC7800642677 /* UIKit.framework in Frameworks */,
-				49A15819196BFC7800642677 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +139,6 @@
 			children = (
 				491C2C0019790D1C00C7FB54 /* VodafoneSDK.xcodeproj */,
 				49A15804196BFC7800642677 /* HESampleApp */,
-				49A1581D196BFC7800642677 /* HESampleAppTests */,
 				49A157FD196BFC7800642677 /* Frameworks */,
 				49A157FC196BFC7800642677 /* Products */,
 			);
@@ -173,7 +148,6 @@
 			isa = PBXGroup;
 			children = (
 				49A157FB196BFC7800642677 /* HESampleApp.app */,
-				49A15816196BFC7800642677 /* HESampleAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -218,23 +192,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		49A1581D196BFC7800642677 /* HESampleAppTests */ = {
-			isa = PBXGroup;
-			children = (
-				49A1581E196BFC7800642677 /* Supporting Files */,
-			);
-			path = HESampleAppTests;
-			sourceTree = "<group>";
-		};
-		49A1581E196BFC7800642677 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				49A1581F196BFC7800642677 /* HESampleAppTests-Info.plist */,
-				49A15820196BFC7800642677 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -256,24 +213,6 @@
 			productReference = 49A157FB196BFC7800642677 /* HESampleApp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		49A15815196BFC7800642677 /* HESampleAppTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 49A1582A196BFC7800642677 /* Build configuration list for PBXNativeTarget "HESampleAppTests" */;
-			buildPhases = (
-				49A15812196BFC7800642677 /* Sources */,
-				49A15813196BFC7800642677 /* Frameworks */,
-				49A15814196BFC7800642677 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				49A1581C196BFC7800642677 /* PBXTargetDependency */,
-			);
-			name = HESampleAppTests;
-			productName = HESampleAppTests;
-			productReference = 49A15816196BFC7800642677 /* HESampleAppTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -286,9 +225,6 @@
 				TargetAttributes = {
 					49A157FA196BFC7800642677 = {
 						DevelopmentTeam = 9QXX56ZP39;
-					};
-					49A15815196BFC7800642677 = {
-						TestTargetID = 49A157FA196BFC7800642677;
 					};
 				};
 			};
@@ -311,7 +247,6 @@
 			projectRoot = "";
 			targets = (
 				49A157FA196BFC7800642677 /* HESampleApp */,
-				49A15815196BFC7800642677 /* HESampleAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -344,14 +279,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49A15814196BFC7800642677 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				49A15822196BFC7800642677 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -365,13 +292,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49A15812196BFC7800642677 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -380,11 +300,6 @@
 			name = VodafoneSDK;
 			targetProxy = 49809CDE197E55D6003F5C66 /* PBXContainerItemProxy */;
 		};
-		49A1581C196BFC7800642677 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 49A157FA196BFC7800642677 /* HESampleApp */;
-			targetProxy = 49A1581B196BFC7800642677 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -392,14 +307,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				49A15808196BFC7800642677 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		49A15820196BFC7800642677 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				49A15821196BFC7800642677 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -430,6 +337,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Michał Szymańczyk (F5UT3S9BU7)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michał Szymańczyk (F5UT3S9BU7)";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -448,12 +356,14 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
+				INFOPLIST_FILE = "HESampleApp/HESampleApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "11a75bcf-e404-4b03-98be-2f03cfaef345";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s arm64";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -480,6 +390,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Michał Szymańczyk (F5UT3S9BU7)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Michał Szymańczyk (F5UT3S9BU7)";
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -492,12 +403,14 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
+				INFOPLIST_FILE = "HESampleApp/HESampleApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
 				PROVISIONING_PROFILE = "11a75bcf-e404-4b03-98be-2f03cfaef345";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -509,6 +422,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
@@ -525,6 +439,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -537,6 +452,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
@@ -553,59 +469,8 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		49A1582B196BFC7800642677 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/HESampleApp.app/HESampleApp";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "HESampleApp/HESampleApp-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-				);
-				INFOPLIST_FILE = "HESampleAppTests/HESampleAppTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos6.0;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		49A1582C196BFC7800642677 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/HESampleApp.app/HESampleApp";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "HESampleApp/HESampleApp-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-				);
-				INFOPLIST_FILE = "HESampleAppTests/HESampleAppTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos6.0;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -626,15 +491,6 @@
 			buildConfigurations = (
 				49A15828196BFC7800642677 /* Debug */,
 				49A15829196BFC7800642677 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		49A1582A196BFC7800642677 /* Build configuration list for PBXNativeTarget "HESampleAppTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				49A1582B196BFC7800642677 /* Debug */,
-				49A1582C196BFC7800642677 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -67,7 +67,7 @@
     [self.scrollView addGestureRecognizer:yourTap];
     [self.view addSubview:self.scrollView];
     
-    [self logInternalMessage:[NSString stringWithFormat:@"App version: %@", [self versionBuild]]];
+    [self logInternalMessage:[NSString stringWithFormat:@"App version: %@\nSDK version: v%@", [self versionBuild], [VDFSettings sdkVersion] ]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -223,7 +223,7 @@
     }
     
     NSString *emailTitle = [NSString stringWithFormat: @"Seamless Id Error Report (%@)", [NSDate date]];
-    NSString *messageBody = [NSString stringWithFormat:@"App version: %@\n\n%@", [self versionBuild], self.loggedMessages];
+    NSString *messageBody = [NSString stringWithFormat:@"App version: %@\nSDK version: v%@\n\n%@", [self versionBuild], [VDFSettings sdkVersion], self.loggedMessages];
     NSArray *toRecipents = [NSArray arrayWithObject:@"michal.szymanczyk@mobica.com"];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
@@ -231,6 +231,8 @@
     [mc setSubject:emailTitle];
     [mc setMessageBody:messageBody isHTML:NO];
     [mc setToRecipients:toRecipents];
+    NSString *html = [self.outpuWebView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
+    [mc addAttachmentData:[html dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/html" fileName:@"formatedLog.html"];
     
     [self presentViewController:mc animated:YES completion:NULL];
 }

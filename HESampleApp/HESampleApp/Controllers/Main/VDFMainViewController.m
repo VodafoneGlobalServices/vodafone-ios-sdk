@@ -254,19 +254,17 @@
     
     NSString *emailTitle = [NSString stringWithFormat: @"Seamless Id Error Report (%@)", [NSDate date]];
     NSString *messageBody = [NSString stringWithFormat:@"App version: %@\nSDK version: v%@\n\n%@", [self versionBuild], [VDFSettings sdkVersion], self.loggedMessages];
-    NSArray *toRecipents = [NSArray arrayWithObject:@"michal.szymanczyk@mobica.com"];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;
     [mc setSubject:emailTitle];
     [mc setMessageBody:messageBody isHTML:NO];
-    [mc setToRecipients:toRecipents];
     NSString *html = [self htmlPageWithMessages:[NSString stringWithFormat:@"<p><input type=\"checkbox\" id=\"displayDebug\" \
                                                  onclick=\"\
                                                  var elements = document.getElementsByClassName('debugLog'); \
                                                  var displayStyle = document.getElementById('displayDebug').checked ? 'block':'none'; \
                                                  for(var i = 0; i < elements.length; i++) { elements[i].style.display = displayStyle; }\
-                                                 \" \>Display debug logs ?</p> %@", self.loggedMessagesHTML]];
+                                                 \" />Display debug logs ?</p> %@", self.loggedMessagesHTML]];
     [mc addAttachmentData:[html dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/html" fileName:@"formatedLog.html"];
     
     [self presentViewController:mc animated:YES completion:NULL];

@@ -65,6 +65,10 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationResignActive:)
+                                                 name:UIApplicationWillResignActiveNotification object:nil];
+    
     UITapGestureRecognizer *yourTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollTap:)];
     
     [self.scrollView addGestureRecognizer:yourTap];
@@ -101,6 +105,18 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [self saveDefaults];
+    
+    [super viewWillDisappear:animated];
+}
+
+
+// Called when the UIApplicationWillResignActiveNotification is sent.
+- (void)applicationResignActive:(NSNotification*)aNotification {
+    [self saveDefaults];
+}
+
+- (void)saveDefaults {
     
     // store NSDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -112,8 +128,6 @@
     [defaults setBool:self.displayLogSwitch.on forKey:DISPLAY_LOGS_DEFAULTS_KEY];
     
     [defaults synchronize];
-    
-    [super viewWillDisappear:animated];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -128,6 +142,7 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (NSString*)vdfErrorCodeToString:(VDFErrorCode)errorCode {
@@ -444,7 +459,7 @@
     [self.htmlOutput setString:@""];
     [self appendHtmlOutput:nil];
     [self.loggedMessages setString:@""];
-    [self.loggedMessagesHTML setString:@""];
+//    [self.loggedMessagesHTML setString:@""];
     [self recalculateScrollViewContent];
 }
 

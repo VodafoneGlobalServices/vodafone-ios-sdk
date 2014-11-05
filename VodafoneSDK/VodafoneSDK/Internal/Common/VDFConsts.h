@@ -10,7 +10,7 @@
 #define VodafoneSDK_VDFConsts_h
 
 // current version of SDK
-#define VDF_IOS_SDK_VERSION_STRING @"0.0.2"
+#define VDF_IOS_SDK_VERSION_STRING @"1.0.0"
 
 #pragma mark - Configuration consts:
 

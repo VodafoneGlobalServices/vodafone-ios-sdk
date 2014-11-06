@@ -121,7 +121,7 @@ static NSString * const XVF_TRANSACTION_ID_HEADER = @"x-vf-trace-transaction-id"
     VDFDeviceUtility *deviceUtility = [[VDFSettings globalDIContainer] resolveForClass:[VDFDeviceUtility class]];
     
     // always we adding this standard headers
-    [request setValue:[NSString stringWithFormat:@"%@\%@\%@", [deviceUtility deviceHardwareName], [deviceUtility osName], [deviceUtility deviceUniqueIdentifier]] forHTTPHeaderField:XVF_SUBJECT_ID_HEADER];
+    [request setValue:[NSString stringWithFormat:@"%@\\%@\\%@", [deviceUtility deviceHardwareName], [deviceUtility osName], [deviceUtility deviceUniqueIdentifier]] forHTTPHeaderField:XVF_SUBJECT_ID_HEADER];
     NSString *mcc = [VDFDeviceUtility simMCC];
     if(mcc != nil) {
         [request setValue:mcc forHTTPHeaderField:XVF_SUBJECT_REGION_HEADER];

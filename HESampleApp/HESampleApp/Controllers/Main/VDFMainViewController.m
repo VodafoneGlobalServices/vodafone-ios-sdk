@@ -287,8 +287,12 @@
 
 - (IBAction)onCancelRetrieveButtonClick:(id)sender {
     [self logInternalMessage:@"\"Cancel retrieve\" button clicked"];
-    
-    [[VDFUsersService sharedInstance] cancelRetrieveUserDetails];
+    @try {
+        [[VDFUsersService sharedInstance] cancelRetrieveUserDetails];
+    }
+    @catch (NSException *exception) {
+        [self logException:exception];
+    }
 }
 
 #pragma mark -

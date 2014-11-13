@@ -47,10 +47,6 @@
  * Additional headers which can be added or override standard headers in the request.
  */
 @property (nonatomic, strong) NSDictionary *requestHeaders;
-/**
- *  If set to YES - use Cache-control header from cache responses to maintain http calls, default set to NO;
- */
-@property (nonatomic, assign) BOOL useCachePolicy;
 
 /**
  *  Init method.

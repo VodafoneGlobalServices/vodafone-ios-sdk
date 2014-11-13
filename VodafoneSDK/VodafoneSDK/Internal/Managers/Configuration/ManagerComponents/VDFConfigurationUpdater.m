@@ -45,7 +45,6 @@ static NSInteger const VersionNumber = 1;
     self.httpConnector = [[VDFHttpConnector alloc] initWithDelegate:self];
     self.httpConnector.connectionTimeout = 60;
     self.httpConnector.methodType = HTTPMethodGET;
-    self.httpConnector.useCachePolicy = YES;
     self.httpConnector.url = [NSString stringWithFormat:SERVICE_URL_SCHEME_CONFIGURATION_UPDATE, VersionNumber];
     
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
@@ -77,6 +76,18 @@ static NSInteger const VersionNumber = 1;
         BOOL isResponseValid = [jsonObject isKindOfClass:[NSDictionary class]];
         
         if(![VDFErrorUtility handleInternalError:error] && isResponseValid) {
+            
+            // parse max-age from cache control:
+            NSString *cacheControl = [response.responseHeaders objectForKey:HTTP_HEADER_CACHE_CONTROL];
+            if(cacheControl) {
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(max-age|s-maxage)=\\s*([0-9]+)[\\s,]*" options:NSRegularExpressionCaseInsensitive error:nil];
+                NSTextCheckingResult *match = [regex firstMatchInString:cacheControl options:0 range:NSMakeRange(0, [cacheControl length])];
+                NSRange maxAgeRange = [match rangeAtIndex:2];
+                if(maxAgeRange.location != NSNotFound) {
+                    NSInteger maxAgeSeconds = [[cacheControl substringWithRange:maxAgeRange] intValue];
+                    self.configurationToUpdate.nextUpdateTime = [NSDate dateWithTimeIntervalSinceNow:maxAgeSeconds];
+                }
+            }
             
             // check is something changed (if etag has changed - if still the same then this is readed from http cache)
             NSString *etag = [response.responseHeaders objectForKey:HTTP_HEADER_ETAG];

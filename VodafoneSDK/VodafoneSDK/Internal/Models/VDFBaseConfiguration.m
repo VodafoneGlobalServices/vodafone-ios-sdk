@@ -24,6 +24,7 @@ static NSString * const AvailableMccMncKey = @"availableMccMnc";
 static NSString * const SmsCodeValidationRegexKey = @"smsCodeValidationRegex";
 static NSString * const ConfigurationUpdateLastModifiedKey = @"configurationUpdateLastModified";
 static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
+static NSString * const NextUpdateTimeKey = @"nextUpdateTime";
 
 @implementation VDFBaseConfiguration
 
@@ -48,6 +49,7 @@ static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
         self.smsCodeValidationRegex = [decoder decodeObjectForKey:SmsCodeValidationRegexKey];
         self.configurationUpdateLastModified = [decoder decodeObjectForKey:ConfigurationUpdateLastModifiedKey];
         self.configurationUpdateEtag = [decoder decodeObjectForKey:ConfigurationUpdateEtagKey];
+        self.nextUpdateTime = [decoder decodeObjectForKey:NextUpdateTimeKey];
     }
     return self;
 }
@@ -68,6 +70,7 @@ static NSString * const ConfigurationUpdateEtagKey = @"configurationUpdateEtag";
     [encoder encodeObject:self.smsCodeValidationRegex forKey:SmsCodeValidationRegexKey];
     [encoder encodeObject:self.configurationUpdateLastModified forKey:ConfigurationUpdateLastModifiedKey];
     [encoder encodeObject:self.configurationUpdateEtag forKey:ConfigurationUpdateEtagKey];
+    [encoder encodeObject:self.nextUpdateTime forKey:NextUpdateTimeKey];
 }
 
 

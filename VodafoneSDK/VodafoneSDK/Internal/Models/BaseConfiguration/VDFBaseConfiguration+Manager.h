@@ -24,6 +24,11 @@
 @property (nonatomic, strong) NSString *configurationUpdateEtag;
 
 /**
+ *  Time when next update of configuration need to be perfomed
+ */
+@property (nonatomic, strong) NSDate *nextUpdateTime;
+
+/**
  *  Updates current configuration object with parsed json object.
  *
  *  @param jsonObjectDictionary Json object dictionary containing parameters to update.

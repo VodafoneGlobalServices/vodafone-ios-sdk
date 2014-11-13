@@ -52,6 +52,7 @@ static NSString * const HTTP_HEADER_LAST_MODIFIED = @"Last-Modified";
 static NSString * const HTTP_HEADER_LOCATION = @"Location";
 static NSString * const HTTP_HEADER_RETRY_AFTER = @"Retry-After";
 static NSString * const HTTP_HEADER_ETAG = @"Etag";
+static NSString * const HTTP_HEADER_CACHE_CONTROL = @"Cache-Control";
 
 static NSString * const HTTP_HEADER_CONTENT_TYPE = @"Content-Type";
 static NSString * const HTTP_VALUE_CONTENT_TYPE_JSON = @"application/json";

@@ -46,14 +46,16 @@
         configuration = [self readConfiguration];
     }
     
-    // start update process
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        @synchronized(self.updateLock) {
-            if(self.runningUpdater == nil) {
-                [self startUpdaterForConfiguration:configuration];
+    // start update process only when configuration was not ever updated or next update date was passed
+    if(configuration.nextUpdateTime == nil || [configuration.nextUpdateTime timeIntervalSinceNow] <= 0) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            @synchronized(self.updateLock) {
+                if(self.runningUpdater == nil) {
+                    [self startUpdaterForConfiguration:configuration];
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 - (VDFBaseConfiguration*)readConfiguration {

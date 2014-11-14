@@ -14,7 +14,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    NSDictionary *userDefaultsDefaults = @{ BACKEND_APP_KEY_DEFAULTS_KEY: @"l8d0ESc5vk5vHlOosrPaAxqYANKR2KSH",
+    NSDictionary *userDefaultsDefaults = @{ BACKEND_APP_KEY_DEFAULTS_KEY: @"dee663ce-7c8c-4457-b3a4-9c9c93e0c26a",
                                             CLIENT_APP_KEY_DEFAULTS_KEY: @"WCejf6WmXCw7fK07HzWMbTtJyYuEfQwc",
                                             CLIENT_APP_SECRET_DEFAULTS_KEY: @"eatguVG1CTeCvsST",
                                             PHONE_NUMBER_DEFAULTS_KEY: @"34678774201",

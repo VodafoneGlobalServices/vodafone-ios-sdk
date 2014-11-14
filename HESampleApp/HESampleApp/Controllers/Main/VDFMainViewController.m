@@ -92,7 +92,7 @@
     self.smsValidationSwitch.on = [defaults boolForKey:SMS_VALIDATION_DEFAULTS_KEY];
     self.displayLogSwitch.on = [defaults boolForKey:DISPLAY_LOGS_DEFAULTS_KEY];
     
-    self.backendAppKeyTextField.text = backendId ?: @"l8d0ESc5vk5vHlOosrPaAxqYANKR2KSH";
+    self.backendAppKeyTextField.text = backendId ?: @"dee663ce-7c8c-4457-b3a4-9c9c93e0c26a";
     self.clientAppKeyTextField.text = clientId ?: @"WCejf6WmXCw7fK07HzWMbTtJyYuEfQwc";
     self.clientAppSecretTextField.text = clientSecret ?: @"eatguVG1CTeCvsST";
     

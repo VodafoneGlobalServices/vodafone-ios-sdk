@@ -45,7 +45,7 @@ static NSInteger const VersionNumber = 1;
     self.httpConnector = [[VDFHttpConnector alloc] initWithDelegate:self];
     self.httpConnector.connectionTimeout = 60;
     self.httpConnector.methodType = HTTPMethodGET;
-    self.httpConnector.url = [NSString stringWithFormat:SERVICE_URL_SCHEME_CONFIGURATION_UPDATE, VersionNumber];
+    self.httpConnector.url = [NSString stringWithFormat:SERVICE_URL_SCHEME_CONFIGURATION_UPDATE, (int)VersionNumber];
     
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
     [headers setObject:HTTP_VALUE_CONTENT_TYPE_JSON forKey:HTTP_HEADER_ACCEPT];

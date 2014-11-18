@@ -20,7 +20,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"VDFSmsValidationResponse { isSucceded=%hhd, smsCode=%@ }", self.isSucceded, self.smsCode];
+    return [NSString stringWithFormat:@"VDFSmsValidationResponse { isSucceded=%i, smsCode=%@ }", self.isSucceded, self.smsCode];
 }
 
 @end

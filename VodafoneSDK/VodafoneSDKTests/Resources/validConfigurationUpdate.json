@@ -1,16 +1,16 @@
 {
     "hap": {
-        "protocol": "http_test",
-        "host": "ihap-pre.sp.vodafone.com_test"
+        "protocol": "https",
+        "host": "ihap-pre.sp.vodafone.test.com"
     },
     "apix": {
-        "protocol": "https_test",
-        "host": "apisit.developer.vodafone.com_test",
-        "oAuthTokenPath": "/2/oauth/access-token_test",
+        "protocol": "http",
+        "host": "apisit.developer.vodafone.test.com",
+        "oAuthTokenPath": "/test/2/oauth/access-token",
         "oAuthTokenScope": "seamless_id_resolve_test",
         "oAuthTokenGrantType": "client_credentials_test"
     },
-    "basePath": "/seamless-id/users/tokens_test",
+    "basePath": "/test/seamless-id/users/tokens",
     "defaultHttpConnectionTimeout": 56,
     "requestsThrottlingLimit": 23,
     "requestsThrottlingPeriod": 45,

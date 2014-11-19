@@ -70,12 +70,12 @@ static NSInteger const VERIFY_DELAY = 8;
     while (delay > 0) {
         VDFBaseConfiguration *newConf = [[VDFSettings globalDIContainer] resolveForClass:[VDFBaseConfiguration class]];
         
-        isConfigurationUpdated = [newConf.hapHost isEqualToString:@"http_test://ihap-pre.sp.vodafone.com_test"]
-        && [newConf.apixHost isEqualToString:@"https_test://apisit.developer.vodafone.com_test"]
-        && [newConf.oAuthTokenUrlPath isEqualToString:@"/2/oauth/access-token_test"]
+        isConfigurationUpdated = [newConf.hapHost isEqualToString:@"https://ihap-pre.sp.vodafone.test.com"]
+        && [newConf.apixHost isEqualToString:@"http://apisit.developer.vodafone.test.com"]
+        && [newConf.oAuthTokenUrlPath isEqualToString:@"/test/2/oauth/access-token"]
         && [newConf.oAuthTokenScope isEqualToString:@"seamless_id_resolve_test"]
         && [newConf.oAuthTokenGrantType isEqualToString:@"client_credentials_test"]
-        && [newConf.serviceBasePath isEqualToString:@"/seamless-id/users/tokens_test"]
+        && [newConf.serviceBasePath isEqualToString:@"/test/seamless-id/users/tokens"]
         && newConf.defaultHttpConnectionTimeout == 56
         && newConf.requestsThrottlingLimit == 23
         && newConf.requestsThrottlingPeriod == 45
@@ -122,12 +122,12 @@ static NSInteger const VERIFY_DELAY = 8;
     while (delay > 0) {
         VDFBaseConfiguration *newConf = [[VDFSettings globalDIContainer] resolveForClass:[VDFBaseConfiguration class]];
         
-        isConfigurationUpdated = [newConf.hapHost isEqualToString:@"http_test://ihap-pre.sp.vodafone.com_test"]
-        && [newConf.apixHost isEqualToString:@"https_test://apisit.developer.vodafone.com_test"]
-        && [newConf.oAuthTokenUrlPath isEqualToString:@"/2/oauth/access-token_test"]
+        isConfigurationUpdated = [newConf.hapHost isEqualToString:@"https://ihap-pre.sp.vodafone.test.com"]
+        && [newConf.apixHost isEqualToString:@"http://apisit.developer.vodafone.test.com"]
+        && [newConf.oAuthTokenUrlPath isEqualToString:@"/test/2/oauth/access-token"]
         && [newConf.oAuthTokenScope isEqualToString:@"seamless_id_resolve_test"]
         && [newConf.oAuthTokenGrantType isEqualToString:@"client_credentials_test"]
-        && [newConf.serviceBasePath isEqualToString:@"/seamless-id/users/tokens_test"]
+        && [newConf.serviceBasePath isEqualToString:@"/test/seamless-id/users/tokens"]
         && newConf.defaultHttpConnectionTimeout == 56
         && newConf.requestsThrottlingLimit == 23
         && newConf.requestsThrottlingPeriod == 45

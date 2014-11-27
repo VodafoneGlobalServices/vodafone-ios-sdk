@@ -66,7 +66,7 @@ static NSString * const SERVICE_URL_PATH_SCHEME_CHECK_RESOLVE_STATUS = @"/%@?bac
 static NSString * const SERVICE_URL_PATH_SCHEME_SEND_PIN = @"/%@/pins?backendId=%@";
 static NSString * const SERVICE_URL_PATH_SCHEME_VALIDATE_PIN = @"/%@/pins?backendId=%@";
 
-static NSString * const SERVICE_URL_SCHEME_CONFIGURATION_UPDATE = @"https://preprod.appconfig.shared.sp.vodafone.com/seamless-id/v%i/sdk-config-ios/config.json";
+static NSString * const SERVICE_URL_SCHEME_CONFIGURATION_UPDATE = @"https://appconfig.shared.sp.vodafone.com/seamless-id/v%i/sdk-config-ios/config.json";
 
 
 

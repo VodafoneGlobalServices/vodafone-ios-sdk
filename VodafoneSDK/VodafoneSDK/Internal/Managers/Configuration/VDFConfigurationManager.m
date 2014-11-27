@@ -86,6 +86,19 @@
             configuration.oAuthTokenScope = CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE;
             configuration.oAuthTokenGrantType = CONFIGURATION_DEFAULT_OAUTH_TOKEN_GRANT_TYPE;
             
+#ifdef VDF_PRODUCTION
+            // production
+            configuration.availableMarkets = @{@"PT": @351, @"IT": @39, @"DE": @49, @"ES": @34,
+                                               @"IE": @353, @"NL": @31, @"BG": @359, @"AT": @43,
+                                               @"HR": @385, @"UK": @44, @"RO": @40, @"HU": @36,
+                                               @"GR": @30, @"MT": @356, @"AL": @355, @"CZ": @420,
+                                               @"ZA": @27 };
+            configuration.availableMccMnc = @[@"26801", @"22210", @"26202", @"21401", @"27201",
+                                              @"20404", @"28401", @"23201", @"21910", @"23415",
+                                              @"22601", @"21670", @"20205", @"27801", @"27602",
+                                              @"23003", @"65501" ];
+#else
+            // preprod:
             configuration.availableMarkets = @{ @"PT": @351, @"IT": @39, @"DE": @49, @"ES": @34,
                                                 @"IE": @353, @"NL": @31, @"GB": @44, @"RO": @40,
                                                 @"HU": @36, @"GR": @30, @"MT": @356, @"AL": @355,
@@ -93,6 +106,7 @@
             configuration.availableMccMnc = @[ @"26801", @"22210", @"26202", @"21401", @"27201",
                                                @"20404", @"23415", @"22601", @"21670", @"20205",
                                                @"27801", @"27602", @"23003", @"65501" ];
+#endif
             
             configuration.phoneNumberRegex = CONFIGURATION_DEFAULT_PHONE_NUMBER_REGEX;
             configuration.smsCodeValidationRegex = CONFIGURATION_DEFAULT_SMS_CODE_REGEX;

@@ -12,16 +12,25 @@
 // current version of SDK
 #define VDF_IOS_SDK_VERSION_STRING @"1.0.3"
 
+// is Production Build
+// #define VDF_PRODUCTION 1
+
 #pragma mark - Configuration consts:
 
 static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_GRANT_TYPE = @"client_credentials";
 static NSString * const CONFIGURATION_DEFAULT_OAUTH_TOKEN_SCOPE = @"seamless_id_resolve";
+
+#ifdef VDF_PRODUCTION
+static NSString * const CONFIGURATION_DEFAULT_HAP_HOST = @"http://ihap.sp.vodafone.com";
+static NSString * const CONFIGURATION_DEFAULT_APIX_HOST = @"https://api.developer.vodafone.com";
+#else
 static NSString * const CONFIGURATION_DEFAULT_HAP_HOST = @"http://ihap-pre.sp.vodafone.com";
 static NSString * const CONFIGURATION_DEFAULT_APIX_HOST = @"https://apisit.developer.vodafone.com";
+#endif
 
 static NSTimeInterval const CONFIGURATION_DEFAULT_UPDATE_CHECK_TIME_SPAN = 43200; // in seconds, 12 hours
 static NSTimeInterval const CONFIGURATION_DEFAULT_HTTP_CONNECTION_TIMEOUT = 60.0; // default 60 seconds timeout
-static NSInteger const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT = 100;
+static NSInteger const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_LIMIT = 10;
 static NSTimeInterval const CONFIGURATION_DEFAULT_REQUESTS_THROTTLING_PERIOD = 60.0; // 60 seconds
 static NSString * const CONFIGURATION_DEFAULT_PHONE_NUMBER_REGEX = @"^[0-9]{7,12}$"; // default phone number validation regex
 static NSString * const CONFIGURATION_DEFAULT_SMS_CODE_REGEX = @"^[0-9]{4}$"; // default sms code validation regex
